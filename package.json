@@ -8,9 +8,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/system": "^5.12.1",
+    "aos": "^2.3.4",
+    "bootstrap": "^5.2.3",
     "firebase": "^9.20.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.10.0",
+    "router-dom": "^2.2.10"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
