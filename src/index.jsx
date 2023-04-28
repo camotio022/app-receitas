@@ -3,6 +3,8 @@ import './root_styles/roots.css'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import CallIcon from '@mui/icons-material/Call';
+import { LoginUp } from './componentes/CADASTRO';
+import { LoginIn } from './componentes/LOGIN.jsx';
 
 
 export const App_initialize = () => {
@@ -19,36 +21,8 @@ export const App_initialize = () => {
         <div className="container">
             <h2>LOGIN OR REGISTER</h2>
             <div className="container" id="container">
-                <div className="form-container sign-up-container">
-                    <form action="#">
-                        <h1>Crie uma conta</h1>
-                        <div className="social-container">
-                            <a className="social"><FacebookIcon /></a>
-                            <a className="social"><GoogleIcon /></a>
-                            <a className="social"><CallIcon /></a>
-                        </div>
-                        <span>Ou use seu email para se cadastrar</span>
-                        <input type="text" placeholder="Name" />
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
-                        <button>Cadastrar-se</button>
-                    </form>
-                </div>
-                <div className="form-container sign-in-container">
-                    <form action="#">
-                        <h1>Login</h1>
-                        <div className="social-container">
-                            <a className="social"><FacebookIcon /></a>
-                            <a className="social"><GoogleIcon /></a>
-                            <a className="social"><CallIcon /></a>
-                        </div>
-                        <span>Ou use seus dados para se logar</span>
-                        <input type="email" placeholder="Email" />
-                        <input type="password" placeholder="Password" />
-                        <a href="#">Esqueceu sua senha?</a>
-                        <button>Login</button>
-                    </form>
-                </div>
+               <LoginUp/>
+                <LoginIn/>
                 <div className="overlay-container">
                     <div className="overlay">
                         <div className="overlay-panel overlay-left">
