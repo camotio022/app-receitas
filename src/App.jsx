@@ -1,23 +1,16 @@
-import { useState } from 'react'
-import logo from './logo.svg'
 import './App.css'
-import '../firebase.config'
-import { api } from './api/index';
-import { useEffect } from 'react';
-import { async } from '@firebase/util';
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
+import { App_initialize } from './index'
+
 
 function App() {
-  const getRecipes = async () => {
-    console.log('primeiro', await api.recipe.get())
-    console.log(await api.recipe.get('jLsVb2WIpVe1ZVOAo9Tq'))
-  }
-  useEffect(() => {
-    getRecipes()
-  }, [])
-  return (
-    <div className="App">
 
-    </div>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<App_initialize />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
