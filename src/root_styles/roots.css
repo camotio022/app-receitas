@@ -1,0 +1,13 @@
+:root{
+    --background: #0e5a68;
+    --white_default: white;
+    --black: black;
+    --table: #7d7576;
+    --color_text: ;
+    --color_p: ;
+    --color_text_hover: ;
+    --color_error: red;
+    --color_success: green;
+    --color_delete: red;
+    --color_edit: #12307e; 
+}
