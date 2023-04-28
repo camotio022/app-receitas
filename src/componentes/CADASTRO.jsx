@@ -1,7 +1,7 @@
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Button, Input, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useState, React } from 'react';
 // export const fieldValidationRules = {
 //     name: {
 //         rule: (nome) => nome.indexOf(" ") !== -1,
@@ -41,7 +41,6 @@ import { useState } from 'react';
 export const LoginUp = () => {
     const [data, setData] = useState({
         username: "",
-        birth: "",
         phone: "",
         email: "",
         password: "",
@@ -53,6 +52,28 @@ export const LoginUp = () => {
             return { ...old, [name]: value };
         });
     };
+
+    const Cadastrar = () => {
+        let loged = false
+        if (!data?.username.indexOf(" ") !== -1) {
+            loged = false
+        }
+        if (
+            !data?.email.includes("@")
+            &&
+            !data?.email.includes(".com")
+        ) {
+            loged = false
+        }
+        if(areaCodes.includes(parseInt(data?.phone.substring(0, 2))) &&
+        number.length === 11) {
+            
+        }
+    }
+
+
+
+
     return (
         <>
             <div className="form-container sign-up-container">
@@ -124,7 +145,8 @@ export const LoginUp = () => {
                         placeholder="Crie uma senha para o acesso"
                         size="small"
                     />
-                    <Button variant='contained'>
+                    <Button variant='contained'
+                        onClick={Cadastrar}>
                         Cadastrar-se
                     </Button>
                 </form>
