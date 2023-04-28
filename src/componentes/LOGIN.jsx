@@ -59,7 +59,7 @@ export const LoginIn = () => {
                         size="small"
                     />
                     <a href="#">Esqueceu sua senha?</a>
-                    <Button variant='contained'>Cadastrar-se</Button>
+                    <Button variant='contained'>Logar-se</Button>
                 </form>
             </div>
         </>
