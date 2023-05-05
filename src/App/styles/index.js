@@ -1,14 +1,25 @@
 import styled from "styled-components";
+import {styled as MuiStyled} from '@mui/material'
+// export const Container = styled.div`
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     width: 90%;
+//     height: 100%;
+//     color: ${(props) => props.theme.colors.text};
+//     background-color: ${(props) => props.theme.colors.backgroud};  
+// `;
 
-export const Container = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 90%;
-    height: 100%;
-    color: ${(props) => props.theme.colors.text};
-    background-color: ${(props) => props.theme.colors.backgroud};  
-`;
+export const Container = MuiStyled('div')({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '90%',
+    height: '100%',
+    color: (props) => props.theme.colors.text,
+    backgroundColor: (props) => props.theme.colors.backgroud
+})
+
 export const ContainerAll = styled.div`
     display: flex;
     align-items: center;
@@ -17,7 +28,7 @@ export const ContainerAll = styled.div`
     width: 100vw;
     height: 100vh;
     color: ${(props) => props.theme.colors.text};
-    background-color: ${(props) => props.theme.colors.backgroud};  
+    background-color: ${(props) => props.theme.colors.background};  
 `;
 
 export const ItemLi = styled.div`
@@ -28,13 +39,13 @@ export const ItemLi = styled.div`
     width: 20%;
     height: 100%;
     color: ${(props) => props.theme.colors.text};
-    background-color: ${(props) => props.theme.colors.backgroud};
+    background-color: ${(props) => props.theme.colors.background};
 `
 
 export const Card = styled.div`
     padding: 1rem 1rem 0.3rem 1rem;
     color: ${(props) => props.theme.colors.text};
-    background-color: ${(props) => props.theme.colors.backgroud};
+    background-color: ${(props) => props.theme.colors.background};
     border: 0.2px solid ${(props) => props.theme.colors.text};
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 `
@@ -56,5 +67,5 @@ export const TagReview = styled.h1`
     align-items: center;
     justify-content: center;
     color: ${(props) => props.theme.colors.backgroud};
-    background-color: ${(props) => props.theme.colors.backgroud};
+    background-color: ${(props) => props.theme.colors.background};
 `

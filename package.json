@@ -11,7 +11,7 @@
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.2",
+    "@mui/material": "^5.12.3",
     "@mui/system": "^5.12.1",
     "@types/react-swipeable-views-utils": "^0.13.4",
     "aos": "^2.3.4",
@@ -22,8 +22,7 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.10.0",
     "react-swipeable-views-utils": "^0.14.0",
-    "router-dom": "^2.2.10",
-    "styled-components": "^5.3.10"
+    "router-dom": "^2.2.10"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

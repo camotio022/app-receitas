@@ -12,7 +12,7 @@ export const View = () => {
   }, []);
 
   return (
-    <>
+    <div className="">
       {users?.length > 0 &&
         users.map((user) => (
           <div>
@@ -20,6 +20,6 @@ export const View = () => {
             <a href={`/users/${user.id}`}>Detail</a>
           </div>
         ))}
-    </>
+    </div>
   );
 };

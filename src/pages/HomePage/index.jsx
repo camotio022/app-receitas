@@ -4,9 +4,12 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FlatwareIcon from '@mui/icons-material/Flatware';
 import GroupIcon from '@mui/icons-material/Group';
 import SlowMotionVideoIcon from '@mui/icons-material/SlowMotionVideo';
-import { Container, ContainerAll, ItemLi, TagReview, Title } from '../../App/styles';
-import { Card } from '../../App/styles/index';
+// import { Container, ContainerAll, ItemLi, TagReview, Title } from '../../App/styles';
+// import { Card } from '../../App/styles/index';
 import Churos from '../../images/imgsPages/churos.jpg';
+import { Card } from '../../componentes/Card';
+
+
 
 
 
@@ -54,11 +57,18 @@ export const Links = ({ name, icon, onclick, handlePages }) => {
         </>
     )
 }
+
+
+
+
+
 export const HomePage = () => {
 
     return (
         <>
-            <ContainerAll>
+        <Card active="true"/>
+        <Card active="false"/>
+            {/* <ContainerAll>
                 <div className="side_bar">
                     <Container>
                         <Title>Home</Title>
@@ -70,7 +80,7 @@ export const HomePage = () => {
                     </Container>
                 </div>
                 <div className="cards-home">
-                    <Card className='card'>
+                     <Card className='card'>
                         <img src={Churos} alt="" />
                         <div className="card_content">
                             <h1 className='title-recipe'>
@@ -93,7 +103,7 @@ export const HomePage = () => {
                         </div>
                     </Card>
                 </div>
-            </ContainerAll>
+            </ContainerAll> */}
 
         </>
     )
