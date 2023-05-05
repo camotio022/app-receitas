@@ -42,17 +42,15 @@ const links = [
 ]
 export const Links = ({ name, icon, onclick, handlePages }) => {
     const onClick = () => {
-        if (onclick == 'home') {
-            handlePages()
-        }
+        handlePages(name)
     }
 
     return (
         <>
-            <ItemLi onClick={onClick}>
+            <li onClick={onClick}>
                 <div className="icon_li">{icon}</div>
                 <div className="name_li">{name}</div>
-            </ItemLi>
+            </li>
 
         </>
     )
@@ -64,18 +62,31 @@ export const Links = ({ name, icon, onclick, handlePages }) => {
 
 export const HomePage = () => {
 
+    const handlePages = (name)=> {
+        switch(name) {
+            case 'Home':
+                alert('Home')
+                break
+            case 'Pages':
+                    console.log('Pages')
+                    break
+            default:
+                break
+                    
+        }
+    }
     return (
         <>
         <Card active="true"/>
         <Card active="false"/>
+        {links.map((i) => {
+            return (<Links key={i.name} {...i} handlePages={handlePages} />)
+        })}
             {/* <ContainerAll>
                 <div className="side_bar">
                     <Container>
                         <Title>Home</Title>
                         <div className="menu">
-                            {links.map((i) => {
-                                return (<Links key={i.name} {...i} />)
-                            })}
                         </div>
                     </Container>
                 </div>
