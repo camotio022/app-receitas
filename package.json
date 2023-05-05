@@ -20,7 +20,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.10.0",
-    "router-dom": "^2.2.10"
+    "router-dom": "^2.2.10",
+    "styled-components": "^5.3.10"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
