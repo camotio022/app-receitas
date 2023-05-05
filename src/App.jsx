@@ -6,16 +6,18 @@ import { ThemeProvider } from 'styled-components';
 import { darkTheme, lightTheme } from './App/theme';
 
 import GlobalStyles from './App/global/global';
+import { AppColors } from './colors';
 function App() {
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={lightTheme}>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<HomePage />} />
         </Routes>
-        <GlobalStyles/> 
       </BrowserRouter>
+      <GlobalStyles />
+      <AppColors />
     </ThemeProvider>
   )
 }
