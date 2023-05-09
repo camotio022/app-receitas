@@ -1,20 +1,27 @@
-import { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import "../firebase.config";
-import { api } from "./api/index";
-import { useEffect } from "react";
-import { async } from "@firebase/util";
-import { Register } from "./screens/Register/index.jsx";
-import { View } from "./screens/Users/View.jsx";
+import './App.css'
+import React from 'react';
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
+import { HomePage } from './pages/HomePage/index';
+// import { ThemeProvider } from 'styled-components';
+import { darkTheme, lightTheme } from './App/theme';
 
+// import GlobalStyles from './App/global/global';
+import { AppColors } from './colors';
 function App() {
+
   return (
-    <div className="App">
-      <Register />
-      <View />
-    </div>
-  );
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
+      {/* <GlobalStyles /> */}
+      <AppColors />
+      </>
+  )
 }
+    // <ThemeProvider theme={lightTheme}>
+    // </ThemeProvider>
 
 export default App;
