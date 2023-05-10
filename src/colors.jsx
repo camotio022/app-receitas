@@ -2,6 +2,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { colors } from '@mui/material';
 import './colors.css'
 import { useState } from 'react';
+import { TagColors, TagReview } from './App/styles';
 const colors_web = [
     { fundo: '#001f3f' },
     { fundo: '#111111' },
@@ -41,10 +42,10 @@ export const AppColors = () => {
                         <div>Boxed</div>
                     </div>
                 </div>}
-                <div className='color_b'>
+                <TagColors className='color_b'>
                     <div onClick={() => setOpentheme(!opentheme)} className='color_b_a'><SettingsIcon /></div>
                     <div className='color_b_a'>EN</div>
-                </div>
+                </TagColors>
             </div>
         </>
     )

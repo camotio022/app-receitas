@@ -21,5 +21,22 @@ export default createGlobalStyle`
         color: ${(props) => props.theme.colors.text};
         background-color: ${(props) => props.theme.colors.background};
     }
-
+    body::-webkit-scroll {
+        background-color: ${(props) => props.theme.colors.background};
+    }
+    body::-webkit-scroll-thumb {
+        background-color: ${(props) => props.theme.colors.text};
+    }
+    @media only screen and (max-width: 650px) {
+        .card {
+          background-color: lightblue;
+          width: 90%;
+        }
+        .menu_screen {
+            display: flex;
+        }
+        .menu {
+            display: none;
+        }
+    }
 `
