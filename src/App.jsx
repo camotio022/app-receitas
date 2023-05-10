@@ -5,20 +5,20 @@ import { ThemeProvider } from 'styled-components';
 import { darkTheme, defaultColor, lightTheme } from './App/theme';
 
 import GlobalStyles from './App/global/global';
-import { AppColors } from './colors';
+
+import { HomePage } from './pages/Home';
 function App() {
 
   return (
     <>
       <ThemeProvider theme={lightTheme}>
-        {/* <BrowserRouter>
+        <BrowserRouter>
           <Routes>
-      
+            <Route path='/' element={<HomePage/>}/>
           </Routes>
-        </BrowserRouter> */}
-        sadsadsakszldckz
+        </BrowserRouter>
         <GlobalStyles />
-        <AppColors />
+
       </ThemeProvider>
     </>
   )
