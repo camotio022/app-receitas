@@ -22,10 +22,10 @@ export const HomePage = () => {
   return (
     <>
       <div className="wrapper">
-        {/* <Links /> */}
-        {recipes.map((recipe) => (
+        <Links />
+        {/* {recipes.map((recipe) => (
           <RecipeCard {...recipe} />
-        ))}
+        ))} */}
       </div>
     </>
   );

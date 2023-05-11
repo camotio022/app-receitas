@@ -19,3 +19,4 @@ export const defaultColor = {
         color: 'white'
     },
 }
+export const primaryColor = {}

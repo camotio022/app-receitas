@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { styled as MuiStyled } from '@mui/material'
 export const Container = styled.div`
-    color: ${(props) => props.theme.colors.backgroud};
+    color: ${(props) => props.theme.colors.text};
     background-color: ${(props) => props.theme.colors.text};  
 `;
 
