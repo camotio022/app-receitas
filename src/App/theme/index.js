@@ -12,3 +12,11 @@ export const lightTheme = {
         color: 'black'
     },
 }
+export const defaultColor = {
+    colors: {
+        background: '#0e5a68',
+        text: 'yellow',
+        color: 'white'
+    },
+}
+export const primaryColor = {}
