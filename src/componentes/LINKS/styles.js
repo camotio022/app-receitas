@@ -11,10 +11,10 @@ export const Menu_links = styled(Stack)(({ theme }) => ({
     justifyContent: "center",
     gap: "20%",
     width: "100%",
-    minHeight: "6%",
+    height: "6%",
     height: "auto",
     transition: "all.5s",
-    borderBottom: "1px solid #000",
+    boxShadow: 'rgb(38, 57, 77) 0px 20px 30px -10px',
     padding: "1em",
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.secondary,
@@ -38,6 +38,7 @@ export const Aa = MuiA('a')(({ theme }) => ({
 export const IconLink = styled(Box)(({ theme }) => ({
 
 }));
+
 
 
 export const Links = styled(Stack)(({ theme }) => ({
@@ -82,9 +83,51 @@ export const Links = styled(Stack)(({ theme }) => ({
         width: "100vw",
         height: "100vh",
         transition: "all .5s",
-        background: 'green',
+        background: theme.palette.primary.light,
     }
 }));
+
+export const ContainLinks = styled(Stack)(({ theme }) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: 'auto',
+    transition: "all.5s",
+}));
+
+export const SubMenus = styled(Stack)(({ theme }) => ({
+    display: "flex",
+ 
+    alignItems: "flex-start",
+    justifyContent: "center",
+    textTransform: 'lowercase',
+    width: "100%",
+    paddingLeft: '1em',
+    backgroundColor: theme.palette.primary.light,
+    transition: "all.5s",
+
+
+}));
+export const Branch = styled(Box)(({ theme }) => ({
+    display: "flex",
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "flex-start",
+    gap: '16px',
+    width: "100%",
+    color:'#fff',
+    fontWeight:'300',
+    borderLeft: '1px solid gray',
+    padding:'5px 5px 5px 16px',
+    '&:hover': {
+        color: theme.palette.secondary.light,
+        backgroundColor: theme.palette.primary.main,
+        borderLeft: `1px solid ${theme.palette.primary.dark}`,
+        transition: "all.5s",
+    }
+}));
+
 
 export const Link = styled(Stack)(({ theme }) => ({
     display: "flex",
@@ -92,15 +135,13 @@ export const Link = styled(Stack)(({ theme }) => ({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-
+  
 
     "&:hover": {
         cursor: "pointer",
         fontWeight: '700',
         transform: "translate(0%, 30%)",
         transition: "0.3s ease-out",
-        backgroundColor: theme.palette.primary.secondary,
-        borderBottom: '5px solid gray',
         borderWidth: '10%',
         ".iconLnk": {
             display: 'none'
@@ -120,20 +161,18 @@ export const Link = styled(Stack)(({ theme }) => ({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        borderTop: "0.1px solid #b9b2b2",
         width: "100%",
         padding: "0 10px 0 10px",
-        backgroundColor: theme.palette.primary.light,
+ 
         "&:hover": {
             textTransform: "uppercase",
             cursor: "pointer",
             fontWeight: '700',
             transform: "translate(0%, 30%)",
             transition: "0.3s ease-out",
-            backgroundColor: theme.palette.primary.light,
             borderBottom: 'none',
             color: theme.palette.primary.dark,
-            borderLeft: `10px solid gray`
+   
         },
     }
 }));
