@@ -18,6 +18,7 @@ export const Menu_links = styled(Stack)(({ theme }) => ({
     padding: "1em",
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.secondary,
+
 }));
 
 export const Logo = styled(Typography)(({ theme }) => ({
@@ -39,6 +40,22 @@ export const IconLink = styled(Box)(({ theme }) => ({
 
 }));
 
+export const LogoIconMobile = styled(Stack)(({ theme }) => ({
+    display: "flex",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '10px',
+    "@media only screen and (max-width: 550px)": {
+        display: "flex",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '10px',
+        boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+    },
+}));
+
 
 
 export const Links = styled(Stack)(({ theme }) => ({
@@ -48,7 +65,8 @@ export const Links = styled(Stack)(({ theme }) => ({
     justifyContent: "space-between",
     width: "100%",
     height: '100%',
- 
+    overflow: 'auto',
+    overflowX: 'hidden',
     "@media only screen and (min-width: 800px)": {
         display: "flex",
         flexDirection: 'row',
@@ -74,7 +92,6 @@ export const Links = styled(Stack)(({ theme }) => ({
     },
     "@media only screen and (max-width: 550px)": {
         position: "absolute",
-        top: 0,
         left: 0,
         display: "flex",
         flexDirection: "column",
@@ -98,15 +115,27 @@ export const ContainLinks = styled(Stack)(({ theme }) => ({
 
 export const SubMenus = styled(Stack)(({ theme }) => ({
     display: "flex",
- 
     alignItems: "flex-start",
     justifyContent: "center",
-    textTransform: 'lowercase',
+    textTransform: 'auto',
     width: "100%",
     paddingLeft: '1em',
     backgroundColor: theme.palette.primary.light,
     transition: "all.5s",
-
+    "@media only screen and (min-width: 810px)": {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        gap: '16px',
+        width: '100%',
+        height: 'auto',
+        position: "absolute",
+        top: "5rem",
+        left: 0,
+        padding: "2%"
+    },
 
 }));
 export const Branch = styled(Box)(({ theme }) => ({
@@ -125,7 +154,17 @@ export const Branch = styled(Box)(({ theme }) => ({
         backgroundColor: theme.palette.primary.main,
         borderLeft: `1px solid ${theme.palette.primary.dark}`,
         transition: "all.5s",
-    }
+    },
+    "@media only screen and (min-width: 810px)": {
+        display: "flex",
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: '30%',
+        height: 'auto',
+        border: 'none',
+        borderBottom: '1px solid gray',
+    },
 }));
 
 
@@ -156,13 +195,14 @@ export const Link = styled(Stack)(({ theme }) => ({
         height: '100%',
         
     },
-    "@media only screen and (max-width: 800px)": {
+    "@media only screen and (max-width: 810px)": {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
         padding: "0 10px 0 10px",
+       
  
         "&:hover": {
             textTransform: "uppercase",
@@ -185,14 +225,20 @@ export const IconMenu = styled(Typography)(({ theme, props }) => ({
     padding: '0.5em',
     color: 'text.secondary',
     fontWeight: '700',
-    "@media only screen and (min-width: 800px)": {
+    "@media only screen and (min-width: 810px)": {
         display: "none",
+       
     },
 }));
 export const ShowlinkIcon = styled(Box)(() => ({
-    "@media only screen and (min-width: 800px)": {
+    "@media only screen and (min-width: 810px)": {
         display: "none",
         alignItems: "center",
         justifyContent: "space-between",
     }
 }));
+
+export const Div = styled('div')(({ theme }) => ({
+
+}));
+

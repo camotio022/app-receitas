@@ -23,6 +23,7 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { Link } from 'react-router-dom'
 import { Box, Stack, Typography } from "@mui/material";
 import * as Tag from "./styles";
+import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
 import { useState } from 'react';
 
@@ -71,11 +72,10 @@ export const Links_a = ({
         setShow(!show)
         if (name === 'Home') {
             setHome(!home)
-        }
+        } 
         if (name === 'Pages') {
             setPages(!pages)
         }
-
     }
     return (
         <>
@@ -203,6 +203,7 @@ export const Links_a = ({
 
                     </Tag.SubMenus>
                 }
+
             </Tag.ContainLinks>
         </>
     )
@@ -219,14 +220,16 @@ export const Links = () => {
     }
     return (
         <>
-            <Tag.Menu_links>
-                <Tag.Logo variant='h4'>20MinutesOk</Tag.Logo>
+            <Tag.Menu_links className='display-block'>
+                <Tag.Logo variant='h4'>
+                    <img src={Logo} alt="" />
+                </Tag.Logo>
                 <Tag.ShowlinkIcon >
                     <MenuIcon fontSize='large' onClick={ShowLinks} />
                 </Tag.ShowlinkIcon>
 
                 <Tag.Links>
-                    <Stack
+                    <Tag.LogoIconMobile
                         direction='row'
                         display="flex"
                         justifyContent='space-between'
@@ -236,19 +239,15 @@ export const Links = () => {
                         <Tag.IconMenu sx={{
                             color: 'text.secondary'
                         }} variant='h4'>
-                            20MinutesOk
+                            <img src={Logo} alt="" />
                         </Tag.IconMenu>
-                        <Tag.IconMenu sx={{
+                        <Tag.Div className='none display' sx={{
                             color: 'text.secondary',
                             cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            padding: "0 0.5em"
                         }}>
-                            <CloseIcon onClick={ShowLinks} fontSize='large' />
-                        </Tag.IconMenu>
-                    </Stack>
+                            <CloseIcon className='closeMenu' onClick={ShowLinks} fontSize='large' />
+                        </Tag.Div>
+                    </Tag.LogoIconMobile>
                     {
                         links.map((li) => {
                             return (
