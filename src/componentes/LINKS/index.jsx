@@ -1,24 +1,49 @@
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
-import MenuIcon from '@mui/icons-material/Menu'
-import CloseIcon from '@mui/icons-material/Close'
-import HomeIcon from '@mui/icons-material/Home'
-import LayersIcon from '@mui/icons-material/Layers'
-import BookIcon from '@mui/icons-material/Book'
-import KitchenIcon from '@mui/icons-material/Kitchen'
-import BeenhereIcon from '@mui/icons-material/Beenhere'
-import PeopleIcon from '@mui/icons-material/People'
-import LoginIcon from '@mui/icons-material/Login'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
-import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import BookmarksIcon from '@mui/icons-material/Bookmarks'
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd'
-import InfoIcon from '@mui/icons-material/Info'
-import StarIcon from '@mui/icons-material/Star'
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
+import {
+    ArrowDropDown as ArrowDropDownIcon,
+    ArrowDropUp as ArrowDropUpIcon,
+    Menu as MenuIcon,
+    Close as CloseIcon,
+    Home as HomeIcon,
+    Layers as LayersIcon,
+    Book as BookIcon,
+    Kitchen as KitchenIcon,
+    Beenhere as BeenhereIcon,
+    People as PeopleIcon,
+    Login as LoginIcon,
+    PersonAdd as PersonAddIcon,
+    RestaurantMenu as RestaurantMenuIcon,
+    PlayCircle as PlayCircleIcon,
+    Bookmarks as BookmarksIcon,
+    BookmarkAdd as BookmarkAddIcon,
+    Info as InfoIcon,
+    Star as StarIcon,
+    AlternateEmail as AlternateEmailIcon,
+    Inbox as InboxIcon,
+    Drafts as DraftsIcon,
+    Send as SendIcon,
+    ExpandLess,
+    ExpandMore,
+    StarBorder,
+} from '@mui/icons-material'
+
+import {
+    List,
+    ListSubheader,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Collapse,
+    Box,
+    Stack,
+    Typography,
+    useMediaQuery,
+    Button,
+    Menu,
+    MenuItem,
+} from '@mui/material'
+
 import { Link } from 'react-router-dom'
-import { Box, Stack, Typography } from '@mui/material'
+
 import * as Tag from './styles'
 import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
@@ -64,6 +89,50 @@ const links = [
     { icon: <BookIcon />, name: 'Blog', onClick: 'blog' },
     { icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community' },
 ]
+
+const Links_b = ({
+    name,
+    handleClick,
+    handleClose,
+    anchorEl,
+    icon,
+    children,
+    selectedLink,
+}) => {
+    const isSelected = selectedLink === name
+
+    return (
+        <>
+            <Button
+                id="basic-button"
+                aria-controls={isSelected ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={isSelected ? 'true' : undefined}
+                onClick={handleClick}
+            >
+                {name}
+            </Button>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={isSelected}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+                {children?.length > 0 &&
+                    children.map((child) => (
+                        <MenuItem onClick={handleClick}>
+                            <ListItemIcon>{child.icon}</ListItemIcon>
+                            <ListItemText>{child.name}</ListItemText>
+                        </MenuItem>
+                    ))}
+            </Menu>
+        </>
+    )
+}
+
 export const Links_a = ({
     name,
     handleClick,
@@ -76,133 +145,95 @@ export const Links_a = ({
     const isSelected = selectedLink === name
 
     return (
-        <Tag.ContainLinks
-            onClick={handleClick}
-            sx={
-                !show
-                    ? {
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'pointer',
-                          textTransform: 'uppercase',
-                          color: 'white',
-                          textDecoration: 'none',
-                          fontWeight: '700',
-                          borderLeft: '10px solid gray',
-                          '.iconLnk': {
-                              display: 'none',
-                          },
-                      }
-                    : {}
-            }
-        >
-            <Tag.Link>
-                <Tag.IconLink className="iconLnk">{icon}</Tag.IconLink>
-                <Tag.Aa>
-                    <Box>{name}</Box>
-                </Tag.Aa>
-                <Tag.ShowlinkIcon>
-                    {show ? (
-                        <ArrowDropDownIcon
-                            fontSize="large"
-                            sx={{
-                                color: 'text.secondary',
-                            }}
-                        />
-                    ) : (
-                        <ArrowDropUpIcon
-                            sx={{
-                                color: 'text.secondary',
-                            }}
-                            fontSize="large"
-                        />
-                    )}
-                </Tag.ShowlinkIcon>
-            </Tag.Link>
-
-            {isSelected && (
-                <Tag.SubMenus
-                    sx={{
-                        color: 'text.secondary',
-                        textTransform: 'lowercase',
-                    }}
-                >
+        <>
+            <ListItemButton onClick={handleClick}>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={name} />
+                {isSelected ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={isSelected} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
                     {children &&
                         children?.length > 0 &&
                         children.map((child) => (
-                            <Tag.Branch>
-                                {child.icon} {child.name}
-                            </Tag.Branch>
+                            <ListItemButton sx={{ pl: 4 }}>
+                                <ListItemIcon>{child.icon}</ListItemIcon>
+                                <ListItemText primary={child.name} />
+                            </ListItemButton>
                         ))}
-                </Tag.SubMenus>
-            )}
-        </Tag.ContainLinks>
+                </List>
+            </Collapse>
+        </>
     )
+
+    // )
 }
 
 export const Links = () => {
-    const ShowLinks = () => {}
-
     const [selectedLink, setSelectedLink] = useState()
+    const [anchorEl, setAnchorEl] = useState(null)
 
-    const handleSelectLink = (newLink) => {
-        console.log(newLink)
+    const handleSelectLink = (event, newLink) => {
+        if (selectedLink === newLink) {
+            setSelectedLink(null)
+            return
+        }
         setSelectedLink(newLink)
+        setAnchorEl(event.target)
+    }
+
+    const handleClose = () => {
+        setSelectedLink(null)
+        setAnchorEl(null)
+    }
+
+    const [open, setOpen] = useState(true)
+
+    const matches = useMediaQuery('(min-width:600px)')
+
+    if (matches) {
+        return (
+            <Stack direction="row">
+                {links.map((li) => (
+                    <Links_b
+                        key={li.name}
+                        {...li}
+                        handleClose={handleClose}
+                        handleClick={(event) =>
+                            handleSelectLink(event, li.name)
+                        }
+                        selectedLink={selectedLink}
+                        anchorEl={anchorEl}
+                    />
+                ))}
+            </Stack>
+        )
     }
 
     return (
-        <>
-            <Tag.Menu_links className="display-block">
-                <Tag.Logo variant="h4">
-                    <img src={Logo} alt="" />
-                </Tag.Logo>
-                <Tag.ShowlinkIcon>
-                    <MenuIcon fontSize="large" />
-                </Tag.ShowlinkIcon>
-
-                <Tag.Links>
-                    <Tag.LogoIconMobile
-                        direction="row"
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        width="100%"
-                    >
-                        <Tag.IconMenu
-                            sx={{
-                                color: 'text.secondary',
-                            }}
-                            variant="h4"
-                        >
-                            <img src={Logo} alt="" />
-                        </Tag.IconMenu>
-                        <Tag.Div
-                            className="none display"
-                            sx={{
-                                color: 'text.secondary',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            <CloseIcon
-                                className="closeMenu"
-                                onClick={ShowLinks}
-                                fontSize="large"
-                            />
-                        </Tag.Div>
-                    </Tag.LogoIconMobile>
-                    {links.map((li) => {
-                        return (
-                            <Links_a
-                                key={li.name}
-                                {...li}
-                                handleClick={() => handleSelectLink(li.name)}
-                                selectedLink={selectedLink}
-                            />
-                        )
-                    })}
-                </Tag.Links>
-            </Tag.Menu_links>
-        </>
+        <Tag.MinhaLista
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                    Nested List Items
+                </ListSubheader>
+            }
+        >
+            {links.map((li) => {
+                return (
+                    <Links_a
+                        key={li.name}
+                        {...li}
+                        handleClick={(event) =>
+                            handleSelectLink(event, li.name)
+                        }
+                        selectedLink={selectedLink}
+                    />
+                )
+            })}
+        </Tag.MinhaLista>
     )
+
+    // )
 }
