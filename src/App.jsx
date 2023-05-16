@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={darkTheme}>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<HomePage/>}/>
