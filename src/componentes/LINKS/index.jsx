@@ -2,6 +2,7 @@ import {
     ArrowDropDown as ArrowDropDownIcon,
     ArrowDropUp as ArrowDropUpIcon,
     Menu as MenuIcon,
+    MenuOpen as MenuOpenIcon,
     Close as CloseIcon,
     Home as HomeIcon,
     Layers as LayersIcon,
@@ -187,13 +188,16 @@ export const Links = () => {
         setAnchorEl(null)
     }
 
-    const [open, setOpen] = useState(true)
+    const [showLinks, setShowLinks] = useState(false)
 
-    const matches = useMediaQuery('(min-width:600px)')
-
+    const matches = useMediaQuery('(min-width:700px)')
+    const matchesMobileSmall = useMediaQuery('(min-width:550px)')
     if (matches) {
         return (
-            <Stack direction="row">
+            <Tag.MenuBar>
+                <Stack>
+                    <img src={Logo} alt="" />
+                </Stack>
                 {links.map((li) => (
                     <Links_b
                         key={li.name}
@@ -206,33 +210,49 @@ export const Links = () => {
                         anchorEl={anchorEl}
                     />
                 ))}
-            </Stack>
+            </Tag.MenuBar>
         )
     }
 
     return (
-        <Tag.MinhaLista
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Nested List Items
-                </ListSubheader>
-            }
-        >
-            {links.map((li) => {
-                return (
-                    <Links_a
-                        key={li.name}
-                        {...li}
-                        handleClick={(event) =>
-                            handleSelectLink(event, li.name)
-                        }
-                        selectedLink={selectedLink}
-                    />
-                )
-            })}
-        </Tag.MinhaLista>
+        <>
+            <Tag.MenuBar>
+                <Stack>
+                    <img src={Logo} alt="" />
+                </Stack>
+                <Stack>
+                    {!showLinks?<MenuIcon onClick={(e)=>setShowLinks(!showLinks)}/>:
+                    <MenuOpenIcon onClick={(e)=>setShowLinks(!showLinks)}/>}
+                </Stack>
+            </Tag.MenuBar>
+            {showLinks && <Tag.MinhaLista sx={{
+                width: !matchesMobileSmall? '100%': '60%',
+            }}
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                subheader={
+                    <Tag.ListSub sx={{
+                        justifyContent: !matchesMobileSmall? "space-between": 'flex-start'
+                    }} component="div" id="nested-list-subheader">
+                        <img src={Logo} alt="" />
+                        {!matchesMobileSmall&&<CloseIcon onClick={(e)=>setShowLinks(!showLinks)}/>}
+                    </Tag.ListSub>
+                }
+            >
+                {links.map((li) => {
+                    return (
+                        <Links_a
+                            key={li.name}
+                            {...li}
+                            handleClick={(event) =>
+                                handleSelectLink(event, li.name)
+                            }
+                            selectedLink={selectedLink}
+                        />
+                    )
+                })}
+            </Tag.MinhaLista>}
+        </>
     )
 
     // )

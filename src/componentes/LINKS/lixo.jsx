@@ -1,67 +1,3 @@
-import {
-    Box,
-    Stack,
-    Typography,
-    styled as MuiA,
-    styled,
-    List,
-    ListSubheader,
-} from '@mui/material'
-
-export const Menu_links = styled(Stack)(({ theme }) => ({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '20%',
-    width: '100%',
-    height: '6%',
-    height: 'auto',
-    transition: 'all.5s',
-    boxShadow: 'rgb(38, 57, 77) 0px 20px 30px -10px',
-    padding: '1em',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.secondary,
-}))
-
-export const Logo = styled(Typography)(({ theme }) => ({
-    display: 'flex',
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    width: 'auto',
-    '@media only screen and (max-width: 810px)': {
-        opacity: 0,
-        width: '100%',
-    },
-}))
-export const MenuBar = styled(Stack)(({ theme }) => ({
-    position: 'fixed',
-    top: '0',
-    left: '0',
-    display: 'flex',
-    alignItems: "center",
-    flexDirection: 'row',
-    justifyContent: "space-between",
-    width: '100%',
-    height: '7%',
-    background: theme.palette.primary.dark,
-    color: theme.palette.primary,
-    padding: '15px',
-    transition: 'all 0.5s ease-in-out'
-}))
-export const ListSub = styled(ListSubheader)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-    height: '7%',
-    background: 'transparent',
-    background: theme.palette.primary.dark,
-}))
-
 export const Aa = MuiA('a')(({ theme }) => ({
     color: 'white',
 }))
@@ -261,9 +197,9 @@ export const Div = styled('div')(({ theme }) => ({}))
 
 export const MinhaLista = styled(List)(({ theme }) => ({
     backgroundColor: theme.palette.primary.light,
-    width: '60%',
+    width: '100%',
+    maxWidth: 360,
     position: 'absolute',
     left: 0,
     height: '100vh',
-    transition: 'all 0.5s ease-in-out'
 }))
