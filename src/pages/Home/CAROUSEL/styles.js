@@ -6,7 +6,7 @@ export const Carousel = styled(Stack)(({ theme }) => ({
     justifyContent: "center",
     width: "100%",
     height: "40%",
-    marginTop: "12%",
+    marginTop: "8rem",
     background: theme.palette.primary.light,
 }))
 
