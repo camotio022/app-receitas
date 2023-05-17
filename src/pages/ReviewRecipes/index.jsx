@@ -84,7 +84,7 @@ const recipes = [
 export const Recipes = ({
     img,
     avatar,
-    titleRecipe,
+    titleRecipe = 'teste',
     commentsCounter,
     starsLikedCounter,
     starIcon,
@@ -219,8 +219,8 @@ export const TopReview = () => {
                 </Typography>
             </Tag.HeaderView>
             <Tag.Cards>
-                {recipes.map((recipe, index) => {
-                    return <Recipes key={index} {...recipe} />
+                {recipes.map((recipe) => {
+                    return <Recipes key={recipe.titleRecipe} {...recipe} />
                 })}
             </Tag.Cards>
             {false && (
