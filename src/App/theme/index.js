@@ -1,23 +1,31 @@
-import { styled } from "@mui/material"
+import { createTheme } from '@mui/material'
+import { grey } from '@mui/material/colors'
 
-export const darkTheme = {
-    colors: {
-        background: '#191919',
-        text: '#fff',
-        color: 'white'
+export const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+        // background: '#191919',
+        text: {
+            primary: grey[100],
+        },
+        primary: {
+            main: '#0c69a6',
+        },
+        background: {
+            paper: '#fafafa',
+        },
     },
-}
-export const lightTheme = {
-    colors: {
-        background: '#fff',
-        text: '#191919',
-        color: 'black'
+})
+
+export const lightTheme = createTheme({
+    palette: {
+        // background: '#fff',
+        text: {
+            primary: grey[800],
+        },
+        primary: {
+            main: '#053972',
+        },
+        background: { paper: '#fafafa' },
     },
-}
-export const defaultColor = {
-    colors: {
-        background: '#0e5a68',
-        text: 'yellow',
-        color: 'white'
-    },
-}
+})
