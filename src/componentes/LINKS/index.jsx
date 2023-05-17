@@ -124,7 +124,7 @@ const Links_b = ({
             >
                 {children?.length > 0 &&
                     children.map((child) => (
-                        <MenuItem onClick={handleClick}>
+                        <MenuItem key={child.name} onClick={handleClick}>
                             <ListItemIcon>{child.icon}</ListItemIcon>
                             <ListItemText>{child.name}</ListItemText>
                         </MenuItem>
@@ -221,37 +221,55 @@ export const Links = () => {
                     <img src={Logo} alt="" />
                 </Stack>
                 <Stack>
-                    {!showLinks?<MenuIcon onClick={(e)=>setShowLinks(!showLinks)}/>:
-                    <MenuOpenIcon onClick={(e)=>setShowLinks(!showLinks)}/>}
+                    {!showLinks ? (
+                        <MenuIcon onClick={(e) => setShowLinks(!showLinks)} />
+                    ) : (
+                        <MenuOpenIcon
+                            onClick={(e) => setShowLinks(!showLinks)}
+                        />
+                    )}
                 </Stack>
             </Tag.MenuBar>
-            {showLinks && <Tag.MinhaLista sx={{
-                width: !matchesMobileSmall? '100%': '60%',
-            }}
-                component="nav"
-                aria-labelledby="nested-list-subheader"
-                subheader={
-                    <Tag.ListSub sx={{
-                        justifyContent: !matchesMobileSmall? "space-between": 'flex-start'
-                    }} component="div" id="nested-list-subheader">
-                        <img src={Logo} alt="" />
-                        {!matchesMobileSmall&&<CloseIcon onClick={(e)=>setShowLinks(!showLinks)}/>}
-                    </Tag.ListSub>
-                }
-            >
-                {links.map((li) => {
-                    return (
-                        <Links_a
-                            key={li.name}
-                            {...li}
-                            handleClick={(event) =>
-                                handleSelectLink(event, li.name)
-                            }
-                            selectedLink={selectedLink}
-                        />
-                    )
-                })}
-            </Tag.MinhaLista>}
+            {showLinks && (
+                <Tag.MinhaLista
+                    sx={{
+                        width: !matchesMobileSmall ? '100%' : '60%',
+                    }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                        <Tag.ListSub
+                            sx={{
+                                justifyContent: !matchesMobileSmall
+                                    ? 'space-between'
+                                    : 'flex-start',
+                            }}
+                            component="div"
+                            id="nested-list-subheader"
+                        >
+                            <img src={Logo} alt="" />
+                            {!matchesMobileSmall && (
+                                <CloseIcon
+                                    onClick={(e) => setShowLinks(!showLinks)}
+                                />
+                            )}
+                        </Tag.ListSub>
+                    }
+                >
+                    {links.map((li) => {
+                        return (
+                            <Links_a
+                                key={li.name}
+                                {...li}
+                                handleClick={(event) =>
+                                    handleSelectLink(event, li.name)
+                                }
+                                selectedLink={selectedLink}
+                            />
+                        )
+                    })}
+                </Tag.MinhaLista>
+            )}
         </>
     )
 
