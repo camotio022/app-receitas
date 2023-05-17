@@ -1,4 +1,4 @@
-import { Stack, Typography, Box } from '@mui/material'
+import { Stack, Typography, Box, useMediaQuery, Tooltip } from '@mui/material'
 import * as Tag from './index'
 import './index.css'
 import Img1 from '../../images/mocks/foots/img1.jpeg'
@@ -13,7 +13,11 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useEffect, useState } from 'react'
-
+import {
+    Forum as ForumIcon,
+    Favorite as FavoriteIcon,
+    Star as StarIcon
+} from '@mui/icons-material';
 
 const recipe = [
     {
@@ -89,34 +93,58 @@ export const Recipes = (
         reviewScore
     }
 ) => {
+    const noWrap = {
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+    }
+    const matches = useMediaQuery('(min-width:700px)')
     return (
         <>
             <Tag.Card>
                 <Stack width={"100%"}>
-                    <img className='img' src={img} alt="" />
-                    <Stack sx={{
-                        p: 2,
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis"
-                    }} spacing={2}>
-                        <Typography variant="h5">{titleRecipe}</Typography>
-                        <Stack direction="row" spacing={2}>
-                            <Box>{starIcon}</Box>
-                            <Typography variant="p">{starsLikedCounter}</Typography>
+                    <Tooltip sx={{cursor: 'pointer'}}  title={`Ir para os detalhes  ${titleRecipe}`} followCursor>
+                        <img className='img' src={img} alt="" />
+                    </Tooltip>
+                    <Stack padding={2} spacing={2}>
+                        <Typography variant="h6" sx={noWrap}>{titleRecipe}</Typography>
+                        <Stack direction="row" justifyContent={'space-between'}>
+                            <Stack direction="row" spacing={2}>
+                                <Box color={'#ffa505'}>
+                                    <StarIcon fontSize={matches ? 'small' : 'medium'} />
+                                    <StarIcon fontSize={matches ? 'small' : 'medium'} />
+                                    <StarIcon fontSize={matches ? 'small' : 'medium'} />
+                                    <StarIcon fontSize={matches ? 'small' : 'medium'} />
+                                    <StarIcon fontSize={matches ? 'small' : 'medium'} />
+                                </Box>
+                                <Typography variant="p">{starsLikedCounter}</Typography>
+                            </Stack>
+                            <Tag.FavoritingRecipe title={`Favoritar está receita ${titleRecipe}`} followCursor>
+                                <FavoriteIcon />
+                            </Tag.FavoritingRecipe>
                         </Stack>
-                        <Stack direction="row" width={"100%"} justifyContent="space-between">
-                            <Tag.AuthorImage>
-                                <img style={{ borderRadius: '10px' }} src={img} alt="" />
-                            </Tag.AuthorImage>
-                            <Box id="info">
-                                <Typography variant="subtitle1">{userName}</Typography>
-                                <Stack direction="row" spacing={2}>
-                                    <Stack direction="row">233</Stack>
-                                    <Stack direction="row">{commentsCounter}</Stack>
-                                </Stack>
-                            </Box>
-                            <Tag.ReviewScore>{reviewScore}</Tag.ReviewScore>
+                        <Stack spacing={1} borderTop={'0.1rem solid #f5f5f5f5'} direction="row" width={"100%"} justifyContent="space-between">
+                            <Tag.Author >
+                                <Tag.AuthorImage>
+                                    <img style={{ borderRadius: '10px' }} src={img} alt="" />
+                                </Tag.AuthorImage>
+                                <Box sx={{
+                                    display: 'flex',
+                                    alignItems: 'flex-start',
+                                    justifyContent: 'space-between',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    fontSize: '13px',
+                                    color: '#565656',
+                                }} id="info">
+                                    <Typography sx={noWrap} variant="subtitle1">{userName}</Typography>
+                                    <Stack direction="row" spacing={2}>
+                                        <Stack direction="row" gap={1} ><FavoriteIcon fontSize={matches ? 'small' : 'medium'} />233</Stack>
+                                        <Stack spacing={2} gap={1} direction="row"><ForumIcon fontSize={matches ? 'small' : 'medium'} />{commentsCounter}</Stack>
+                                    </Stack>
+                                </Box>
+                            </Tag.Author>
+                            <Tag.ReviewScore variant={matches ? 'subtitle1' : 'h6'}>{reviewScore}</Tag.ReviewScore>
                         </Stack>
                     </Stack>
                 </Stack>
@@ -143,7 +171,7 @@ export const TopReview = () => {
                     })
                 }
             </Tag.Cards>
-            <Tag.Pagination spacing={2}>
+            {false && <Tag.Pagination spacing={2}>
                 <Pagination
                     count={100}
                     renderItem={(item) => (
@@ -153,7 +181,7 @@ export const TopReview = () => {
                         />
                     )}
                 />
-            </Tag.Pagination>
+            </Tag.Pagination>}
         </Tag.Container>
     )
 }

@@ -1,3 +1,5 @@
+import { styled } from "@mui/material"
+
 export const darkTheme = {
     colors: {
         background: '#191919',
@@ -19,4 +21,3 @@ export const defaultColor = {
         color: 'white'
     },
 }
-export const primaryColor = {}
