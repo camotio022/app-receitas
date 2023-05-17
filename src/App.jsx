@@ -1,31 +1,38 @@
 import './App.css'
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
-import { ThemeProvider } from 'styled-components';
-import { darkTheme, defaultColor, lightTheme } from './App/theme';
 
-import GlobalStyles from './App/global/global';
+import { darkTheme, lightTheme } from './App/theme'
 
-import { HomePage } from './pages/Home';
-import { THEMASPAGE } from './colors.jsx';
+// import GlobalStyles from './App/global/global'
+
+import { HomePage } from './pages/Home'
+import { ThemeButton } from './colors.jsx'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 
 function App() {
-  const [color, setColors] = useState(true)
+    const [useDarkMode, setUseDarkMode] = useState(false)
 
-  return (
-    <>
-      <ThemeProvider theme={darkTheme}>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-          </Routes>
-        </BrowserRouter>
-        <GlobalStyles />
-        {color && <THEMASPAGE />}
+    const handleToggleMode = () => {
+        setUseDarkMode(!useDarkMode)
+    }
 
-      </ThemeProvider>
-    </>
-  )
+    const theme = useDarkMode ? darkTheme : lightTheme
+    console.log({ theme })
+    return (
+        <>
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                    </Routes>
+                </BrowserRouter>
+
+                <ThemeButton handleClick={handleToggleMode} />
+                <CssBaseline />
+            </ThemeProvider>
+        </>
+    )
 }
 
-export default App;
+export default App
