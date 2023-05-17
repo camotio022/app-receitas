@@ -8,7 +8,7 @@ import { darkTheme, lightTheme } from './App/theme'
 
 import { HomePage } from './pages/Home'
 import { ThemeButton } from './colors.jsx'
-import { CssBaseline, ThemeProvider } from '@mui/material'
+import { Box, CssBaseline, ThemeProvider } from '@mui/material'
 
 function App() {
     const [useDarkMode, setUseDarkMode] = useState(false)
@@ -18,20 +18,18 @@ function App() {
     }
 
     const theme = useDarkMode ? darkTheme : lightTheme
-    console.log({ theme })
-    return (
-        <>
-            <ThemeProvider theme={theme}>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                    </Routes>
-                </BrowserRouter>
 
-                <ThemeButton handleClick={handleToggleMode} />
-                <CssBaseline />
-            </ThemeProvider>
-        </>
+    return (
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                </Routes>
+            </BrowserRouter>
+
+            <ThemeButton handleClick={handleToggleMode} />
+            <CssBaseline />
+        </ThemeProvider>
     )
 }
 

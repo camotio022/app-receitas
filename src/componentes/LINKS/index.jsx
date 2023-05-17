@@ -41,6 +41,8 @@ import {
     Button,
     Menu,
     MenuItem,
+    useScrollTrigger,
+    Slide,
 } from '@mui/material'
 
 import { Link } from 'react-router-dom'
@@ -170,6 +172,18 @@ export const Links_a = ({
     // )
 }
 
+function HideOnScroll({ children, window }) {
+    const trigger = useScrollTrigger({
+        target: window ? window() : undefined,
+    })
+    console.log({ trigger })
+    return (
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    )
+}
+
 export const Links = () => {
     const [selectedLink, setSelectedLink] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -194,83 +208,91 @@ export const Links = () => {
     const matchesMobileSmall = useMediaQuery('(min-width:550px)')
     if (matches) {
         return (
-            <Tag.MenuBar>
-                <Stack>
-                    <img src={Logo} alt="" />
-                </Stack>
-                {links.map((li) => (
-                    <Links_b
-                        key={li.name}
-                        {...li}
-                        handleClose={handleClose}
-                        handleClick={(event) =>
-                            handleSelectLink(event, li.name)
-                        }
-                        selectedLink={selectedLink}
-                        anchorEl={anchorEl}
-                    />
-                ))}
-            </Tag.MenuBar>
+            <HideOnScroll>
+                <Tag.MenuBar>
+                    <Stack>
+                        <img src={Logo} alt="" />
+                    </Stack>
+                    {links.map((li) => (
+                        <Links_b
+                            key={li.name}
+                            {...li}
+                            handleClose={handleClose}
+                            handleClick={(event) =>
+                                handleSelectLink(event, li.name)
+                            }
+                            selectedLink={selectedLink}
+                            anchorEl={anchorEl}
+                        />
+                    ))}
+                </Tag.MenuBar>
+            </HideOnScroll>
         )
     }
 
     return (
-        <>
-            <Tag.MenuBar>
-                <Stack>
-                    <img src={Logo} alt="" />
-                </Stack>
-                <Stack>
-                    {!showLinks ? (
-                        <MenuIcon onClick={(e) => setShowLinks(!showLinks)} />
-                    ) : (
-                        <MenuOpenIcon
-                            onClick={(e) => setShowLinks(!showLinks)}
-                        />
-                    )}
-                </Stack>
-            </Tag.MenuBar>
-            {showLinks && (
-                <Tag.MinhaLista
-                    sx={{
-                        width: !matchesMobileSmall ? '100%' : '60%',
-                    }}
-                    component="nav"
-                    aria-labelledby="nested-list-subheader"
-                    subheader={
-                        <Tag.ListSub
-                            sx={{
-                                justifyContent: !matchesMobileSmall
-                                    ? 'space-between'
-                                    : 'flex-start',
-                            }}
-                            component="div"
-                            id="nested-list-subheader"
-                        >
-                            <img src={Logo} alt="" />
-                            {!matchesMobileSmall && (
-                                <CloseIcon
-                                    onClick={(e) => setShowLinks(!showLinks)}
-                                />
-                            )}
-                        </Tag.ListSub>
-                    }
-                >
-                    {links.map((li) => {
-                        return (
-                            <Links_a
-                                key={li.name}
-                                {...li}
-                                handleClick={(event) =>
-                                    handleSelectLink(event, li.name)
-                                }
-                                selectedLink={selectedLink}
+        <HideOnScroll>
+            <Box>
+                <Tag.MenuBar>
+                    <Stack>
+                        <img src={Logo} alt="" />
+                    </Stack>
+                    <Stack>
+                        {!showLinks ? (
+                            <MenuIcon
+                                onClick={(e) => setShowLinks(!showLinks)}
                             />
-                        )
-                    })}
-                </Tag.MinhaLista>
-            )}
-        </>
+                        ) : (
+                            <MenuOpenIcon
+                                onClick={(e) => setShowLinks(!showLinks)}
+                            />
+                        )}
+                    </Stack>
+                </Tag.MenuBar>
+                {showLinks && (
+                    <Tag.MinhaLista
+                        sx={{
+                            width: !matchesMobileSmall ? '100%' : '60%',
+                        }}
+                        component="nav"
+                        aria-labelledby="nested-list-subheader"
+                        subheader={
+                            <Tag.ListSub
+                                sx={{
+                                    justifyContent: !matchesMobileSmall
+                                        ? 'space-between'
+                                        : 'flex-start',
+                                }}
+                                component="div"
+                                id="nested-list-subheader"
+                            >
+                                <img src={Logo} alt="" />
+                                {!matchesMobileSmall && (
+                                    <CloseIcon
+                                        onClick={(e) =>
+                                            setShowLinks(!showLinks)
+                                        }
+                                    />
+                                )}
+                            </Tag.ListSub>
+                        }
+                    >
+                        {links.map((li) => {
+                            return (
+                                <Links_a
+                                    key={li.name}
+                                    {...li}
+                                    handleClick={(event) =>
+                                        handleSelectLink(event, li.name)
+                                    }
+                                    selectedLink={selectedLink}
+                                />
+                            )
+                        })}
+                    </Tag.MinhaLista>
+                )}
+            </Box>
+        </HideOnScroll>
     )
 
     // )
