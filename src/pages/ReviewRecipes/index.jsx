@@ -109,27 +109,19 @@ export const Recipes = ({
                         <img className="img" src={img} alt="" />
                     </Tooltip>
                     <Stack padding={2} spacing={2}>
-                        <Typography variant="h6" sx={noWrap}>
+                        <Typography color={'gray'} variant="h6" sx={noWrap}>
                             {titleRecipe}
                         </Typography>
                         <Stack direction="row" justifyContent={'space-between'}>
                             <Stack direction="row" spacing={2}>
                                 <Box color={'#ffa505'}>
-                                    <StarIcon
+                                    {[...new Array(5)].map(() => {
+                                        return (
+                                            <StarIcon
                                         fontSize={matches ? 'small' : 'medium'}
                                     />
-                                    <StarIcon
-                                        fontSize={matches ? 'small' : 'medium'}
-                                    />
-                                    <StarIcon
-                                        fontSize={matches ? 'small' : 'medium'}
-                                    />
-                                    <StarIcon
-                                        fontSize={matches ? 'small' : 'medium'}
-                                    />
-                                    <StarIcon
-                                        fontSize={matches ? 'small' : 'medium'}
-                                    />
+                                        )
+                                    })}
                                 </Box>
                                 <Typography variant="p">
                                     {starsLikedCounter}

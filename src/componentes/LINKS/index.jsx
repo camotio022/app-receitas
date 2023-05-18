@@ -1,4 +1,5 @@
 import {
+    KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
     ArrowDropUp as ArrowDropUpIcon,
     Menu as MenuIcon,
@@ -22,6 +23,15 @@ import {
     Inbox as InboxIcon,
     Drafts as DraftsIcon,
     Send as SendIcon,
+    House as HouseIcon,
+    LastPage as LastPageIcon,
+    Bookmark as BookmarkIcon,
+    EditNote as EditNoteIcon,
+    Textsms as TextsmsIcon,
+    MarkUnreadChatAlt as MarkUnreadChatAltIcon,
+    QuestionAnswer as QuestionAnswerIcon,
+    Settings as SettingsIcon,
+    Block as BlockIcon,
     ExpandLess,
     ExpandMore,
     StarBorder,
@@ -43,6 +53,8 @@ import {
     MenuItem,
     useScrollTrigger,
     Slide,
+    Fab,
+    Fade,
 } from '@mui/material'
 
 import { Link } from 'react-router-dom'
@@ -59,14 +71,14 @@ const links = [
         onClick: 'home',
         children: [
             {
-                icon: '',
+                icon: <HouseIcon />,
                 name: 'Página principal',
                 onClick: 'home',
             },
 
-            { icon: '', name: 'Sub página', onClick: 'subPage' },
-            { icon: '', name: 'Receitas favoritas', onClick: 'favRecipes' },
-            { icon: '', name: 'Rascunho', onClick: 'draft' },
+            { icon: <LastPageIcon />, name: 'Sub página', onClick: 'subPage' },
+            { icon: <BookmarkIcon />, name: 'Receitas favoritas', onClick: 'favRecipes' },
+            { icon: <EditNoteIcon />, name: 'Rascunho', onClick: 'draft' },
         ],
     },
     {
@@ -89,8 +101,34 @@ const links = [
         ],
     },
     { icon: <KitchenIcon />, name: 'Recitas', onClick: 'recipes' },
-    { icon: <BookIcon />, name: 'Blog', onClick: 'blog' },
+    {
+        icon: <BookIcon />, 
+        name: 'Blog', 
+        onClick: 'blog',
+        children: [
+            {
+                icon: <TextsmsIcon />,
+                name: 'Blog 1',
+                onClick: 'blog1',
+            },
+
+            { icon: <MarkUnreadChatAltIcon />, name: 'Blog 2', onClick: 'blog2' },
+            { icon: <QuestionAnswerIcon />, name: 'Blog 3 (Single)', onClick: 'blog2' },
+        ],
+    },
     { icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community' },
+    { icon: <SettingsIcon />, name: 'Advanced settings', onClick: 'adSettings',
+    children: [
+        
+        { icon: '', name: 'Mode root', onClick: 'root' },
+        { icon:'', name: 'Mode admin', onClick: 'admin' },
+        { icon: '', name: 'Red alert mode ', onClick: 'Red' },
+        {
+            icon: <BlockIcon sx={{color: '#CD5C5C'}}/>,
+            name: 'Delete account',
+            onClick: 'deleaccont',
+        },
+    ], }
 ]
 
 const Links_b = ({
@@ -172,18 +210,37 @@ export const Links_a = ({
     // )
 }
 
-function HideOnScroll({ children, window }) {
+function ScrollTop({ children, window }) {
     const trigger = useScrollTrigger({
         target: window ? window() : undefined,
-    })
-    console.log({ trigger })
+        disableHysteresis: true,
+        threshold: 100,
+    });
+
     return (
-        <Slide appear={false} direction="down" in={!trigger}>
-            {children}
-        </Slide>
+        <Fade in={trigger}>
+            <Box
+                onClick={handleClick}
+                role="presentation"
+                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+            >
+                {children}
+            </Box>
+        </Fade>
     )
 }
+const handleClick = (event) => {
+    const anchor = (
+        event.target.HTMLDivElement || document
+    ).querySelector('#back-to-top-anchor')
+    console.log(anchor)
 
+    if (anchor) {
+        anchor.scrollIntoView({
+            block: 'center',
+        });
+    }
+};
 export const Links = () => {
     const [selectedLink, setSelectedLink] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -208,7 +265,12 @@ export const Links = () => {
     const matchesMobileSmall = useMediaQuery('(min-width:550px)')
     if (matches) {
         return (
-            <HideOnScroll>
+            <>
+                <ScrollTop>
+                    <Fab size="small" aria-label="scroll back to top">
+                        <KeyboardArrowUpIcon />
+                    </Fab>
+                </ScrollTop>
                 <Tag.MenuBar>
                     <Stack>
                         <img src={Logo} alt="" />
@@ -226,73 +288,77 @@ export const Links = () => {
                         />
                     ))}
                 </Tag.MenuBar>
-            </HideOnScroll>
+            </>
         )
     }
 
     return (
-        <HideOnScroll>
-            <Box>
-                <Tag.MenuBar>
-                    <Stack>
-                        <img src={Logo} alt="" />
-                    </Stack>
-                    <Stack>
-                        {!showLinks ? (
-                            <MenuIcon
-                                onClick={(e) => setShowLinks(!showLinks)}
-                            />
-                        ) : (
-                            <MenuOpenIcon
-                                onClick={(e) => setShowLinks(!showLinks)}
-                            />
-                        )}
-                    </Stack>
-                </Tag.MenuBar>
-                {showLinks && (
-                    <Tag.MinhaLista
-                        sx={{
-                            width: !matchesMobileSmall ? '100%' : '60%',
-                        }}
-                        component="nav"
-                        aria-labelledby="nested-list-subheader"
-                        subheader={
-                            <Tag.ListSub
-                                sx={{
-                                    justifyContent: !matchesMobileSmall
-                                        ? 'space-between'
-                                        : 'flex-start',
-                                }}
-                                component="div"
-                                id="nested-list-subheader"
-                            >
-                                <img src={Logo} alt="" />
-                                {!matchesMobileSmall && (
-                                    <CloseIcon
-                                        onClick={(e) =>
-                                            setShowLinks(!showLinks)
-                                        }
-                                    />
-                                )}
-                            </Tag.ListSub>
-                        }
-                    >
-                        {links.map((li) => {
-                            return (
-                                <Links_a
-                                    key={li.name}
-                                    {...li}
-                                    handleClick={(event) =>
-                                        handleSelectLink(event, li.name)
+        <Box>
+            <ScrollTop>
+                <Fab size="small" aria-label="scroll back to top">
+                    <KeyboardArrowUpIcon />
+                </Fab>
+            </ScrollTop>
+            <Tag.MenuBar>
+                <Stack>
+                    <img src={Logo} alt="" />
+                </Stack>
+                <Stack>
+                    {!showLinks ? (
+                        <MenuIcon
+                            onClick={(e) => setShowLinks(!showLinks)}
+                        />
+                    ) : (
+                        <MenuOpenIcon
+                            onClick={(e) => setShowLinks(!showLinks)}
+                        />
+                    )}
+                </Stack>
+            </Tag.MenuBar>
+            {showLinks && (
+                <Tag.MinhaLista
+                    sx={{
+                        width: !matchesMobileSmall ? '100%' : '60%',
+                    }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                        <Tag.ListSub
+                            sx={{
+                                justifyContent: !matchesMobileSmall
+                                    ? 'space-between'
+                                    : 'flex-start',
+                            }}
+                            component="div"
+                            id="nested-list-subheader"
+                        >
+                            <img src={Logo} alt="" />
+                            {!matchesMobileSmall && (
+                                <CloseIcon
+                                    onClick={(e) =>
+                                        setShowLinks(!showLinks)
                                     }
-                                    selectedLink={selectedLink}
                                 />
-                            )
-                        })}
-                    </Tag.MinhaLista>
-                )}
-            </Box>
-        </HideOnScroll>
+                            )}
+                        </Tag.ListSub>
+                    }
+                >
+                    {links.map((li) => {
+                        return (
+                            <Links_a
+                                key={li.name}
+                                {...li}
+                                handleClick={(event) =>
+                                    handleSelectLink(event, li.name)
+                                }
+                                selectedLink={selectedLink}
+                            />
+                        )
+                    })}
+                </Tag.MinhaLista>
+            )}
+        </Box>
+
     )
 
     // )
