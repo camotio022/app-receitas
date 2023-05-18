@@ -84,10 +84,9 @@ const recipes = [
 export const Recipes = ({
     img,
     avatar,
-    titleRecipe = 'teste',
+    titleRecipe,
     commentsCounter,
     starsLikedCounter,
-    starIcon,
     userName,
     reviewScore,
 }) => {
@@ -115,13 +114,10 @@ export const Recipes = ({
                         <Stack direction="row" justifyContent={'space-between'}>
                             <Stack direction="row" spacing={2}>
                                 <Box color={'#ffa505'}>
-                                    {[...new Array(5)].map(() => {
-                                        return (
-                                            <StarIcon
-                                        fontSize={matches ? 'small' : 'medium'}
-                                    />
-                                        )
-                                    })}
+                                    {[...new Array(5)].map(() => (
+                                        <StarIcon
+                                            fontSize={matches ? 'small' : 'medium'} />
+                                    ))}
                                 </Box>
                                 <Typography variant="p">
                                     {starsLikedCounter}

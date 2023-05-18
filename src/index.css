@@ -8,11 +8,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-y: auto;
+  /* overflow-y: auto;
   scroll-margin: revert-layer;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x mandatory; */
 }
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   width: 7px;
   background-color: #fff;
 
@@ -21,7 +21,7 @@ body::-webkit-scrollbar-thumb {
   width: 7px;
   background-color: black;
   border-radius: 5rem;
-}
+} */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

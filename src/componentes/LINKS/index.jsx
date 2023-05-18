@@ -102,8 +102,8 @@ const links = [
     },
     { icon: <KitchenIcon />, name: 'Recitas', onClick: 'recipes' },
     {
-        icon: <BookIcon />, 
-        name: 'Blog', 
+        icon: <BookIcon />,
+        name: 'Blog',
         onClick: 'blog',
         children: [
             {
@@ -117,18 +117,20 @@ const links = [
         ],
     },
     { icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community' },
-    { icon: <SettingsIcon />, name: 'Advanced settings', onClick: 'adSettings',
-    children: [
-        
-        { icon: '', name: 'Mode root', onClick: 'root' },
-        { icon:'', name: 'Mode admin', onClick: 'admin' },
-        { icon: '', name: 'Red alert mode ', onClick: 'Red' },
-        {
-            icon: <BlockIcon sx={{color: '#CD5C5C'}}/>,
-            name: 'Delete account',
-            onClick: 'deleaccont',
-        },
-    ], }
+    {
+        icon: <SettingsIcon />, name: 'Advanced settings', onClick: 'adSettings',
+        children: [
+
+            { icon: '', name: 'Mode root', onClick: 'root' },
+            { icon: '', name: 'Mode admin', onClick: 'admin' },
+            { icon: '', name: 'Red alert mode ', onClick: 'Red' },
+            {
+                icon: <BlockIcon sx={{ color: '#CD5C5C' }} />,
+                name: 'Delete account',
+                onClick: 'deleaccont',
+            },
+        ],
+    }
 ]
 
 const Links_b = ({
@@ -136,7 +138,6 @@ const Links_b = ({
     handleClick,
     handleClose,
     anchorEl,
-    icon,
     children,
     selectedLink,
 }) => {
@@ -210,7 +211,11 @@ export const Links_a = ({
     // )
 }
 
+document.querySelector('#wrapper')?.addEventListener('scroll', (scroll) => {
+    console.log('Scroll bar', scroll)
+})
 function ScrollTop({ children, window }) {
+
     const trigger = useScrollTrigger({
         target: window ? window() : undefined,
         disableHysteresis: true,
@@ -230,16 +235,7 @@ function ScrollTop({ children, window }) {
     )
 }
 const handleClick = (event) => {
-    const anchor = (
-        event.target.HTMLDivElement || document
-    ).querySelector('#back-to-top-anchor')
-    console.log(anchor)
 
-    if (anchor) {
-        anchor.scrollIntoView({
-            block: 'center',
-        });
-    }
 };
 export const Links = () => {
     const [selectedLink, setSelectedLink] = useState()

@@ -26,7 +26,7 @@ const recipes = [
 export const HomePage = () => {
   return (
     <>
-      <Tag.Wrapper className="wrapper">
+      <Tag.Wrapper id="wrapper">
         <Links />
         <ShowSlider/>
         <TopReview/>
