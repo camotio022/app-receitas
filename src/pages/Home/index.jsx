@@ -27,9 +27,8 @@ export const HomePage = () => {
   return (
     <>
       <Tag.Wrapper id="wrapper">
-        <Links />
-        <ShowSlider/>
-        <TopReview/>
+        sxfshdjzhf
+        {/* <TopReview/> */}
       </Tag.Wrapper>
     </>
   );

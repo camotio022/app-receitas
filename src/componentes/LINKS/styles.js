@@ -12,6 +12,7 @@ export const Menu_links = styled(Stack)(({ theme }) => ({
     position: 'fixed',
     top: 0,
     left: 0,
+    zIndex: 10,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

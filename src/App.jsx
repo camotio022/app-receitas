@@ -9,26 +9,38 @@ import { darkTheme, lightTheme } from './App/theme'
 import { HomePage } from './pages/Home'
 import { ThemeButton } from './colors.jsx'
 import { Box, CssBaseline, ThemeProvider } from '@mui/material'
+import { Links } from './componentes/LINKS'
+import { TopReview } from './pages/ReviewRecipes/index.jsx'
+
 
 function App() {
     const [useDarkMode, setUseDarkMode] = useState(false)
+    const [iSuserLoged, setIsUserLoged] = useState(false)
 
     const handleToggleMode = () => {
         setUseDarkMode(!useDarkMode)
     }
 
     const theme = useDarkMode ? darkTheme : lightTheme
+    if (!iSuserLoged) {
+        return (
+            <ThemeProvider theme={theme}>
+                <Links />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<TopReview />} />
+                    </Routes>
+                </BrowserRouter>
+
+                <ThemeButton handleClick={handleToggleMode} />
+                <CssBaseline />
+            </ThemeProvider>
+        )
+    }
 
     return (
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                </Routes>
-            </BrowserRouter>
-
-            <ThemeButton handleClick={handleToggleMode} />
-            <CssBaseline />
+            <div>usuário não logado</div>
         </ThemeProvider>
     )
 }

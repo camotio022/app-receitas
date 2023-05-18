@@ -135,6 +135,7 @@ const links = [
 
 const Links_b = ({
     name,
+    icon,
     handleClick,
     handleClose,
     anchorEl,
@@ -145,15 +146,26 @@ const Links_b = ({
 
     return (
         <>
-            <Button
+            <Stack
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0rem',
+                }}
                 id="basic-button"
                 aria-controls={isSelected ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={isSelected ? 'true' : undefined}
                 onClick={handleClick}
             >
-                {name}
-            </Button>
+                <Stack>
+                    {icon}
+                </Stack>
+                <Stack>
+                    {name}
+                </Stack>
+            </Stack>
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
@@ -188,7 +200,7 @@ export const Links_a = ({
 
     return (
         <>
-            <ListItemButton onClick={handleClick}>
+            <ListItemButton >
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={name} />
                 {isSelected ? <ExpandLess /> : <ExpandMore />}

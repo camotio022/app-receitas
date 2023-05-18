@@ -12,12 +12,14 @@ import useScrollTrigger from '@mui/material/useScrollTrigger'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import { useEffect, useState } from 'react'
 import {
     Forum as ForumIcon,
     Favorite as FavoriteIcon,
     Star as StarIcon,
+    NavigateNext as NavigateNextIcon
 } from '@mui/icons-material'
+import { ShowSlider } from '../Home/CAROUSEL'
+import { Dashboard } from '../../componentes/BASEBOARD/index.jsx'
 
 const recipes = [
     {
@@ -198,35 +200,49 @@ export const Recipes = ({
 }
 export const TopReview = () => {
     return (
-        <Tag.Container id="scrollHeithg">
-            <Tag.HeaderView textAlign={'center'} width={'100%'}>
-                <Tag.Title variant="h5">Top Review</Tag.Title>
-                <Typography variant="p">
-                    Aqui estão filtradas todas a receitas mais vistas nos
-                    ultimos dias, sacou!
-                </Typography>
-            </Tag.HeaderView>
-            <Tag.Cards>
-                {recipes.map((recipe) => {
-                    return <Recipes key={recipe.titleRecipe} {...recipe} />
-                })}
-            </Tag.Cards>
-            {false && (
-                <Tag.Pagination spacing={2}>
-                    <Pagination
-                        count={100}
-                        renderItem={(item) => (
-                            <PaginationItem
-                                slots={{
-                                    previous: ArrowBackIcon,
-                                    next: ArrowForwardIcon,
-                                }}
-                                {...item}
-                            />
-                        )}
-                    />
-                </Tag.Pagination>
-            )}
-        </Tag.Container>
+        <Tag.Wrapper>
+            <Tag.Container id="scrollHeithg">
+                <ShowSlider wellcome="Seja bem vindo ao Recipes Food"
+                    image='https://www.rockrecipes.com/wp-content/uploads/2013/05/Top-TEn-Chicken-Dinner-Recipes-2020-square-collage-for-featured-post-image.jpg'
+                    pathPagination={"Top Review //"}
+                />
+                <Tag.HeaderView textAlign={'center'} width={'100%'}>
+                    <Tag.Title sx={{
+                        letterSpacing: "-1px",
+                        fontWeight: 700,
+                        marginBottom: 0,
+                        color: 'text-primary',
+                        textShadow: "0px 2px 2px rgba(65,60,53,.82)",
+                    }} variant="h5">Top Review</Tag.Title>
+                    <Typography variant="p">
+                        Aqui estão filtradas todas a receitas mais vistas nos
+                        ultimos dias, sacou!
+                    </Typography>
+                </Tag.HeaderView>
+                <Tag.Cards>
+                    {recipes.map((recipe) => {
+                        return <Recipes key={recipe.titleRecipe} {...recipe} />
+                    })}
+                </Tag.Cards>
+            
+                {false && (
+                    <Tag.Pagination spacing={2}>
+                        <Pagination
+                            count={100}
+                            renderItem={(item) => (
+                                <PaginationItem
+                                    slots={{
+                                        previous: ArrowBackIcon,
+                                        next: ArrowForwardIcon,
+                                    }}
+                                    {...item}
+                                />
+                            )}
+                        />
+                    </Tag.Pagination>
+                )}
+                  <Dashboard/>
+            </Tag.Container>
+        </Tag.Wrapper>
     )
 }
