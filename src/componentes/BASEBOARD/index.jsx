@@ -3,6 +3,7 @@ import { Stack } from "@mui/system"
 import { Mail as MailIcon } from "@mui/icons-material"
 import { dark, light } from "@mui/material/styles/createPalette"
 import { pink } from "@mui/material/colors"
+import * as Tag from "./index";
 export const Dashboard = () => {
     return (
         <>
@@ -15,19 +16,7 @@ export const Dashboard = () => {
                 width: '100%',
                 minHeight: "25rem",
             }}>
-                <Stack sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: "center",
-                    textAlign: 'center',
-                    gap: '1rem',
-                    width: '100%',
-                    height: '50%',
-                    borderRadius: 'none',
-                    padding: '5rem',
-                    color: light.background.paper,
-                    backgroundColor: pink[100],
+                <Tag.StackMui sx={{
                 }}>
                     <Typography variant="h5">Fique sempre atualizado conosco. Faça login com nosso boletim informativo</Typography>
 
@@ -60,7 +49,7 @@ export const Dashboard = () => {
                             </Button>
                         }
                     />
-                </Stack>
+                </Tag.StackMui>
             </Stack >
         </>
     )
