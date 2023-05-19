@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Link, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material"
+import { Button, Card, CardActions, CardContent, CardMedia, Checkbox, FormControlLabel, FormGroup, Link, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material"
 
 
 
@@ -16,7 +16,12 @@ import {
 } from '@mui/icons-material'
 import * as Tag from './index.js'
 import { grey, orange } from "@mui/material/colors";
+import { useState } from "react";
 export const DetailsRecipes = () => {
+    const [checked, setChecked] = useState(false)
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+    };
     const matches = useMediaQuery('(min-width:600px)');
     var Title = {
         display: 'flex',
@@ -126,7 +131,7 @@ export const DetailsRecipes = () => {
                             justifyContent: 'flex-start',
                             paddingTop: 2,
                             gap: '4rem',
-                   
+
                         }}>
                             {[{
                                 title: '20m',
@@ -161,6 +166,20 @@ export const DetailsRecipes = () => {
                     <Typography sx={Title} padding={1}>
                         INGREDIENTES
                     </Typography>
+                    <Stack>
+                        {['Sebóla', 'Água', 'Sal'].map((item) => {
+                            return (
+                                <>
+                                    <FormControlLabel sx={{
+                                        textDecoration: checked && 'line-through'
+                                    }} control={<Checkbox
+                                        checked={checked}
+                                        onChange={handleChange}
+                                    />} label={item} />
+                                </>
+                            )
+                        })}
+                    </Stack>
                 </Tag.Container>
             </>
         )
