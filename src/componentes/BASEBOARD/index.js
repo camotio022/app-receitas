@@ -1,8 +1,8 @@
 import { Stack, styled } from '@mui/material'
-
 export const StackMui = styled(Stack)(({ theme }) => ({
-    background: theme.palette.primary.main,
-    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.primary.dark,
+    color: 'white',
+    padding: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -13,4 +13,5 @@ export const StackMui = styled(Stack)(({ theme }) => ({
     height: '50%',
     borderRadius: 'none',
     padding: '5rem',
+    fontSize: '16px'
 }))

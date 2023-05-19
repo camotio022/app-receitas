@@ -1,6 +1,7 @@
 import { Stack, Typography, Box, useMediaQuery, Tooltip } from '@mui/material'
 import * as Tag from './index'
 import './index.css'
+import Aos from 'aos'
 import Img1 from '../../images/mocks/foots/img1.jpeg'
 import Img2 from '../../images/mocks/foots/img2.jpeg'
 import Img3 from '../../images/mocks/foots/img3.png'
@@ -92,15 +93,19 @@ export const Recipes = ({
     userName,
     reviewScore,
 }) => {
+    <script>
+        Aos.init();
+    </script>
     const noWrap = {
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
     }
     const matches = useMediaQuery('(min-width:700px)')
+
     return (
         <>
-            <Tag.Card>
+            <Tag.Card data-aos="fade-right">
                 <Stack width={'100%'}>
                     <Tooltip
                         sx={{ cursor: 'pointer' }}
@@ -224,7 +229,7 @@ export const TopReview = () => {
                         return <Recipes key={recipe.titleRecipe} {...recipe} />
                     })}
                 </Tag.Cards>
-            
+
                 {false && (
                     <Tag.Pagination spacing={2}>
                         <Pagination
@@ -241,7 +246,7 @@ export const TopReview = () => {
                         />
                     </Tag.Pagination>
                 )}
-                  <Dashboard/>
+                <Dashboard />
             </Tag.Container>
         </Tag.Wrapper>
     )
