@@ -1,4 +1,4 @@
-import { Stack, Typography, Box, useMediaQuery, Tooltip } from '@mui/material'
+import { Stack, Typography, Box, useMediaQuery, Tooltip, Link } from '@mui/material'
 import * as Tag from './index'
 import './index.css'
 import Img1 from '../../images/mocks/foots/img1.jpeg'
@@ -108,10 +108,13 @@ export const Recipes = ({
                         followCursor
                     >
                         <img className="img" src={img} alt="" />
+
                     </Tooltip>
                     <Stack padding={2} spacing={2}>
                         <Typography color={'gray'} variant="h6" sx={noWrap}>
-                            {titleRecipe}
+                            <Link href='/detailsRecipes' color='inherit' underline="hover">
+                                {titleRecipe}
+                            </Link>
                         </Typography>
                         <Stack direction="row" justifyContent={'space-between'}>
                             <Stack direction="row" spacing={2}>
@@ -224,7 +227,7 @@ export const TopReview = () => {
                         return <Recipes key={recipe.titleRecipe} {...recipe} />
                     })}
                 </Tag.Cards>
-            
+
                 {false && (
                     <Tag.Pagination spacing={2}>
                         <Pagination
@@ -241,7 +244,7 @@ export const TopReview = () => {
                         />
                     </Tag.Pagination>
                 )}
-                  <Dashboard/>
+                <Dashboard />
             </Tag.Container>
         </Tag.Wrapper>
     )
