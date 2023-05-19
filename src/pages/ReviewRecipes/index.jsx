@@ -1,4 +1,4 @@
-import { Stack, Typography, Box, useMediaQuery, Tooltip } from '@mui/material'
+import { Stack, Typography, Box, useMediaQuery, Tooltip, Link } from '@mui/material'
 import * as Tag from './index'
 import './index.css'
 import Aos from 'aos'
@@ -113,10 +113,13 @@ export const Recipes = ({
                         followCursor
                     >
                         <img className="img" src={img} alt="" />
+
                     </Tooltip>
                     <Stack padding={2} spacing={2}>
                         <Typography color={'gray'} variant="h6" sx={noWrap}>
-                            {titleRecipe}
+                            <Link href='/detailsRecipes' color='inherit' underline="hover">
+                                {titleRecipe}
+                            </Link>
                         </Typography>
                         <Stack direction="row" justifyContent={'space-between'}>
                             <Stack direction="row" spacing={2}>

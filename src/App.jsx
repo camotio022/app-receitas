@@ -11,6 +11,7 @@ import { ThemeButton } from './colors.jsx'
 import { Box, CssBaseline, ThemeProvider } from '@mui/material'
 import { Links } from './componentes/LINKS'
 import { TopReview } from './pages/ReviewRecipes/index.jsx'
+import { DetailsRecipes } from './pages/DetailsRecipes/index.jsx'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<TopReview />} />
+                        <Route path="/detailsRecipes" element={<DetailsRecipes/>}/>
                     </Routes>
                 </BrowserRouter>
 
