@@ -26,12 +26,12 @@ export const DetailsRecipes = () => {
     var Title = {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         minWidth: '8rem',
         width: 'auto',
-        bgcolor: orange[900],
-        color: "white",
-        fontWeight: '900'
+        color: orange[900],
+        fontWeight: '900',
+        margin: '2rem 0 1rem 0'
     }
 
     if (!matches) {
@@ -43,7 +43,7 @@ export const DetailsRecipes = () => {
                     <Tooltip
                         sx={{
                             cursor: 'pointer',
-                            position: 'absolute',
+                            position: 'fixed',
                             top: "1rem",
                             left: "1rem",
                             "&:hover": {
@@ -95,7 +95,6 @@ export const DetailsRecipes = () => {
                         }}>
                             <CardMedia
                                 sx={{
-
                                     height: '4rem',
                                     width: "4rem",
                                     borderRadius: '50%'
@@ -162,24 +161,33 @@ export const DetailsRecipes = () => {
                             })}
 
                         </CardActions>
+                        <Typography sx={Title} padding={1}>
+                            INGREDIENTES
+                        </Typography>
+                        <Stack sx={{
+                            gap: 2,
+                            bgcolor: 'trasnparent'
+                        }}>
+                            <>
+                                {[...new Array(4)
+                                ].map((i, p) => {
+                                    return (
+                                        <FormControlLabel sx={checked ? {
+                                            textDecoration: 'line-through',
+                                            paddingLeft: '1rem',
+                                            color: grey[600]
+                                        } : {
+                                            textDecoration: 'none',
+                                            paddingLeft: '3rem'
+                                        }} control={<Checkbox
+                                            checked={checked}
+                                            onChange={handleChange}
+                                        />} label={'Os ingredientes culinários (sal, açúcar, óleos e gorduras) são aqueles utilizados para temperar e cozinhar alimentos e criar preparações culinárias. Alimentos processados,'} />
+                                    )
+                                })}
+                            </>
+                        </Stack>
                     </Card>
-                    <Typography sx={Title} padding={1}>
-                        INGREDIENTES
-                    </Typography>
-                    <Stack>
-                        {['Sebóla', 'Água', 'Sal'].map((item) => {
-                            return (
-                                <>
-                                    <FormControlLabel sx={{
-                                        textDecoration: checked && 'line-through'
-                                    }} control={<Checkbox
-                                        checked={checked}
-                                        onChange={handleChange}
-                                    />} label={item} />
-                                </>
-                            )
-                        })}
-                    </Stack>
                 </Tag.Container>
             </>
         )

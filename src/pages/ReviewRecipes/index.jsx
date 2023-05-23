@@ -1,4 +1,4 @@
-import { Stack, Typography, Box, useMediaQuery, Tooltip, Link } from '@mui/material'
+import { Stack, Typography, Box, useMediaQuery, Tooltip, Link, Rating } from '@mui/material'
 import * as Tag from './index'
 import './index.css'
 import Img1 from '../../images/mocks/foots/img1.jpeg'
@@ -119,10 +119,9 @@ export const Recipes = ({
                         <Stack direction="row" justifyContent={'space-between'}>
                             <Stack direction="row" spacing={2}>
                                 <Box color={'#ffa505'}>
-                                    {[...new Array(5)].map(() => (
-                                        <StarIcon
-                                            fontSize={matches ? 'small' : 'medium'} />
-                                    ))}
+                                    <Rating
+                                        name={matches ? 'size-medium' : 'size-large'} defaultValue={1} />
+
                                 </Box>
                                 <Typography variant="p">
                                     {starsLikedCounter}

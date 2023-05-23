@@ -19,5 +19,5 @@ export const Container = styled(Stack)(({ theme}) => ({
     zIndex: 1,
     backgroundColor: 'white',
     overflow: 'auto',
-    
+    paddingBottom: '5rem'
 }))

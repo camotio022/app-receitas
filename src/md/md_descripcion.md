@@ -40,3 +40,18 @@
 ## USER LINKS CREATING INTERFACE {
     https://mui.com/material-ui/react-menu/#selected-menu
 }
+## Requisitos
+    ** Usuários
+    ** Cadastrar
+    ** Autenticar
+## Ingredientes
+    ** Criar
+    ** Editar
+    ** Alterar
+    ** Deletar
+## Receitas
+    ** Criar
+    ** Editar
+    ** Alterar
+    ** Deletar
+    ** Favoritar ok
