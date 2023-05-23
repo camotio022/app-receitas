@@ -200,17 +200,17 @@ export const Links_a = ({
 
     return (
         <>
-            <ListItemButton sx={{color: 'white'}} onClick={handleClick}>
-                <ListItemIcon sx={{color: 'white'}}>{icon}</ListItemIcon>
-                <ListItemText  primary={name} />
+            <ListItemButton sx={{ color: 'white' }} onClick={handleClick}>
+                <ListItemIcon sx={{ color: 'white' }}>{icon}</ListItemIcon>
+                <ListItemText primary={name} />
                 {isSelected ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={isSelected} timeout="auto" unmountOnExit>
-                <List sx={{color: 'white'}} component="div" disablePadding>
+                <List sx={{ color: 'white' }} component="div" disablePadding>
                     {children &&
                         children?.length > 0 &&
                         children.map((child) => (
-                            <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemButton sx={{ pl: 4, borderLeft: '20px solid' }}>
                                 <ListItemIcon>{child.icon}</ListItemIcon>
                                 <ListItemText primary={child.name} />
                             </ListItemButton>
