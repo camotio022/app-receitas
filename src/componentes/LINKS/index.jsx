@@ -210,7 +210,7 @@ export const Links_a = ({
                     {children &&
                         children?.length > 0 &&
                         children.map((child) => (
-                            <ListItemButton sx={{ pl: 4, borderLeft: '20px solid' }}>
+                            <ListItemButton sx={{ pl: 4, borderLeft: '20px solid white' }}>
                                 <ListItemIcon>{child.icon}</ListItemIcon>
                                 <ListItemText primary={child.name} />
                             </ListItemButton>
