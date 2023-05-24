@@ -11,9 +11,10 @@ import Typography from '@mui/material/Typography';
 import * as Tag from './index'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Logo } from '../../componentes/LOGO';
-import { IconButton, InputAdornment, Stack } from '@mui/material';
+import { IconButton, InputAdornment, Input, Stack } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { blue, green, grey, orange } from '@mui/material/colors';
 
 
 function Copyright(props) {
@@ -39,14 +40,13 @@ export const ComponInput = ({ id,
     label, ...props }) => {
     return (
         <>
-            <TextField
+            <Input
+
                 helperText={helperText}
                 required={required}
                 fullWidth={fullWidth}
                 label={label}
-                {...props} sx={{
-
-                }} />
+                {...props} />
         </>
     )
 }
@@ -56,6 +56,12 @@ export const SignUp = () => {
         email: '',
         lastName: '',
         name: '',
+    })
+    const [datasFocos, setNameFocos] = useState({
+        passwordFocos: false,
+        emailFocos: false,
+        lastNameFocos: false,
+        nameFocos: false,
     })
     const [showPasswprd, setShowPasswprd] = useState(false)
     const handleChange = (e) => {
@@ -70,14 +76,37 @@ export const SignUp = () => {
         setShowPasswprd(!showPasswprd)
     }
     const submtForum = (e) => {
+        var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
-        if (data?.lastName.indexOf(" ") == -1) {
-            alert("Please enter");
+        if (data?.email == "" ||
+            data?.email.indexOf('@') == -1 ||
+            data?.email.indexOf('.com') == -1) {
+            alert("Preencha campo E-MAIL corretamente!");
+            setNameFocos(!data?.datasFocos)
+            return false;
         }
-        console.log(data?.name.includes(parseInt(0,1)) === match(/[A-Z]/g))
-        if (data?.name.includes(match(/[A-Z]/g).parseInt(0,1))) {
-            alert("Please enter name");
+        if (data?.lastName == "" ||
+            data?.lastName < 3) {
+            alert("Preencha campo E-MAIL corretamente!");
+            setNameFocos(!data?.datasFocos)
+            return false;
         }
+        if (data?.name == "" ||
+            data?.name.length < 4) {
+            alert("Preencha campo NOME corretamente!");
+            setNameFocos(!datasFocos?.nameFocos);
+            return false;
+        }
+        if (data?.password.length < 8) {
+            alert("A senha deve conter no minímo 8 digitos!");
+            return false;
+        } else if (!regex.exec(data?.password)
+        ) {
+            alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
+            return false;
+        }
+
+        alert('Passando')
         return false
     }
     return (
@@ -102,6 +131,11 @@ export const SignUp = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <ComponInput
+                                    sx={{
+                                        bgcolor: !datasFocos?.nameFocos && orange[900], "&::placeholder": {
+                                            color: "white",
+                                        }
+                                    }}
                                     id="outlined-error-helper-text"
                                     helperText="Incorrect entry."
                                     autoComplete="given-name"
@@ -111,11 +145,16 @@ export const SignUp = () => {
                                     label="First Name"
                                     value={data?.name}
                                     onChange={handleChange}
-                                    autoFocus
+                                    autoFocus={datasFocos?.nameFocos}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <ComponInput
+                                    sx={{
+                                        bgcolor: !datasFocos?.lastNameFocos && orange[900], "&::placeholder": {
+                                            color: "white",
+                                        }
+                                    }}
                                     id="outlined-error-helper-text"
                                     helperText="Incorrect entry."
                                     required
@@ -125,6 +164,7 @@ export const SignUp = () => {
                                     autoComplete="family-name"
                                     value={data?.lastName}
                                     onChange={handleChange}
+                                    autoFocus={datasFocos?.lastNameFocos}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -138,6 +178,7 @@ export const SignUp = () => {
                                     autoComplete="email"
                                     value={data?.email}
                                     onChange={handleChange}
+                                    autoFocus={datasFocos?.emailFocos}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -154,6 +195,7 @@ export const SignUp = () => {
                                     onChange={handleChange}
                                     autoComplete="new-password"
                                     label="password"
+                                    autoFocus={datasFocos?.passwordFocos}
                                     endAdornment={
                                         <InputAdornment>
                                             <IconButton
