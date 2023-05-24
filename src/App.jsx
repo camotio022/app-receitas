@@ -13,6 +13,7 @@ import { Links } from './componentes/LINKS'
 import { TopReview } from './pages/ReviewRecipes/index.jsx'
 import { DetailsRecipes } from './pages/DetailsRecipes/index.jsx'
 import { SignUp } from './templates/signUp/index.jsx'
+import { SignIn } from './templates/signIn/index.jsx'
 
 
 
@@ -34,6 +35,7 @@ function App() {
                         <Route path="/" element={<TopReview />} />
                         <Route path="/detailsRecipes" element={<DetailsRecipes/>}/>
                         <Route path="/signup" element={<SignUp />}/>
+                        <Route path="/signin" element={<SignIn />}/>
                     </Routes>
                 </BrowserRouter>
 
