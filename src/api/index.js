@@ -52,14 +52,14 @@ export const api = {
       return getCollection("users");
     },
     post: async (payload) => {
-      const { id, email, name } = payload;
+      const { id, email, name, lastName, password } = payload;
       if (id) {
         //
         return;
       }
 
       //   const newUser = new User({ email, name });
-      const docRef = await addDoc(collection(db, "users"), { email, name });
+      const docRef = await addDoc(collection(db, "users"), { email, name, lastName, password });
       // criar um usuario no firebase utilizando email name
     },
   },
