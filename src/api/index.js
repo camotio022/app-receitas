@@ -36,6 +36,7 @@ const getCollection = async (collectionPath) => {
   return collectionList;
 };
 
+
 export const api = {
   user: {
     get: async (id) => {
