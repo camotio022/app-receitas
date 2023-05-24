@@ -9,18 +9,19 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import * as Tag from './index'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Logo } from '../../componentes/LOGO';
-import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert } from '@mui/material';
+import Logo from '../../images/logo/logo-menu.png';
+import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert, Paper, Avatar, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+const auth = getAuth();
 
-
-import { api } from '../../api';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link color="inherit" href="#">
                 Your Website
             </Link>{' '}
             {new Date().getFullYear()}
@@ -52,6 +53,7 @@ export const ComponInput = ({ id,
 export const SignIn = () => {
     const [progress, setProgress] = useState(false);
     const [showalert, setAlert] = useState(false);
+    const navigate = useNavigate();
     const [data, setData] = useState({
         password: '',
         email: '',
@@ -97,110 +99,133 @@ export const SignIn = () => {
             alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
             return false;
         }
-        setProgress(!progress)
-        await api?.user.post(data)
-        setTimeout(() => {
-            setProgress(false)
-            setAlert(!showalert)
-        }, '2000');
-        setTimeout(() => {
-            setAlert(false)
-            return true
-        }, '5000');
+
+
+
+        signInWithEmailAndPassword(auth, data?.email, data?.password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                navigate("/detailsRecipes")
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage)
+            });
+
     }
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Tag.Container component="main" maxWidth="xs" sx={{ padding: '5%' }}>
-                {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
-                    <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
-                </Stack>}
-                {showalert && <Alert severity="success" color="info">
-                    Formlário enviando com sucesso.
-                </Alert>}
+            <Grid container component="main" sx={{ height: '100vh', zIndex: "1", position: "absolute" }}>
                 <CssBaseline />
-                <Box
+                <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={7}
                     sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                     }}
-                >
-                    <Stack sx={{ m: 1, bgcolor: (theme) => theme.palette.secondary }}>
-                        <Logo />
-                    </Stack>
-                    <Typography component="h1" variant="h5">
-                        Login
-                    </Typography>
-                    <Box component="form" noValidate onSubmit={submtForum} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <ComponInput
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    required
-                                    fullWidth
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    value={data?.email}
-                                    onChange={handleChange}
-                                    autoFocus={datasFocos?.emailFocos}
-                                />
+                />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Box
+                        sx={{
+                            my: 8,
+                            mx: 4,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
+                            <img src={Logo} alt="" />
+                        </Stack>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Grid component="form" noValidate onSubmit={submtForum} sx={{
+                            mt: 1,
+                            display: 'flex',
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                            height: '100%'
+                        }}>
+
+
+                            <TextField
+                                id="outlined-error-helper-text"
+                                helperText="Incorrect entry."
+                                required
+                                fullWidth
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                value={data?.email}
+                                onChange={handleChange}
+                                autoFocus={datasFocos?.emailFocos}
+                            />
+                            <TextField
+                                required
+                                id="outlined-error-helper-text"
+                                helperText="Incorrect entry."
+                                fullWidth
+                                defaultValue="Hello World"
+                                placeholder="Password"
+                                name="password"
+                                type={showPasswprd ? 'text' : 'password'}
+                                value={data?.password}
+                                onChange={handleChange}
+                                autoComplete="new-password"
+                                label="password"
+                                autoFocus={datasFocos?.passwordFocos}
+                                endAdornment={
+                                    <InputAdornment>
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={ShowPassword}
+                                        >
+                                            {showPasswprd ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="#" variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="/signup" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <ComponInput
-                                    required
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    fullWidth
-                                    defaultValue="Hello World"
-                                    placeholder="Password"
-                                    name="password"
-                                    type={showPasswprd ? 'text' : 'password'}
-                                    value={data?.password}
-                                    onChange={handleChange}
-                                    autoComplete="new-password"
-                                    label="password"
-                                    autoFocus={datasFocos?.passwordFocos}
-                                    endAdornment={
-                                        <InputAdornment>
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={ShowPassword}
-                                            >
-                                                {showPasswprd ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
-                                />
-                            </Grid>
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Cadastrar
-                        </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/signin" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
+                            <Copyright sx={{ mt: 5 }} />
                         </Grid>
                     </Box>
-                </Box>
-                <Copyright sx={{ mt: 5 }} />
-            </Tag.Container>
+                </Grid>
+            </Grid>
         </ThemeProvider>
     );
 }
