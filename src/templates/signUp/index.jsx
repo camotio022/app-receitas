@@ -11,12 +11,13 @@ import Typography from '@mui/material/Typography';
 import * as Tag from './index'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Logo } from '../../componentes/LOGO';
-import { IconButton, InputAdornment, Input, Stack } from '@mui/material';
+import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { blue, green, grey, orange } from '@mui/material/colors';
 
-
+import { api } from '../../api';
+import { useEffect } from 'react';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -51,6 +52,8 @@ export const ComponInput = ({ id,
     )
 }
 export const SignUp = () => {
+    const [progress, setProgress] = useState(false);
+    const [showalert, setAlert] = useState(false);
     const [data, setData] = useState({
         password: '',
         email: '',
@@ -75,7 +78,10 @@ export const SignUp = () => {
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
     }
-    const submtForum = (e) => {
+
+
+
+    const submtForum = async (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
         if (data?.email == "" ||
@@ -105,13 +111,26 @@ export const SignUp = () => {
             alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
             return false;
         }
-
-        alert('Passando')
-        return false
+        setProgress(!progress)
+        await api?.user.post(data)
+        setTimeout(() => {
+            setProgress(false)
+            setAlert(!showalert)
+        }, '2000');
+        setTimeout(() => {
+            setAlert(false)
+            return true
+        }, '5000');
     }
     return (
         <ThemeProvider theme={defaultTheme}>
             <Tag.Container component="main" maxWidth="xs" sx={{ padding: '5%' }}>
+                {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
+                    <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
+                </Stack>}
+                {showalert && <Alert severity="success" color="info">
+                    Formlário enviando com sucesso.
+                </Alert>}
                 <CssBaseline />
                 <Box
                     sx={{
