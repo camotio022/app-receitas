@@ -18,10 +18,14 @@ import * as Tag from './index.js'
 import { grey, orange } from "@mui/material/colors";
 import { useState } from "react";
 export const DetailsRecipes = () => {
-    const [checked, setChecked] = useState(false)
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
+    const [checkedItems, setCheckedItems] = useState(Array(5).fill(false));
+
+    const handleChange = (index) => {
+        const newCheckedItems = [...checkedItems];
+        newCheckedItems[index] = !newCheckedItems[index];
+        setCheckedItems(newCheckedItems);
     };
+
     const matches = useMediaQuery('(min-width:600px)');
     var Title = {
         display: 'flex',
@@ -169,10 +173,10 @@ export const DetailsRecipes = () => {
                             bgcolor: 'trasnparent'
                         }}>
                             <>
-                                {[...new Array(4)
-                                ].map((i, p) => {
+                                {['item 1', 'item 2', 'item 3', 'item 4', 'item 5'
+                                ].map((item, index) => {
                                     return (
-                                        <FormControlLabel sx={checked ? {
+                                        <FormControlLabel key={index} sx={checkedItems[index] ? {
                                             textDecoration: 'line-through',
                                             paddingLeft: '1rem',
                                             color: grey[600]
@@ -180,9 +184,9 @@ export const DetailsRecipes = () => {
                                             textDecoration: 'none',
                                             paddingLeft: '3rem'
                                         }} control={<Checkbox
-                                            checked={checked}
-                                            onChange={handleChange}
-                                        />} label={'Os ingredientes culinários (sal, açúcar, óleos e gorduras) são aqueles utilizados para temperar e cozinhar alimentos e criar preparações culinárias. Alimentos processados,'} />
+                                            checked={checkedItems[index]}
+                                            onChange={() => handleChange(index)}
+                                        />} label={item} />
                                     )
                                 })}
                             </>
