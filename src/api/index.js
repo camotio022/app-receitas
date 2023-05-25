@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { User } from "./entities/User.jsx";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 /*
 

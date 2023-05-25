@@ -15,8 +15,6 @@ import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-const auth = getAuth();
-
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -52,7 +50,7 @@ export const ComponInput = ({ id,
 }
 export const SignIn = () => {
     const [progress, setProgress] = useState(false);
-    const [showalert, setAlert] = useState(false);
+    const [showalert, setAlert] = useState('');
     const navigate = useNavigate();
     const [data, setData] = useState({
         password: '',
@@ -79,16 +77,28 @@ export const SignIn = () => {
         setShowPasswprd(!showPasswprd)
     }
 
+    const lognUser = async (e) => {
+        try {
+            await signInWithEmailAndPassword(getAuth(), data?.email, data?.password);
+            // Login bem-sucedido
+            console.log('Login bem-sucedido!');
+        } catch (error) {
+            // Tratamento de erros
+            console.error('Erro ao fazer login:', error.message);
+        }
+    }
 
-
-    const submtForum = async (e) => {
+    const submtForum = (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
         if (data?.email == "" ||
             data?.email.indexOf('@') == -1 ||
             data?.email.indexOf('.com') == -1) {
-            alert("Preencha campo E-MAIL corretamente!");
+            setAlert("Preencha campo E-MAIL corretamente!");
             setNameFocos(!data?.datasFocos)
+            setTimeout(() => {
+                setAlert("");
+            }, '3000');
             return false;
         }
         if (data?.password.length < 8) {
@@ -99,22 +109,10 @@ export const SignIn = () => {
             alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
             return false;
         }
+        lognUser()
+    };
 
 
-
-        signInWithEmailAndPassword(auth, data?.email, data?.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                navigate("/detailsRecipes")
-                console.log(user);
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage)
-            });
-
-    }
     return (
         <ThemeProvider theme={defaultTheme}>
             <Grid container component="main" sx={{ height: '100vh', zIndex: "1", position: "absolute" }}>
@@ -157,11 +155,9 @@ export const SignIn = () => {
                             flexDirection: "column",
                             height: '100%'
                         }}>
-
-
                             <TextField
                                 id="outlined-error-helper-text"
-                                helperText="Incorrect entry."
+                                helperText={showalert}
                                 required
                                 fullWidth
                                 label="Email Address"

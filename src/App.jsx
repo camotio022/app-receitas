@@ -33,12 +33,12 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<TopReview />} />
-                        <Route path="/detailsRecipes" element={<DetailsRecipes/>}/>
+                        <Route path="/detailsRecipes/:id" element={<DetailsRecipes/>}/>
                         <Route path="/signup" element={<SignUp />}/>
                         <Route path="/signin" element={<SignIn />}/>
                     </Routes>
                 </BrowserRouter>
-
+s
                 <ThemeButton handleClick={handleToggleMode} />
                 <CssBaseline />
             </ThemeProvider>
