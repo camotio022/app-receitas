@@ -20,6 +20,8 @@ import {
 } from '@mui/icons-material'
 import { ShowSlider } from '../Home/CAROUSEL'
 import { Dashboard } from '../../componentes/BASEBOARD/index.jsx'
+import { api } from '../../api'
+import { useEffect, useState } from 'react'
 
 const recipes = [
     {
@@ -98,6 +100,17 @@ export const Recipes = ({
         textOverflow: 'ellipsis',
     }
     const matches = useMediaQuery('(min-width:700px)')
+    const [usuarios, setUsuarios] = useState([]);
+    useEffect(() => {
+        // Recupere os usuários do Firebase
+        const obterUsuarios = async () => {
+            const usuariosData = await api.recipe.get()
+            setUsuarios(usuariosData);
+            console.log(usuariosData)
+        };
+
+        obterUsuarios();
+    }, []);
     return (
         <>
             <Tag.Card>
@@ -201,6 +214,23 @@ export const Recipes = ({
     )
 }
 export const TopReview = () => {
+    const matches = useMediaQuery('(min-width:700px)')
+    const [usuarios, setUsuarios] = useState([]);
+    useEffect(() => {
+        // Recupere os usuários do Firebase
+        const obterUsuarios = async () => {
+            const usuariosData = await api.recipe.get()
+            setUsuarios(usuariosData);
+            console.log(usuariosData)
+        };
+
+        obterUsuarios();
+    }, []);
+    const noWrap = {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+    }
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
@@ -222,8 +252,109 @@ export const TopReview = () => {
                     </Typography>
                 </Tag.HeaderView>
                 <Tag.Cards>
-                    {recipes.map((recipe) => {
-                        return <Recipes key={recipe.titleRecipe} {...recipe} />
+                    {usuarios.map((recipe, index) => {
+                        return (
+                            <>
+                                <Tag.Card key={recipe?.id}>
+                                    <Stack width={'100%'}>
+                                        <Tooltip
+                                            sx={{ cursor: 'pointer' }}
+                                            title={`Ir para os detalhes  ${recipe?.titleRecipe}`}
+                                            followCursor
+                                        >
+                                            <img className="img" src={recipe?.avatar} alt="" />
+
+                                        </Tooltip>
+                                        <Stack padding={2} spacing={2}>
+                                            <Typography color={'gray'} variant="h6" sx={noWrap}>
+                                                <Link href={`/detailsRecipes/${recipe?.id}`} color='inherit' underline="hover">
+                                                    {recipe?.titleRecipe}
+                                                </Link>
+                                            </Typography>
+                                            <Stack direction="row" justifyContent={'space-between'}>
+                                                <Stack direction="row" spacing={2}>
+                                                    <Box color={'#ffa505'}>
+                                                        <Rating
+                                                            name={matches ? 'size-medium' : 'size-large'} defaultValue={1} />
+
+                                                    </Box>
+                                                    <Typography variant="p">
+                                                        {recipe?.starsLikedCounter}
+                                                    </Typography>
+                                                </Stack>
+                                                <Tag.FavoritingRecipe
+                                                    title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                                    followCursor
+                                                >
+                                                    <FavoriteIcon />
+                                                </Tag.FavoritingRecipe>
+                                            </Stack>
+                                            <Stack
+                                                spacing={1}
+                                                borderTop={'0.1rem solid #f5f5f5f5'}
+                                                direction="row"
+                                                width={'100%'}
+                                                justifyContent="space-between"
+                                            >
+                                                <Tag.Author>
+                                                    <Tag.AuthorImage>
+                                                        <img
+                                                            style={{ borderRadius: '10px' }}
+                                                            src={recipe?.avatar}
+                                                            alt=""
+                                                        />
+                                                    </Tag.AuthorImage>
+                                                    <Box
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: 'flex-start',
+                                                            justifyContent: 'space-between',
+                                                            flexDirection: 'column',
+                                                            height: '100%',
+                                                            fontSize: '13px',
+                                                            color: '#565656',
+                                                        }}
+                                                        id="info"
+                                                    >
+                                                        <Typography sx={noWrap} variant="subtitle1">
+                                                            {recipe?.userName}
+                                                        </Typography>
+                                                        <Stack direction="row" spacing={2}>
+                                                            <Stack direction="row" gap={1}>
+                                                                <FavoriteIcon
+                                                                    fontSize={
+                                                                        matches ? 'small' : 'medium'
+                                                                    }
+                                                                />
+                                                                233
+                                                            </Stack>
+                                                            <Stack
+                                                                spacing={2}
+                                                                gap={1}
+                                                                direction="row"
+                                                            >
+                                                                <ForumIcon
+                                                                    fontSize={
+                                                                        matches ? 'small' : 'medium'
+                                                                    }
+                                                                />
+                                                                {recipe?.commentsCounter}
+                                                            </Stack>
+                                                        </Stack>
+                                                    </Box>
+                                                </Tag.Author>
+                                                <Tag.ReviewScore
+                                                    variant={matches ? 'subtitle1' : 'h4'}
+                                                >
+                                                    {recipe?.reviewScore}
+                                                </Tag.ReviewScore>
+                                            </Stack>
+                                        </Stack>
+                                    </Stack>
+                                </Tag.Card>
+
+                            </>
+                        )
                     })}
                 </Tag.Cards>
 
