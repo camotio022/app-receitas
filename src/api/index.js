@@ -1,9 +1,12 @@
 import {
+  Firestore,
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
@@ -65,7 +68,6 @@ export const api = {
       // criar um usuario no firebase utilizando email name
     },
   },
-  ingredient: {},
   recipe: {
     get: async (id) => {
       if (id) {
@@ -83,5 +85,22 @@ export const api = {
 
       return getCollection("recipes");
     },
+  },
+  ingredientes: {
+    get: async (id) => {
+      if (id) {
+        const receitaRef = doc(db, 'recipes', id);
+        const ingredientesRef = collection(receitaRef, 'ingredientes');
+        const ingredientesQuery = query(ingredientesRef);
+        const ingredientesSnapshot = await getDocs(ingredientesQuery);
+        if (!ingredientesSnapshot.empty) {
+          const ingredientesData = ingredientesSnapshot.docs.map((doc) => doc.data());
+          return ingredientesData;
+        } else {
+          // Trate o caso em que não há ingredientes
+        }
+      }
+
+    }
   },
 };
