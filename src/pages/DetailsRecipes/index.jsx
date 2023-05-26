@@ -16,6 +16,9 @@ import {
     Add as AddIcon
 
 } from '@mui/icons-material'
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+
 import * as Tag from './index.js'
 import { grey, orange } from "@mui/material/colors";
 import { useEffect, useState } from "react";
@@ -25,6 +28,7 @@ export const DetailsRecipes = () => {
 
     const [recipe, setrecipe] = useState(null);
     const [ingredientes, setingredientes] = useState([]);
+    const [modopreparo, setmodopreparo] = useState([]);
     const matches = useMediaQuery('(min-width:600px)');
     var Title = {
         display: 'flex',
@@ -42,16 +46,19 @@ export const DetailsRecipes = () => {
         const obterDetalhesrecipe = async () => {
             const doc = await api.recipe.get(id)
             const docIngredientes = await api.ingredientes.get(id)
+            const getModosPre = await api.modopreparo.get(id)
             if (doc) {
-
                 setrecipe(doc)
-                setingredientes(docIngredientes)
-                console.log('ingr', docIngredientes.map((i)=> {
+                docIngredientes.map((i) => {
                     return (
                         setingredientes(i?.description)
                     )
                 })
-                )
+                getModosPre.map((i) => {
+                    return (
+                        setmodopreparo(i?.description)
+                    )
+                })
             }
         };
 
@@ -225,6 +232,27 @@ export const DetailsRecipes = () => {
                                 )
                             })}
 
+                        </>
+                    </Stack>
+                    <Typography sx={Title} padding={1}>
+                        MODOS DE PREPARO
+                    </Typography>
+                    <Stack sx={{
+                        display:'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                        bgcolor: 'trasnparent'
+                    }}>
+                        <>
+                            <Stack width={"80%"}>
+                                {modopreparo.length > 0 && modopreparo.map((p, index) => {
+                                    return (
+                                        <ul key={index}>
+                                            <li>{p}</li>
+                                        </ul>
+                                    )
+                                })}
+                            </Stack>
                         </>
                     </Stack>
                 </Card>
