@@ -29,6 +29,7 @@
 }
 ## templates {
     https://themes.themearabia.net/html/recipesfood/index.html?fbclid=IwAR1e4y9bKFnHLd7dwFCHYqq1XngyCDpkOmgf0PQ9xebqDnADSyVUWramdmY
+    https://vitat.com.br/receitas/73809-frango-ao-curry-e-legumes
 }
 ## preparando a receita {
     https://mui.com/material-ui/react-stepper/#text-with-carousel-effect
