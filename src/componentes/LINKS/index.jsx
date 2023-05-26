@@ -54,10 +54,10 @@ import {
     useScrollTrigger,
     Slide,
     Fab,
+    Link,
     Fade,
 } from '@mui/material'
 
-import { Link } from 'react-router-dom'
 
 import * as Tag from './styles'
 import Logo from '../../images/logo/logo-menu.png'
@@ -89,6 +89,7 @@ const links = [
             {
                 name: 'User Login',
                 icon: <LoginIcon />,
+                link: '/signin'
             },
             { name: 'User Register', icon: <PersonAddIcon /> },
             { name: 'Single Recipe', icon: <RestaurantMenuIcon /> },
@@ -179,7 +180,7 @@ const Links_b = ({
                     children.map((child) => (
                         <MenuItem key={child.name} onClick={handleClick}>
                             <ListItemIcon>{child.icon}</ListItemIcon>
-                            <ListItemText>{child.name}</ListItemText>
+                            <ListItemText><Link href={child.link}>{child.name}</Link></ListItemText>
                         </MenuItem>
                     ))}
             </Menu>
@@ -208,11 +209,13 @@ export const Links_a = ({
             <Collapse in={isSelected} timeout="auto" unmountOnExit>
                 <List sx={{ color: 'white' }} component="div" disablePadding>
                     {children &&
-                        children?.length > 0 &&
+                        children?.length > 0 && 
                         children.map((child) => (
                             <ListItemButton sx={{ pl: 4, borderLeft: '20px solid white' }}>
                                 <ListItemIcon>{child.icon}</ListItemIcon>
-                                <ListItemText primary={child.name} />
+                                <Link href={child?.link}>
+                                    <ListItemText primary={child.name} />
+                                </Link>
                             </ListItemButton>
                         ))}
                 </List>
