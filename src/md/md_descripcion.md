@@ -32,4 +32,26 @@
 }
 ## preparando a receita {
     https://mui.com/material-ui/react-stepper/#text-with-carousel-effect
+    https://mui.com/material-ui/getting-started/templates/
+    https://mui.com/material-ui/getting-started/templates/sign-up/
+    https://mui.com/joy-ui/react-input/#newsletter-subscription
+    https://mui.com/joy-ui/react-breadcrumbs/#css-variable-playground
 }
+## USER LINKS CREATING INTERFACE {
+    https://mui.com/material-ui/react-menu/#selected-menu
+}
+## Requisitos
+    ** Usuários
+    ** Cadastrar
+    ** Autenticar
+## Ingredientes
+    ** Criar
+    ** Editar
+    ** Alterar
+    ** Deletar
+## Receitas
+    ** Criar
+    ** Editar
+    ** Alterar
+    ** Deletar
+    ** Favoritar ok

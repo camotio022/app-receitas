@@ -12,6 +12,7 @@ export const Menu_links = styled(Stack)(({ theme }) => ({
     position: 'fixed',
     top: 0,
     left: 0,
+    zIndex: 10,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -23,8 +24,8 @@ export const Menu_links = styled(Stack)(({ theme }) => ({
     transition: 'all.5s',
     boxShadow: 'rgb(38, 57, 77) 0px 20px 30px -10px',
     padding: '1em',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.secondary,
+    backgroundColor: theme.palette.background,
+    color: '#fff',
 }))
 
 export const Logo = styled(Typography)(({ theme }) => ({
@@ -49,7 +50,8 @@ export const MenuBar = styled(Stack)(({ theme }) => ({
     width: '100%',
     height: '7%',
     background: theme.palette.primary.dark,
-    color: theme.palette.primary,
+    color: theme.palette.primary.contrastText,
+    color: '#fff',
     padding: '15px',
     transition: 'all 0.5s ease-in-out'
 }))
@@ -91,8 +93,7 @@ export const Links = styled(Stack)(({ theme }) => ({
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',
-    overflow: 'auto',
-    overflowX: 'hidden',
+    color: theme.palette.primary.contrastText,
     '@media only screen and (min-width: 800px)': {
         display: 'flex',
         flexDirection: 'row',
@@ -101,9 +102,10 @@ export const Links = styled(Stack)(({ theme }) => ({
         gap: '1rem',
         width: '100%',
         height: '100%',
+        color: theme.palette.primary.contrastText,
     },
     '@media only screen and (max-width: 810px)': {
-        position: 'absolute',
+        position: 'fixed',
         top: 0,
         left: 0,
         display: 'flex',
@@ -111,13 +113,12 @@ export const Links = styled(Stack)(({ theme }) => ({
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '50%',
-        height: '100vh',
+        height: '100%',
         transition: 'all .5s',
-        color: theme.palette.primary.light,
-        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
     },
     '@media only screen and (max-width: 550px)': {
-        position: 'absolute',
+        position: 'fixed',
         left: 0,
         display: 'flex',
         flexDirection: 'column',
@@ -126,7 +127,7 @@ export const Links = styled(Stack)(({ theme }) => ({
         width: '100vw',
         height: '100vh',
         transition: 'all .5s',
-        background: theme.palette.primary.light,
+        color: theme.palette.primary.contrastText,
     },
 }))
 
@@ -146,7 +147,7 @@ export const SubMenus = styled(Stack)(({ theme }) => ({
     textTransform: 'auto',
     width: '100%',
     paddingLeft: '1em',
-    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.contrastText,
     transition: 'all.5s',
     '@media only screen and (min-width: 810px)': {
         display: 'flex',
@@ -232,7 +233,7 @@ export const Link = styled(Stack)(({ theme }) => ({
             transform: 'translate(0%, 30%)',
             transition: '0.3s ease-out',
             borderBottom: 'none',
-            color: theme.palette.primary.dark,
+            color: theme.palette.primary.contrastText,
         },
     },
 }))

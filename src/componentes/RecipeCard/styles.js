@@ -1,21 +1,22 @@
-import { Card as MuiCard, Box, styled } from "@mui/material";
+import { Card as MuiCard, Box, styled } from '@mui/material'
 
 export const Card = styled(MuiCard)(({ theme }) => ({
-  width: "200px",
-  backgroundColor: theme.palette.primary.main,
-}));
+    width: '200px',
+    backgroundColor: theme.palette.primary.main,
+    padding: theme.spacing(2),
+}))
 
 export const ReviewScore = styled(Box)(({ theme }) => ({
-  backgroundColor: "green",
-  color: "white",
-  padding: theme.spacing(2),
-}));
+    backgroundColor: 'green',
+    color: 'white',
+    padding: theme.spacing(2),
+}))
 
 export const AuthorImage = styled(Box)(() => ({
-  width: "20%",
-  overflow: "hidden",
+    width: '20%',
+    overflow: 'hidden',
 
-  img: {
-    width: "100%",
-  },
-}));
+    img: {
+        width: '100%',
+    },
+}))

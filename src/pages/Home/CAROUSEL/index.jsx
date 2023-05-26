@@ -8,16 +8,28 @@ import { Stack } from "@mui/system";
 import * as Tag from "./styles";
 
 export const ShowSlider = ({
+    wellcome,
+    pathPagination,
+    backgroundMuiStack,
+    ...props
 }) => {
     return (
         <>
-            <Tag.Carousel>
-                <Tag.Title variant='h3'>
-                    Seja bem vindo ao Recipes Food
-                </Tag.Title>
-                <Tag.Title variant='h5'>
-                    Com alguém que sabe cozinhar porque a beleza acaba!
-                </Tag.Title>
+            <Tag.Carousel
+                {...props}
+                sx={{
+                    minHeight: "40%",
+                    marginTop: "4.1rem",
+                    ...props
+                }}>
+                <Tag.CardImage>
+                    <Tag.Title variant='h3'>
+                        {wellcome}
+                    </Tag.Title>
+                    <Tag.Title variant='h5'>
+                        {pathPagination}
+                    </Tag.Title>
+                </Tag.CardImage>
             </Tag.Carousel>
         </>
     )
