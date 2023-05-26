@@ -22,8 +22,9 @@ import { useEffect, useState } from "react";
 import { api } from "../../api/index.js";
 export const DetailsRecipes = () => {
     const { id } = useParams();
-    console.log(id)
-    const [usuario, setUsuario] = useState(null);
+
+    const [recipe, setrecipe] = useState(null);
+    const [ingredientes, setingredientes] = useState([]);
     const matches = useMediaQuery('(min-width:600px)');
     var Title = {
         display: 'flex',
@@ -38,27 +39,35 @@ export const DetailsRecipes = () => {
     const [checkedItems, setCheckedItems] = useState(Array(5).fill(false));
     useEffect(() => {
         // Recupere os detalhes do usuário do Firebase com base no ID fornecido
-        const obterDetalhesUsuario = async () => {
+        const obterDetalhesrecipe = async () => {
             const doc = await api.recipe.get(id)
+            const docIngredientes = await api.ingredientes.get(id)
             if (doc) {
-                console.log(doc)
-                setUsuario(doc)
+
+                setrecipe(doc)
+                setingredientes(docIngredientes)
+                console.log('ingr', docIngredientes.map((i)=> {
+                    return (
+                        setingredientes(i?.description)
+                    )
+                })
+                )
             }
         };
 
-        obterDetalhesUsuario();
+        obterDetalhesrecipe();
     }, [id]);
     const handleChange = (index) => {
         const newCheckedItems = [...checkedItems];
         newCheckedItems[index] = !newCheckedItems[index];
         setCheckedItems(newCheckedItems);
     };
-    if (!usuario) {
+    if (!recipe) {
         return <>
             <Tag.Container>
                 <p>Carregando...</p>
                 <Stack>
-                    {usuario?.tempo}
+                    {recipe?.tempo}
                 </Stack>
             </Tag.Container>
         </>
@@ -107,13 +116,13 @@ export const DetailsRecipes = () => {
                     />
                     <CardContent padding={1}>
                         <Typography gutterBottom variant="h4" component="div">
-                            {usuario?.titleRecipe}
+                            {recipe?.titleRecipe}
                         </Typography>
                         <Typography color={grey[900]} gutterBottom variant="body1" component="div">
                             Geralmente é para o almoço ou jantar
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            {usuario?.description}
+                            {recipe?.description}
                         </Typography>
                     </CardContent>
 
@@ -130,10 +139,10 @@ export const DetailsRecipes = () => {
                         />
                         <Stack sx={{ color: orange[500] }}>
                             <Typography variant="body1">
-                                {usuario?.userName}
+                                {recipe?.userName}
                             </Typography>
                             <Typography variant="body2">
-                                POST: {usuario?.dataPost}
+                                POST: {recipe?.dataPost}
                             </Typography>
                         </Stack>
                         <Button variant="contained" startIcon={<AddIcon />}>
@@ -160,15 +169,16 @@ export const DetailsRecipes = () => {
                         gap: '4rem',
 
                     }}>
+
                         {[{
-                            title: usuario?.tempo,
+                            title: recipe?.tempo,
                             icon: <AvTimerIcon />
 
                         }, {
-                            title: usuario?.calories,
+                            title: recipe?.calories,
                             icon: <ElectricBoltIcon />
                         }, {
-                            title: usuario?.porcoes,
+                            title: recipe?.porcoes,
                             icon: <PersonAddAlt1Icon />
                         }].map((item) => {
                             return (
@@ -197,8 +207,9 @@ export const DetailsRecipes = () => {
                         bgcolor: 'trasnparent'
                     }}>
                         <>
-                            {['item 1', 'item 2', 'item 3', 'item 4', 'item 5'
-                            ].map((item, index) => {
+                            {ingredientes?.description}
+
+                            {ingredientes.length > 0 && ingredientes.map((ingredient, index) => {
                                 return (
                                     <FormControlLabel key={index} sx={checkedItems[index] ? {
                                         textDecoration: 'line-through',
@@ -210,9 +221,10 @@ export const DetailsRecipes = () => {
                                     }} control={<Checkbox
                                         checked={checkedItems[index]}
                                         onChange={() => handleChange(index)}
-                                    />} label={item} />
+                                    />} label={ingredient || ''} />
                                 )
                             })}
+
                         </>
                     </Stack>
                 </Card>
