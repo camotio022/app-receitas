@@ -53,6 +53,7 @@ export const ComponInput = ({ id,
 }
 export const SignUp = () => {
     const [progress, setProgress] = useState(false);
+    
     const [showalert, setAlert] = useState(false);
     const [data, setData] = useState({
         password: '',
