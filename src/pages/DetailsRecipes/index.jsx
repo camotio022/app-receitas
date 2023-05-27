@@ -24,6 +24,9 @@ import * as Tag from './index.js'
 import { green, grey, orange } from "@mui/material/colors";
 import { useEffect, useState } from "react";
 import { api } from "../../api/index.js";
+import { CardCover } from "@mui/joy";
+
+
 export const DetailsRecipes = () => {
     const { id } = useParams();
     const [recipe, setrecipe] = useState(null);
@@ -356,6 +359,34 @@ export const DetailsRecipes = () => {
                             </Stack>
                         </>
                     </Stack>
+
+
+                    <Card component="ul" sx={{ flexGrow: 1, minWidth: 300, height: '20rem', mt: '5rem' }}>
+                        <CardCover sx={{ width: '100%', height: '20rem', position: "sticky" }}>
+                            <video
+                                autoPlay={true}
+                                loop
+                                muted
+                                poster="https://youtu.be/q9NSaHr9k58?t=7"
+                            >
+                                <source
+                                    src="https://youtu.be/q9NSaHr9k58?t=7"
+                                    type="video/mp4"
+                                />
+                            </video>
+                        </CardCover>
+                        <CardContent sx={{ zIndex: 1, opacity: 1 }}>
+                            <Typography
+                            
+                                level="h6"
+                                fontWeight="lg"
+                                textColor="#fff"
+                                mt={{ xs: 12, sm: 18 }}
+                            >
+                                Video
+                            </Typography>
+                        </CardContent>
+                    </Card>
                 </Card>
             </Tag.Container>
         </>
