@@ -12,9 +12,9 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './review';
+import AddressForm from './recipesIngredients';
+import PaymentForm from './recipesSteps';
+import Review from './recipesNutricional';
 import UserInfos from './UserInfos';
 import { Logo } from '../../componentes/LOGO';
 
