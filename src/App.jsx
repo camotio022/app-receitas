@@ -14,6 +14,7 @@ import { TopReview } from './pages/ReviewRecipes/index.jsx'
 import { DetailsRecipes } from './pages/DetailsRecipes/index.jsx'
 import { SignUp } from './templates/signUp/index.jsx'
 import { SignIn } from './templates/signIn/index.jsx'
+import { CreateRecipes } from './pages/CreateRecipes/createRecipe'
 
 
 
@@ -33,12 +34,12 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<TopReview />} />
+                        <Route path="/createRecipe" element={<CreateRecipes />} />
                         <Route path="/detailsRecipes/:id" element={<DetailsRecipes/>}/>
                         <Route path="/signup" element={<SignUp />}/>
                         <Route path="/signin" element={<SignIn />}/>
                     </Routes>
                 </BrowserRouter>
-s
                 <ThemeButton handleClick={handleToggleMode} />
                 <CssBaseline />
             </ThemeProvider>
