@@ -28,7 +28,6 @@ function NavigationHandler() {
     }, []);
     return <Navigate to={location.pathname} replace />;
 }
-
 function App() {
     const [useDarkMode, setUseDarkMode] = useState(false)
     const [iSuserLoged, setIsUserLoged] = useState(false)
