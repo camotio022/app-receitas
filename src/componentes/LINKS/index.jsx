@@ -58,11 +58,11 @@ import {
     Fade,
 } from '@mui/material'
 
-
 import * as Tag from './styles'
 import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 const links = [
     {
@@ -95,7 +95,7 @@ const links = [
             { name: 'Single Recipe', icon: <RestaurantMenuIcon /> },
             { name: 'Single Video', icon: <PlayCircleIcon /> },
             { name: 'Single Book', icon: <BookmarksIcon /> },
-            { name: 'Create Recipe', icon: <BookmarkAddIcon /> },
+            { name: 'Create Recipe', icon: <BookmarkAddIcon />, link:'/createRecipes' },
             { name: 'About us', icon: <InfoIcon /> },
             { name: 'Top Review', icon: <StarIcon /> },
             { name: 'Contacts', icon: <AlternateEmailIcon /> },

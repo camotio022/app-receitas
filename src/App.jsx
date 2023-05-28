@@ -34,7 +34,7 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<TopReview />} />
-                        <Route path="/createRecipe" element={<CreateRecipes />} />
+                        <Route path="/createRecipes" element={<CreateRecipes />} />
                         <Route path="/detailsRecipes/:id" element={<DetailsRecipes/>}/>
                         <Route path="/signup" element={<SignUp />}/>
                         <Route path="/signin" element={<SignIn />}/>

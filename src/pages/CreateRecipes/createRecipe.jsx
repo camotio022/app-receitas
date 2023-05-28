@@ -17,11 +17,13 @@ import PaymentForm from './recipesSteps';
 import Review from './recipesNutricional';
 import UserInfos from './UserInfos';
 import { Logo } from '../../componentes/LOGO';
+import { Grid } from '@mui/joy';
+import { useParams } from 'react-router-dom';
+import './index.css'
 
 
 
-
-const steps = ['Ingredientes', 'Steps:', 'Nutricionais:','pessoais'];
+const steps = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
 function getStepContent(step) {
     switch (step) {
         case 0:
@@ -30,7 +32,7 @@ function getStepContent(step) {
             return <PaymentForm />;
         case 2:
             return <Review />;
-        case 3: 
+        case 3:
             return <UserInfos />;
         default:
             throw new Error('Unknown step');
@@ -42,7 +44,7 @@ const defaultTheme = createTheme();
 
 export const CreateRecipes = () => {
     const [activeStep, setActiveStep] = React.useState(0);
-
+    const { id } = useParams();
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     };
@@ -62,7 +64,7 @@ export const CreateRecipes = () => {
                     position: 'fixed',
                     borderBottom: (t) => `1px solid ${t.palette.divider}`,
                     display: 'flex',
-                    alignItems:'center',
+                    alignItems: 'center',
                     justifyContent: 'center',
 
                 }}
@@ -70,13 +72,13 @@ export const CreateRecipes = () => {
                 <Toolbar sx={
                     {
                         display: 'flex',
-                        alignItems:'center',
+                        alignItems: 'center',
                         justifyContent: 'space-between',
-                        width:'100%' 
-                     
+                        width: '100%'
+
                     }
                 }>
-                    <Logo/>
+                    <Logo />
                     <Typography variant="h6" color="inherit" noWrap>
                         User fulano criando uma receita
                     </Typography>
@@ -85,7 +87,8 @@ export const CreateRecipes = () => {
             <Container component="main" maxWidth="sm" sx={{ mb: 4, mt: 9 }}>
                 <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
                     <Typography component="h1" variant="h4" align="center">
-                        Criação de receitas
+                        {activeStep === steps.length ? "Estados da sua receita" :
+                            "Criação de receitas"}
                     </Typography>
                     <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                         {steps.map((label) => (
@@ -95,16 +98,23 @@ export const CreateRecipes = () => {
                         ))}
                     </Stepper>
                     {activeStep === steps.length ? (
-                        <React.Fragment>
-                            <Typography variant="h5" gutterBottom>
-                                Thank you for your order.
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                Your order number is #2001539. We have emailed your order
-                                confirmation, and will send you an update when your order has
-                                shipped.
-                            </Typography>
-                        </React.Fragment>
+                        <>
+
+                            <React.Fragment>
+                                <Typography variant="h5" gutterBottom>
+                                    Obrigado pela sua contribuição                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Receita criada com sucesso!
+                                    Obrigado pela sua contribuição, o número da sua receita é: 23, id: sdarewesdsssZ\DaqSSSXx
+                                </Typography>
+                            </React.Fragment>
+                            <Grid xs={12} gap={3}>
+                                <Button size="small" sx={{ mt: 4, mr: 2 }} variant='outlined'>
+                                    <Link href={`/detailsRecipes/:${id}`}>{"Ver a sua receita"}</Link>
+                                </Button>
+                                <Button size="small" sx={{ mt: 4 }} variant='outlined'><Link href='/'>{"Voltar para home"}</Link></Button>
+                            </Grid>
+                        </>
                     ) : (
                         <React.Fragment>
                             {getStepContent(activeStep)}
