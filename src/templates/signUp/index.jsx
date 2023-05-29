@@ -18,6 +18,7 @@ import { blue, green, grey, orange } from '@mui/material/colors';
 
 import { api } from '../../api';
 import { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -53,7 +54,7 @@ export const ComponInput = ({ id,
 }
 export const SignUp = () => {
     const [progress, setProgress] = useState(false);
-    
+
     const [showalert, setAlert] = useState(false);
     const [data, setData] = useState({
         password: '',
@@ -79,7 +80,7 @@ export const SignUp = () => {
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
     }
-
+    const navigate = useNavigate()
 
 
     const submtForum = async (e) => {
@@ -113,7 +114,13 @@ export const SignUp = () => {
             return false;
         }
         setProgress(!progress)
-        await api?.user.post(data)
+        fetch(await api?.user.post(data)).then((res) => {
+            console.log(res)
+            navigate('/')
+        }).catch((err) => {
+            alert(`${err}`)
+        })
+
         setTimeout(() => {
             setProgress(false)
             setAlert(!showalert)
@@ -245,7 +252,7 @@ export const SignUp = () => {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/signin" variant="body2">
+                                <Link href="/" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

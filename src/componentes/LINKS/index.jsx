@@ -61,7 +61,7 @@ import {
 import * as Tag from './styles'
 import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 const links = [
@@ -95,7 +95,7 @@ const links = [
             { name: 'Single Recipe', icon: <RestaurantMenuIcon /> },
             { name: 'Single Video', icon: <PlayCircleIcon /> },
             { name: 'Single Book', icon: <BookmarksIcon /> },
-            { name: 'Create Recipe', icon: <BookmarkAddIcon />, link:'/createRecipes' },
+            { name: 'Create Recipe', icon: <BookmarkAddIcon />, link: '/createRecipes' },
             { name: 'About us', icon: <InfoIcon /> },
             { name: 'Top Review', icon: <StarIcon /> },
             { name: 'Contacts', icon: <AlternateEmailIcon /> },
@@ -187,7 +187,6 @@ const Links_b = ({
         </>
     )
 }
-
 export const Links_a = ({
     name,
     handleClick,
@@ -195,8 +194,6 @@ export const Links_a = ({
     children,
     selectedLink,
 }) => {
-    const [show, setShow] = useState(true)
-
     const isSelected = selectedLink === name
 
     return (
@@ -209,7 +206,7 @@ export const Links_a = ({
             <Collapse in={isSelected} timeout="auto" unmountOnExit>
                 <List sx={{ color: 'white' }} component="div" disablePadding>
                     {children &&
-                        children?.length > 0 && 
+                        children?.length > 0 &&
                         children.map((child) => (
                             <ListItemButton sx={{ pl: 4, borderLeft: '20px solid white' }}>
                                 <ListItemIcon>{child.icon}</ListItemIcon>
@@ -226,35 +223,32 @@ export const Links_a = ({
     // )
 }
 
-document.querySelector('#wrapper')?.addEventListener('scroll', (scroll) => {
-    console.log('Scroll bar', scroll)
-})
-function ScrollTop({ children, window }) {
-
-    const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
-        disableHysteresis: true,
-        threshold: 100,
-    });
-
-    return (
-        <Fade in={trigger}>
-            <Box
-                onClick={handleClick}
-                role="presentation"
-                sx={{ position: 'fixed', bottom: 16, right: 16 }}
-            >
-                {children}
-            </Box>
-        </Fade>
-    )
-}
-const handleClick = (event) => {
-
-};
 export const Links = () => {
+    const [scrollHeight, setScrollHeight] = useState(0);
     const [selectedLink, setSelectedLink] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
+    useEffect(() => {
+        const handleScroll = () => {
+            const height = window.scrollY || 0;
+            setScrollHeight(height);
+        };
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll);
+
+            // Limpe o evento de scroll quando o componente for desmontado
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
 
     const handleSelectLink = (event, newLink) => {
         if (selectedLink === newLink) {
@@ -277,12 +271,18 @@ export const Links = () => {
     if (matches) {
         return (
             <>
-                <ScrollTop>
-                    <Fab size="small" aria-label="scroll back to top">
-                        <KeyboardArrowUpIcon />
-                    </Fab>
-                </ScrollTop>
-                <Tag.MenuBar>
+                <Tag.MenuBar sx={scrollHeight > 50 ? {} : { height: '6rem' }}>
+                    <Fade in={scrollHeight}>
+                        <Box
+                            onClick={scrollToTop}
+                            role="presentation"
+                            sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                        >
+                            <Fab size="small" aria-label="scroll back to top">
+                                <KeyboardArrowUpIcon />
+                            </Fab>
+                        </Box>
+                    </Fade>
                     <Stack>
                         <img src={Logo} alt="" />
                     </Stack>
@@ -302,15 +302,20 @@ export const Links = () => {
             </>
         )
     }
-
     return (
         <Box>
-            <ScrollTop>
-                <Fab size="small" aria-label="scroll back to top">
-                    <KeyboardArrowUpIcon />
-                </Fab>
-            </ScrollTop>
-            <Tag.MenuBar>
+            <Tag.MenuBar sx={scrollHeight > 50 ? {} : { height: '8rem' }}>
+                <Fade in={scrollHeight}>
+                    <Box
+                        onClick={scrollToTop}
+                        role="presentation"
+                        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                    >
+                        <Fab size="small" aria-label="scroll back to top">
+                            <KeyboardArrowUpIcon />
+                        </Fab>
+                    </Box>
+                </Fade>
                 <Stack>
                     <img src={Logo} alt="" />
                 </Stack>
@@ -371,6 +376,4 @@ export const Links = () => {
         </Box>
 
     )
-
-    // )
 }
