@@ -40,7 +40,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <BrowserRouter>
                 <NavigationHandler />
-              
+                <Links />
                 <Routes>
                     <Route path="/" element={<TopReview />} />
                     <Route path="/createRecipes" element={<CreateRecipes />} />
@@ -49,7 +49,7 @@ function App() {
                     <Route path="/signin" element={<SignIn />} />
                 </Routes>
             </BrowserRouter>
-            <Links />
+            
             <ThemeButton handleClick={handleToggleMode} />
             <CssBaseline />
         </ThemeProvider>
