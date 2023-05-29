@@ -6,14 +6,23 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-export default function AddressForm() {
+
+
+
+
+
+
+
+export default function AddressForm({
+  handleInputChange, formData
+}) {
   const [inputs, setInputs] = React.useState([]);
 
   const addInput = () => {
     setInputs([...inputs, '']);
   };
 
-  const handleInputChange = (event, index) => {
+  const handleInputsChange = (event, index) => {
     const newInputs = [...inputs];
     newInputs[index] = event.target.value;
     setInputs(newInputs);
@@ -26,7 +35,7 @@ export default function AddressForm() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Shipping address
+        Ingredientes
       </Typography>
       <Grid container spacing={3} sx={{ transition: '300ms' }}>
         <Grid item xs={12}>
@@ -34,6 +43,8 @@ export default function AddressForm() {
             required
             id="recipeTitle"
             name="recipeTitle"
+            value={formData?.recipeTitle}
+            onChange={handleInputChange}
             label="Insirá o titulo da receita"
             fullWidth
             autoComplete="given-name"
@@ -63,7 +74,7 @@ export default function AddressForm() {
               key={index}
               type="text"
               value={value}
-              onChange={(e) => handleInputChange(e, index)}
+              onChange={(e) => handleInputsChange(e, index)}
             />
           </Grid>
         ))}
@@ -72,7 +83,7 @@ export default function AddressForm() {
             + Add ingredient
           </Button>}
           {inputs.length > 0 && <Button color="error" onClick={removeInput} variant='outlined' startIcon={<DeleteIcon />}>
-            Delete input
+            Delete ingredient
           </Button>}
         </Grid>
         <Grid item xs={12}>

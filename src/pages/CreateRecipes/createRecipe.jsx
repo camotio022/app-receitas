@@ -23,26 +23,77 @@ import './index.css'
 
 
 
-const steps = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return <AddressForm />;
-        case 1:
-            return <PaymentForm />;
-        case 2:
-            return <Review />;
-        case 3:
-            return <UserInfos />;
-        default:
-            throw new Error('Unknown step');
-    }
-}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export const CreateRecipes = () => {
+export const CreateRecipes = ({ }) => {
+    const steps = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
+    const [formData, setFormData] = React.useState({
+        recipeTitle: "",
+        recipeDescription: "",
+        ingredient1: "",
+        ingredient2: "",
+        step1: "",
+        step2: "",
+        prepTime: "",
+        cookTime: "",
+        servingSize: "",
+        recipeCategory: "",
+        recipeDifficulty: "",
+        recipeImage: null,
+        cookingTips: "",
+        calories: "",
+        protein: "",
+        carbs: "",
+        fat: "",
+        tags: "",
+        author: "",
+        creationDate: "",
+        rating: "",
+        comments: "",
+        name: "",
+        email: "",
+        country: ""
+    });
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        setFormData({ ...formData, recipeImage: file });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        Object.values(formData).find(i => {
+            if(i != null) {
+                alert('O formulário não está passando')
+                return false
+            }
+            alert('O formulárioestá passando')
+        })
+        console.log(formData);
+    };
+
+    function getStepContent(step) {
+        switch (step) {
+            case 0:
+                return <AddressForm onChange={handleInputChange} value={formData} />;
+            case 1:
+                return <PaymentForm onChange={handleInputChange} />;
+            case 2:
+                return <Review onChange={handleInputChange} />;
+            case 3:
+                return <UserInfos onChange={handleInputChange} />;
+            default:
+                throw new Error('Unknown step');
+        }
+    }
+
     const [activeStep, setActiveStep] = React.useState(0);
     const { id } = useParams();
     const handleNext = () => {
@@ -127,10 +178,10 @@ export const CreateRecipes = () => {
 
                                 <Button
                                     variant="contained"
-                                    onClick={handleNext}
+                                    onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
                                     sx={{ mt: 3, ml: 1 }}
                                 >
-                                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                    {activeStep === steps.length - 1 ? 'submeter' : 'Next'}
                                 </Button>
                             </Box>
                         </React.Fragment>
