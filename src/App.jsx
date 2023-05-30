@@ -79,7 +79,7 @@ const MyComponent = () => {
                             <NavigationHandler />
                             <Links />
                             <Routes>
-                                <Route path="/" element={<TopReview />} />
+                                <Route path="/topReview" element={<TopReview />} />
                                 <Route path="/createRecipes" element={<CreateRecipes />} />
                                 <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
                                 <Route path="/signup" element={<SignUp />} />
