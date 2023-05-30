@@ -14,7 +14,8 @@ import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert, Paper,
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -51,13 +52,10 @@ export const ComponInput = ({ id,
 export const SignIn = () => {
     const [progress, setProgress] = useState(false);
     const [showalert, setAlert] = useState('');
-    const navigate = useNavigate();
-    const [data, setData] = useState({
-        password: '',
-        email: '',
-        lastName: '',
-        name: '',
-    })
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate()
     const [datasFocos, setNameFocos] = useState({
         passwordFocos: false,
         emailFocos: false,
@@ -65,35 +63,25 @@ export const SignIn = () => {
         nameFocos: false,
     })
     const [showPasswprd, setShowPasswprd] = useState(false)
-    const handleChange = (e) => {
+    const handleChangeEmail = (e) => {
         const value = e.target.value;
-        const name = e.target.name;
-        setData((old) => {
-            return { ...old, [name]: value };
-        });
+        setEmail(value);
+    };
+    const handleChangePassword = (e) => {
+        const value = e.target.value;
+        setPassword(value);
     };
 
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
     }
-
-    const lognUser = async (e) => {
-        try {
-            await signInWithEmailAndPassword(getAuth(), data?.email, data?.password);
-            // Login bem-sucedido
-            console.log('Login bem-sucedido!');
-        } catch (error) {
-            // Tratamento de erros
-            console.error('Erro ao fazer login:', error.message);
-        }
-    }
-
-    const submtForum = (e) => {
+    const submtForum = async (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
-        if (data?.email == "" ||
-            data?.email.indexOf('@') == -1 ||
-            data?.email.indexOf('.com') == -1) {
+
+        if (email == "" ||
+            email.indexOf('@') == -1 ||
+            email.indexOf('.com') == -1) {
             setAlert("Preencha campo E-MAIL corretamente!");
             setNameFocos(!data?.datasFocos)
             setTimeout(() => {
@@ -101,17 +89,34 @@ export const SignIn = () => {
             }, '3000');
             return false;
         }
-        if (data?.password.length < 8) {
+        if (password.length < 8) {
             alert("A senha deve conter no minímo 8 digitos!");
             return false;
-        } else if (!regex.exec(data?.password)
+        } else if (!regex.exec(password)
         ) {
             alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
             return false;
         }
-        lognUser()
-    };
 
+        const checkUserExists = async (email, password) => {
+            try {
+                const auth = getAuth();
+                await signInWithEmailAndPassword(auth, email, password);
+                return true; // O usuário existe
+            } catch (error) {
+                console.error('Erro ao verificar a existência do usuário:', error);
+                throw error; // Ou faça algo diferente com o erro
+            }
+        };
+        const userExists = await checkUserExists(email, password);
+        if (userExists) {
+            localStorage.setItem('isLoggedIn', 'true');
+            console.log('logado')
+            navigate('/topReview')
+        } else {
+            console.log('Usuário não encontrado');
+        }
+    }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -153,45 +158,52 @@ export const SignIn = () => {
                             alignItems: "center",
                             justifyContent: "center",
                             flexDirection: "column",
+
                             height: '100%'
                         }}>
-                            <TextField
-                                id="outlined-error-helper-text"
-                                helperText={showalert}
-                                required
-                                fullWidth
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                value={data?.email}
-                                onChange={handleChange}
-                                autoFocus={datasFocos?.emailFocos}
-                            />
-                            <TextField
-                                required
-                                id="outlined-error-helper-text"
-                                helperText="Incorrect entry."
-                                fullWidth
-                                defaultValue="Hello World"
-                                placeholder="Password"
-                                name="password"
-                                type={showPasswprd ? 'text' : 'password'}
-                                value={data?.password}
-                                onChange={handleChange}
-                                autoComplete="new-password"
-                                label="password"
-                                autoFocus={datasFocos?.passwordFocos}
-                                endAdornment={
-                                    <InputAdornment>
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={ShowPassword}
-                                        >
-                                            {showPasswprd ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
+                            <Grid mb={3} item xs={12} >
+                                <TextField
+                                    id="outlined-error-helper-text"
+                                    helperText={showalert}
+                                    required
+                                    fullWidth
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    value={email}
+                                    onChange={handleChangeEmail}
+                                    autoFocus={datasFocos?.emailFocos}
+                                />
+                            </Grid>
+                            <Grid item xs={12}  >
+
+                                <TextField
+                                    required
+                                    id="outlined-error-helper-text"
+                                    helperText="Incorrect entry."
+                                    fullWidth
+                                    defaultValue="Hello World"
+                                    placeholder="Password"
+                                    name="password"
+                                    type={showPasswprd ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={handleChangePassword}
+                                    autoComplete="new-password"
+                                    label="password"
+                                    autoFocus={datasFocos?.passwordFocos}
+                                    endAdornment={
+                                        <InputAdornment>
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={ShowPassword}
+                                            >
+                                                {showPasswprd ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+
+                            </Grid>
 
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
@@ -206,7 +218,7 @@ export const SignIn = () => {
                                 Sign In
                             </Button>
                             <Grid container>
-                                <Grid item xs>
+                                <Grid item xs={12}>
                                     <Link href="#" variant="body2">
                                         Forgot password?
                                     </Link>
@@ -222,6 +234,6 @@ export const SignIn = () => {
                     </Box>
                 </Grid>
             </Grid>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }

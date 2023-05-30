@@ -33,38 +33,36 @@ function NavigationHandler() {
     return <Navigate to={location.pathname} replace />;
 }
 const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    useEffect(() => {
+        // Verificar se o usuário está autenticado
+        const checkUserAuthentication = () => {
+            const loggedInStatus = localStorage.getItem('isLoggedIn');
+            setIsLoggedIn(loggedInStatus === 'true');
+        };
+        checkUserAuthentication();
+    }, []);
     const login = () => {
         // Lógica de autenticação bem-sucedida
         // Define isAuthenticated como true e armazena o token de autenticação
-        setIsAuthenticated(true);
+        setIsLoggedIn(true);
         // Outras lógicas de armazenamento de token de autenticação, como cookies ou localStorage
     };
-
     const logout = () => {
         // Lógica de logout
         // Define isAuthenticated como false e remove o token de autenticação
-        setIsAuthenticated(false);
+        setIsLoggedIn(false);
         // Outras lógicas de remoção do token de autenticação, como cookies ou localStorage
     };
-
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
-
 const MyComponent = () => {
-    const { isAuthenticated, login, logout } = useContext(AuthContext);
-    // const handleLogin = () => {
-    //     login();
-    // };
-    // const handleLogout = () => {
-    //     logout();
-    // };
+    const { isLoggedIn, login, logout } = useContext(AuthContext);
+    console
     const [useDarkMode, setUseDarkMode] = useState(false)
     const [iSuserLoged, setIsUserLoged] = useState(false)
     const handleToggleMode = () => {
@@ -74,7 +72,7 @@ const MyComponent = () => {
 
     return (
         <div>
-            {isAuthenticated ? (
+            {isLoggedIn ? (
                 <div>
                     <ThemeProvider theme={theme}>
                         <BrowserRouter>
