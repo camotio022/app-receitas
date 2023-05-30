@@ -11,8 +11,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Links } from './componentes/LINKS'
 import { TopReview } from './pages/ReviewRecipes/index.jsx'
 import { DetailsRecipes } from './pages/DetailsRecipes/index.jsx'
-import { SignUp } from './templates/signUp/index.jsx'
-import { SignIn } from './templates/signIn/index.jsx'
+import { SignUp } from './screens/signUp/index.jsx'
+import { SignIn } from './screens/signIn/index.jsx'
 import { CreateRecipes } from './pages/CreateRecipes/createRecipe'
 
 
