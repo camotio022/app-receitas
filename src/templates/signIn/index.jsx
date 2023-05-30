@@ -13,9 +13,13 @@ import Logo from '../../images/logo/logo-menu.png';
 import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert, Paper, Avatar, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
+import { AuthContext } from '../../App'
+import { useContext } from 'react';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -50,6 +54,7 @@ export const ComponInput = ({ id,
     )
 }
 export const SignIn = () => {
+    const { login } = useContext(AuthContext);
     const [progress, setProgress] = useState(false);
     const [showalert, setAlert] = useState('');
     const [email, setEmail] = useState('');
@@ -75,7 +80,27 @@ export const SignIn = () => {
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
     }
-    const submtForum = async (e) => {
+
+    const handleGoogleLogin = async () => {
+        try {
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const userData = {
+                uid: user.uid,
+                email: user.email,
+                // Outros dados do usuário que você queira armazenar
+            };
+            login(userData);
+            console.log('Usuário logado com sucesso:', user);
+            navigate('/topReview');
+        } catch (error) {
+            console.error('Erro ao fazer login com o Google:', error);
+            // Trate o erro de login com o Google conforme necessário
+        }
+    };
+    const handleLoginWithEmailPassword = async (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
 
@@ -83,7 +108,7 @@ export const SignIn = () => {
             email.indexOf('@') == -1 ||
             email.indexOf('.com') == -1) {
             setAlert("Preencha campo E-MAIL corretamente!");
-            setNameFocos(!data?.datasFocos)
+            setNameFocos(!datasFocos?.datasFocos)
             setTimeout(() => {
                 setAlert("");
             }, '3000');
@@ -97,24 +122,40 @@ export const SignIn = () => {
             alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
             return false;
         }
-
         const checkUserExists = async (email, password) => {
             try {
                 const auth = getAuth();
-                await signInWithEmailAndPassword(auth, email, password);
-                return true; // O usuário existe
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    // Outros dados do usuário que você queira armazenar
+                };
+
+                return userData;
             } catch (error) {
                 console.error('Erro ao verificar a existência do usuário:', error);
                 throw error; // Ou faça algo diferente com o erro
             }
+
         };
-        const userExists = await checkUserExists(email, password);
-        if (userExists) {
-            localStorage.setItem('isLoggedIn', 'true');
-            console.log('logado')
-            navigate('/topReview')
-        } else {
-            console.log('Usuário não encontrado');
+        try {
+            const userExists = await checkUserExists(email, password);
+            if (userExists) {
+                login(userExists);
+                console.log('logado');
+                navigate('/topReview');
+            } else {
+                console.log('Usuário não encontrado');
+            }
+        } catch (error) {
+            console.error('Erro ao verificar a existência do usuário:', error);
+            if (error.code === 'auth/wrong-password') {
+                alert('Senha incorreta');
+            } else {
+                alert('Erro desconhecido');
+            }
         }
     }
 
@@ -152,7 +193,7 @@ export const SignIn = () => {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <Grid component="form" noValidate onSubmit={submtForum} sx={{
+                        <Grid component="div" noValidate sx={{
                             mt: 1,
                             display: 'flex',
                             alignItems: "center",
@@ -161,56 +202,54 @@ export const SignIn = () => {
 
                             height: '100%'
                         }}>
-                            <Grid mb={3} item xs={12} >
-                                <TextField
-                                    id="outlined-error-helper-text"
-                                    helperText={showalert}
-                                    required
-                                    fullWidth
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    value={email}
-                                    onChange={handleChangeEmail}
-                                    autoFocus={datasFocos?.emailFocos}
-                                />
-                            </Grid>
-                            <Grid item xs={12}  >
+                            <TextField
+                                sx={{ m: 1, bgcolor: 'transparent' }}
+                                id="outlined-error-helper-text"
+                                helperText={showalert}
+                                required
+                                fullWidth
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                value={email}
+                                onChange={handleChangeEmail}
+                                autoFocus={datasFocos?.emailFocos}
+                            />
+                            <TextField
+                                required
+                                id="outlined-error-helper-text"
+                                helperText="Incorrect entry."
+                                fullWidth
+                                defaultValue="Hello World"
+                                placeholder="Password"
+                                name="password"
+                                type={showPasswprd ? 'text' : 'password'}
+                                value={password}
+                                onChange={handleChangePassword}
+                                autoComplete="new-password"
+                                label="password"
+                                autoFocus={datasFocos?.passwordFocos}
+                                endAdornment={
+                                    <InputAdornment>
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={ShowPassword}
+                                        >
+                                            {showPasswprd ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
 
-                                <TextField
-                                    required
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    fullWidth
-                                    defaultValue="Hello World"
-                                    placeholder="Password"
-                                    name="password"
-                                    type={showPasswprd ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={handleChangePassword}
-                                    autoComplete="new-password"
-                                    label="password"
-                                    autoFocus={datasFocos?.passwordFocos}
-                                    endAdornment={
-                                        <InputAdornment>
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={ShowPassword}
-                                            >
-                                                {showPasswprd ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-
-                            </Grid>
 
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
+                            <Button color="error" sx={{ width: '100%', mb: '0.4rem' }} variant='outlined' startIcon={<FacebookIcon />}>login with facebook</Button>
+                            <Button onClick={handleGoogleLogin} color="error" sx={{ width: '100%' }} variant='outlined' startIcon={<GoogleIcon />}>Login with google</Button>
                             <Button
-                                type="submit"
+                                onClick={handleLoginWithEmailPassword}
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
