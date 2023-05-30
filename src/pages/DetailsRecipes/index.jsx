@@ -106,7 +106,7 @@ export const DetailsRecipes = () => {
                         title="Voltar para as receitas"
                         followCursor
                     >
-                        <Link href="/">
+                        <Link href="/topReview">
                             <ArrowBackIcon fontSize="large" />
                         </Link>
                     </Tooltip>
