@@ -32,6 +32,7 @@ import {
     QuestionAnswer as QuestionAnswerIcon,
     Settings as SettingsIcon,
     Block as BlockIcon,
+    Logout as LogoutIcon,
     ExpandLess,
     ExpandMore,
     StarBorder,
@@ -63,6 +64,8 @@ import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { AuthContext } from '../../App'
+import { useContext } from 'react';
 
 const links = [
     {
@@ -125,6 +128,7 @@ const links = [
             { icon: '', name: 'Mode root', onClick: 'root' },
             { icon: '', name: 'Mode admin', onClick: 'admin' },
             { icon: '', name: 'Red alert mode ', onClick: 'Red' },
+            { icon: <LogoutIcon />, name: 'Log out', onClick: 'logout' },
             {
                 icon: <BlockIcon sx={{ color: '#CD5C5C' }} />,
                 name: 'Delete account',
@@ -143,8 +147,15 @@ const Links_b = ({
     children,
     selectedLink,
 }) => {
+    const { logout } = useContext(AuthContext);
     const isSelected = selectedLink === name
-
+    const handleLinkClick = (link) => {
+        if (link.onClick === 'logout') {
+            logout(); // Chame a função logout aqui
+        } else {
+            // Lógica para lidar com outros links
+        }
+    };
     return (
         <>
             <Stack
@@ -177,8 +188,8 @@ const Links_b = ({
                 }}
             >
                 {children?.length > 0 &&
-                    children.map((child) => (
-                        <MenuItem key={child.name} onClick={handleClick}>
+                    children.map((child, index) => (
+                        <MenuItem key={index} onClick={() => handleLinkClick(child)}>
                             <ListItemIcon>{child.icon}</ListItemIcon>
                             <ListItemText><Link href={child.link}>{child.name}</Link></ListItemText>
                         </MenuItem>
@@ -194,6 +205,14 @@ export const Links_a = ({
     children,
     selectedLink,
 }) => {
+    const { logout } = useContext(AuthContext);
+    const handleLinkClick = (link) => {
+        if (link.onClick === 'logout') {
+            logout(); // Chame a função logout aqui
+        } else {
+            // Lógica para lidar com outros links
+        }
+    };
     const isSelected = selectedLink === name
 
     return (
@@ -208,7 +227,7 @@ export const Links_a = ({
                     {children &&
                         children?.length > 0 &&
                         children.map((child) => (
-                            <ListItemButton sx={{ pl: 4, borderLeft: '20px solid white' }}>
+                            <ListItemButton key={child?.name} onClick={() => handleLinkClick(child)} sx={{ pl: 4, borderLeft: '20px solid white' }}>
                                 <ListItemIcon>{child.icon}</ListItemIcon>
                                 <Link href={child?.link}>
                                     <ListItemText primary={child.name} />
@@ -224,6 +243,7 @@ export const Links_a = ({
 }
 
 export const Links = () => {
+    const { logout } = useContext(AuthContext);
     const [scrollHeight, setScrollHeight] = useState(0);
     const [selectedLink, setSelectedLink] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
@@ -255,6 +275,8 @@ export const Links = () => {
             setSelectedLink(null)
             return
         }
+
+        console.log(selectedLink, newLink.onClick);
         setSelectedLink(newLink)
         setAnchorEl(event.target)
     }
