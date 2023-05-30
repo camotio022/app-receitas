@@ -32,6 +32,7 @@ import {
     QuestionAnswer as QuestionAnswerIcon,
     Settings as SettingsIcon,
     Block as BlockIcon,
+    Logout as LogoutIcon,
     ExpandLess,
     ExpandMore,
     StarBorder,
@@ -54,15 +55,17 @@ import {
     useScrollTrigger,
     Slide,
     Fab,
+    Link,
     Fade,
 } from '@mui/material'
-
-import { Link } from 'react-router-dom'
 
 import * as Tag from './styles'
 import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { AuthContext } from '../../App'
+import { useContext } from 'react';
 
 const links = [
     {
@@ -89,12 +92,13 @@ const links = [
             {
                 name: 'User Login',
                 icon: <LoginIcon />,
+                link: '/signin'
             },
             { name: 'User Register', icon: <PersonAddIcon /> },
             { name: 'Single Recipe', icon: <RestaurantMenuIcon /> },
             { name: 'Single Video', icon: <PlayCircleIcon /> },
             { name: 'Single Book', icon: <BookmarksIcon /> },
-            { name: 'Create Recipe', icon: <BookmarkAddIcon /> },
+            { name: 'Create Recipe', icon: <BookmarkAddIcon />, link: '/createRecipes' },
             { name: 'About us', icon: <InfoIcon /> },
             { name: 'Top Review', icon: <StarIcon /> },
             { name: 'Contacts', icon: <AlternateEmailIcon /> },
@@ -124,6 +128,7 @@ const links = [
             { icon: '', name: 'Mode root', onClick: 'root' },
             { icon: '', name: 'Mode admin', onClick: 'admin' },
             { icon: '', name: 'Red alert mode ', onClick: 'Red' },
+            { icon: <LogoutIcon />, name: 'Log out', onClick: 'logout' },
             {
                 icon: <BlockIcon sx={{ color: '#CD5C5C' }} />,
                 name: 'Delete account',
@@ -142,8 +147,15 @@ const Links_b = ({
     children,
     selectedLink,
 }) => {
+    const { logout } = useContext(AuthContext);
     const isSelected = selectedLink === name
-
+    const handleLinkClick = (link) => {
+        if (link.onClick === 'logout') {
+            logout(); // Chame a função logout aqui
+        } else {
+            // Lógica para lidar com outros links
+        }
+    };
     return (
         <>
             <Stack
@@ -176,17 +188,16 @@ const Links_b = ({
                 }}
             >
                 {children?.length > 0 &&
-                    children.map((child) => (
-                        <MenuItem key={child.name} onClick={handleClick}>
+                    children.map((child, index) => (
+                        <MenuItem key={index} onClick={() => handleLinkClick(child)}>
                             <ListItemIcon>{child.icon}</ListItemIcon>
-                            <ListItemText>{child.name}</ListItemText>
+                            <ListItemText><Link href={child.link}>{child.name}</Link></ListItemText>
                         </MenuItem>
                     ))}
             </Menu>
         </>
     )
 }
-
 export const Links_a = ({
     name,
     handleClick,
@@ -194,8 +205,14 @@ export const Links_a = ({
     children,
     selectedLink,
 }) => {
-    const [show, setShow] = useState(true)
-
+    const { logout } = useContext(AuthContext);
+    const handleLinkClick = (link) => {
+        if (link.onClick === 'logout') {
+            logout(); // Chame a função logout aqui
+        } else {
+            // Lógica para lidar com outros links
+        }
+    };
     const isSelected = selectedLink === name
 
     return (
@@ -210,9 +227,11 @@ export const Links_a = ({
                     {children &&
                         children?.length > 0 &&
                         children.map((child) => (
-                            <ListItemButton sx={{ pl: 4, borderLeft: '20px solid white' }}>
+                            <ListItemButton key={child?.name} onClick={() => handleLinkClick(child)} sx={{ pl: 4, borderLeft: '20px solid white' }}>
                                 <ListItemIcon>{child.icon}</ListItemIcon>
-                                <ListItemText primary={child.name} />
+                                <Link href={child?.link}>
+                                    <ListItemText primary={child.name} />
+                                </Link>
                             </ListItemButton>
                         ))}
                 </List>
@@ -223,41 +242,41 @@ export const Links_a = ({
     // )
 }
 
-document.querySelector('#wrapper')?.addEventListener('scroll', (scroll) => {
-    console.log('Scroll bar', scroll)
-})
-function ScrollTop({ children, window }) {
-
-    const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
-        disableHysteresis: true,
-        threshold: 100,
-    });
-
-    return (
-        <Fade in={trigger}>
-            <Box
-                onClick={handleClick}
-                role="presentation"
-                sx={{ position: 'fixed', bottom: 16, right: 16 }}
-            >
-                {children}
-            </Box>
-        </Fade>
-    )
-}
-const handleClick = (event) => {
-
-};
 export const Links = () => {
+    const { logout } = useContext(AuthContext);
+    const [scrollHeight, setScrollHeight] = useState(0);
     const [selectedLink, setSelectedLink] = useState()
     const [anchorEl, setAnchorEl] = useState(null)
+    useEffect(() => {
+        const handleScroll = () => {
+            const height = window.scrollY || 0;
+            setScrollHeight(height);
+        };
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll);
+
+            // Limpe o evento de scroll quando o componente for desmontado
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
 
     const handleSelectLink = (event, newLink) => {
         if (selectedLink === newLink) {
             setSelectedLink(null)
             return
         }
+
+        console.log(selectedLink, newLink.onClick);
         setSelectedLink(newLink)
         setAnchorEl(event.target)
     }
@@ -274,12 +293,18 @@ export const Links = () => {
     if (matches) {
         return (
             <>
-                <ScrollTop>
-                    <Fab size="small" aria-label="scroll back to top">
-                        <KeyboardArrowUpIcon />
-                    </Fab>
-                </ScrollTop>
-                <Tag.MenuBar>
+                <Tag.MenuBar sx={scrollHeight > 50 ? {} : { height: '6rem' }}>
+                    <Fade in={scrollHeight}>
+                        <Box
+                            onClick={scrollToTop}
+                            role="presentation"
+                            sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                        >
+                            <Fab size="small" aria-label="scroll back to top">
+                                <KeyboardArrowUpIcon />
+                            </Fab>
+                        </Box>
+                    </Fade>
                     <Stack>
                         <img src={Logo} alt="" />
                     </Stack>
@@ -299,15 +324,20 @@ export const Links = () => {
             </>
         )
     }
-
     return (
         <Box>
-            <ScrollTop>
-                <Fab size="small" aria-label="scroll back to top">
-                    <KeyboardArrowUpIcon />
-                </Fab>
-            </ScrollTop>
-            <Tag.MenuBar>
+            <Tag.MenuBar sx={scrollHeight > 50 ? {} : { height: '8rem' }}>
+                <Fade in={scrollHeight}>
+                    <Box
+                        onClick={scrollToTop}
+                        role="presentation"
+                        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                    >
+                        <Fab size="small" aria-label="scroll back to top">
+                            <KeyboardArrowUpIcon />
+                        </Fab>
+                    </Box>
+                </Fade>
                 <Stack>
                     <img src={Logo} alt="" />
                 </Stack>
@@ -368,6 +398,4 @@ export const Links = () => {
         </Box>
 
     )
-
-    // )
 }

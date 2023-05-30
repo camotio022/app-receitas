@@ -13,8 +13,13 @@ import Logo from '../../images/logo/logo-menu.png';
 import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert, Paper, Avatar, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
+import { AuthContext } from '../../App'
+import { useContext } from 'react';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -49,15 +54,13 @@ export const ComponInput = ({ id,
     )
 }
 export const SignIn = () => {
+    const { login } = useContext(AuthContext);
     const [progress, setProgress] = useState(false);
     const [showalert, setAlert] = useState('');
-    const navigate = useNavigate();
-    const [data, setData] = useState({
-        password: '',
-        email: '',
-        lastName: '',
-        name: '',
-    })
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate()
     const [datasFocos, setNameFocos] = useState({
         passwordFocos: false,
         emailFocos: false,
@@ -65,53 +68,96 @@ export const SignIn = () => {
         nameFocos: false,
     })
     const [showPasswprd, setShowPasswprd] = useState(false)
-    const handleChange = (e) => {
+    const handleChangeEmail = (e) => {
         const value = e.target.value;
-        const name = e.target.name;
-        setData((old) => {
-            return { ...old, [name]: value };
-        });
+        setEmail(value);
+    };
+    const handleChangePassword = (e) => {
+        const value = e.target.value;
+        setPassword(value);
     };
 
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
     }
 
-    const lognUser = async (e) => {
+    const handleGoogleLogin = async () => {
         try {
-            await signInWithEmailAndPassword(getAuth(), data?.email, data?.password);
-            // Login bem-sucedido
-            console.log('Login bem-sucedido!');
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const userData = {
+                uid: user.uid,
+                email: user.email,
+                // Outros dados do usuário que você queira armazenar
+            };
+            login(userData);
+            console.log('Usuário logado com sucesso:', user);
+            navigate('/topReview');
         } catch (error) {
-            // Tratamento de erros
-            console.error('Erro ao fazer login:', error.message);
+            console.error('Erro ao fazer login com o Google:', error);
+            // Trate o erro de login com o Google conforme necessário
         }
-    }
-
-    const submtForum = (e) => {
+    };
+    const handleLoginWithEmailPassword = async (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
-        if (data?.email == "" ||
-            data?.email.indexOf('@') == -1 ||
-            data?.email.indexOf('.com') == -1) {
+
+        if (email == "" ||
+            email.indexOf('@') == -1 ||
+            email.indexOf('.com') == -1) {
             setAlert("Preencha campo E-MAIL corretamente!");
-            setNameFocos(!data?.datasFocos)
+            setNameFocos(!datasFocos?.datasFocos)
             setTimeout(() => {
                 setAlert("");
             }, '3000');
             return false;
         }
-        if (data?.password.length < 8) {
+        if (password.length < 8) {
             alert("A senha deve conter no minímo 8 digitos!");
             return false;
-        } else if (!regex.exec(data?.password)
+        } else if (!regex.exec(password)
         ) {
             alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
             return false;
         }
-        lognUser()
-    };
+        const checkUserExists = async (email, password) => {
+            try {
+                const auth = getAuth();
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                const userData = {
+                    uid: user.uid,
+                    email: user.email,
+                    // Outros dados do usuário que você queira armazenar
+                };
 
+                return userData;
+            } catch (error) {
+                console.error('Erro ao verificar a existência do usuário:', error);
+                throw error; // Ou faça algo diferente com o erro
+            }
+
+        };
+        try {
+            const userExists = await checkUserExists(email, password);
+            if (userExists) {
+                login(userExists);
+                console.log('logado');
+                navigate('/topReview');
+            } else {
+                console.log('Usuário não encontrado');
+            }
+        } catch (error) {
+            console.error('Erro ao verificar a existência do usuário:', error);
+            if (error.code === 'auth/wrong-password') {
+                alert('Senha incorreta');
+            } else {
+                alert('Erro desconhecido');
+            }
+        }
+    }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -147,15 +193,17 @@ export const SignIn = () => {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <Grid component="form" noValidate onSubmit={submtForum} sx={{
+                        <Grid component="div" noValidate sx={{
                             mt: 1,
                             display: 'flex',
                             alignItems: "center",
                             justifyContent: "center",
                             flexDirection: "column",
+
                             height: '100%'
                         }}>
                             <TextField
+                                sx={{ m: 1, bgcolor: 'transparent' }}
                                 id="outlined-error-helper-text"
                                 helperText={showalert}
                                 required
@@ -163,8 +211,8 @@ export const SignIn = () => {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
-                                value={data?.email}
-                                onChange={handleChange}
+                                value={email}
+                                onChange={handleChangeEmail}
                                 autoFocus={datasFocos?.emailFocos}
                             />
                             <TextField
@@ -176,8 +224,8 @@ export const SignIn = () => {
                                 placeholder="Password"
                                 name="password"
                                 type={showPasswprd ? 'text' : 'password'}
-                                value={data?.password}
-                                onChange={handleChange}
+                                value={password}
+                                onChange={handleChangePassword}
                                 autoComplete="new-password"
                                 label="password"
                                 autoFocus={datasFocos?.passwordFocos}
@@ -193,12 +241,15 @@ export const SignIn = () => {
                                 }
                             />
 
+
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
+                            <Button color="error" sx={{ width: '100%', mb: '0.4rem' }} variant='outlined' startIcon={<FacebookIcon />}>login with facebook</Button>
+                            <Button onClick={handleGoogleLogin} color="error" sx={{ width: '100%' }} variant='outlined' startIcon={<GoogleIcon />}>Login with google</Button>
                             <Button
-                                type="submit"
+                                onClick={handleLoginWithEmailPassword}
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
@@ -206,7 +257,7 @@ export const SignIn = () => {
                                 Sign In
                             </Button>
                             <Grid container>
-                                <Grid item xs>
+                                <Grid item xs={12}>
                                     <Link href="#" variant="body2">
                                         Forgot password?
                                     </Link>
@@ -222,6 +273,6 @@ export const SignIn = () => {
                     </Box>
                 </Grid>
             </Grid>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
