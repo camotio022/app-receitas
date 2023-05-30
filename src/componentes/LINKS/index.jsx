@@ -33,6 +33,9 @@ import {
     Settings as SettingsIcon,
     Block as BlockIcon,
     Logout as LogoutIcon,
+    Terminal as TerminalIcon,
+    TaxiAlert as TaxiAlertIcon,
+    AdminPanelSettings as AdminPanelSettingsIcon,
     ExpandLess,
     ExpandMore,
     StarBorder,
@@ -125,12 +128,12 @@ const links = [
         icon: <SettingsIcon />, name: 'Advanced settings', onClick: 'adSettings',
         children: [
 
-            { icon: '', name: 'Mode root', onClick: 'root' },
-            { icon: '', name: 'Mode admin', onClick: 'admin' },
-            { icon: '', name: 'Red alert mode ', onClick: 'Red' },
+            { icon: <TerminalIcon/>, name: 'Mode root', onClick: 'root' },
+            { icon: <AdminPanelSettingsIcon/>, name: 'Mode admin', onClick: 'admin' },
+            { icon: <TaxiAlertIcon/>, name: 'Red alert mode ', onClick: 'Red' },
             { icon: <LogoutIcon />, name: 'Log out', onClick: 'logout' },
             {
-                icon: <BlockIcon sx={{ color: '#CD5C5C' }} />,
+                icon: <BlockIcon/>,
                 name: 'Delete account',
                 onClick: 'deleaccont',
             },
