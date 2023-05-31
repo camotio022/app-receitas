@@ -9,18 +9,21 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
+import {
+    KeyboardArrowUp as KeyboardArrowUpIcon,
+    ArrowDropDown as ArrowDropDownIcon,
+} from '@mui/icons-material'
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from './recipesIngredients';
-import PaymentForm from './recipesSteps';
-import Review from './recipesNutricional';
-import UserInfos from './UserInfos';
 import { Logo } from '../../componentes/LOGO';
 import { Grid } from '@mui/joy';
 import { useParams } from 'react-router-dom';
 import './index.css'
 import { RecipeForm } from './RecipeForm';
+import { Fab, Fade } from '@mui/material';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 
 
@@ -30,7 +33,7 @@ const defaultTheme = createTheme();
 
 export const CreateRecipes = ({ }) => {
     const steps = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
-    const [formData, setFormData] = React.useState({
+    const [formData, setFormData] = useState({
         recipeTitle: "",
         recipeDescription: "",
         ingredient1: "",
@@ -80,21 +83,35 @@ export const CreateRecipes = ({ }) => {
         console.log(formData);
     };
 
-    const [activeStep, setActiveStep] = React.useState(0);
     const { id } = useParams();
+    
 
-    const handleNext = () => {
-        setActiveStep(activeStep + 1);
-    };
+    const [scrollHeight, setScrollHeight] = useState(0);
+    useEffect(() => {
+        const handleScroll = () => {
+            const height = window.scrollY || 0;
+            setScrollHeight(height);
+        };
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll);
 
-    const handleBack = () => {
-        setActiveStep(activeStep - 1);
-    };
+            // Limpe o evento de scroll quando o componente for desmontado
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, []);
 
-
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    }
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
+
             <AppBar
                 position="fixed"
                 color="default"
@@ -103,6 +120,7 @@ export const CreateRecipes = ({ }) => {
                     position: 'fixed',
                     borderBottom: (t) => `1px solid ${t.palette.divider}`,
                     display: 'flex',
+                    height: '7rem',
                     alignItems: 'center',
                     justifyContent: 'center',
 
@@ -123,47 +141,30 @@ export const CreateRecipes = ({ }) => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Container component="main" maxWidth="sm" sx={{ mb: 4, mt: 9 }}>
+            <Fade in={scrollHeight}>
+                <Box
+                    onClick={scrollToTop}
+                    role="presentation"
+                    sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                >
+                    <Fab size="small" aria-label="scroll back to top">
+                        <KeyboardArrowUpIcon />
+                    </Fab>
+                </Box>
+            </Fade>
+            <Container component="main" maxWidth="sm" sx={{ mb: 4, mt: 15, display: 'center', alignItems: 'center', justifyContent: 'center' }}>
                 <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                    <Typography component="h1" variant="h4" align="center">
-                        {activeStep === steps.length ? "Estados da sua receita" :
-                            "Criação de receitas"}
-                    </Typography>
-                    <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-                        {steps.map((label) => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                    {activeStep === steps.length ? (
-                        <>
 
-                            <React.Fragment>
-                                <Typography variant="h5" gutterBottom>
-                                    Obrigado pela sua contribuição                                </Typography>
-                                <Typography variant="subtitle1">
-                                    Receita criada com sucesso!
-                                    Obrigado pela sua contribuição, o número da sua receita é: 23, id: sdarewesdsssZ\DaqSSSXx
-                                </Typography>
-                            </React.Fragment>
-                            <Grid xs={12} gap={3}>
-                                <Button size="small" sx={{ mt: 4, mr: 2 }} variant='outlined'>
-                                    <Link href={`/detailsRecipes/:${id}`}>{"Ver a sua receita"}</Link>
-                                </Button>
-                                <Button size="small" sx={{ mt: 4 }} variant='outlined'><Link href='/'>{"Voltar para home"}</Link></Button>
-                            </Grid>
-                        </>
-                    ) : (
-                        <React.Fragment>
-                            <RecipeForm
-                                formData={formData}
-                                onChange={handleInputChanges}
-                                handleImageChange={handleImageChange}
-                                onSubmit={handleSubmit}
-                            />
-                        </React.Fragment>
-                    )}
+
+                    <React.Fragment>
+                        <RecipeForm
+                            formData={formData}
+                            onChange={handleInputChanges}
+                            handleImageChange={handleImageChange}
+                            onSubmit={handleSubmit}
+                        />
+                    </React.Fragment>
+
                 </Paper>
             </Container>
         </ThemeProvider>
