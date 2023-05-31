@@ -20,6 +20,7 @@ import { Logo } from '../../componentes/LOGO';
 import { Grid } from '@mui/joy';
 import { useParams } from 'react-router-dom';
 import './index.css'
+import { RecipeForm } from './RecipeForm';
 
 
 
@@ -56,8 +57,7 @@ export const CreateRecipes = ({ }) => {
         email: "",
         country: ""
     });
-
-    const handleInputChange = (event) => {
+    const handleInputChanges = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -67,35 +67,22 @@ export const CreateRecipes = ({ }) => {
         setFormData({ ...formData, recipeImage: file });
     };
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         Object.values(formData).find(i => {
-            if(i != null) {
-                alert('O formulário não está passando')
-                return false
+            if (i != null) {
+                alert('O formulário não está preenchido corretamente');
+                return false;
             }
-            alert('O formulárioestá passando')
-        })
+        });
+        alert('O formulário está preenchido corretamente');
         console.log(formData);
     };
 
-    function getStepContent(step) {
-        switch (step) {
-            case 0:
-                return <AddressForm onChange={handleInputChange} value={formData} />;
-            case 1:
-                return <PaymentForm onChange={handleInputChange} />;
-            case 2:
-                return <Review onChange={handleInputChange} />;
-            case 3:
-                return <UserInfos onChange={handleInputChange} />;
-            default:
-                throw new Error('Unknown step');
-        }
-    }
-
     const [activeStep, setActiveStep] = React.useState(0);
     const { id } = useParams();
+
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     };
@@ -103,6 +90,7 @@ export const CreateRecipes = ({ }) => {
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
+
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -168,22 +156,12 @@ export const CreateRecipes = ({ }) => {
                         </>
                     ) : (
                         <React.Fragment>
-                            {getStepContent(activeStep)}
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                {activeStep !== 0 && (
-                                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                                        Back
-                                    </Button>
-                                )}
-
-                                <Button
-                                    variant="contained"
-                                    onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
-                                    sx={{ mt: 3, ml: 1 }}
-                                >
-                                    {activeStep === steps.length - 1 ? 'submeter' : 'Next'}
-                                </Button>
-                            </Box>
+                            <RecipeForm
+                                formData={formData}
+                                onChange={handleInputChanges}
+                                handleImageChange={handleImageChange}
+                                onSubmit={handleSubmit}
+                            />
                         </React.Fragment>
                     )}
                 </Paper>
