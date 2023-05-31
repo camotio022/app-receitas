@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import {
+    FormControl as FormControlLabel
+} from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -16,7 +18,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 import { AuthContext } from '../../App'
 import { useContext } from 'react';
@@ -32,9 +34,7 @@ function Copyright(props) {
         </Typography>
     );
 }
-
 // TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 export const ComponInput = ({ id,
     helperText,
@@ -55,11 +55,11 @@ export const ComponInput = ({ id,
 }
 export const SignIn = () => {
     const { login } = useContext(AuthContext);
-    const [progress, setProgress] = useState(false);
-    const [showalert, setAlert] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [showAlert, setShowAlert] = useState('');
+
+
     const navigate = useNavigate()
     const [datasFocos, setNameFocos] = useState({
         passwordFocos: false,
@@ -107,22 +107,18 @@ export const SignIn = () => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
 
-        if (email == "" ||
-            email.indexOf('@') == -1 ||
-            email.indexOf('.com') == -1) {
-            setAlert("Preencha campo E-MAIL corretamente!");
-            setNameFocos(!datasFocos?.datasFocos)
+        if (email === '' || email.indexOf('@') === -1 || email.indexOf('.com') === -1) {
+            setShowAlert('Preencha o campo E-MAIL corretamente!');
             setTimeout(() => {
-                setAlert("");
-            }, '3000');
+                setShowAlert('');
+            }, 3000);
             return false;
         }
-        if (password.length < 8) {
-            alert("A senha deve conter no minímo 8 digitos!");
-            return false;
-        } else if (!regex.exec(password)
-        ) {
-            alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
+        if (password.length < 8 || !regex.exec(password)) {
+            setShowAlert('A senha deve conter no mínimo 8 caracteres, 1 caractere em maiúsculo, 2 números e 2 caracteres especiais!');
+            setTimeout(() => {
+                setShowAlert('');
+            }, 3000);
             return false;
         }
         const checkUserExists = async (email, password) => {
@@ -150,14 +146,29 @@ export const SignIn = () => {
                 console.log('logado');
                 navigate('/topReview');
             } else {
-                console.log('Usuário não encontrado');
+
             }
         } catch (error) {
             console.error('Erro ao verificar a existência do usuário:', error);
             if (error.code === 'auth/wrong-password') {
+                setPassword('')
                 alert('Senha incorreta');
             } else {
-                alert('Erro desconhecido');
+                if (error.code === 'auth/user-not-found') {
+                    const createUser = async (email, password) => {
+                        try {
+                            const auth = getAuth();
+                            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                            const user = userCredential.user;
+                            console.log('Usuário criado com sucesso:', user);
+                        } catch (error) {
+                            console.error('Erro ao criar usuário:', error);
+                        }
+                    };
+                    createUser(email, password);
+                } else {
+                    alert('Erro na mídia')
+                }
             }
         }
     }
@@ -207,8 +218,7 @@ export const SignIn = () => {
                         }}>
                             <TextField
                                 sx={{ m: 1, bgcolor: 'transparent' }}
-                                id="outlined-error-helper-text"
-                                helperText={showalert}
+                                helperText={showAlert}
                                 required
                                 fullWidth
                                 label="Email Address"
@@ -216,12 +226,13 @@ export const SignIn = () => {
                                 autoComplete="email"
                                 value={email}
                                 onChange={handleChangeEmail}
-                                autoFocus={datasFocos?.emailFocos}
+                                id="filled-basic"
+                                variant="filled"
                             />
                             <TextField
+                                sx={{ m: 1, bgcolor: 'transparent' }}
                                 required
-                                id="outlined-error-helper-text"
-                                helperText="Incorrect entry."
+                                helperText={showAlert}
                                 fullWidth
                                 defaultValue="Hello World"
                                 placeholder="Password"
@@ -231,7 +242,9 @@ export const SignIn = () => {
                                 onChange={handleChangePassword}
                                 autoComplete="new-password"
                                 label="password"
-                                autoFocus={datasFocos?.passwordFocos}
+                                autoFocus={showAlert}
+                                id="filled-basic"
+                                variant="filled"
                                 endAdornment={
                                     <InputAdornment>
                                         <IconButton
@@ -243,7 +256,6 @@ export const SignIn = () => {
                                     </InputAdornment>
                                 }
                             />
-
 
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
