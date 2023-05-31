@@ -90,10 +90,13 @@ export const SignIn = () => {
             const userData = {
                 uid: user.uid,
                 email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
                 // Outros dados do usuário que você queira armazenar
             };
+
             login(userData);
-            console.log('Usuário logado com sucesso:', user);
+            console.log('Usuário logado com sucesso:', user, user.uid,);
             navigate('/topReview');
         } catch (error) {
             console.error('Erro ao fazer login com o Google:', error);
