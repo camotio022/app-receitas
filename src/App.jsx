@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Router, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { darkTheme, lightTheme } from './App/theme'
 
-// import GlobalStyles from './App/global/global'
 
 import { HomePage } from './pages/Home'
 import { ThemeButton } from './colors.jsx'
@@ -33,30 +32,28 @@ function NavigationHandler() {
     return <Navigate to={isLoggedIn ? location.pathname : 'http://localhost:3000'} replace />;
 }
 const AuthProvider = ({ children }) => {
-
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState(null);
-    const userData = JSON.parse(localStorage.getItem(''));
+    const [userData, setUserData] = useState(null);
     useEffect(() => {
-        // Verificar se o usuário está autenticado
         const checkUserAuthentication = () => {
             const loggedInStatus = localStorage.getItem('isLoggedIn');
             setIsLoggedIn(loggedInStatus === 'true');
-            // Verifica se há dados do usuário no localStorage
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (loggedInStatus === 'true' && userData) {
-                setUser(userData);
+
+            if (loggedInStatus === 'true') {
+                const userDataFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+                if (userDataFromLocalStorage) {
+                    setUserData(userDataFromLocalStorage);
+                    setUser(userDataFromLocalStorage);
+                }
             }
         };
         checkUserAuthentication();
-    }, []);
-    const login = () => {
-        // Lógica de autenticação bem-sucedida
-        // Define isAuthenticated como true e armazena o token de autenticação
+    }, [userData]);
+    const login = (userData) => {
         setIsLoggedIn(true);
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('user', JSON.stringify(userData));
-        // Outras lógicas de armazenamento de token de autenticação, como cookies ou localStorage
     };
     const logout = () => {
         alert('Logout')
@@ -74,10 +71,10 @@ const AuthProvider = ({ children }) => {
     );
 };
 const MyComponent = () => {
-    const { isLoggedIn, login, logout } = useContext(AuthContext);
+    const auth = useContext(AuthContext);
 
-
-
+ 
+  
     const [useDarkMode, setUseDarkMode] = useState(false)
     const [iSuserLoged, setIsUserLoged] = useState(false)
     const handleToggleMode = () => {
@@ -86,7 +83,7 @@ const MyComponent = () => {
     const theme = useDarkMode ? darkTheme : lightTheme
 
 
-    if (isLoggedIn) {
+    if (auth.isLoggedIn) {
         return (
             <div>
                 <ThemeProvider theme={theme}>
@@ -137,5 +134,5 @@ function App() {
 }
 
 
-
+export { useContext };
 export default App
