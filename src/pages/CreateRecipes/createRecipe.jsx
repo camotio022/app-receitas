@@ -29,7 +29,6 @@ import { useEffect } from 'react'
 const defaultTheme = createTheme()
 
 export const CreateRecipes = ({}) => {
-    const steps = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais']
     const [formData, setFormData] = useState({
         recipeTitle: '',
         recipeDescription: '',
@@ -78,9 +77,6 @@ export const CreateRecipes = ({}) => {
         alert('O formulário está preenchido corretamente')
         console.log(formData)
     }
-
-    const { id } = useParams()
-
     const [scrollHeight, setScrollHeight] = useState(0)
     useEffect(() => {
         const handleScroll = () => {

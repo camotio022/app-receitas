@@ -20,68 +20,82 @@ import StepLabel from '@mui/material/StepLabel';
 
 export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleImageChange }) => {
     const [activeStep, setActiveStep] = React.useState(0);
-    const steps = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
-    const [inputs, setInputs] = React.useState([]);
-    const [prep, setPrep] = React.useState([]);
+    const stepNames = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
+    const [stepsData, setStepsData] = React.useState([
+        { inputs: [], prep: [] }, // Etapa 0
+        { inputs: [], prep: [] }, // Etapa 1
+        { inputs: [], prep: [] }, // Etapa 2
+        { inputs: [], prep: [] }, // Etapa 3
+    ]);
+
+
     const [step, setStep] = React.useState(0); // Variável de estado para controlar o passo atual
 
     const nextStep = () => {
         setStep(step + 1); // Atualiza o valor do passo para avançar para o próximo
     };
 
+    const handleBack = () => {
+        setStep(step - 1); // Atualiza o valor do passo para voltar para o anterior
+    };
 
     const AddIngre = () => {
-        setInputs([...inputs, '']);
+        const newInputs = [...stepsData[step].inputs, ''];
+        const newStepsData = [...stepsData];
+        newStepsData[step].inputs = newInputs;
+        setStepsData(newStepsData);
     };
+
     const handleInputsChange = (event, index) => {
-        const newInputs = [...inputs];
+        const newInputs = [...stepsData[step].inputs];
         newInputs[index] = event.target.value;
-        setInputs(newInputs);
+        const newStepsData = [...stepsData];
+        newStepsData[step].inputs = newInputs;
+        setStepsData(newStepsData);
     };
+
     const removeIngred = (index) => {
-        const newInputs = [...inputs];
+        const newInputs = [...stepsData[step].inputs];
         newInputs.splice(index, 1);
-        setInputs(newInputs);
+        const newStepsData = [...stepsData];
+        newStepsData[step].inputs = newInputs;
+        setStepsData(newStepsData);
     };
+
     const AddStep = () => {
-        setPrep([...prep, '']);
+        const newPrep = [...stepsData[step].prep, ''];
+        const newStepsData = [...stepsData];
+        newStepsData[step].prep = newPrep;
+        setStepsData(newStepsData);
     };
 
-    const handleInputChange = (event, index) => {
-        const newInputs = [...prep];
-        newInputs[index] = event.target.value;
-        setPrep(newInputs);
-    };
     const removeInput = (index) => {
-        const newInputs = [...prep];
-        newInputs.splice(index, 1);
-        setPrep(newInputs);
+        const newPrep = [...stepsData[step].prep];
+        newPrep.splice(index, 1);
+        const newStepsData = [...stepsData];
+        newStepsData[step].prep = newPrep;
+        setStepsData(newStepsData);
     };
-
-    const handleBack = () => {
-        setActiveStep(activeStep - 1);
-    };
-   
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     };
 
-   
+
+
     return (
         <>
             <Typography component="h1" variant="h4" align="center">
-                {activeStep === steps.length ? "Estados da sua receita" :
-                    "Criação de receitas"}
+                {step === stepsData.length ? "Estados da sua receita" : "Criação de receitas"}
             </Typography>
-            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
+            <Stepper activeStep={step} sx={{ pt: 3, pb: 5 }}>
+                {stepNames.map((_, index) => (
+                    <Step key={index}>
+                        <StepLabel>{index < step ? "Concluído" : stepNames[index]}</StepLabel>
                     </Step>
                 ))}
             </Stepper>
-            {activeStep === steps.length && (
+            {step === stepNames.length && (
                 <>
 
                     <React.Fragment>
@@ -112,7 +126,7 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                                 id="recipeTitle"
                                 name="recipeTitle"
                                 value={formData?.recipeTitle}
-                                onChange={handleInputChange}
+                                onChange={handleInputsChange}
                                 label="Insirá o titulo da receita"
                                 fullWidth
                                 autoComplete="given-name"
@@ -131,27 +145,28 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                             />
                         </Grid>
 
-                        {inputs.map((value, index) => (
-                            <Grid item xs={12} >
-                                <TextField
-                                    id={index}
-                                    name={index}
-                                    label={`ingrediente ${index + 1}`}
-                                    fullWidth
-                                    variant="standard"
-                                    key={index}
-                                    type="text"
-                                    value={value}
-                                    onChange={(e) => handleInputsChange(e, index)}
-                                />
-                            </Grid>
+                        {stepsData[step].inputs.map((ingred, index) => (
+                            <>
+                                <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
+                                    <TextField
+                                        label={`Etapa ${index + 1}`}
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        onChange={(e) => handleInputsChange(e, index)}
+                                    />
+
+                                </Grid>
+                                <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
+                                <Button color="error" onClick={() => removeIngred(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                                    Delete step
+                                </Button>
+                                </Grid>
+                            </>
                         ))}
                         <Grid item xs={12}>
-                            {inputs.length < 10 && <Button sx={{ mr: 2 }} onClick={AddIngre} variant='contained'>
+                            {stepsData.length < 10 && <Button size='small' sx={{ mr: 2 }} onClick={AddIngre} variant='contained'>
                                 + Add ingredient
-                            </Button>}
-                            {inputs.length > 0 && <Button color="error" onClick={removeIngred} variant='outlined' startIcon={<DeleteIcon />}>
-                                Delete ingredient
                             </Button>}
                         </Grid>
                         <Grid item xs={12}>
@@ -175,27 +190,24 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                 </Typography>
                 <Grid container spacing={3}>
 
-                    {prep.map((value, index) => (
-                        <Grid item xs={12} >
+                    {stepsData[step].inputs.map((ingred, index) => (
+                        <Grid item xs={12} key={index}>
                             <TextField
-                                id={index}
-                                name={index}
                                 label={`Etapa ${index + 1}`}
                                 fullWidth
                                 variant="standard"
-                                key={index}
                                 type="text"
-                                value={value}
-                                onChange={(e) => handleInputChange(e, index)}
+                                onChange={(e) => handleInputsChange(e, index)}
                             />
+                            <Button color="error" onClick={() => removeIngred(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                                Delete step
+                            </Button>
+
                         </Grid>
                     ))}
                     <Grid item xs={12}>
                         {prep.length < 10 && <Button sx={{ mr: 2 }} onClick={AddStep} variant='contained'>
                             + Add step
-                        </Button>}
-                        {prep.length > 0 && <Button color="error" onClick={removeInput} variant='outlined' startIcon={<DeleteIcon />}>
-                            Delete step
                         </Button>}
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -427,9 +439,6 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                                 variant="standard"
                             />
                         </Grid>
-
-
-
                         <Grid item xs={12} sm={3}>
                             <TextField
                                 required
@@ -452,8 +461,8 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                             <Button onClick={handleBack} sx={{ mr: 1 }}>
                                 Voltar
                             </Button>
-                            <Button onClick={handleSubmit} variant="contained">
-                                Criar a receita
+                            <Button onClick={nextStep} variant="contained">
+                                Terminar a receita
                             </Button>
                         </Grid>
                     </Grid>
