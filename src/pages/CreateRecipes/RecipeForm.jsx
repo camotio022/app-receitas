@@ -10,6 +10,8 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { Link } from 'react-router-dom';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { FormLabel, RadioGroup, Radio } from '@mui/material';
 
 
 
@@ -17,9 +19,8 @@ import { Link } from 'react-router-dom';
 
 
 
-
-
-export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleImageChange }) => {
+        
+export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSubmit, handleImageChange, setFormData }) => {
     const [activeStep, setActiveStep] = React.useState(0);
     const stepNames = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
     const [stepsData, setStepsData] = React.useState([
@@ -126,12 +127,12 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                         required
                         id="recipeTitle"
                         name="recipeTitle"
-                        value={formData?.recipeTitle}
-                        onChange={handleInputsChange}
+                        onChange={handleInputChangesCreateRecipes}
                         label="Insirá o titulo da receita"
                         fullWidth
                         autoComplete="given-name"
-                        variant="standard"
+                        variant='filled'
+                        value={formData?.recipeTitle}
                     />
                 </Grid>
                 <Grid item xs={12} >
@@ -143,6 +144,8 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                         fullWidth
                         autoComplete="description"
                         size="lg"
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.recipeDescription}
                     />
                 </Grid>
 
@@ -187,7 +190,7 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                         <TextField
                             label={`Etapa ${index + 1}`}
                             fullWidth
-                            variant="standard"
+                            variant='filled'
                             type="text"
                             value={input}
                             onChange={(e) => handleInputsChange(e, index)}
@@ -206,93 +209,105 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                     <TextField
                         required
                         id="prepTime"
+                        name="prepTime"
                         label="Tempo de preparo"
                         fullWidth
                         autoComplete="prepTime"
-                        variant="standard"
+                        type='number'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.prepTime}
+                        variant='filled'
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <TextField
                         required
                         id="cookTime"
+                        name='cookTime'
                         label="Tempo de cozimento"
-
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.cookTime}
+                        type={"number"}
                         fullWidth
                         autoComplete="cc-csc"
-                        variant="standard"
+                        variant='filled'
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <TextField
                         required
                         id="servingSize"
+                        name='servingSize'
                         label="Rendimento da receita/porções"
                         fullWidth
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.servingSize}
                         autoComplete="cc-csc"
-                        variant="standard"
+                        variant='filled'
                     />
                 </Grid>
             </Grid>
 
 
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom mt={3}>
                 Categorias e Nutrição
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <select
-                        name="recipeCategory"
-                        placeholder="Select a pet…"
-                        indicator={<KeyboardArrowDown />}
-                        style={{
-                            width: 240,
-                            [`& .${selectClasses.indicator}`]: {
-                                transition: '0.2s',
-                                [`&.${selectClasses.expanded}`]: {
-                                    transform: 'rotate(-180deg)',
-                                },
-                            },
-                        }}
-                    >
-                        <option value="">Selecione a Categoria</option>
-                        <option value="breakfast">Café da manhã</option>
-                        <option value="lunch">Almoço</option>
-                        <option value="dinner">Jantar</option>
-                    </select>
+                <Grid item xs={12} lg={6}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
+                        <Select
+                            id="demo-simple-select"
+                            labelId="demo-simple-select-label"
+                            name="recipeCategory"
+                            value={formData.recipeCategory}
+                            onChange={handleInputChangesCreateRecipes}
+                            placeholder="Selecione a Categoria"
+                            variant='filled'
+                        >
+                            <MenuItem value="">Selecione a Categoria</MenuItem>
+                            <MenuItem value="breakfast">Café da manhã</MenuItem>
+                            <MenuItem value="lunch">Almoço</MenuItem>
+                            <MenuItem value="dinner">Jantar</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Grid>
+
                 <Grid item xs={12} md={6} gap={1}>
-                    <span>Dificuldade da Receita:</span>
-                    <label >
-                        <Input
-                            type="radio"
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Dificuldade da Receita:</FormLabel>
+                        <RadioGroup
                             name="recipeDifficulty"
-                            value="easy"
-                        />
-                        Fácil
-                    </label>
-                    <label>
-                        <Input
-                            type="radio"
-                            name="recipeDifficulty"
-                            value="medium"
-                        />
-                        Médio
-                    </label>
-                    <label>
-                        <Input
-                            type="radio"
-                            name="recipeDifficulty"
-                            value="hard"
-                        />
-                        Difícil
-                    </label>
+                            value={formData.recipeDifficulty}
+                            onChange={handleInputChangesCreateRecipes}
+                        >
+                            <FormControlLabel
+                                value="easy"
+                                control={<Radio />}
+                                label="Fácil"
+                            />
+                            <FormControlLabel
+                                value="medium"
+                                control={<Radio />}
+                                label="Médio"
+                            />
+                            <FormControlLabel
+                                value="hard"
+                                control={<Radio />}
+                                label="Difícil"
+                            />
+                        </RadioGroup>
+                    </FormControl>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                    <Input
+                <Grid item xs={12} lg={6}>
+                    <TextField
+                        fullWidth
                         type="file"
                         name="recipeImage"
                         accept="image/*"
+                        onChange={handleImageChange}
+                        value={formData?.recipeImage}
+                        variant='filled'
                     />
                 </Grid>
 
@@ -302,83 +317,86 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                         fullWidth
                         required
                         id="calories"
+                        name='calories'
                         label="Calorias"
                         autoComplete="calories"
-                        variant="standard"
-
+                        variant="filled"
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.calories}
+                        type='number'
                     />
                 </Grid>
 
                 <Grid item xs={12} sm={3}>
                     <TextField
-                       fullWidth
+                        fullWidth
+                        name='carbs'
                         required
                         id="carbs"
                         label="Carboidratos"
-
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.carbs}
                         autoComplete="carboidratos"
-                        variant="standard"
+                        variant='filled'
+                        type='number'
 
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                     <TextField
-                       fullWidth
+                        fullWidth
                         required
+                        name="protein"
                         id="proteinas"
                         label="Proteínas"
                         autoComplete="proteinas"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.protein}
+                        type='number'
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                     <TextField
-                       fullWidth
+                        fullWidth
                         required
                         id="fibras"
+                        name='fat'
                         label="Fibras"
                         autoComplete="fibras"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.fat}
+                        type='number'
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                     <TextField
-                       fullWidth
+                        fullWidth
                         required
                         id="sodio"
+                        name='sod'
                         label="Sódio"
                         autoComplete="sodio"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.sod}
+                        type='number'
                     />
                 </Grid>
 
                 <Grid item xs={12} sm={3}>
                     <TextField
-                       fullWidth
+                        fullWidth
                         required
+                        name='gord'
                         id="gorduras"
                         label="Gorduras"
                         autoComplete="gorduras"
-                        variant="standard"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <TextField
-                        required
-                        id="gordurasTransp"
-                        label="Gorduras transpirantes"
-                        autoComplete="gordurasTransp"
-                        variant="standard"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={3}>
-                    <TextField
-                       fullWidth
-                        required
-                        id="gordurasSatur"
-                        label="Gorduras saturadas"
-                        autoComplete="gordurasSatur"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.gord}
+                        type='number'
                     />
                 </Grid>
             </Grid>
@@ -388,56 +406,76 @@ export const RecipeForm = ({ formData, handleInputChanges, handleSubmit, handleI
                 Dados do criador
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
                     <TextField
                         required
-                        id="authotName"
+                        fullWidth
+                        id="author"
                         label="Nome do criador"
+                        name='author'
                         autoComplete="authotName"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.author}
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         required
-                        id="dateCreated"
+                        fullWidth
+                        id="creationDate"
+                        name='creationDate'
                         label="Data de criação"
-
-                        autoComplete="dateCreated"
-                        variant="standard"
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.creationDate}
+                        autoComplete="creationDate"
+                        variant='filled'
+                        type='date'
 
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         required
+                        fullWidth
                         id="ranking"
+                        name='ranking'
                         label="Rankig da receita de(1-10)"
                         autoComplete="ranking"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.ranking}
                     />
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         required
+                        fullWidth
                         id="UserEmail"
+                        name='email'
                         label="Email do criador"
                         autoComplete="UserEmail"
-                        variant="standard"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.email}
                     />
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         required
-                        id="coutry"
+                        fullWidth
+                        id="country"
+                        name='country'
                         label="O pais do criador"
-                        autoComplete="gordurasTransp"
-                        variant="standard"
+                        autoComplete="country"
+                        variant='filled'
+                        onChange={handleInputChangesCreateRecipes}
+                        value={formData?.country}
                     />
                 </Grid>
                 <Grid item xs={12} sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
-                    <Button onClick={nextStep} variant="contained">
+                    <Button onClick={handleSubmit} variant="contained">
                         Terminar a receita
                     </Button>
                 </Grid>

@@ -28,14 +28,11 @@ import { useEffect } from 'react'
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
 
-export const CreateRecipes = ({}) => {
+export const CreateRecipes = ({ }) => {
+    const [scrollHeight, setScrollHeight] = useState(0)
     const [formData, setFormData] = useState({
         recipeTitle: '',
         recipeDescription: '',
-        ingredient1: '',
-        ingredient2: '',
-        step1: '',
-        step2: '',
         prepTime: '',
         cookTime: '',
         servingSize: '',
@@ -44,21 +41,20 @@ export const CreateRecipes = ({}) => {
         recipeImage: null,
         cookingTips: '',
         calories: '',
-        protein: '',
         carbs: '',
+        protein: '',
         fat: '',
-        tags: '',
+        sod: '',
+        gord: '',
         author: '',
         creationDate: '',
-        rating: '',
-        comments: '',
         name: '',
         email: '',
         country: '',
     })
-    const handleInputChanges = (event) => {
-        const { name, value } = event.target
-        setFormData({ ...formData, [name]: value })
+    const handleInputChangesCreateRecipes = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
     }
 
     const handleImageChange = (event) => {
@@ -67,17 +63,11 @@ export const CreateRecipes = ({}) => {
     }
 
     const handleSubmit = (event) => {
-        event.preventDefault()
-        Object.values(formData).find((i) => {
-            if (i != null) {
-                alert('O formulário não está preenchido corretamente')
-                return false
-            }
-        })
-        alert('O formulário está preenchido corretamente')
-        console.log(formData)
+        const val = Object.values(formData).join(", ");
+        alert(val);
+        console.log(formData);
     }
-    const [scrollHeight, setScrollHeight] = useState(0)
+
     useEffect(() => {
         const handleScroll = () => {
             const height = window.scrollY || 0
@@ -100,36 +90,8 @@ export const CreateRecipes = ({}) => {
         })
     }
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <CssBaseline />
 
-            {/* <AppBar
-                position="fixed"
-                color="default"
-                elevation={0}
-                sx={{
-                    position: 'fixed',
-                    borderBottom: (t) => `1px solid ${t.palette.divider}`,
-                    display: 'flex',
-                    height: '7rem',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Toolbar
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                    }}
-                >
-                    <Logo />
-                    <Typography variant="h6" color="inherit" noWrap>
-                        User fulano criando uma receita
-                    </Typography>
-                </Toolbar>
-            </AppBar> */}
+        <>
             <Fade in={scrollHeight}>
                 <Box
                     onClick={scrollToTop}
@@ -159,13 +121,15 @@ export const CreateRecipes = ({}) => {
                     <React.Fragment>
                         <RecipeForm
                             formData={formData}
-                            onChange={handleInputChanges}
+                            setFormData={setFormData}
+                            handleInputChangesCreateRecipes={handleInputChangesCreateRecipes}
                             handleImageChange={handleImageChange}
-                            onSubmit={handleSubmit}
+                            handleSubmit={handleSubmit}
                         />
                     </React.Fragment>
                 </Paper>
             </Container>
-        </ThemeProvider>
+        </>
+
     )
 }

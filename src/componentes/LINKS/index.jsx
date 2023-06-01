@@ -326,7 +326,7 @@ export const Links = () => {
     if (matches) {
         return (
             <>
-                <Tag.MenuBar sx={scrollHeight > 50 ? {width: '0rem', opacity: '0' } : { }}>
+                <Tag.MenuBar sx={scrollHeight > 50 ? {opacity:"0", ml: '-100%' } : { }}>
                     <Fade in={scrollHeight}>
                         <Box
                             onClick={scrollToTop}
