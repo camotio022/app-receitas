@@ -103,7 +103,7 @@ export const CreateRecipes = ({}) => {
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />
 
-            <AppBar
+            {/* <AppBar
                 position="fixed"
                 color="default"
                 elevation={0}
@@ -129,7 +129,7 @@ export const CreateRecipes = ({}) => {
                         User fulano criando uma receita
                     </Typography>
                 </Toolbar>
-            </AppBar>
+            </AppBar> */}
             <Fade in={scrollHeight}>
                 <Box
                     onClick={scrollToTop}
