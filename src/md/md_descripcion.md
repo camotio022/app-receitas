@@ -19,7 +19,6 @@
     - Deletar
     - Favoritar
 
-
 ###Data: 27/04/2023
     - Usuários
     - Cadastrar
