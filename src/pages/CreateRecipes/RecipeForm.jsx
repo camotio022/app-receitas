@@ -153,7 +153,7 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
                     <>
                         <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
                             <TextField
-                                label={`Etapa ${index + 1}`}
+                                label={`Ingrediente ${index + 1}`}
                                 fullWidth
                                 variant="filled"
                                 type="text"
@@ -177,10 +177,6 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
 
 
             </Grid>
-
-
-
-
             <Typography variant="h6" gutterBottom mt={3}>
                 Etapas de preparo
             </Typography>

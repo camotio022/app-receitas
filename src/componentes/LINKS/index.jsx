@@ -1,4 +1,7 @@
 import {
+    RememberMe as RememberMeIcon,
+    Diversity2 as Diversity2Icon,
+    Diversity3 as Diversity3Icon,
     KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
     ArrowDropUp as ArrowDropUpIcon,
@@ -36,6 +39,8 @@ import {
     Terminal as TerminalIcon,
     TaxiAlert as TaxiAlertIcon,
     AdminPanelSettings as AdminPanelSettingsIcon,
+    DinnerDining as DinnerDiningIcon,
+    Favorite as FavoriteIcon,
     ExpandLess,
     ExpandMore,
     StarBorder,
@@ -50,13 +55,9 @@ import {
     Collapse,
     Box,
     Stack,
-    Typography,
     useMediaQuery,
-    Button,
     Menu,
     MenuItem,
-    useScrollTrigger,
-    Slide,
     Fab,
     Link,
     Fade,
@@ -103,7 +104,6 @@ const links = [
                 link: '/signin',
             },
             { name: 'User Register', icon: <PersonAddIcon /> },
-            { name: 'Single Recipe', icon: <RestaurantMenuIcon /> },
             { name: 'Single Video', icon: <PlayCircleIcon /> },
             { name: 'Single Book', icon: <BookmarksIcon /> },
             {
@@ -116,7 +116,21 @@ const links = [
             { name: 'Contacts', icon: <AlternateEmailIcon /> },
         ],
     },
-    { icon: <KitchenIcon />, name: 'Recitas', onClick: 'recipes' },
+    {
+        icon: <KitchenIcon />,
+        name: 'Recitas',
+        onClick: 'recipes',
+        children: [
+            {
+                name: 'Minhas Receitas',
+                icon: <BookIcon />,
+                link: '#',
+            },
+            { name: 'Receitas Favoritas', icon: <FavoriteIcon /> },
+            { name: 'Top Review', icon: <StarIcon /> },
+            { name: 'Gerador de receitas', icon: <DinnerDiningIcon /> },
+        ],
+    },
     {
         icon: <BookIcon />,
         name: 'Blog',
@@ -140,7 +154,13 @@ const links = [
             },
         ],
     },
-    { icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community' },
+    {
+        icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community',
+        children: [
+            { name: 'Comunidade', icon: <Diversity3Icon />, link: '/comunidade', onClick: 'community'},
+            { name: 'Grupos', icon: <RememberMeIcon /> },
+        ],
+    },
     {
         icon: <SettingsIcon />,
         name: 'Advanced settings',
@@ -326,7 +346,7 @@ export const Links = () => {
     if (matches) {
         return (
             <>
-                <Tag.MenuBar sx={scrollHeight > 50 ? {opacity:"0", ml: '-100%' } : { }}>
+                <Tag.MenuBar sx={scrollHeight > 50 ? { opacity: "0", ml: '-100%' } : {}}>
                     <Fade in={scrollHeight}>
                         <Box
                             onClick={scrollToTop}
