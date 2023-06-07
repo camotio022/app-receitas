@@ -13,26 +13,21 @@ import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
 } from '@mui/icons-material'
-import Link from '@mui/material/Link'
-import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Logo } from '../../componentes/LOGO'
-import { Grid } from '@mui/material'
-import { useParams } from 'react-router-dom'
+
+import { createTheme } from '@mui/material/styles'
 import './index.css'
 import { RecipeForm } from './RecipeForm'
 import { Fab, Fade } from '@mui/material'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme()
 
 export const CreateRecipes = ({ }) => {
     const [scrollHeight, setScrollHeight] = useState(0)
     const [formData, setFormData] = useState({
         recipeTitle: '',
         recipeDescription: '',
+        ingredients: [],
         prepTime: '',
         cookTime: '',
         servingSize: '',
@@ -52,6 +47,21 @@ export const CreateRecipes = ({ }) => {
         email: '',
         country: '',
     })
+    const handleInputIngre = (e, index) => {
+        const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
+        novosValores[index] = e.target.value;
+        setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
+    };
+
+    const adicionarIngre = () => {
+        setFormData({ ...formData, ingredients: [...formData.ingredients, ''] }); // Corrigido para "ingredients"
+    };
+
+    const removerIngre = (index) => {
+        const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
+        novosValores.splice(index, 1);
+        setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
+    };
     const handleInputChangesCreateRecipes = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
@@ -125,6 +135,9 @@ export const CreateRecipes = ({ }) => {
                             handleInputChangesCreateRecipes={handleInputChangesCreateRecipes}
                             handleImageChange={handleImageChange}
                             handleSubmit={handleSubmit}
+                            handleInputIngre={handleInputIngre}
+                            adicionarIngre={adicionarIngre}
+                            removerIngre={removerIngre}
                         />
                     </React.Fragment>
                 </Paper>

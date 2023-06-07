@@ -112,7 +112,7 @@ const links = [
                 link: '/createRecipes',
             },
             { name: 'About us', icon: <InfoIcon /> },
-            { name: 'Top Review', icon: <StarIcon /> },
+            { name: 'Top Review', icon: <StarIcon />, link: '/topReview', },
             { name: 'Contacts', icon: <AlternateEmailIcon /> },
         ],
     },

@@ -19,9 +19,18 @@ import { FormLabel, RadioGroup, Radio } from '@mui/material';
 
 
 
-        
-export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSubmit, handleImageChange, setFormData }) => {
+
+export const RecipeForm = ({
+    handleInputIngre,
+    formData,
+    adicionarIngre,
+    removerIngre,
+    handleInputChangesCreateRecipes,
+    handleSubmit,
+    handleImageChange,
+}) => {
     const [activeStep, setActiveStep] = React.useState(0);
+    const [valores, setValores] = React.useState([]);
     const stepNames = ['Ingredientes', 'mod. preparos', 'Nutricionais', 'pessoais'];
     const [stepsData, setStepsData] = React.useState([
         { inputs: [], prep: [] }, // Etapa 0
@@ -30,7 +39,7 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
         { inputs: [], prep: [] }, // Etapa 3
     ]);
 
-
+ 
     const [step, setStep] = React.useState(0); // Variável de estado para controlar o passo atual
 
     const nextStep = () => {
@@ -41,11 +50,20 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
         setStep(step - 1); // Atualiza o valor do passo para voltar para o anterior
     };
 
-    const AddIngre = () => {
-        const newInputs = [...stepsData[step].inputs, ''];
-        const newStepsData = [...stepsData];
-        newStepsData[step].inputs = newInputs;
-        setStepsData(newStepsData);
+    const handleInputChange = (e, index) => {
+        const novosValores = [...valores];
+        novosValores[index] = e.target.value;
+        setValores(novosValores);
+    };
+
+    const adicionarCampo = () => {
+        setValores([...valores, '']);
+    };
+
+    const removerCampo = (index) => {
+        const novosValores = [...valores];
+        novosValores.splice(index, 1);
+        setValores(novosValores);
     };
 
     const handleInputsChange = (event, index) => {
@@ -56,13 +74,6 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
         setStepsData(newStepsData);
     };
 
-    const removeIngred = (index) => {
-        const newInputs = [...stepsData[step].inputs];
-        newInputs.splice(index, 1);
-        const newStepsData = [...stepsData];
-        newStepsData[step].inputs = newInputs;
-        setStepsData(newStepsData);
-    };
 
     const AddStep = () => {
         const newPrep = [...stepsData[step].prep, ''];
@@ -83,8 +94,7 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
         setActiveStep(activeStep + 1);
     };
 
-
-
+console.log(formData.ingredientes)
     return (
         <>
             <Typography component="h1" variant="h4" align="center">
@@ -148,8 +158,7 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
                         value={formData?.recipeDescription}
                     />
                 </Grid>
-
-                {stepsData[step].inputs.map((input, index) => (
+                {formData.ingredients.map((valor, index) => (
                     <>
                         <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
                             <TextField
@@ -157,20 +166,20 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
                                 fullWidth
                                 variant="filled"
                                 type="text"
-                                value={input}
-                                onChange={(e) => handleInputsChange(e, index)}
+                                value={valor}
+                                onChange={(e) => handleInputIngre(e, index)}
                             />
 
                         </Grid>
                         <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
-                            <Button color="error" onClick={() => removeIngred(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                            <Button color="error" onClick={() => removerIngre(index)} variant='outlined' startIcon={<DeleteIcon />}>
                                 Delete Ingrediente
                             </Button>
                         </Grid>
                     </>
                 ))}
                 <Grid item xs={12}>
-                    <Button size='small' sx={{ mr: 2 }} onClick={AddIngre} variant='contained'>
+                    <Button size='small' sx={{ mr: 2 }} onClick={adicionarIngre} variant='contained'>
                         + Add ingredient
                     </Button>
                 </Grid>
@@ -402,7 +411,7 @@ export const RecipeForm = ({ formData, handleInputChangesCreateRecipes, handleSu
                 Dados do criador
             </Typography>
             <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         required
                         fullWidth
