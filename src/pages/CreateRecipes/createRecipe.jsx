@@ -3,23 +3,20 @@ import CssBaseline from '@mui/material/CssBaseline'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import Toolbar from '@mui/material/Toolbar'
 import Paper from '@mui/material/Paper'
-import Stepper from '@mui/material/Stepper'
-import Step from '@mui/material/Step'
-import StepLabel from '@mui/material/StepLabel'
-import Button from '@mui/material/Button'
+
 import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
 } from '@mui/icons-material'
 
-import { createTheme } from '@mui/material/styles'
+
 import './index.css'
 import { RecipeForm } from './RecipeForm'
 import { Fab, Fade } from '@mui/material'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { api } from '../../api'
 
 
 export const CreateRecipes = ({ }) => {
@@ -72,10 +69,14 @@ export const CreateRecipes = ({ }) => {
         setFormData({ ...formData, recipeImage: file })
     }
 
-    const handleSubmit = (event) => {
-        const val = Object.values(formData).join(", ");
-        alert(val);
-        console.log(formData);
+    const handleSubmit = async (event) => {
+        console.log(formData)
+        await api.recipe.post(formData).then((response) => {
+           alert('success')
+        }).catch((error) => {
+            alert('Error' + error)
+            console.log(error)
+        });
     }
 
     useEffect(() => {

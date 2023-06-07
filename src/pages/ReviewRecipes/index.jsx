@@ -254,12 +254,33 @@ export const TopReview = () => {
                 <Tag.Cards>
                     {usuarios.map((recipe, index) => {
                         return (
+                            // recipeTitle,
+                            // recipeDescription,
+                            // ingredients,
+                            // prepTime,
+                            // cookTime,
+                            // servingSize,
+                            // recipeCategory,
+                            // recipeDifficulty,
+                            // recipeImage,
+                            // cookingTips,
+                            // calories,
+                            // carbs,
+                            // protein,
+                            // fat,
+                            // sod,
+                            // gord,
+                            // author,
+                            // creationDate,
+                            // name,
+                            // email,
+                            // country,
                             <>
                                 <Tag.Card key={recipe?.id}>
                                     <Stack width={'100%'}>
                                         <Tooltip
                                             sx={{ cursor: 'pointer' }}
-                                            title={`Ir para os detalhes  ${recipe?.titleRecipe}`}
+                                            title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
                                             followCursor
                                         >
                                             <img className="img" src={recipe?.avatar} alt="" />
@@ -317,7 +338,7 @@ export const TopReview = () => {
                                                         id="info"
                                                     >
                                                         <Typography sx={noWrap} variant="subtitle1">
-                                                            {recipe?.userName}
+                                                            {recipe?.name}
                                                         </Typography>
                                                         <Stack direction="row" spacing={2}>
                                                             <Stack direction="row" gap={1}>

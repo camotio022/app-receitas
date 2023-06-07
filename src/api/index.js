@@ -85,6 +85,59 @@ export const api = {
 
       return getCollection("recipes");
     },
+    post: async (payload) => {
+      const {
+        id,
+        recipeTitle,
+        recipeDescription,
+        ingredients,
+        prepTime,
+        cookTime,
+        servingSize,
+        recipeCategory,
+        recipeDifficulty,
+        recipeImage,
+        cookingTips,
+        calories,
+        carbs,
+        protein,
+        fat,
+        sod,
+        gord,
+        author,
+        creationDate,
+        name,
+        email,
+        country,
+      } = payload;
+      if (id) {
+        return;
+      }
+      const docRef = await addDoc(collection(db, "recipes"), {
+        recipeTitle,
+        recipeDescription,
+        ingredients,
+        prepTime,
+        cookTime,
+        servingSize,
+        recipeCategory,
+        recipeDifficulty,
+        recipeImage,
+        cookingTips,
+        calories,
+        carbs,
+        protein,
+        fat,
+        sod,
+        gord,
+        author,
+        creationDate,
+        name,
+        email,
+        country,
+      });
+      // criar um usuario no firebase utilizando email name
+    },
   },
   ingredientes: {
     get: async (id) => {

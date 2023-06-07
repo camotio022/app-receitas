@@ -42,30 +42,7 @@ export const RecipeForm = ({
 
     const [step, setStep] = React.useState(0); // Variável de estado para controlar o passo atual
 
-    const nextStep = () => {
-        setStep(step + 1); // Atualiza o valor do passo para avançar para o próximo
-    };
-
-    const handleBack = () => {
-        setStep(step - 1); // Atualiza o valor do passo para voltar para o anterior
-    };
-
-    const handleInputChange = (e, index) => {
-        const novosValores = [...valores];
-        novosValores[index] = e.target.value;
-        setValores(novosValores);
-    };
-
-    const adicionarCampo = () => {
-        setValores([...valores, '']);
-    };
-
-    const removerCampo = (index) => {
-        const novosValores = [...valores];
-        novosValores.splice(index, 1);
-        setValores(novosValores);
-    };
-
+   
     const handleInputsChange = (event, index) => {
         const newInputs = [...stepsData[step].inputs];
         newInputs[index] = event.target.value;
@@ -126,8 +103,6 @@ export const RecipeForm = ({
                     </Grid>
                 </>
             )}
-
-
             <Typography variant="h6" gutterBottom>
                 Ingredientes
             </Typography>
