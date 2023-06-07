@@ -39,7 +39,7 @@ export const RecipeForm = ({
         { inputs: [], prep: [] }, // Etapa 3
     ]);
 
- 
+
     const [step, setStep] = React.useState(0); // Variável de estado para controlar o passo atual
 
     const nextStep = () => {
@@ -94,7 +94,7 @@ export const RecipeForm = ({
         setActiveStep(activeStep + 1);
     };
 
-console.log(formData.ingredientes)
+    console.log(formData.ingredientes)
     return (
         <>
             <Typography component="h1" variant="h4" align="center">
@@ -158,26 +158,28 @@ console.log(formData.ingredientes)
                         value={formData?.recipeDescription}
                     />
                 </Grid>
-                {formData.ingredients.map((valor, index) => (
-                    <>
-                        <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
-                            <TextField
-                                label={`Ingrediente ${index + 1}`}
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                value={valor}
-                                onChange={(e) => handleInputIngre(e, index)}
-                            />
+                <Grid item xs={12} sx={{ mt: '0.2rem',overflow: 'auto' , height: formData.ingredients.length > 0? '10rem': 0, transition: '.3s'}}>
+                    {formData.ingredients.map((valor, index) => (
+                        <>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
+                                <TextField
+                                    label={`Ingrediente ${index + 1}`}
+                                    fullWidth
+                                    variant="filled"
+                                    type="text"
+                                    value={valor}
+                                    onChange={(e) => handleInputIngre(e, index)}
+                                />
 
-                        </Grid>
-                        <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
-                            <Button color="error" onClick={() => removerIngre(index)} variant='outlined' startIcon={<DeleteIcon />}>
-                                Delete Ingrediente
-                            </Button>
-                        </Grid>
-                    </>
-                ))}
+                            </Grid>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
+                                <Button color="error" onClick={() => removerIngre(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                                    Delete Ingrediente
+                                </Button>
+                            </Grid>
+                        </>
+                    ))}
+                </Grid>
                 <Grid item xs={12}>
                     <Button size='small' sx={{ mr: 2 }} onClick={adicionarIngre} variant='contained'>
                         + Add ingredient
