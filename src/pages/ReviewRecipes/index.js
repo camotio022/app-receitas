@@ -4,7 +4,7 @@ export const Wrapper = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     alignItems: "center",
     justifyContent: "flex-start",
-    gap:'5rem',
+    gap: '5rem',
     padding: '0%',
     width: "100%",
     height: "100vh",
@@ -19,6 +19,7 @@ export const Container = styled(Stack)(({ theme }) => ({
     minHeight: '40%',
     fontSize: '100%',
     background: theme.palette.background.paper,
+
 }))
 export const HeaderView = styled(Stack)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.primary.light}`,
@@ -41,6 +42,7 @@ export const Cards = styled(Stack)(({ theme }) => ({
     height: 'auto',
     padding: '3rem  0 3rem 0',
     background: '#f5f5f5',
+    paddingBottom: '13rem'
 }))
 
 export const Card = styled(Stack)(({ theme }) => ({
@@ -122,6 +124,6 @@ export const AuthorImage = styled(Box)(({ theme }) => ({
     },
 }))
 export const Pagination = styled(Stack)(({ theme }) => ({
-    position: 'absolute',
-    bottom: '4rem',
+    position: 'fixed',
+    bottom: '3rem',
 }))

@@ -288,7 +288,7 @@ export const RecipeForm = ({
                         name="recipeImage"
                         accept="image/*"
                         onChange={handleImageChange}
-                        value={formData?.recipeImage}
+    
                         variant='filled'
                     />
                 </Grid>

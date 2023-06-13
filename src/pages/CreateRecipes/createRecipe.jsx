@@ -65,14 +65,18 @@ export const CreateRecipes = ({ }) => {
     }
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0]
-        setFormData({ ...formData, recipeImage: file })
-    }
-
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64Image = reader.result;
+            setFormData({ ...formData, recipeImage: base64Image });
+        };
+        reader.readAsDataURL(file);
+    };
     const handleSubmit = async (event) => {
         console.log(formData)
         await api.recipe.post(formData).then((response) => {
-           alert('success')
+            alert('success')
         }).catch((error) => {
             alert('Error' + error)
             console.log(error)

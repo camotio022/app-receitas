@@ -109,6 +109,8 @@ export const api = {
         name,
         email,
         country,
+        commentsCounter,
+        starsLikedCounter
       } = payload;
       if (id) {
         return;
@@ -130,6 +132,8 @@ export const api = {
         fat,
         sod,
         gord,
+        commentsCounter: 0,
+        starsLikedCounter: 0,
         author,
         creationDate,
         name,
