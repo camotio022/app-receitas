@@ -106,11 +106,7 @@ const links = [
             { name: 'User Register', icon: <PersonAddIcon /> },
             { name: 'Single Video', icon: <PlayCircleIcon /> },
             { name: 'Single Book', icon: <BookmarksIcon /> },
-            {
-                name: 'Create Recipe',
-                icon: <BookmarkAddIcon />,
-                link: '/createRecipes',
-            },
+           
             { name: 'About us', icon: <InfoIcon /> },
             { name: 'Top Review', icon: <StarIcon />, link: '/topReview', },
             { name: 'Contacts', icon: <AlternateEmailIcon /> },
@@ -128,6 +124,11 @@ const links = [
             },
             { name: 'Receitas Favoritas', icon: <FavoriteIcon /> },
             { name: 'Top Review', icon: <StarIcon /> },
+            {
+                name: 'Create Recipe',
+                icon: <BookmarkAddIcon />,
+                link: '/createRecipes',
+            },
             { name: 'Gerador de receitas', icon: <DinnerDiningIcon /> },
         ],
     },

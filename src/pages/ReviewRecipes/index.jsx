@@ -56,23 +56,28 @@ export const TopReview = () => {
         }
     };
     window.addEventListener('scroll', handleScroll);
-    const [imageUrls, setImageUrls] = useState([]);
-    const [currentImageUrl, setCurrentImageUrl] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-  
     useEffect(() => {
-      const fetchImages = async () => {
-        const imagesRef = collection(db, 'imagesCard');
-        const imagesSnapshot = await getDocs(imagesRef);
-        const imagesData = imagesSnapshot.docs.map((doc) => doc.data().url);
-        setImageUrls(imagesData);
-      };
-      fetchImages();
+        const fetchImages = async () => {
+            const imagesRef = collection(db, 'imagesCard');
+            const imagesSnapshot = await getDocs(imagesRef);
+            const imagesData = imagesSnapshot.docs.map((doc) => doc.data().url);
+            setImageUrls(imagesData);
+        };
+        fetchImages();
     }, []);
+    if (currentRecipes.length === 0) {
+        return (
+            <Tag.Wrapper sx={{display:'flex', alignItems :'center', justifyContent: 'center'}}>
+                <Typography variant='h3'>
+                    Receitas não encontradas
+                </Typography>
+            </Tag.Wrapper>
+        )
+    }
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
-            
+
                 <Tag.HeaderView textAlign={'center'} width={'100%'}>
                     <Tag.Title sx={{
                         letterSpacing: "-1px",
