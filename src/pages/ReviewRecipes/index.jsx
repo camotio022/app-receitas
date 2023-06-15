@@ -14,7 +14,8 @@ import { ShowSlider } from '../Home/CAROUSEL'
 import { Dashboard } from '../../componentes/BASEBOARD/index.jsx'
 import { api } from '../../api'
 import { useEffect, useState } from 'react'
-
+import { collection, query, getDocs } from 'firebase/firestore';
+import { db } from '../../../firebase.config';
 
 export const TopReview = () => {
     const matches = useMediaQuery('(min-width:700px)')
@@ -55,13 +56,23 @@ export const TopReview = () => {
         }
     };
     window.addEventListener('scroll', handleScroll);
+    const [imageUrls, setImageUrls] = useState([]);
+    const [currentImageUrl, setCurrentImageUrl] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+  
+    useEffect(() => {
+      const fetchImages = async () => {
+        const imagesRef = collection(db, 'imagesCard');
+        const imagesSnapshot = await getDocs(imagesRef);
+        const imagesData = imagesSnapshot.docs.map((doc) => doc.data().url);
+        setImageUrls(imagesData);
+      };
+      fetchImages();
+    }, []);
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
-                <ShowSlider wellcome="Seja bem vindo ao Recipes Food"
-                    image='https://www.rockrecipes.com/wp-content/uploads/2013/05/Top-TEn-Chicken-Dinner-Recipes-2020-square-collage-for-featured-post-image.jpg'
-                    pathPagination={"Top Review //"}
-                />
+            
                 <Tag.HeaderView textAlign={'center'} width={'100%'}>
                     <Tag.Title sx={{
                         letterSpacing: "-1px",
