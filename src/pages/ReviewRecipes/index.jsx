@@ -20,6 +20,7 @@ import { db } from '../../../firebase.config';
 export const TopReview = () => {
     const matches = useMediaQuery('(min-width:700px)')
     const [recipes, setRecipes] = useState([]);
+    const [imageUrls, setImageUrls] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [top, setTop] = useState(false);
     const [itemsPerPage] = useState(10);
@@ -58,16 +59,21 @@ export const TopReview = () => {
     window.addEventListener('scroll', handleScroll);
     useEffect(() => {
         const fetchImages = async () => {
-            const imagesRef = collection(db, 'imagesCard');
+            const imagesRef = collection(db, 'recipes');
             const imagesSnapshot = await getDocs(imagesRef);
-            const imagesData = imagesSnapshot.docs.map((doc) => doc.data().url);
+            const imagesData = imagesSnapshot.docs.map((doc) => {
+                return {
+                    url: doc.data().recipeImage,
+                    title: doc.data().recipeTitle
+                }
+            });
             setImageUrls(imagesData);
         };
         fetchImages();
     }, []);
     if (currentRecipes.length === 0) {
         return (
-            <Tag.Wrapper sx={{display:'flex', alignItems :'center', justifyContent: 'center'}}>
+            <Tag.Wrapper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant='h3'>
                     Receitas não encontradas
                 </Typography>
@@ -77,6 +83,8 @@ export const TopReview = () => {
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
+
+                <ShowSlider/>
 
                 <Tag.HeaderView textAlign={'center'} width={'100%'}>
                     <Tag.Title sx={{
