@@ -380,14 +380,14 @@ export const DetailsRecipes = () => {
                                                             paddingLeft: 0,
                                                             color: grey[600],
                                                             transition: '.3s',
-                                                            height: '30px',
+                                                            height: 'auto',
                                                         }
                                                         : {
                                                             textDecoration:
                                                                 'none',
                                                             paddingLeft: '2rem',
                                                             transition: '.3s',
-                                                            height: '30px',
+                                                            height: 'auto',
                                                         }
                                                 }
                                                 control={
@@ -407,7 +407,7 @@ export const DetailsRecipes = () => {
                         </>
                     </Stack>
                     <Typography sx={Title} padding={1}>
-                        MODOS DE PREPARO
+                        Como preparar {recipe?.recipeTitle}
                     </Typography>
                     <Stack
                         sx={{
@@ -421,11 +421,11 @@ export const DetailsRecipes = () => {
                     >
                         <>
                             <Stack width={'90%'}>
-                                {recipe?.modpPreps.length > 0 &&
-                                    recipe?.modpPreps.map((p, index) => {
+                                {recipe?.modPreps.length > 0 &&
+                                    recipe?.modPreps.map((item, index) => {
                                         return (
                                             <ul key={index}>
-                                                <li>{p}</li>
+                                                <li>{item}</li>
                                             </ul>
                                         )
                                     })}

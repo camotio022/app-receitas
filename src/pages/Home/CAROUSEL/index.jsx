@@ -22,12 +22,11 @@ export const ShowSlider = ({ wellcome, pathPagination, backgroundMuiStack, ...pr
         };
         fetchImages();
     }, []);
-
     const getRandomImages = (count) => {
         const shuffledImages = [...imageUrls]; // Cria uma cópia do array original
 
         for (let i = shuffledImages.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 0.1));
+            const j = Math.floor(Math.random() * (i - 1));
             [shuffledImages[i], shuffledImages[j]] = [shuffledImages[j], shuffledImages[i]];
         }
 
@@ -35,26 +34,25 @@ export const ShowSlider = ({ wellcome, pathPagination, backgroundMuiStack, ...pr
     };
 
 
-    const randomImages = getRandomImages(4); // Exibir 5 imagens aleatórias
+    const randomImages = getRandomImages(); // Exibir 5 imagens aleatórias
 
     return (
         <>
             <Tag.Carousel
+     
                 {...props}
                 sx={{
-                    minHeight: "40%",
-                    marginTop: "4.1rem",
-                    backgroundImage: `url(${backgroundMuiStack})`,
-                    ...props
+                    minHeight: "10rem",
+                    mb: '15rem'
                 }}
             >
                 <Tag.CardImage>
-                    <Carousel showThumbs={false} interval={1000}>
+                    <Carousel showThumbs={false} interval={1000} >
                         {randomImages.map((image, index) => (
-                            <div key={index}>
+                            <Tag.CardImage key={index}>
                                 <img src={image.url} alt={image.title} />
                                 <p className="legend">{image.title}</p>
-                            </div>
+                            </Tag.CardImage>
                         ))}
                     </Carousel>
                 </Tag.CardImage>

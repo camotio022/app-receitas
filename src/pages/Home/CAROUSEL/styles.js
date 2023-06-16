@@ -22,7 +22,6 @@ export const CardImage = styled(CardMedia)(({ theme }) => ({
     "&:hover": {
         background: 'transparent',
         color: "white",
-        textShadow: "-1px 0 black, 0 1px black, 3px 0 red, 0 -1px black",
     }
 }))
 
