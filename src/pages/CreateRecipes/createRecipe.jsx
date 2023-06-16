@@ -3,36 +3,29 @@ import CssBaseline from '@mui/material/CssBaseline'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import Toolbar from '@mui/material/Toolbar'
 import Paper from '@mui/material/Paper'
-import Stepper from '@mui/material/Stepper'
-import Step from '@mui/material/Step'
-import StepLabel from '@mui/material/StepLabel'
-import Button from '@mui/material/Button'
+
 import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
 } from '@mui/icons-material'
-import Link from '@mui/material/Link'
-import Typography from '@mui/material/Typography'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Logo } from '../../componentes/LOGO'
-import { Grid } from '@mui/material'
-import { useParams } from 'react-router-dom'
+
+
 import './index.css'
 import { RecipeForm } from './RecipeForm'
 import { Fab, Fade } from '@mui/material'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { api } from '../../api'
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme()
 
 export const CreateRecipes = ({ }) => {
     const [scrollHeight, setScrollHeight] = useState(0)
     const [formData, setFormData] = useState({
         recipeTitle: '',
         recipeDescription: '',
+        ingredients: [],
+        modPreps: [],
         prepTime: '',
         cookTime: '',
         servingSize: '',
@@ -52,20 +45,62 @@ export const CreateRecipes = ({ }) => {
         email: '',
         country: '',
     })
+    const handleInputIngre = (e, index) => {
+        const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
+        novosValores[index] = e.target.value;
+        setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
+    };
+
+    const adicionarIngre = () => {
+        setFormData({ ...formData, ingredients: [...formData.ingredients, ''] }); // Corrigido para "ingredients"
+    };
+
+    const removerIngre = (index) => {
+        const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
+        novosValores.splice(index, 1);
+        setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
+    };
+
+
+
+    const handleInputModPreps = (e, index) => {
+        const novosValores = [...formData.modPreps]; // Corrigido para "modPreps"
+        novosValores[index] = e.target.value;
+        setFormData({ ...formData, modPreps: novosValores }); // Corrigido para "modPreps"
+    };
+
+    const adicionarModPreps = () => {
+        setFormData({ ...formData, modPreps: [...formData.modPreps, ''] }); // Corrigido para "modPreps"
+    };
+
+    const removerModPreps = (index) => {
+        const novosValores = [...formData.modPreps]; // Corrigido para "modPreps"
+        novosValores.splice(index, 1);
+        setFormData({ ...formData, modPreps: novosValores }); // Corrigido para "modPreps"
+    };
     const handleInputChangesCreateRecipes = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
     }
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0]
-        setFormData({ ...formData, recipeImage: file })
-    }
-
-    const handleSubmit = (event) => {
-        const val = Object.values(formData).join(", ");
-        alert(val);
-        console.log(formData);
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64Image = reader.result;
+            setFormData({ ...formData, recipeImage: base64Image });
+        };
+        reader.readAsDataURL(file);
+    };
+    const handleSubmit = async (event) => {
+        console.log(formData)
+        await api.recipe.post(formData).then((response) => {
+            alert('success')
+            setFormData("")
+        }).catch((error) => {
+            alert('Error' + error)
+            console.log(error)
+        });
     }
 
     useEffect(() => {
@@ -125,6 +160,13 @@ export const CreateRecipes = ({ }) => {
                             handleInputChangesCreateRecipes={handleInputChangesCreateRecipes}
                             handleImageChange={handleImageChange}
                             handleSubmit={handleSubmit}
+                            handleInputIngre={handleInputIngre}
+                            adicionarIngre={adicionarIngre}
+                            removerIngre={removerIngre}
+
+                            handleInputModPreps={handleInputModPreps}
+                            adicionarModPreps={adicionarModPreps}
+                            removerModPreps={removerModPreps}
                         />
                     </React.Fragment>
                 </Paper>

@@ -142,10 +142,10 @@ export const DetailsRecipes = () => {
                     >
                         <Stack direction={'column'}>
                             <Typography variant="body1">
-                                {recipe?.userName}
+                                {recipe?.recipeTitle}
                             </Typography>
                             <Typography variant="body2">
-                                POST: {recipe?.dataPost}
+                                POST: {recipe?.creationDate}
                             </Typography>
                         </Stack>
                         <CardMedia
@@ -155,7 +155,7 @@ export const DetailsRecipes = () => {
                                 borderRadius: '50%',
                             }}
                             component="img"
-                            image={recipe?.avatar}
+                            image={recipe?.recipeImage}
                         />
                     </Stack>
                 </Tag.UserSections>
@@ -164,29 +164,29 @@ export const DetailsRecipes = () => {
                     sx={
                         matches
                             ? {
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  flexDirection: 'column',
-                                  width: '70%',
-                                  boxShadow:
-                                      'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-                                  mt: '4rem',
-                                  padding: '0 0 10rem 0',
-                              }
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'column',
+                                width: '70%',
+                                boxShadow:
+                                    'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+                                mt: '4rem',
+                                padding: '0 0 10rem 0',
+                            }
                             : {
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  flexDirection: 'column',
-                              }
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'column',
+                            }
                     }
                 >
                     <Tag.Midias
                         component="img"
                         alt="green iguana"
                         height="140"
-                        image={recipe?.avatar}
+                        image={recipe?.recipeImage}
                     />
 
                     <Stack
@@ -217,18 +217,11 @@ export const DetailsRecipes = () => {
 
                     <CardContent padding={1}>
                         <Typography gutterBottom variant="h4" component="div">
-                            {recipe?.titleRecipe}
+                            {recipe?.recipeTitle}
                         </Typography>
-                        <Typography
-                            color={grey[900]}
-                            gutterBottom
-                            variant="body1"
-                            component="div"
-                        >
-                            Geralmente é para o almoço ou jantar
-                        </Typography>
+
                         <Typography variant="body2" color="text.secondary">
-                            {recipe?.description}
+                            {recipe?.recipeDescription}
                         </Typography>
                     </CardContent>
 
@@ -248,7 +241,7 @@ export const DetailsRecipes = () => {
                     >
                         {[
                             {
-                                title: recipe?.tempo,
+                                title: recipe?.cookTime,
                                 desc: 'Preparo',
                                 icon: <AvTimerIcon />,
                             },
@@ -258,7 +251,7 @@ export const DetailsRecipes = () => {
                                 icon: <PieChartOutlineIcon />,
                             },
                             {
-                                title: recipe?.porcoes,
+                                title: recipe?.servingSize,
                                 desc: 'Gra. por Porção',
                                 icon: <DataSaverOffIcon />,
                             },
@@ -295,41 +288,41 @@ export const DetailsRecipes = () => {
                     </CardActions>
 
                     <Typography sx={Title} padding={1}>
-                        Informações Nutricionais de {recipe?.titleRecipe}
+                        Informações Nutricionais de {recipe?.recipeTitle}
                     </Typography>
                     <Tag.NutInfo>
                         {[
                             {
                                 name: 'Calorias',
-                                val: '190,54 kcal',
+                                val: `${recipe?.calories} kcal`,
                             },
                             {
                                 name: 'Proteínas',
-                                val: '14,00 g',
+                                val: `${recipe?.protein} g`,
                             },
                             {
                                 name: 'Gorduras Totais',
-                                val: '15,85 g',
+                                val: `${recipe?.gord} g`,
                             },
                             {
                                 name: 'Gord. Saturadas',
-                                val: '9,05 g',
+                                val: `${(10 / 100) * recipe?.gord} g`,
                             },
                             {
                                 name: 'Gord. Trans',
-                                val: '6,23 g',
+                                val: `${(recipe?.servingSize / 100) * recipe?.gord} g`,
                             },
                             {
                                 name: 'Carboidratos',
-                                val: '0,00 g',
+                                val: `${recipe?.carbs} g`,
                             },
                             {
                                 name: 'Fibras',
-                                val: '1,99 g',
+                                val: `${recipe?.fat} g`,
                             },
                             {
                                 name: 'Sódio',
-                                val: '42,26 mg',
+                                val: `${recipe?.sod} mg`,
                             },
                         ].map((nut) => {
                             return (
@@ -372,47 +365,49 @@ export const DetailsRecipes = () => {
                         }}
                     >
                         <>
-                            {ingredientes.length > 0 &&
-                                ingredientes.map((ingredient, index) => {
-                                    return (
-                                        <FormControlLabel
-                                            key={index}
-                                            sx={
-                                                checkedItems[index]
-                                                    ? {
-                                                          textDecoration:
-                                                              'line-through',
-                                                          paddingLeft: 0,
-                                                          color: grey[600],
-                                                          transition: '.3s',
-                                                          height: '30px',
-                                                      }
-                                                    : {
-                                                          textDecoration:
-                                                              'none',
-                                                          paddingLeft: '2rem',
-                                                          transition: '.3s',
-                                                          height: '30px',
-                                                      }
-                                            }
-                                            control={
-                                                <Checkbox
-                                                    checked={
-                                                        checkedItems[index]
-                                                    }
-                                                    onChange={() =>
-                                                        handleChange(index)
-                                                    }
-                                                />
-                                            }
-                                            label={ingredient || ''}
-                                        />
-                                    )
-                                })}
+                            {recipe?.ingredients
+                                .length > 0 &&
+                                recipe?.ingredients
+                                    .map((ingredient, index) => {
+                                        return (
+                                            <FormControlLabel
+                                                key={index}
+                                                sx={
+                                                    checkedItems[index]
+                                                        ? {
+                                                            textDecoration:
+                                                                'line-through',
+                                                            paddingLeft: 0,
+                                                            color: grey[600],
+                                                            transition: '.3s',
+                                                            height: 'auto',
+                                                        }
+                                                        : {
+                                                            textDecoration:
+                                                                'none',
+                                                            paddingLeft: '2rem',
+                                                            transition: '.3s',
+                                                            height: 'auto',
+                                                        }
+                                                }
+                                                control={
+                                                    <Checkbox
+                                                        checked={
+                                                            checkedItems[index]
+                                                        }
+                                                        onChange={() =>
+                                                            handleChange(index)
+                                                        }
+                                                    />
+                                                }
+                                                label={ingredient || ''}
+                                            />
+                                        )
+                                    })}
                         </>
                     </Stack>
                     <Typography sx={Title} padding={1}>
-                        MODOS DE PREPARO
+                        Como preparar {recipe?.recipeTitle}
                     </Typography>
                     <Stack
                         sx={{
@@ -426,11 +421,11 @@ export const DetailsRecipes = () => {
                     >
                         <>
                             <Stack width={'90%'}>
-                                {modopreparos.length > 0 &&
-                                    modopreparos.map((p, index) => {
+                                {recipe?.modPreps.length > 0 &&
+                                    recipe?.modPreps.map((item, index) => {
                                         return (
                                             <ul key={index}>
-                                                <li>{p}</li>
+                                                <li>{item}</li>
                                             </ul>
                                         )
                                     })}
