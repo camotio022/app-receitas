@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
-
+const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1';
 import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
@@ -40,6 +40,7 @@ export const CreateRecipes = ({ }) => {
         sod: '',
         gord: '',
         author: '',
+        ranking: '',
         creationDate: '',
         name: '',
         email: '',
