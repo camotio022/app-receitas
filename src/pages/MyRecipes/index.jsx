@@ -1,166 +1,207 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api';
-
+import * as Tag from './index.js'
+import { Stack, Typography, Box, useMediaQuery, Tooltip, Link, Rating } from '@mui/material'
+import { ShowSlider } from '../Home/CAROUSEL';
+import {
+  Forum as ForumIcon,
+  Favorite as FavoriteIcon,
+  Star as StarIcon,
+  NavigateNext as NavigateNextIcon
+} from '@mui/icons-material'
 export const MyRecipes = () => {
-    const [myRecipes, setMyRecipes] = useState([]);
+  const matches = useMediaQuery('(min-width:700px)')
 
-    useEffect(() => {
-      const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'; // Substitua pelo seu próprio ID de autor
-    
-      const fetchData = async () => {
-        try {
-          const myRecipesList = await api.myRecipes.get(authorId);
-          setMyRecipes(myRecipesList);
-          console.log('Minhas receitas:', myRecipes);
-          // Faça algo com a lista de receitas, como atualizar o estado do componente
-        } catch (error) {
-          console.error('Erro ao buscar as receitas:', error);
-        }
-      };
-    
-      fetchData();
-    }, []);
-    
-    // // Função para editar os campos da receita logada
-    // const editarReceita = async (recipeId, camposAtualizados) => {
-    //     // Verifica se há um usuário logado
-    //     const user = auth.currentUser;
-    //     if (!user) {
-    //         console.log('Nenhum usuário logado.');
-    //         return;
-    //     }
+  const [myRecipes, setMyRecipes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const indexOfLastRecipe = currentPage * itemsPerPage;
+  const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage;
+  const currentRecipes = myRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
 
-    //     // Obtém a referência do documento da receita
-    //     const recipeDocRef = doc(firestore, 'recipes', recipeId);
 
-    //     // Atualiza os campos da receita
-    //     try {
-    //         await updateDoc(recipeDocRef, camposAtualizados);
-    //         console.log('Campos da receita atualizados com sucesso.');
-    //     } catch (error) {
-    //         console.error('Erro ao atualizar os campos da receita:', error);
-    //     }
-    // };
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+  const noWrap = {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  }
+  const handleScroll = () => {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop + windowHeight >= documentHeight) {
+      setTop(true)
+    } else {
+      setTop(false)
+    }
+  };
+  window.addEventListener('scroll', handleScroll);
 
-    // // Exemplo de uso da função editarReceita
-    // const handleEditarReceita = async () => {
-    //     const recipeId = 'ID_DA_RECEITA'; // Substitua pelo ID da receita a ser editada
-    //     const camposAtualizados = {
-    //         recipeTitle: 'Novo Título',
-    //         recipeDescription: 'Nova Descrição',
-    //         ingredients: ['Ingrediente 1', 'Ingrediente 2', 'Ingrediente 3'],
-    //         // outros campos a serem atualizados
-    //     };
-    //     await editarReceita(recipeId, camposAtualizados);
-    // };
-    // const [formData, setFormData] = useState({
-    //     recipeTitle: '',
-    //     recipeDescription: '',
-    //     ingredients: [],
-    //     preparationSteps: [],
-    //     cookingTime: '',
-    //     // outros campos da receita
-    // });
+  
+  useEffect(() => {
+    const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'; // Substitua pelo seu próprio ID de autor
 
-    // useEffect(() => {
-    //     setFormData({
-    //         recipeTitle: recipeData.recipeTitle,
-    //         recipeDescription: recipeData.recipeDescription,
-    //         ingredients: recipeData.ingredients,
-    //         preparationSteps: recipeData.preparationSteps,
-    //         cookingTime: recipeData.cookingTime,
-    //         // outros campos da receita
-    //     });
-    // }, [recipeData]);
+    const fetchData = async () => {
+      try {
+        const myRecipesList = await api.myRecipes.get(authorId);
+        setMyRecipes(myRecipesList);
+        console.log('Minhas receitas:', myRecipes);
+        // Faça algo com a lista de receitas, como atualizar o estado do componente
+      } catch (error) {
+        console.error('Erro ao buscar as receitas:', error);
+      }
+    };
 
-    // const handleInputChanges = (event) => {
-    //     setFormData({
-    //         ...formData,
-    //         [event.target.name]: event.target.value
-    //     });
-    // };
+    fetchData();
+  }, []);
+  if (currentRecipes.length === 0) {
+    return (
+      <Tag.Wrapper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Typography variant='h3'>
+          Receitas não encontradas
+        </Typography>
+      </Tag.Wrapper>
+    )
+  }
+  return (
+    <Tag.Wrapper >
+      <Typography>
+      </Typography>
+      <Tag.Container id="scrollHeithg">
+        <Tag.HeaderView textAlign={'center'} width={'100%'}>
+          <Tag.Title sx={{
+            letterSpacing: "-1px",
+            fontWeight: 700,
+            marginBottom: 0,
+            color: 'text-primary',
+          }} variant="h5">Minhas receitas</Tag.Title>
+          <Typography variant="p">
+            Aqui estão todas a receitas que você criou
+          </Typography>
+        </Tag.HeaderView>
+        <Tag.Cards>
+          {currentRecipes.map((recipe) => {
+            return (
+              <>
+                <Tag.Card key={recipe?.id}>
+                  <Stack width={'100%'}>
+                    <Tooltip
+                      sx={{ cursor: 'pointer' }}
+                      title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
+                      followCursor
+                    >
+                      <img className="img" src={recipe?.recipeImage} alt="" />
 
-    // const handleIngredientsChange = (index, event) => {
-    //     const ingredients = [...formData.ingredients];
-    //     ingredients[index] = event.target.value;
-    //     setFormData({
-    //         ...formData,
-    //         ingredients
-    //     });
-    // };
+                    </Tooltip>
+                    <Stack padding={2} spacing={2}>
+                      <Typography color={'gray'} variant="h6" sx={noWrap}>
+                        <Link href={`/detailsRecipes/${recipe?.id}`} color='inherit' underline="hover">
+                          {recipe?.recipeTitle}
+                        </Link>
+                      </Typography>
+                      <Stack direction="row" justifyContent={'space-between'}>
+                        <Stack direction="row" spacing={2}>
+                          <Box color={'#ffa505'}>
+                            <Rating
+                              name={matches ? 'size-medium' : 'size-large'} defaultValue={1} />
 
-    // const handlePreparationStepsChange = (index, event) => {
-    //     const preparationSteps = [...formData.preparationSteps];
-    //     preparationSteps[index] = event.target.value;
-    //     setFormData({
-    //         ...formData,
-    //         preparationSteps
-    //     });
-    // };
+                          </Box>
+                          <Typography variant="p">
+                            {recipe?.starsLikedCounter}
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                      <Stack
+                        spacing={1}
+                        borderTop={'0.1rem solid #f5f5f5f5'}
+                        direction="row"
+                        width={'100%'}
+                        justifyContent="space-between"
+                      >
+                        <Tag.Author>
+                          <Tag.AuthorImage>
+                            <img
+                              style={{ borderRadius: '10px' }}
+                              src={recipe?.avatar}
+                              alt=""
+                            />
+                          </Tag.AuthorImage>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              justifyContent: 'space-between',
+                              flexDirection: 'column',
+                              height: '100%',
+                              fontSize: '13px',
+                              color: '#565656',
+                            }}
+                            id="info"
+                          >
+                            <Typography sx={noWrap} variant="subtitle1">
+                              {recipe?.name}
+                            </Typography>
+                            <Stack direction="row" spacing={2}>
+                              <Stack direction="row" gap={1}>
+                                <FavoriteIcon
+                                  fontSize={
+                                    matches ? 'small' : 'medium'
+                                  }
+                                />
+                                233
+                              </Stack>
+                              <Stack
+                                spacing={2}
+                                gap={1}
+                                direction="row"
+                              >
+                                <ForumIcon
+                                  fontSize={
+                                    matches ? 'small' : 'medium'
+                                  }
+                                />
+                                {recipe?.commentsCounter}
+                              </Stack>
+                            </Stack>
+                          </Box>
+                        </Tag.Author>
+                        <Tag.ReviewScore
+                          variant={matches ? 'subtitle1' : 'h4'}
+                        >
+                          {recipe?.reviewScore}
+                        </Tag.ReviewScore>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+                </Tag.Card>
 
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     // Lógica para enviar os dados do formulário
-    // };
+              </>
+            )
+          })}
+        </Tag.Cards>
+        {/* Paginação */}
+        {/* <Dashboard /> */}
+      </Tag.Container>
+      {top && <> {
+        myRecipes.length > itemsPerPage && (
+          <Tag.Pagination spacing={2} sx={{ transition: '.3s', mt: "3" }}>
+            <Pagination
+              count={Math.ceil(recipes.length / itemsPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              renderItem={(item) => (
+                <PaginationItem
+                  {...item}
+                />
+              )}
+            />
+          </Tag.Pagination>
+        )
+      }</>}
+    </Tag.Wrapper>
+  )
 
-    // return (
-    //     <form onSubmit={handleSubmit}>
-    //         <label>
-    //             Título da receita:
-    //             <input
-    //                 type="text"
-    //                 name="recipeTitle"
-    //                 value={formData.recipeTitle}
-    //                 onChange={handleInputChanges}
-    //             />
-    //         </label>
-
-    //         <label>
-    //             Descrição da receita:
-    //             <textarea
-    //                 name="recipeDescription"
-    //                 value={formData.recipeDescription}
-    //                 onChange={handleInputChanges}
-    //             />
-    //         </label>
-
-    //         <label>
-    //             Ingredientes:
-    //             {formData.ingredients.map((ingredient, index) => (
-    //                 <input
-    //                     type="text"
-    //                     key={index}
-    //                     value={ingredient}
-    //                     onChange={(event) => handleIngredientsChange(index, event)}
-    //                 />
-    //             ))}
-    //         </label>
-
-    //         <label>
-    //             Passos de preparo:
-    //             {formData.preparationSteps.map((step, index) => (
-    //                 <input
-    //                     type="text"
-    //                     key={index}
-    //                     value={step}
-    //                     onChange={(event) => handlePreparationStepsChange(index, event)}
-    //                 />
-    //             ))}
-    //         </label>
-
-    //         <label>
-    //             Tempo de cozimento:
-    //             <input
-    //                 type="text"
-    //                 name="cookingTime"
-    //                 value={formData.cookingTime}
-    //                 onChange={handleInputChanges}
-    //             />
-    //         </label>
-
-    //         {/* Outros campos da receita */}
-
-    //         <button type="submit">Salvar</button>
-    //     </form>
-    // );
-};
+}

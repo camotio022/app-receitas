@@ -5,7 +5,7 @@ export const Wrapper = styled('div')(({ theme }) => ({
     alignItems: "center",
     justifyContent: "flex-start",
     gap: '5rem',
-    padding: '0%',
+    padding: '3%',
     width: "100%",
     height: "100vh",
 }))
@@ -40,7 +40,7 @@ export const Cards = styled(Stack)(({ theme }) => ({
     gap: '2rem',
     width: '100%',
     height: 'auto',
-    padding: '3rem  0 3rem 0',
+    padding: '3%',
     background: '#f5f5f5',
     paddingBottom: '13rem'
 }))
@@ -55,7 +55,6 @@ export const Card = styled(Stack)(({ theme }) => ({
     backgroundColor: 'white',
     transition: 'all .5s ease-in-out',
     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-    paddingBottom: '1rem',
     '@media only screen and (max-width: 550px)': {
         display: 'flex',
         alignItems: 'center',
@@ -117,6 +116,7 @@ export const AuthorImage = styled(Box)(({ theme }) => ({
     width: '3rem',
     height: '3rem',
     overflow: 'hidden',
+    borderRadius: '50%',
     color: theme.palette.secondary.light,
     img: {
         width: '100%',

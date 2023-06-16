@@ -16,7 +16,7 @@ import { api } from '../../api'
 import { useEffect, useState } from 'react'
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase.config';
-
+const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1';
 export const TopReview = () => {
     const matches = useMediaQuery('(min-width:700px)')
     const [recipes, setRecipes] = useState([]);
@@ -83,8 +83,7 @@ export const TopReview = () => {
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
-
-                <ShowSlider/>
+                {/* <ShowSlider /> */}
 
                 <Tag.HeaderView textAlign={'center'} width={'100%'}>
                     <Tag.Title sx={{
@@ -130,12 +129,14 @@ export const TopReview = () => {
                                                         {recipe?.starsLikedCounter}
                                                     </Typography>
                                                 </Stack>
-                                                <Tag.FavoritingRecipe
-                                                    title={`Favoritar está receita ${recipe?.titleRecipe}`}
-                                                    followCursor
-                                                >
-                                                    <FavoriteIcon />
-                                                </Tag.FavoritingRecipe>
+                                                {recipe?.authorId != authorId && <>
+                                                    <Tag.FavoritingRecipe
+                                                        title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                                        followCursor
+                                                    >
+                                                        <FavoriteIcon />
+                                                    </Tag.FavoritingRecipe>
+                                                </>}
                                             </Stack>
                                             <Stack
                                                 spacing={1}
@@ -148,7 +149,7 @@ export const TopReview = () => {
                                                     <Tag.AuthorImage>
                                                         <img
                                                             style={{ borderRadius: '10px' }}
-                                                            src={recipe?.avatar}
+                                                            src={recipe?.authorId !== authorId ? 'https://lh3.googleusercontent.com/a/AAcHTte5KmDTCwkRqSFEoh9gZi3w4WtiMU6Os8DxTNX4=s96-c':recipe?.avatar }
                                                             alt=""
                                                         />
                                                     </Tag.AuthorImage>
@@ -164,9 +165,16 @@ export const TopReview = () => {
                                                         }}
                                                         id="info"
                                                     >
-                                                        <Typography sx={noWrap} variant="subtitle1">
-                                                            {recipe?.name}
-                                                        </Typography>
+                                                        {recipe?.authorId !== authorId ? (<>
+                                                            <Typography sx={noWrap} variant="subtitle1">
+                                                                Eu papai
+                                                            </Typography></>
+                                                        ) : <>
+                                                            <Typography sx={noWrap} variant="subtitle1">
+                                                                {recipe?.name}
+                                                            </Typography></>
+                                                        }
+
                                                         <Stack direction="row" spacing={2}>
                                                             <Stack direction="row" gap={1}>
                                                                 <FavoriteIcon
@@ -194,36 +202,36 @@ export const TopReview = () => {
                                                 <Tag.ReviewScore
                                                     variant={matches ? 'subtitle1' : 'h4'}
                                                 >
-                                                    {recipe?.reviewScore}
+                                                    {recipe?.ranking}
                                                 </Tag.ReviewScore>
                                             </Stack>
                                         </Stack>
                                     </Stack>
-                                </Tag.Card>
+                                </Tag.Card >
 
                             </>
                         )
                     })}
                 </Tag.Cards>
-                {/* Paginação */}
-                {/* <Dashboard /> */}
             </Tag.Container>
-            {top && <> {
-                recipes.length > itemsPerPage && (
-                    <Tag.Pagination spacing={2} sx={{ transition: '.3s', mt: "3" }}>
-                        <Pagination
-                            count={Math.ceil(recipes.length / itemsPerPage)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            renderItem={(item) => (
-                                <PaginationItem
-                                    {...item}
-                                />
-                            )}
-                        />
-                    </Tag.Pagination>
-                )
-            }</>}
-        </Tag.Wrapper>
+            {
+                top && <> {
+                    recipes.length > itemsPerPage && (
+                        <Tag.Pagination spacing={2} sx={{ transition: '.3s', mt: "3" }}>
+                            <Pagination
+                                count={Math.ceil(recipes.length / itemsPerPage)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                renderItem={(item) => (
+                                    <PaginationItem
+                                        {...item}
+                                    />
+                                )}
+                            />
+                        </Tag.Pagination>
+                    )
+                }</>
+            }
+        </Tag.Wrapper >
     )
 }
