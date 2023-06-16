@@ -96,6 +96,7 @@ export const CreateRecipes = ({ }) => {
         console.log(formData)
         await api.recipe.post(formData).then((response) => {
             alert('success')
+            setFormData("")
         }).catch((error) => {
             alert('Error' + error)
             console.log(error)

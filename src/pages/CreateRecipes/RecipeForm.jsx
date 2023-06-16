@@ -136,7 +136,11 @@ export const RecipeForm = ({
                         value={formData?.recipeDescription}
                     />
                 </Grid>
-                <Grid item xs={12} sx={{ mt: '0.2rem', overflow: 'auto', height: formData.ingredients.length > 0 ? '10rem' : 0, transition: '.3s' }}>
+
+                <Grid item xs={12} sx={{
+                    mt: '1rem',
+                    height: formData.ingredients.length > 0 ? 'auto' : 0, transition: '.3s'
+                }}>
                     {formData.ingredients.map((valor, index) => (
                         <>
                             <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
@@ -163,14 +167,15 @@ export const RecipeForm = ({
                         + Add ingredient
                     </Button>
                 </Grid>
-
-
             </Grid>
-            <Typography variant="h6" gutterBottom mt={3}>
+            <Typography variant="h6" gutterBottom mt={3} mb={1}>
                 Etapas de preparo
             </Typography>
             <Grid container spacing={3}>
-                <Grid item xs={12} sx={{ mt: '0.2rem', overflow: 'auto', height: formData.modPreps.length > 0 ? '10rem' : 0, transition: '.3s' }}>
+                <Grid item xs={12} sx={{
+                    mt: '1rem',
+                    height: formData.modPreps.length > 0 ? 'auto' : 0, transition: '.3s',
+                }}>
                     {formData.modPreps.map((valor, index) => (
                         <>
                             <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
