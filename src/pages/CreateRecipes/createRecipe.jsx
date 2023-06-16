@@ -25,6 +25,7 @@ export const CreateRecipes = ({ }) => {
         recipeTitle: '',
         recipeDescription: '',
         ingredients: [],
+        modPreps: [],
         prepTime: '',
         cookTime: '',
         servingSize: '',
@@ -58,6 +59,24 @@ export const CreateRecipes = ({ }) => {
         const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
         novosValores.splice(index, 1);
         setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
+    };
+
+
+
+    const handleInputModPreps = (e, index) => {
+        const novosValores = [...formData.modPreps]; // Corrigido para "modPreps"
+        novosValores[index] = e.target.value;
+        setFormData({ ...formData, modPreps: novosValores }); // Corrigido para "modPreps"
+    };
+
+    const adicionarModPreps = () => {
+        setFormData({ ...formData, modPreps: [...formData.modPreps, ''] }); // Corrigido para "modPreps"
+    };
+
+    const removerModPreps = (index) => {
+        const novosValores = [...formData.modPreps]; // Corrigido para "modPreps"
+        novosValores.splice(index, 1);
+        setFormData({ ...formData, modPreps: novosValores }); // Corrigido para "modPreps"
     };
     const handleInputChangesCreateRecipes = (event) => {
         const { name, value } = event.target;
@@ -143,6 +162,10 @@ export const CreateRecipes = ({ }) => {
                             handleInputIngre={handleInputIngre}
                             adicionarIngre={adicionarIngre}
                             removerIngre={removerIngre}
+
+                            handleInputModPreps={handleInputModPreps}
+                            adicionarModPreps={adicionarModPreps}
+                            removerModPreps={removerModPreps}
                         />
                     </React.Fragment>
                 </Paper>

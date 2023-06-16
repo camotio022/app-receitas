@@ -25,6 +25,9 @@ export const RecipeForm = ({
     formData,
     adicionarIngre,
     removerIngre,
+    handleInputModPreps,
+    adicionarModPreps,
+    removerModPreps,
     handleInputChangesCreateRecipes,
     handleSubmit,
     handleImageChange,
@@ -42,7 +45,7 @@ export const RecipeForm = ({
 
     const [step, setStep] = React.useState(0); // Variável de estado para controlar o passo atual
 
-   
+
     const handleInputsChange = (event, index) => {
         const newInputs = [...stepsData[step].inputs];
         newInputs[index] = event.target.value;
@@ -133,7 +136,7 @@ export const RecipeForm = ({
                         value={formData?.recipeDescription}
                     />
                 </Grid>
-                <Grid item xs={12} sx={{ mt: '0.2rem',overflow: 'auto' , height: formData.ingredients.length > 0? '10rem': 0, transition: '.3s'}}>
+                <Grid item xs={12} sx={{ mt: '0.2rem', overflow: 'auto', height: formData.ingredients.length > 0 ? '10rem' : 0, transition: '.3s' }}>
                     {formData.ingredients.map((valor, index) => (
                         <>
                             <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
@@ -167,25 +170,32 @@ export const RecipeForm = ({
                 Etapas de preparo
             </Typography>
             <Grid container spacing={3}>
-                {stepsData[step].prep.map((input, index) => (
-                    <Grid item xs={12} key={index}>
-                        <TextField
-                            label={`Etapa ${index + 1}`}
-                            fullWidth
-                            variant='filled'
-                            type="text"
-                            value={input}
-                            onChange={(e) => handleInputsChange(e, index)}
-                        />
-                        <Button color="error" onClick={() => removeInput(index)} variant='outlined' startIcon={<DeleteIcon />}>
-                            Delete step
-                        </Button>
-                    </Grid>
-                ))}
+                <Grid item xs={12} sx={{ mt: '0.2rem', overflow: 'auto', height: formData.modPreps.length > 0 ? '10rem' : 0, transition: '.3s' }}>
+                    {formData.modPreps.map((valor, index) => (
+                        <>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
+                                <TextField
+                                    label={`Etapa ${index + 1}`}
+                                    fullWidth
+                                    variant="filled"
+                                    type="text"
+                                    value={valor}
+                                    onChange={(e) => handleInputModPreps(e, index)}
+                                />
+
+                            </Grid>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
+                                <Button color="error" onClick={() => removerModPreps(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                                    Delete step
+                                </Button>
+                            </Grid>
+                        </>
+                    ))}
+                </Grid>
                 <Grid item xs={12}>
-                    {<Button sx={{ mr: 2 }} onClick={AddStep} variant='contained'>
-                        + Add step
-                    </Button>}
+                    <Button size='small' sx={{ mr: 2 }} onClick={adicionarModPreps} variant='contained'>
+                        + Adicionar etapa
+                    </Button>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <TextField
@@ -288,7 +298,7 @@ export const RecipeForm = ({
                         name="recipeImage"
                         accept="image/*"
                         onChange={handleImageChange}
-    
+
                         variant='filled'
                     />
                 </Grid>
