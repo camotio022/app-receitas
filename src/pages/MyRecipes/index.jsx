@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api';
 
-export const EditeRecipe = () => {
+export const MyRecipes = () => {
     const [myRecipes, setMyRecipes] = useState([]);
 
     useEffect(() => {
