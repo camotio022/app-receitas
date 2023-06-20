@@ -1,0 +1,15 @@
+.floating-menu {
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    /* Outros estilos desejados */
+}
+
+.floating-menu.open {
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Define a cor de fundo com transparência */
+    backdrop-filter: blur(5px);
+    /* Aplica um efeito de desfoque ao fundo */
+}

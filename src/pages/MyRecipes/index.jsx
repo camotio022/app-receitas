@@ -1,23 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../api';
+import './index.css';
 import * as Tag from './index.js'
-import { Stack, Typography, Box, useMediaQuery, Tooltip, Link, Rating } from '@mui/material'
-import { ShowSlider } from '../Home/CAROUSEL';
+import { Stack, Typography, Box, useMediaQuery, Tooltip, Link, Rating, Paper, MenuList, MenuItem, ListItemIcon, ListItemText, Divider } from '@mui/material'
 import {
   Forum as ForumIcon,
   Favorite as FavoriteIcon,
   Star as StarIcon,
-  NavigateNext as NavigateNextIcon
+  NavigateNext as NavigateNextIcon,
+  Close as CloseIcon,
+  MoreVert as MoreVertIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Details as DetailsIcon,
+  ContentCut,
+  ContentPaste,
+  Cloud,
+  ContentCopy,
+  MoreVert
 } from '@mui/icons-material'
+
+
+import { green, red } from '@mui/material/colors';
 export const MyRecipes = () => {
   const matches = useMediaQuery('(min-width:700px)')
-
   const [myRecipes, setMyRecipes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const indexOfLastRecipe = currentPage * itemsPerPage;
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage;
   const currentRecipes = myRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+  const [floatingMenu, setFloatingMenu] = useState(null);
+
+  const [handleOptions, setHandleOptions] = useState([]);
+
+  const handleOptionsOP = (index) => {
+    const updatedOptions = {};
+    for (let i = 0; i < myRecipes.length; i++) {
+      updatedOptions[i] = i === index ? !handleOptions[index] : false;
+    }
+    setHandleOptions(updatedOptions);
+  };
+  const handleClickOutsideMenu = (index) => {
+    setHandleOptions(!handleOptions[index]);
+  };
+  const deleteRecipe = async (recipeId, recipeName) => {
+    if (recipeId) {
+      const response = window.prompt(`Tem certeza que deseja apagar permanentemente esta receita? ${recipeName}? Sim ou Não`);
+      if (response === 'sim') {
+        try {
+          await api.myRecipes.delete(recipeId);
+          alert('Receita apagada com sucesso!');
+          
+        } catch (error) {
+          console.error('Erro ao apagar a receita:', error);
+          alert('Ocorreu um erro ao apagar a receita. Por favor, tente novamente.');
+        }
+      } else {
+        alert('Ainda bem que não confirmou!');
+      }
+    }
+  };
 
 
   const handlePageChange = (event, page) => {
@@ -40,7 +83,7 @@ export const MyRecipes = () => {
   };
   window.addEventListener('scroll', handleScroll);
 
-  
+
   useEffect(() => {
     const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'; // Substitua pelo seu próprio ID de autor
 
@@ -48,7 +91,6 @@ export const MyRecipes = () => {
       try {
         const myRecipesList = await api.myRecipes.get(authorId);
         setMyRecipes(myRecipesList);
-        console.log('Minhas receitas:', myRecipes);
         // Faça algo com a lista de receitas, como atualizar o estado do componente
       } catch (error) {
         console.error('Erro ao buscar as receitas:', error);
@@ -61,7 +103,7 @@ export const MyRecipes = () => {
     return (
       <Tag.Wrapper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography variant='h3'>
-          Receitas não encontradas
+          Carregando...
         </Typography>
       </Tag.Wrapper>
     )
@@ -83,18 +125,24 @@ export const MyRecipes = () => {
           </Typography>
         </Tag.HeaderView>
         <Tag.Cards>
-          {currentRecipes.map((recipe) => {
+          {currentRecipes.map((recipe, index) => {
             return (
               <>
-                <Tag.Card key={recipe?.id}>
+                <Tag.Card key={index}>
+
                   <Stack width={'100%'}>
+                    <Stack
+                      sx={{ position: 'absolute', width: '3rem', height: "3rem", color: red[900], bgcolor: "white", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <MoreVert
+                        onClick={() => handleOptionsOP(index)}
+                      />
+                    </Stack>
                     <Tooltip
                       sx={{ cursor: 'pointer' }}
                       title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
                       followCursor
                     >
                       <img className="img" src={recipe?.recipeImage} alt="" />
-
                     </Tooltip>
                     <Stack padding={2} spacing={2}>
                       <Typography color={'gray'} variant="h6" sx={noWrap}>
@@ -112,6 +160,50 @@ export const MyRecipes = () => {
                           <Typography variant="p">
                             {recipe?.starsLikedCounter}
                           </Typography>
+                          <Box>
+                            {handleOptions[index] &&
+                              <Tag.Options>
+                                <Tag.PaperOptions className={`floating-menu ${floatingMenu === index ? 'open' : ''}`}>
+                                  <MenuList>
+                                    <MenuItem>
+                                      <ListItemIcon>
+                                        <DetailsIcon fontSize="small" />
+                                      </ListItemIcon>
+                                      <ListItemText>Detalhar</ListItemText>
+                                      <Typography variant="body2" color="text.secondary">
+                                        Control + V
+                                      </Typography>
+                                    </MenuItem>
+                                    <MenuItem>
+                                      <ListItemIcon>
+                                        <EditIcon fontSize="small" />
+                                      </ListItemIcon>
+                                      <ListItemText>Editar minha receita</ListItemText>
+                                      <Typography variant="body2" color="text.secondary">
+                                        Control + E
+                                      </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => deleteRecipe(recipe?.id, recipe?.recipeTitle)} sx={{ color: red[500] }}>
+                                      <ListItemIcon>
+                                        <DeleteIcon sx={{ color: red[500] }} fontSize="small" />
+                                      </ListItemIcon>
+                                      <ListItemText>Deletar a receita</ListItemText>
+                                      <Typography variant="body2" color="text.secondary">
+                                        Control + D
+                                      </Typography>
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem onClick={() => handleClickOutsideMenu(index)}>
+                                      <ListItemIcon>
+                                        <CloseIcon fontSize="small" />
+                                      </ListItemIcon>
+                                      <ListItemText>Fechar o menu</ListItemText>
+                                    </MenuItem>
+                                  </MenuList>
+                                </Tag.PaperOptions>
+                              </Tag.Options>
+                            }
+                          </Box>
                         </Stack>
                       </Stack>
                       <Stack
@@ -175,7 +267,7 @@ export const MyRecipes = () => {
                         </Tag.ReviewScore>
                       </Stack>
                     </Stack>
-                  </Stack>
+                  </Stack >
                 </Tag.Card>
 
               </>
@@ -184,12 +276,12 @@ export const MyRecipes = () => {
         </Tag.Cards>
         {/* Paginação */}
         {/* <Dashboard /> */}
-      </Tag.Container>
+      </Tag.Container >
       {top && <> {
         myRecipes.length > itemsPerPage && (
           <Tag.Pagination spacing={2} sx={{ transition: '.3s', mt: "3" }}>
             <Pagination
-              count={Math.ceil(recipes.length / itemsPerPage)}
+              count={Math.ceil(currentRecipes.length / itemsPerPage)}
               page={currentPage}
               onChange={handlePageChange}
               renderItem={(item) => (
@@ -201,7 +293,7 @@ export const MyRecipes = () => {
           </Tag.Pagination>
         )
       }</>}
-    </Tag.Wrapper>
+    </Tag.Wrapper >
   )
 
 }

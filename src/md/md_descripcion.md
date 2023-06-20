@@ -5,12 +5,12 @@
 ### Requisitos
 
 - Usuários
-    - Cadastrar
-    - Autenticar
+    - Cadastrar, feito!
+    - Autenticar, feito!
 - Ingredientes
-    - Criar
-    - Editar
-    - Alterar
+    - Criar, feito!
+    - Editar, feito!
+    - Alterar, feito!
     - Deletar
 - Receitas
     - Criar

@@ -120,7 +120,7 @@ const links = [
             {
                 name: 'Minhas Receitas',
                 icon: <BookIcon />,
-                link: '#',
+                link: '/myRecipes',
             },
             { name: 'Receitas Favoritas', icon: <FavoriteIcon /> },
             { name: 'Top Review', icon: <StarIcon /> },

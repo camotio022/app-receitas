@@ -1,4 +1,4 @@
-import { styled, Stack, Box, Typography, Tooltip } from '@mui/material'
+import { styled, Stack, Box, Typography, Tooltip, Paper } from '@mui/material'
 export const Wrapper = styled('div')(({ theme }) => ({
     display: "flex",
     flexDirection: 'column',
@@ -22,7 +22,7 @@ export const Container = styled(Stack)(({ theme }) => ({
 
 }))
 export const HeaderView = styled(Stack)(({ theme }) => ({
-    
+
     paddingBottom: '1rem',
 }))
 export const Title = styled(Typography)(({ theme }) => ({
@@ -126,4 +126,26 @@ export const AuthorImage = styled(Box)(({ theme }) => ({
 export const Pagination = styled(Stack)(({ theme }) => ({
     position: 'fixed',
     bottom: '3rem',
+}))
+export const Options = styled(Stack)(({ theme }) => ({
+    position: "fixed",
+    width: "100vw",
+    height: "100vh",
+    zIndex: 9999,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backdropFilter: "blur(5px)",
+    top: "0px",
+    left: "0px",
+    transition: "transform 0.3s ease-in-out",
+}))
+export const PaperOptions = styled(Paper)(({ theme }) => ({
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%',
+    height: 'auto',
+    maxWidth: '100%',
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+    transition: "transform 0.3s ease-in-out",
 }))

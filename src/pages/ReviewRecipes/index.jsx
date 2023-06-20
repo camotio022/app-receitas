@@ -37,7 +37,7 @@ export const TopReview = () => {
         const obterrecipes = async () => {
             const recipesData = await api.recipe.get()
             setRecipes(recipesData);
-            console.log(recipesData)
+            // console.log('IDs', recipesData.map(recipe => recipe?.id))
         };
         obterrecipes();
     }, []);
@@ -149,7 +149,7 @@ export const TopReview = () => {
                                                     <Tag.AuthorImage>
                                                         <img
                                                             style={{ borderRadius: '10px' }}
-                                                            src={recipe?.authorId !== authorId ? 'https://lh3.googleusercontent.com/a/AAcHTte5KmDTCwkRqSFEoh9gZi3w4WtiMU6Os8DxTNX4=s96-c':recipe?.avatar }
+                                                            src={recipe?.authorId !== authorId ? 'https://lh3.googleusercontent.com/a/AAcHTte5KmDTCwkRqSFEoh9gZi3w4WtiMU6Os8DxTNX4=s96-c' : recipe?.avatar}
                                                             alt=""
                                                         />
                                                     </Tag.AuthorImage>
