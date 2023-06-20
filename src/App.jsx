@@ -14,6 +14,7 @@ import { CreateRecipes } from './pages/CreateRecipes/createRecipe'
 import { NavigationHandler } from './router/NavigationHandler'
 import { AuthContext, AuthProvider } from './contexts/AuthContext'
 import { Comunidade }from './pages/Comunidade/index.jsx'
+import { MyRecipes } from './pages/MyRecipes/index.jsx'
 
 
 const Main = () => {
@@ -43,6 +44,7 @@ const Main = () => {
                         <Route path="/comunidade" element={<Comunidade />} />
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/signin" element={<SignIn />} />
+                        <Route path="/myRecipes" element={<MyRecipes />} />
                     </Routes>
                 </>
             ) : (

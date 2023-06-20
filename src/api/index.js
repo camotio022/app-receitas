@@ -3,11 +3,13 @@ import {
   addDoc,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
   setDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { User } from "./entities/User.jsx";
@@ -54,7 +56,7 @@ export const api = {
         }
         return {};
       }
-      return getCollection("users");
+      return ("users");
     },
     post: async (payload) => {
       const { id, email, name, lastName, password } = payload;
@@ -68,6 +70,7 @@ export const api = {
       // criar um usuario no firebase utilizando email name
     },
   },
+
   recipe: {
     get: async (id) => {
       if (id) {
@@ -82,7 +85,6 @@ export const api = {
         }
         return {};
       }
-
       return getCollection("recipes");
     },
     post: async (payload) => {
@@ -107,6 +109,7 @@ export const api = {
         gord,
         author,
         creationDate,
+        ranking,
         name,
         email,
         country,
@@ -134,6 +137,7 @@ export const api = {
         fat,
         sod,
         gord,
+        ranking,
         commentsCounter: 0,
         starsLikedCounter: 0,
         author,
@@ -179,4 +183,44 @@ export const api = {
 
     }
   },
+
+
+  myRecipes: {
+    get: async (authorId) => {
+      if (authorId) {
+        try {
+          const recipesRef = collection(db, 'recipes');
+          const q = query(recipesRef, where('authorId', '==', authorId));
+          const snapshot = await getDocs(q);
+          const recipes = [];
+          snapshot.forEach((doc) => {
+            const recipe = doc.data();
+            recipe.id = doc.id; // Adicionar a propriedade "id" ao objeto da receita
+            recipes.push(recipe);
+          });
+          return recipes;
+        } catch (error) {
+          console.error('Erro ao buscar as receitas:', error);
+          return []; // Retorna uma lista vazia em caso de erro
+        }
+      } else {
+        return []; // Retorna uma lista vazia se o ID do autor não for fornecido
+      }
+    },
+    delete: async (recipeId) => {
+      if (recipeId) {
+        try {
+          await deleteDoc(doc(db, 'recipes', recipeId));
+          console.log('Receita deletada com sucesso');
+          // Faça algo após deletar a receita, se necessário
+        } catch (error) {
+          console.error('Erro ao deletar a receita:', error);
+          // Trate o erro adequadamente
+        }
+      }
+    }
+  },
+  favoriteRecipes: {
+
+  }
 };

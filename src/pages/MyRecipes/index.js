@@ -1,11 +1,11 @@
-import { styled, Stack, Box, Typography, Tooltip } from '@mui/material'
+import { styled, Stack, Box, Typography, Tooltip, Paper } from '@mui/material'
 export const Wrapper = styled('div')(({ theme }) => ({
     display: "flex",
     flexDirection: 'column',
     alignItems: "center",
     justifyContent: "flex-start",
     gap: '5rem',
-    padding: '3%',
+    padding: '0%',
     width: "100%",
     height: "100vh",
 }))
@@ -22,7 +22,7 @@ export const Container = styled(Stack)(({ theme }) => ({
 
 }))
 export const HeaderView = styled(Stack)(({ theme }) => ({
-    borderBottom: `1px solid ${theme.palette.primary.light}`,
+
     paddingBottom: '1rem',
 }))
 export const Title = styled(Typography)(({ theme }) => ({
@@ -40,7 +40,7 @@ export const Cards = styled(Stack)(({ theme }) => ({
     gap: '2rem',
     width: '100%',
     height: 'auto',
-    padding: '3%',
+    padding: '3rem  0 3rem 0',
     background: '#f5f5f5',
     paddingBottom: '13rem'
 }))
@@ -55,6 +55,7 @@ export const Card = styled(Stack)(({ theme }) => ({
     backgroundColor: 'white',
     transition: 'all .5s ease-in-out',
     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
+    paddingBottom: '1rem',
     '@media only screen and (max-width: 550px)': {
         display: 'flex',
         alignItems: 'center',
@@ -116,7 +117,6 @@ export const AuthorImage = styled(Box)(({ theme }) => ({
     width: '3rem',
     height: '3rem',
     overflow: 'hidden',
-    borderRadius: '50%',
     color: theme.palette.secondary.light,
     img: {
         width: '100%',
@@ -126,4 +126,26 @@ export const AuthorImage = styled(Box)(({ theme }) => ({
 export const Pagination = styled(Stack)(({ theme }) => ({
     position: 'fixed',
     bottom: '3rem',
+}))
+export const Options = styled(Stack)(({ theme }) => ({
+    position: "fixed",
+    width: "100vw",
+    height: "100vh",
+    zIndex: 9999,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backdropFilter: "blur(5px)",
+    top: "0px",
+    left: "0px",
+    transition: "transform 0.3s ease-in-out",
+}))
+export const PaperOptions = styled(Paper)(({ theme }) => ({
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%',
+    height: 'auto',
+    maxWidth: '100%',
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
+    transition: "transform 0.3s ease-in-out",
 }))
