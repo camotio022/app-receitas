@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import * as Tag from './index'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Logo } from '../../componentes/LOGO';
-import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert } from '@mui/material';
+import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert, Paper, } from '@mui/material';
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { blue, green, grey, orange } from '@mui/material/colors';
@@ -130,136 +130,148 @@ export const SignUp = () => {
         }, '5000');
     }
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Tag.Container component="main" maxWidth="xs" sx={{ padding: '5%' }}>
-                {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
-                    <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
-                </Stack>}
-                {showalert && <Alert severity="success" color="info">
-                    Formlário enviando com sucesso.
-                </Alert>}
-                <CssBaseline />
-                <Box
+
+        <Tag.Container component="main" maxWidth="xs">
+            {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
+                <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
+            </Stack>}
+            {showalert && <Alert severity="success" color="info">
+                Formlário enviando com sucesso.
+            </Alert>}
+
+
+
+            <Grid container component="form" onSubmit={submtForum} spacing={1} fullWidth sx={{ width: '100%', height: '100%' }}>
+                <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={7}
                     sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        backgroundImage:
+                            'url(https://source.unsplash.com/random?wallpapers)',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: (t) =>
+                            t.palette.mode === 'light'
+                                ? t.palette.grey[50]
+                                : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                     }}
+                />
+                <Grid
+
+                    item
+                    xs={12}
+                    sm={8}
+                    md={5}
+                    padding={4}
+                    mb={'auto'}
+                    spacing={2}
+                    height={"100%"}
+                    elevation={2}
+                    marginRight={-3}
+
+                    square
                 >
-                    <Stack sx={{ m: 1, bgcolor: (theme) => theme.palette.secondary }}>
-                        <Logo />
+                    <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
+                        <img src={Logo} alt="" />
                     </Stack>
                     <Typography component="h1" variant="h5">
-                        Cadastro
+                        Sign in
                     </Typography>
-                    <Box component="form" noValidate onSubmit={submtForum} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <ComponInput
-                                    sx={{
-                                        bgcolor: !datasFocos?.nameFocos && orange[900], "&::placeholder": {
-                                            color: "white",
-                                        }
-                                    }}
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    autoComplete="given-name"
-                                    name="name"
-                                    required
-                                    fullWidth
-                                    label="First Name"
-                                    value={data?.name}
-                                    onChange={handleChange}
-                                    autoFocus={datasFocos?.nameFocos}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <ComponInput
-                                    sx={{
-                                        bgcolor: !datasFocos?.lastNameFocos && orange[900], "&::placeholder": {
-                                            color: "white",
-                                        }
-                                    }}
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    required
-                                    fullWidth
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="family-name"
-                                    value={data?.lastName}
-                                    onChange={handleChange}
-                                    autoFocus={datasFocos?.lastNameFocos}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ComponInput
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    required
-                                    fullWidth
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    value={data?.email}
-                                    onChange={handleChange}
-                                    autoFocus={datasFocos?.emailFocos}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ComponInput
-                                    required
-                                    id="outlined-error-helper-text"
-                                    helperText="Incorrect entry."
-                                    fullWidth
-                                    defaultValue="Hello World"
-                                    placeholder="Password"
-                                    name="password"
-                                    type={showPasswprd ? 'text' : 'password'}
-                                    value={data?.password}
-                                    onChange={handleChange}
-                                    autoComplete="new-password"
-                                    label="password"
-                                    autoFocus={datasFocos?.passwordFocos}
-                                    endAdornment={
-                                        <InputAdornment>
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={ShowPassword}
-                                            >
-                                                {showPasswprd ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
-                                />
-                            </Grid>
-                        </Grid>
-                        <Button
-                            type="submit"
+
+
+
+                    <Grid item xs={12} lg={6} mt={3} mb={3}>
+                        <TextField
+                            id="outlined-error-helper-text"
+                            autoComplete="given-name"
+                            name="name"
+                            required
                             fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Cadastrar
-                        </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
+                            label="First Name"
+                            value={data?.name}
+                            onChange={handleChange}
+                            autoFocus={datasFocos?.nameFocos}
+                        />
+                    </Grid>
+                    <Grid item xs={12} lg={6} mb={3}>
+                        <TextField
+                            id="outlined-error-helper-text"
+                            required
+                            fullWidth
+                            label="Last Name"
+                            name="lastName"
+                            autoComplete="family-name"
+                            value={data?.lastName}
+                            onChange={handleChange}
+                            autoFocus={datasFocos?.lastNameFocos}
+                        />
+                    </Grid>
+                    <Grid item xs={12} lg={6} mb={3}>
+                        <TextField
+                            id="outlined-error-helper-text"
+                            required
+                            fullWidth
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            value={data?.email}
+                            onChange={handleChange}
+                            autoFocus={datasFocos?.emailFocos}
+                        />
+                    </Grid>
+                    <Grid item xs={12} lg={6} mb={3}>
+                        <TextField
+                            required
+                            id="outlined-error-helper-text"
+                            fullWidth
+                            defaultValue="Hello World"
+                            placeholder="Password"
+                            name="password"
+                            type={showPasswprd ? 'text' : 'password'}
+                            value={data?.password}
+                            onChange={handleChange}
+                            autoComplete="new-password"
+                            label="password"
+                            autoFocus={datasFocos?.passwordFocos}
+                            endAdornment={
+                                <InputAdornment>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={ShowPassword}
+                                    >
+                                        {showPasswprd ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={12} lg={6} mb={3}>
+                        <FormControlLabel
+                            control={<Checkbox value="allowExtraEmails" color="primary" />}
+                            label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
+                        />
+                    </Grid>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Cadastrar
+                    </Button>
+                    <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            <Link href="/" variant="body2">
+                                Already have an account? Sign in
+                            </Link>
                         </Grid>
-                    </Box>
-                </Box>
-                <Copyright sx={{ mt: 5 }} />
-            </Tag.Container>
-        </ThemeProvider>
+                    </Grid>
+                    <Copyright sx={{ mt: 5 }} />
+                </Grid>
+            </Grid>
+        </Tag.Container>
     );
 }
