@@ -9,10 +9,13 @@ import { useNavigate } from 'react-router-dom'
 
 export const AuthContext = createContext()
 const provider = new GoogleAuthProvider()
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState(null)
+
 
     const [userData, setUserData] = useState(null)
     const navigate = useNavigate()
@@ -39,37 +42,79 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(userData))
     }
     const logout = () => {
-        alert('Logout')
+        alert('Logout');
         // Lógica de logout
         // Define isAuthenticated como false e remove o token de autenticação
-        setIsLoggedIn(false)
-        localStorage.removeItem('isLoggedIn')
-        localStorage.removeItem('user')
+        setIsLoggedIn(false);
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('user');
         // Outras lógicas de remoção do token de autenticação, como cookies ou localStorage
-    }
+
+        // Redireciona o usuário para a rota raiz
+        window.location.replace('/');
+    };
 
     const loginWithGoogle = async () => {
-        const auth = getAuth()
+        const auth = getAuth();
         signInWithPopup(auth, provider)
             .then((result) => {
-                const credential =
-                    GoogleAuthProvider.credentialFromResult(result)
-                const token = credential.accessToken
-                setUser(result.user)
-                login(result.user)
-                navigate('/topReview') //redirecionar
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const { user } = result;
+                const userData = {
+                    id: user.uid,
+                    name: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    // outros dados que você queira adicionar
+                };
+                // Adicione os dados do usuário ao Firestore
+                const firestore = getFirestore();
+                setDoc(doc(firestore, 'users', user.uid), userData)
+                    .then(() => {
+                        console.log('Dados do usuário adicionados com sucesso ao Firestore.');
+                        setUser(user);
+                        login(user);
+                        navigate('/topReview'); //redirecionar
+                    })
+                    .catch((error) => {
+                        console.error('Erro ao adicionar dados do usuário ao Firestore:', error);
+                    });
             })
             .catch((error) => {
                 // Handle Errors here.
-                const errorCode = error.code
-                const errorMessage = error.message
+                const errorCode = error.code;
+                const errorMessage = error.message;
                 // The email of the user's account used.
-                const email = error?.customData?.email
+                const email = error?.customData?.email;
                 // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error)
-                console.log(error)
-            })
-    }
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                console.log(error);
+            });
+    };
+
+    // const loginWithGoogle = async () => {
+    //     const auth = getAuth()
+    //     signInWithPopup(auth, provider)
+    //         .then((result) => {
+    //             const credential =
+    //                 GoogleAuthProvider.credentialFromResult(result)
+    //             const token = credential.accessToken
+    //             setUser(result.user)
+    //             login(result.user)
+    //             navigate('/topReview') //redirecionar
+    //         })
+    //         .catch((error) => {
+    //             // Handle Errors here.
+    //             const errorCode = error.code
+    //             const errorMessage = error.message
+    //             // The email of the user's account used.
+    //             const email = error?.customData?.email
+    //             // The AuthCredential type that was used.
+    //             const credential = GoogleAuthProvider.credentialFromError(error)
+    //             console.log(error)
+    //         })
+    // }
 
     const loginWithEmailAndPassword = async (email, password) => {
         const auth = getAuth()

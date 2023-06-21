@@ -9,6 +9,7 @@ import {
   getDocs,
   query,
   setDoc,
+  getFirestore,
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
@@ -60,14 +61,25 @@ export const api = {
     },
     post: async (payload) => {
       const { id, email, name, lastName, password } = payload;
-      if (id) {
-        //
+      const firestore = getFirestore();
+
+      const usersCollection = collection(firestore, 'users');
+      const emailQuery = query(usersCollection, where('email', '==', email));
+      const emailQuerySnapshot = await getDocs(emailQuery);
+      if (!emailQuerySnapshot.empty) {
+        alert('O email já está sendo usado por outro usuário.');
+        window.location.replace('/signup');
         return;
       }
-
-      //   const newUser = new User({ email, name });
-      const docRef = await addDoc(collection(db, "users"), { email, name, lastName, password });
-      // criar um usuario no firebase utilizando email name
+      const userDocRef = await addDoc(usersCollection, {
+        email,
+        name,
+        lastName,
+        password,
+        // outros dados que você queira adicionar
+      });
+      console.log('Usuário criado com sucesso:', userDocRef.id);
+      window.location.replace('/');
     },
   },
 

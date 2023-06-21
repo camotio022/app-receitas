@@ -116,7 +116,6 @@ export const SignUp = () => {
         setProgress(!progress)
         fetch(await api?.user.post(data)).then((res) => {
             console.log(res)
-            navigate('/')
         }).catch((err) => {
             alert(`${err}`)
         })
