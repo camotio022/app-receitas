@@ -89,11 +89,9 @@ export const MyRecipes = () => {
 
 
   useEffect(() => {
-    const authorId = user?.uid
-
     const fetchData = async () => {
       try {
-        const myRecipesList = await api.myRecipes.get(authorId);
+        const myRecipesList = await api.myRecipes.get(user.uid);
         setMyRecipes(myRecipesList);
         // Faça algo com a lista de receitas, como atualizar o estado do componente
       } catch (error) {
@@ -107,7 +105,7 @@ export const MyRecipes = () => {
     return (
       <Tag.Wrapper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography variant='h3'>
-          Carregando...
+          Atualmente você está sem receitas, por favor tente novamente!
         </Typography>
       </Tag.Wrapper>
     )
@@ -158,7 +156,7 @@ export const MyRecipes = () => {
                         <Stack direction="row" spacing={2}>
                           <Box color={'#ffa505'}>
                             <Rating
-                              name={matches ? 'size-medium' : 'size-large'} defaultValue={1} />
+                              name={matches ? 'size-medium' : 'size-large'} disabled defaultValue={1} />
 
                           </Box>
                           <Typography variant="p">
@@ -267,7 +265,7 @@ export const MyRecipes = () => {
                         <Tag.ReviewScore
                           variant={matches ? 'subtitle1' : 'h4'}
                         >
-                          {recipe?.reviewScore}
+                          {recipe?.ranking}
                         </Tag.ReviewScore>
                       </Stack>
                     </Stack>
