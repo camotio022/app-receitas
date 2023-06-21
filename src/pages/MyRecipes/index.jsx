@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { api } from '../../api';
 import './index.css';
 import * as Tag from './index.js'
@@ -22,7 +22,11 @@ import {
 
 
 import { green, red } from '@mui/material/colors';
+import { AuthContext } from '../../contexts/AuthContext';
 export const MyRecipes = () => {
+  const userString = localStorage.getItem('user');
+  const user = JSON.parse(userString);
+
   const matches = useMediaQuery('(min-width:700px)')
   const [myRecipes, setMyRecipes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +55,7 @@ export const MyRecipes = () => {
         try {
           await api.myRecipes.delete(recipeId);
           alert('Receita apagada com sucesso!');
-          
+
         } catch (error) {
           console.error('Erro ao apagar a receita:', error);
           alert('Ocorreu um erro ao apagar a receita. Por favor, tente novamente.');
@@ -85,7 +89,7 @@ export const MyRecipes = () => {
 
 
   useEffect(() => {
-    const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'; // Substitua pelo seu próprio ID de autor
+    const authorId = user?.uid
 
     const fetchData = async () => {
       try {
@@ -217,7 +221,7 @@ export const MyRecipes = () => {
                           <Tag.AuthorImage>
                             <img
                               style={{ borderRadius: '10px' }}
-                              src={recipe?.avatar}
+                              src={user?.photoURL}
                               alt=""
                             />
                           </Tag.AuthorImage>
@@ -234,7 +238,7 @@ export const MyRecipes = () => {
                             id="info"
                           >
                             <Typography sx={noWrap} variant="subtitle1">
-                              {recipe?.name}
+                              {user?.displayName}
                             </Typography>
                             <Stack direction="row" spacing={2}>
                               <Stack direction="row" gap={1}>

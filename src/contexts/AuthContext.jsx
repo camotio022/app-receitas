@@ -13,6 +13,7 @@ const provider = new GoogleAuthProvider()
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState(null)
+
     const [userData, setUserData] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
@@ -70,28 +71,6 @@ export const AuthProvider = ({ children }) => {
             })
     }
 
-    // const loginWithGoogle = async () => {
-    //     try {
-    //         const auth = getAuth()
-    //         const provider = new GoogleAuthProvider()
-    //         const result = await signInWithPopup(auth, provider)
-    //         const user = result.user
-    //         const userData = {
-    //             uid: user.uid,
-    //             email: user.email,
-    //             name: user.displayName,
-    //             photoURL: user.photoURL,
-    //             // Outros dados do usuário que você queira armazenar
-    //         }
-
-    //         login(userData)
-    //         console.log('Usuário logado com sucesso:', user, user.uid)
-    //         navigate('/topReview')
-    //     } catch (error) {
-    //         console.error('Erro ao fazer login com o Google:', error)
-    //         // Trate o erro de login com o Google conforme necessário
-    //     }
-    // }
     const loginWithEmailAndPassword = async (email, password) => {
         const auth = getAuth()
         signInWithEmailAndPassword(auth, email, password)
@@ -105,69 +84,6 @@ export const AuthProvider = ({ children }) => {
                 console.log(error.message)
             })
     }
-    // const loginWithEmailPassword = async (e) => {
-    //     const checkUserExists = async (email, password) => {
-    //         try {
-    //             const auth = getAuth()
-    //             const userCredential = await signInWithEmailAndPassword(
-    //                 auth,
-    //                 email,
-    //                 password
-    //             )
-    //             const user = userCredential.user
-    //             const userData = {
-    //                 uid: user.uid,
-    //                 email: user.email,
-    //                 // Outros dados do usuário que você queira armazenar
-    //             }
-
-    //             return userData
-    //         } catch (error) {
-    //             console.error(
-    //                 'Erro ao verificar a existência do usuário:',
-    //                 error
-    //             )
-    //             throw error // Ou faça algo diferente com o erro
-    //         }
-    //     }
-    //     try {
-    //         const userExists = await checkUserExists(email, password)
-    //         if (userExists) {
-    //             login(userExists)
-    //             console.log('logado')
-    //             navigate('/topReview')
-    //         } else {
-    //         }
-    //     } catch (error) {
-    //         console.error('Erro ao verificar a existência do usuário:', error)
-    //         if (error.code === 'auth/wrong-password') {
-    //             setPassword('')
-    //             alert('Senha incorreta')
-    //         } else {
-    //             if (error.code === 'auth/user-not-found') {
-    //                 const createUser = async (email, password) => {
-    //                     try {
-    //                         const auth = getAuth()
-    //                         const userCredential =
-    //                             await createUserWithEmailAndPassword(
-    //                                 auth,
-    //                                 email,
-    //                                 password
-    //                             )
-    //                         const user = userCredential.user
-    //                         console.log('Usuário criado com sucesso:', user)
-    //                     } catch (error) {
-    //                         console.error('Erro ao criar usuário:', error)
-    //                     }
-    //                 }
-    //                 createUser(email, password)
-    //             } else {
-    //                 alert('Erro na mídia')
-    //             }
-    //         }
-    //     }
-    // }
-
     return (
         <AuthContext.Provider
             value={{
