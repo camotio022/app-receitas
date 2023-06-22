@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { Fragment, useContext } from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -16,8 +16,10 @@ import { Fab, Fade } from '@mui/material'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { api } from '../../api'
+import { AuthContext } from '../../contexts/AuthContext'
 
 export const CreateRecipes = ({}) => {
+    const { user } = useContext(AuthContext)
     const [scrollHeight, setScrollHeight] = useState(0)
     const [formData, setFormData] = useState({
         recipeTitle: '',
@@ -90,10 +92,11 @@ export const CreateRecipes = ({}) => {
         reader.readAsDataURL(file)
     }
     const handleSubmit = async (event) => {
-        console.log(formData)
+        const payload = { ...formData, author: user.uid }
         await api.recipe
-            .post(formData)
+            .post(payload)
             .then((response) => {
+                console.log(response)
                 alert('success')
                 setFormData('')
             })
@@ -152,7 +155,7 @@ export const CreateRecipes = ({}) => {
                     variant="outlined"
                     sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
                 >
-                    <React.Fragment>
+                    <Fragment>
                         <RecipeForm
                             formData={formData}
                             setFormData={setFormData}
@@ -168,7 +171,7 @@ export const CreateRecipes = ({}) => {
                             adicionarModPreps={adicionarModPreps}
                             removerModPreps={removerModPreps}
                         />
-                    </React.Fragment>
+                    </Fragment>
                 </Paper>
             </Container>
         </>

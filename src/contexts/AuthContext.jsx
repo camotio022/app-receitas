@@ -143,6 +143,8 @@ export const AuthProvider = ({ children }) => {
                 logout,
                 loginWithGoogle,
                 loginWithEmailAndPassword,
+                user,
+                userData,
             }}
         >
             {children}
