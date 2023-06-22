@@ -9,89 +9,95 @@ import { useNavigate } from 'react-router-dom'
 
 export const AuthContext = createContext()
 const provider = new GoogleAuthProvider()
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [user, setUser] = useState(null)
 
-
     const [userData, setUserData] = useState(null)
     const navigate = useNavigate()
-    useEffect(() => {
-        const checkUserAuthentication = () => {
-            const loggedInStatus = localStorage.getItem('isLoggedIn')
-            setIsLoggedIn(loggedInStatus === 'true')
 
-            if (loggedInStatus === 'true') {
-                const userDataFromLocalStorage = JSON.parse(
-                    localStorage.getItem('user')
-                )
-                if (userDataFromLocalStorage) {
-                    setUserData(userDataFromLocalStorage)
-                    setUser(userDataFromLocalStorage)
-                }
+    const checkUserAuthentication = () => {
+        const loggedInStatus = localStorage.getItem('isLoggedIn')
+        setIsLoggedIn(loggedInStatus === 'true')
+
+        if (loggedInStatus === 'true') {
+            const userDataFromLocalStorage = JSON.parse(
+                localStorage.getItem('user')
+            )
+            if (userDataFromLocalStorage) {
+                setUserData(userDataFromLocalStorage)
+                setUser(userDataFromLocalStorage)
             }
         }
+    }
+
+    useEffect(() => {
         checkUserAuthentication()
-    }, [userData])
+    }, [])
     const login = (userData) => {
         setIsLoggedIn(true)
         localStorage.setItem('isLoggedIn', 'true')
         localStorage.setItem('user', JSON.stringify(userData))
     }
     const logout = () => {
-        alert('Logout');
+        alert('Logout')
         // Lógica de logout
         // Define isAuthenticated como false e remove o token de autenticação
-        setIsLoggedIn(false);
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('user');
+        setIsLoggedIn(false)
+        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('user')
         // Outras lógicas de remoção do token de autenticação, como cookies ou localStorage
 
         // Redireciona o usuário para a rota raiz
-        window.location.replace('/');
-    };
+        window.location.replace('/')
+    }
 
     const loginWithGoogle = async () => {
-        const auth = getAuth();
+        const auth = getAuth()
         signInWithPopup(auth, provider)
             .then((result) => {
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                const { user } = result;
+                const credential =
+                    GoogleAuthProvider.credentialFromResult(result)
+                const token = credential.accessToken
+                const { user } = result
                 const userData = {
                     id: user.uid,
                     name: user.displayName,
                     email: user.email,
                     photoURL: user.photoURL,
                     // outros dados que você queira adicionar
-                };
+                }
                 // Adicione os dados do usuário ao Firestore
-                const firestore = getFirestore();
+                const firestore = getFirestore()
                 setDoc(doc(firestore, 'users', user.uid), userData)
                     .then(() => {
-                        console.log('Dados do usuário adicionados com sucesso ao Firestore.');
-                        setUser(user);
-                        login(user);
-                        navigate('/topReview'); //redirecionar
+                        console.log(
+                            'Dados do usuário adicionados com sucesso ao Firestore.'
+                        )
+                        setUser(user)
+                        login(user)
+                        navigate('/topReview') //redirecionar
                     })
                     .catch((error) => {
-                        console.error('Erro ao adicionar dados do usuário ao Firestore:', error);
-                    });
+                        console.error(
+                            'Erro ao adicionar dados do usuário ao Firestore:',
+                            error
+                        )
+                    })
             })
             .catch((error) => {
                 // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
+                const errorCode = error.code
+                const errorMessage = error.message
                 // The email of the user's account used.
-                const email = error?.customData?.email;
+                const email = error?.customData?.email
                 // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                console.log(error);
-            });
-    };
+                const credential = GoogleAuthProvider.credentialFromError(error)
+                console.log(error)
+            })
+    }
 
     // const loginWithGoogle = async () => {
     //     const auth = getAuth()
