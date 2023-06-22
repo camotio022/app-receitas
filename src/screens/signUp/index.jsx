@@ -54,8 +54,11 @@ export const ComponInput = ({ id,
 }
 export const SignUp = () => {
     const [progress, setProgress] = useState(false);
-
-    const [showalert, setAlert] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [showalert, setShowalert] = useState(false);
     const [data, setData] = useState({
         password: '',
         email: '',
@@ -70,64 +73,58 @@ export const SignUp = () => {
     })
     const [showPasswprd, setShowPasswprd] = useState(false)
     const handleChange = (e) => {
+        var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         const value = e.target.value;
         const name = e.target.name;
         setData((old) => {
             return { ...old, [name]: value };
         });
-    };
-
+        if (name === 'email') {
+            if (value === "" || value.indexOf('@') === -1 || value.indexOf('.com') === -1) {
+                setEmailError('Preencha o campo E-MAIL corretamente!');
+                setNameFocos(!data?.datasFocos);
+            } else {
+                setEmailError('');
+            }
+        }
+        if (name === 'lastName') {
+            if (value === "" || value.length < 3) {
+                setLastNameError('Preencha o campo SOBRENOME corretamente!');
+                setNameFocos(!data?.datasFocos);
+            } else {
+                setLastNameError('');
+            }
+        }
+        if (name === 'name') {
+            if (value === "" || value.length < 4) {
+                setNameError('Preencha o campo NOME corretamente!');
+                setNameFocos(!datasFocos?.nameFocos);
+            } else {
+                setNameError('');
+            }
+        }
+        if (name === 'password') {
+            if (value.length < 8) {
+                setPasswordError('A senha deve conter no mínimo 8 dígitos!');
+            } else if (!regex.exec(value)) {
+                setPasswordError('A senha deve conter no mínimo 1 caractere em maiúsculo, 2 números e 2 caracteres especiais!');
+            } else {
+                setPasswordError('')
+            }
+        };
+    }
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
     }
-    const navigate = useNavigate()
-
-
     const submtForum = async (e) => {
-        var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         e.preventDefault();
-        if (data?.email == "" ||
-            data?.email.indexOf('@') == -1 ||
-            data?.email.indexOf('.com') == -1) {
-            alert("Preencha campo E-MAIL corretamente!");
-            setNameFocos(!data?.datasFocos)
-            return false;
-        }
-        if (data?.lastName == "" ||
-            data?.lastName < 3) {
-            alert("Preencha campo E-MAIL corretamente!");
-            setNameFocos(!data?.datasFocos)
-            return false;
-        }
-        if (data?.name == "" ||
-            data?.name.length < 4) {
-            alert("Preencha campo NOME corretamente!");
-            setNameFocos(!datasFocos?.nameFocos);
-            return false;
-        }
-        if (data?.password.length < 8) {
-            alert("A senha deve conter no minímo 8 digitos!");
-            return false;
-        } else if (!regex.exec(data?.password)
-        ) {
-            alert("A senha deve conter no mínimo 1 caracter em maiúsculo, 2 números e 2 caractere especial!");
-            return false;
-        }
         setProgress(!progress)
         fetch(await api?.user.post(data)).then((res) => {
             console.log(res)
         }).catch((err) => {
             alert(`${err}`)
+            return
         })
-
-        setTimeout(() => {
-            setProgress(false)
-            setAlert(!showalert)
-        }, '2000');
-        setTimeout(() => {
-            setAlert(false)
-            return true
-        }, '5000');
     }
     return (
 
@@ -183,7 +180,7 @@ export const SignUp = () => {
 
 
 
-                    <Grid item xs={12} lg={6} mt={3} mb={3}>
+                    <Grid item xs={12} mt={3} mb={3}>
                         <TextField
                             id="outlined-error-helper-text"
                             autoComplete="given-name"
@@ -194,9 +191,11 @@ export const SignUp = () => {
                             value={data?.name}
                             onChange={handleChange}
                             autoFocus={datasFocos?.nameFocos}
+                            helperText={nameError}
+                            sx={{ color: 'red' }}
                         />
                     </Grid>
-                    <Grid item xs={12} lg={6} mb={3}>
+                    <Grid item xs={12} mb={3}>
                         <TextField
                             id="outlined-error-helper-text"
                             required
@@ -207,9 +206,10 @@ export const SignUp = () => {
                             value={data?.lastName}
                             onChange={handleChange}
                             autoFocus={datasFocos?.lastNameFocos}
+                            helperText={lastNameError}
                         />
                     </Grid>
-                    <Grid item xs={12} lg={6} mb={3}>
+                    <Grid item xs={12} mb={3}>
                         <TextField
                             id="outlined-error-helper-text"
                             required
@@ -220,9 +220,10 @@ export const SignUp = () => {
                             value={data?.email}
                             onChange={handleChange}
                             autoFocus={datasFocos?.emailFocos}
+                            helperText={emailError}
                         />
                     </Grid>
-                    <Grid item xs={12} lg={6} mb={3}>
+                    <Grid item xs={12} mb={3}>
                         <TextField
                             required
                             id="outlined-error-helper-text"
@@ -236,6 +237,7 @@ export const SignUp = () => {
                             autoComplete="new-password"
                             label="password"
                             autoFocus={datasFocos?.passwordFocos}
+                            helperText={passwordError}
                             endAdornment={
                                 <InputAdornment>
                                     <IconButton
