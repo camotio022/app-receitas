@@ -20,7 +20,7 @@ const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1';
 export const TopReview = () => {
     const userString = localStorage.getItem('user');
     const user = JSON.parse(userString);
-  
+
     const matches = useMediaQuery('(min-width:700px)')
     const [recipes, setRecipes] = useState([]);
     const [imageUrls, setImageUrls] = useState([]);
@@ -83,6 +83,18 @@ export const TopReview = () => {
             </Tag.Wrapper>
         )
     }
+    const fevoritingRecipe = async (recipeId, userId) => {
+        if (recipeId && userId) {
+            // Lógica para favoritar a receita
+            try {
+                await api.favoriteRecipes.post(recipeId, userId)
+            } catch (err) {
+                console.log(err, 'não encontrado')
+                console.log(err)
+            }
+        }
+    }
+
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
@@ -132,14 +144,15 @@ export const TopReview = () => {
                                                         {recipe?.starsLikedCounter}
                                                     </Typography>
                                                 </Stack>
-                                                {recipe?.authorId != user.uid && <>
-                                                    <Tag.FavoritingRecipe
-                                                        title={`Favoritar está receita ${recipe?.titleRecipe}`}
-                                                        followCursor
-                                                    >
-                                                        <FavoriteIcon />
-                                                    </Tag.FavoritingRecipe>
-                                                </>}
+
+                                                <Tag.FavoritingRecipe
+                                                    onClick={() => fevoritingRecipe(recipe?.id, user?.uid)}
+                                                    title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                                    followCursor
+                                                >
+                                                    <FavoriteIcon />
+                                                </Tag.FavoritingRecipe>
+
                                             </Stack>
                                             <Stack
                                                 spacing={1}
@@ -152,7 +165,7 @@ export const TopReview = () => {
                                                     <Tag.AuthorImage>
                                                         <img
                                                             style={{ borderRadius: '10px' }}
-                                                            src={recipe?.authorId !== user.uid ? recipe?.avatar : user.photoURL }
+                                                            src={recipe?.authorId === user.uid ? user.photoURL : recipe?.avatar}
                                                             alt=""
                                                         />
                                                     </Tag.AuthorImage>
@@ -170,7 +183,7 @@ export const TopReview = () => {
                                                     >
                                                         {recipe?.authorId === user.uid ? (<>
                                                             <Typography sx={noWrap} variant="subtitle1">
-                                                                Eu papai
+                                                                {user.displayName}
                                                             </Typography></>
                                                         ) : <>
                                                             <Typography sx={noWrap} variant="subtitle1">

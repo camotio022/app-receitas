@@ -15,6 +15,7 @@ import { NavigationHandler } from './router/NavigationHandler'
 import { AuthContext, AuthProvider } from './contexts/AuthContext'
 import { Comunidade }from './pages/Comunidade/index.jsx'
 import { MyRecipes } from './pages/MyRecipes/index.jsx'
+import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
 
 
 const Main = () => {
@@ -45,6 +46,7 @@ const Main = () => {
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/myRecipes" element={<MyRecipes />} />
+                        <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
                     </Routes>
                 </>
             ) : (

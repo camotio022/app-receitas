@@ -1,5 +1,4 @@
 import {
-  Firestore,
   addDoc,
   arrayUnion,
   collection,
@@ -11,27 +10,11 @@ import {
   setDoc,
   getFirestore,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { User } from "./entities/User.jsx";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-/*
-
-    user/ GET - listar todos os usuarios
-    user/ POST - criar um usuario
-    user/:id GET - ver detalhe do usuario
-     user/:id POST - alterar dados do usuario
-
-
-    recipe/ GET - listar todos as receitas
-    recipe/ POST - criar uma receita
-    recipe/:id GET - ver detalhe da receita
-    
-
-*/
-
-//payload - dados transmitidos na requisição
 
 const getCollection = async (collectionPath) => {
   const collectionSnap = await getDocs(collection(db, collectionPath));
@@ -233,6 +216,81 @@ export const api = {
     }
   },
   favoriteRecipes: {
+    get: async (userId) => {
+      if (userId) {
+        try {
+          const usersCollection = collection(db, 'users');
+          const userDocRef = query(usersCollection, where('userId', '==', userId));
+          const userDocSnap = await getDocs(userDocRef);
 
+          if (userDocSnap.size === 1) {
+            const userData = userDocSnap.docs[0].data();
+            const favoriteRecipes = userData.favorite_recipes || [];
+            return Object.values(favoriteRecipes);
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.error('Erro ao buscar as receitas favoritas:', error);
+          return [];
+        }
+      } else {
+        return []; // Retorna uma lista vazia se o ID do usuário não for fornecido
+      }
+    },
+    post: async (recipeId, userId) => {
+      if (recipeId && userId) {
+        try {
+          const userDocRef = doc(db, 'users', userId);
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            // Obter as receitas favoritas do usuário
+            const favoriteRecipes = userDocSnap.data().favorite_recipes || [];
+
+            // Verificar se a receita já está nos favoritos
+            if (!favoriteRecipes.includes(recipeId)) {
+              // Adicionar a receita aos favoritos
+              await updateDoc(userDocRef, {
+                favorite_recipes: arrayUnion(recipeId)
+              });
+              alert('Receita adicionada com sucesso!')
+            } else {
+              alert('A receita já está nos favoritos do usuário.');
+            }
+
+            // Retornar as receitas favoritas atualizadas
+            return favoriteRecipes;
+          } else {
+            console.log('Usuário não encontrado');
+            return [];
+          }
+        } catch (error) {
+          console.error('Erro ao buscar as receitas favoritas:', error);
+          return [];
+        }
+      } else {
+        return []; // Retorna uma lista vazia se o ID do usuário não for fornecido
+      }
+    },
+    remove: async (recipeId, userId) => {
+      if (recipeId && userId) {
+        const usersRef = firebase.database().ref('users');
+
+        try {
+          const snapshot = await usersRef.child(userId).child('favorite_recipes').once('value');
+          const recipes = snapshot.val() || [];
+          const updatedRecipes = Object.values(recipes).filter(id => id !== recipeId);
+          await usersRef.child(userId).child('favorite_recipes').set(updatedRecipes);
+          console.log('Receita removida dos favoritos');
+          return true;
+        } catch (error) {
+          console.error('Erro ao remover a receita dos favoritos:', error);
+          return false;
+        }
+      } else {
+        return false; // Retorna falso se o ID do usuário ou da receita não for fornecido
+      }
+    },
   }
 };

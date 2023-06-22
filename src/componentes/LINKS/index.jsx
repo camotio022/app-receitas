@@ -122,7 +122,7 @@ const links = [
                 icon: <BookIcon />,
                 link: '/myRecipes',
             },
-            { name: 'Receitas Favoritas', icon: <FavoriteIcon /> },
+            { name: 'Receitas Favoritas', icon: <FavoriteIcon />,link: '/youfavoriteRecipes', },
             { name: 'Top Review', icon: <StarIcon /> },
             {
                 name: 'Create Recipe',
