@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { api } from '../../api'
 import { AuthContext } from '../../contexts/AuthContext'
+import { useParams } from 'react-router-dom'
 
 export const CreateRecipes = ({}) => {
     const { user } = useContext(AuthContext)
@@ -105,6 +106,18 @@ export const CreateRecipes = ({}) => {
                 console.log(error)
             })
     }
+
+    const getRecipeDetails = async (id) => {
+        const data = await api.recipe.get(id)
+        setFormData(data)
+    }
+
+    const params = useParams()
+    useEffect(() => {
+        const { id } = params
+        if (!id) return
+        getRecipeDetails(id)
+    }, [])
 
     useEffect(() => {
         const handleScroll = () => {

@@ -38,6 +38,10 @@ const Main = () => {
                             element={<CreateRecipes />}
                         />
                         <Route
+                            path="/detailsRecipes/:id/edit"
+                            element={<CreateRecipes />}
+                        />
+                        <Route
                             path="/detailsRecipes/:id"
                             element={<DetailsRecipes />}
                         />
