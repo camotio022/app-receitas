@@ -17,11 +17,13 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { api } from '../../api'
 import { AuthContext } from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 
 export const CreateRecipes = ({ }) => {
     const { user } = useContext(AuthContext)
     const [scrollHeight, setScrollHeight] = useState(0)
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         recipeTitle: '',
         recipeDescription: '',
@@ -103,8 +105,8 @@ export const CreateRecipes = ({ }) => {
                     alert('success')
                     setFormData('')
                 })
-        }
-        window.location.href('/');
+            }
+            navigate("/topReview")
     };
 
 

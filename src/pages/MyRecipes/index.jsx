@@ -18,6 +18,7 @@ import {
     Divider,
     Pagination,
     PaginationItem,
+    Avatar,
 } from '@mui/material'
 import {
     Forum as ForumIcon,
@@ -36,7 +37,7 @@ import {
     MoreVert,
 } from '@mui/icons-material'
 
-import { green, red } from '@mui/material/colors'
+import { green, orange, red } from '@mui/material/colors'
 import { AuthContext } from '../../contexts/AuthContext'
 export const MyRecipes = () => {
     const { user } = useContext(AuthContext)
@@ -347,14 +348,15 @@ export const MyRecipes = () => {
                                             >
                                                 <Tag.Author>
                                                     <Tag.AuthorImage>
-                                                        <img
+                                                        {/* <img
                                                             style={{
                                                                 borderRadius:
                                                                     '10px',
                                                             }}
-                                                            src={user?.photoURL}
+                                                            src={user.photoURL}
                                                             alt=""
-                                                        />
+                                                        /> */}
+                                                        <Avatar sx={{ bgcolor: orange[500] }} alt={recipe?.name} src={user?.photoURL}/>
                                                     </Tag.AuthorImage>
                                                     <Box
                                                         sx={{
@@ -392,7 +394,7 @@ export const MyRecipes = () => {
                                                                             : 'medium'
                                                                     }
                                                                 />
-                                                                233
+                                                                {recipe?.favoritesCounter}
                                                             </Stack>
                                                             <Stack
                                                                 spacing={2}
