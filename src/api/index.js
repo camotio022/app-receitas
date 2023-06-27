@@ -99,8 +99,10 @@ export const api = {
       })
       console.log(docRef)
       // criar um usuario no firebase utilizando email name
-    },
+    }
+
   },
+
   ingredientes: {
     get: async (id) => {
       if (id) {
