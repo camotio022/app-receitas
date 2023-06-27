@@ -145,52 +145,30 @@ export const RecipeForm = ({
                     />
                 </Grid>
 
-                <Grid
-                    item
-                    xs={12}
-                    sx={{
-                        mt: '1rem',
-                        height: formData.ingredients?.length > 0 ? 'auto' : 0,
-                        transition: '.3s',
-                    }}
-                >
-                    {formData?.ingredients &&
-                        formData.ingredients?.map((valor, index) => (
-                            <>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    key={index}
-                                    sx={{ display: 'flex', mt: 2 }}
-                                >
-                                    <TextField
-                                        label={`Ingrediente ${index + 1}`}
-                                        fullWidth
-                                        variant="filled"
-                                        type="text"
-                                        value={valor}
-                                        onChange={(e) =>
-                                            handleInputIngre(e, index)
-                                        }
-                                    />
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    key={index}
-                                    sx={{ display: 'flex' }}
-                                >
-                                    <Button
-                                        color="error"
-                                        onClick={() => removerIngre(index)}
-                                        variant="outlined"
-                                        startIcon={<DeleteIcon />}
-                                    >
-                                        Delete Ingrediente
-                                    </Button>
-                                </Grid>
-                            </>
-                        ))}
+                <Grid item xs={12} sx={{
+                    mt: '1rem',
+                    height: formData?.ingredients?.length > 0 ? 'auto' : 0, transition: '.3s'
+                }}>
+                    {formData.ingredients && formData.ingredients.map((valor, index) => (
+                        <>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
+                                <TextField
+                                    label={`Ingrediente ${index + 1}`}
+                                    fullWidth
+                                    variant="filled"
+                                    type="text"
+                                    value={valor}
+                                    onChange={(e) => handleInputIngre(e, index)}
+                                />
+
+                            </Grid>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
+                                <Button color="error" onClick={() => removerIngre(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                                    Delete Ingrediente
+                                </Button>
+                            </Grid>
+                        </>
+                    ))}
                 </Grid>
                 <Grid item xs={12}>
                     <Button
@@ -207,52 +185,30 @@ export const RecipeForm = ({
                 Etapas de preparo
             </Typography>
             <Grid container spacing={3}>
-                <Grid
-                    item
-                    xs={12}
-                    sx={{
-                        mt: '1rem',
-                        height: formData.modPreps?.length > 0 ? 'auto' : 0,
-                        transition: '.3s',
-                    }}
-                >
-                    {formData?.modPreps &&
-                        formData.modPreps.map((valor, index) => (
-                            <>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    key={index}
-                                    sx={{ display: 'flex', mt: 2 }}
-                                >
-                                    <TextField
-                                        label={`Etapa ${index + 1}`}
-                                        fullWidth
-                                        variant="filled"
-                                        type="text"
-                                        value={valor}
-                                        onChange={(e) =>
-                                            handleInputModPreps(e, index)
-                                        }
-                                    />
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    key={index}
-                                    sx={{ display: 'flex' }}
-                                >
-                                    <Button
-                                        color="error"
-                                        onClick={() => removerModPreps(index)}
-                                        variant="outlined"
-                                        startIcon={<DeleteIcon />}
-                                    >
-                                        Delete step
-                                    </Button>
-                                </Grid>
-                            </>
-                        ))}
+                <Grid item xs={12} sx={{
+                    mt: '1rem',
+                    height: formData?.modPreps?.length > 0 ? 'auto' : 0, transition: '.3s',
+                }}>
+                    {formData.modPreps && formData.modPreps.map((valor, index) => (
+                        <>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', mt: 2 }}>
+                                <TextField
+                                    label={`Etapa ${index + 1}`}
+                                    fullWidth
+                                    variant="filled"
+                                    type="text"
+                                    value={valor}
+                                    onChange={(e) => handleInputModPreps(e, index)}
+                                />
+
+                            </Grid>
+                            <Grid item xs={12} key={index} sx={{ display: 'flex', }}>
+                                <Button color="error" onClick={() => removerModPreps(index)} variant='outlined' startIcon={<DeleteIcon />}>
+                                    Delete step
+                                </Button>
+                            </Grid>
+                        </>
+                    ))}
                 </Grid>
                 <Grid item xs={12}>
                     <Button
@@ -320,7 +276,7 @@ export const RecipeForm = ({
                             id="demo-simple-select"
                             labelId="demo-simple-select-label"
                             name="recipeCategory"
-                            value={formData.recipeCategory}
+                            value={formData?.recipeCategory}
                             onChange={handleInputChangesCreateRecipes}
                             placeholder="Selecione a Categoria"
                             variant="filled"
@@ -340,7 +296,7 @@ export const RecipeForm = ({
                         </FormLabel>
                         <RadioGroup
                             name="recipeDifficulty"
-                            value={formData.recipeDifficulty}
+                            value={formData?.recipeDifficulty}
                             onChange={handleInputChangesCreateRecipes}
                         >
                             <FormControlLabel

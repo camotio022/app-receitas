@@ -35,13 +35,13 @@ export const TopReview = () => {
         setCurrentPage(page);
     };
 
+    const obterrecipes = async () => {
+        const recipesData = await api.recipe.get()
+        setRecipes(recipesData);
+        // console.log('IDs', recipesData.map(recipe => recipe?.id))
+    };
     useEffect(() => {
         // Recupere os usuários do Firebase
-        const obterrecipes = async () => {
-            const recipesData = await api.recipe.get()
-            setRecipes(recipesData);
-            // console.log('IDs', recipesData.map(recipe => recipe?.id))
-        };
         obterrecipes();
     }, []);
     const noWrap = {

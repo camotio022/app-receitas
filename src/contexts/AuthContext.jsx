@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
 
     const [userData, setUserData] = useState(null)
     const navigate = useNavigate()
-
     const checkUserAuthentication = () => {
         const loggedInStatus = localStorage.getItem('isLoggedIn')
         setIsLoggedIn(loggedInStatus === 'true')
@@ -94,34 +93,10 @@ export const AuthProvider = ({ children }) => {
                 // The email of the user's account used.
                 const email = error?.customData?.email
                 // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error)
-                console.log(error)
-            })
-    }
-
-    // const loginWithGoogle = async () => {
-    //     const auth = getAuth()
-    //     signInWithPopup(auth, provider)
-    //         .then((result) => {
-    //             const credential =
-    //                 GoogleAuthProvider.credentialFromResult(result)
-    //             const token = credential.accessToken
-    //             setUser(result.user)
-    //             login(result.user)
-    //             navigate('/topReview') //redirecionar
-    //         })
-    //         .catch((error) => {
-    //             // Handle Errors here.
-    //             const errorCode = error.code
-    //             const errorMessage = error.message
-    //             // The email of the user's account used.
-    //             const email = error?.customData?.email
-    //             // The AuthCredential type that was used.
-    //             const credential = GoogleAuthProvider.credentialFromError(error)
-    //             console.log(error)
-    //         })
-    // }
-
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                console.log(error);
+            });
+    };
     const loginWithEmailAndPassword = async (email, password) => {
         const auth = getAuth()
         signInWithEmailAndPassword(auth, email, password)
@@ -144,7 +119,6 @@ export const AuthProvider = ({ children }) => {
                 loginWithGoogle,
                 loginWithEmailAndPassword,
                 user,
-                userData,
             }}
         >
             {children}
