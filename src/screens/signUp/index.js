@@ -3,12 +3,13 @@ import { Stack, styled } from "@mui/material";
 export const Container = styled(Stack)(({ theme}) => ({
     position: 'absolute',
     display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100vw',
-    minHeight: '100vh',
+    height: '100vh',
     zIndex: 1,
     backgroundColor: 'white',
-    overflow: 'auto',
-    paddingBottom: '5rem'
+    overflow: 'hidden',
+    top: '0',
+    bottom: '0',
 }))

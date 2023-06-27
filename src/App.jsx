@@ -13,9 +13,9 @@ import { SignIn } from './screens/signIn/index.jsx'
 import { CreateRecipes } from './pages/CreateRecipes/createRecipe'
 import { NavigationHandler } from './router/NavigationHandler'
 import { AuthContext, AuthProvider } from './contexts/AuthContext'
-import { Comunidade }from './pages/Comunidade/index.jsx'
+import { Comunidade } from './pages/Comunidade/index.jsx'
 import { MyRecipes } from './pages/MyRecipes/index.jsx'
-
+import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
 
 const Main = () => {
     const auth = useContext(AuthContext)
@@ -38,6 +38,10 @@ const Main = () => {
                             element={<CreateRecipes />}
                         />
                         <Route
+                            path="/detailsRecipes/:id/edit"
+                            element={<CreateRecipes />}
+                        />
+                        <Route
                             path="/detailsRecipes/:id"
                             element={<DetailsRecipes />}
                         />
@@ -45,6 +49,10 @@ const Main = () => {
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/myRecipes" element={<MyRecipes />} />
+                        <Route
+                            path="/youfavoriteRecipes"
+                            element={<FavoriteRecipes />}
+                        />
                     </Routes>
                 </>
             ) : (
@@ -63,7 +71,6 @@ function App() {
     return (
         <BrowserRouter>
             <AuthProvider>
-                {/* <NavigationHandler /> */}
                 <Main />
             </AuthProvider>
         </BrowserRouter>

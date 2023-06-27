@@ -18,6 +18,9 @@ import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase.config';
 const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1';
 export const TopReview = () => {
+    const userString = localStorage.getItem('user');
+    const user = JSON.parse(userString);
+
     const matches = useMediaQuery('(min-width:700px)')
     const [recipes, setRecipes] = useState([]);
     const [imageUrls, setImageUrls] = useState([]);
@@ -80,6 +83,18 @@ export const TopReview = () => {
             </Tag.Wrapper>
         )
     }
+    const fevoritingRecipe = async (recipeId, userId) => {
+        if (recipeId && userId) {
+            // Lógica para favoritar a receita
+            try {
+                await api.favoriteRecipes.post(recipeId, userId)
+            } catch (err) {
+                console.log(err, 'não encontrado')
+                console.log(err)
+            }
+        }
+    }
+
     return (
         <Tag.Wrapper>
             <Tag.Container id="scrollHeithg">
@@ -120,23 +135,24 @@ export const TopReview = () => {
                                             </Typography>
                                             <Stack direction="row" justifyContent={'space-between'}>
                                                 <Stack direction="row" spacing={2}>
-                                                    <Box color={'#ffa505'}>
+                                                    {<Box color={'#ffa505'}>
                                                         <Rating
-                                                            name={matches ? 'size-medium' : 'size-large'} defaultValue={1} />
+                                                            name={matches ? 'size-medium' : 'size-large'} disabled={recipe.authorId === user.uid} defaultValue={1} />
 
-                                                    </Box>
+                                                    </Box>}
                                                     <Typography variant="p">
                                                         {recipe?.starsLikedCounter}
                                                     </Typography>
                                                 </Stack>
-                                                {recipe?.authorId != authorId && <>
-                                                    <Tag.FavoritingRecipe
-                                                        title={`Favoritar está receita ${recipe?.titleRecipe}`}
-                                                        followCursor
-                                                    >
-                                                        <FavoriteIcon />
-                                                    </Tag.FavoritingRecipe>
-                                                </>}
+
+                                                <Tag.FavoritingRecipe
+                                                    onClick={() => fevoritingRecipe(recipe?.id, user?.uid)}
+                                                    title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                                    followCursor
+                                                >
+                                                    <FavoriteIcon />
+                                                </Tag.FavoritingRecipe>
+
                                             </Stack>
                                             <Stack
                                                 spacing={1}
@@ -149,7 +165,7 @@ export const TopReview = () => {
                                                     <Tag.AuthorImage>
                                                         <img
                                                             style={{ borderRadius: '10px' }}
-                                                            src={recipe?.authorId !== authorId ? 'https://lh3.googleusercontent.com/a/AAcHTte5KmDTCwkRqSFEoh9gZi3w4WtiMU6Os8DxTNX4=s96-c' : recipe?.avatar}
+                                                            src={recipe?.authorId === user.uid ? user.photoURL : recipe?.avatar}
                                                             alt=""
                                                         />
                                                     </Tag.AuthorImage>
@@ -165,9 +181,9 @@ export const TopReview = () => {
                                                         }}
                                                         id="info"
                                                     >
-                                                        {recipe?.authorId !== authorId ? (<>
+                                                        {recipe?.authorId === user.uid ? (<>
                                                             <Typography sx={noWrap} variant="subtitle1">
-                                                                Eu papai
+                                                                {user.displayName}
                                                             </Typography></>
                                                         ) : <>
                                                             <Typography sx={noWrap} variant="subtitle1">

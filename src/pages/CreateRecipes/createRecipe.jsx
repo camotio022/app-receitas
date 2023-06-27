@@ -1,15 +1,14 @@
-import * as React from 'react'
+import { Fragment, useContext } from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
-const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1';
+const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'
 import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     ArrowDropDown as ArrowDropDownIcon,
 } from '@mui/icons-material'
-
 
 import './index.css'
 import { RecipeForm } from './RecipeForm'
@@ -17,9 +16,11 @@ import { Fab, Fade } from '@mui/material'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { api } from '../../api'
+import { AuthContext } from '../../contexts/AuthContext'
+import { useParams } from 'react-router-dom'
 
-
-export const CreateRecipes = ({ }) => {
+export const CreateRecipes = ({}) => {
+    const { user } = useContext(AuthContext)
     const [scrollHeight, setScrollHeight] = useState(0)
     const [formData, setFormData] = useState({
         recipeTitle: '',
@@ -47,62 +48,76 @@ export const CreateRecipes = ({ }) => {
         country: '',
     })
     const handleInputIngre = (e, index) => {
-        const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
-        novosValores[index] = e.target.value;
-        setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
-    };
+        const novosValores = [...formData.ingredients] // Corrigido para "ingredients"
+        novosValores[index] = e.target.value
+        setFormData({ ...formData, ingredients: novosValores }) // Corrigido para "ingredients"
+    }
 
     const adicionarIngre = () => {
-        setFormData({ ...formData, ingredients: [...formData.ingredients, ''] }); // Corrigido para "ingredients"
-    };
+        setFormData({ ...formData, ingredients: [...formData.ingredients, ''] }) // Corrigido para "ingredients"
+    }
 
     const removerIngre = (index) => {
-        const novosValores = [...formData.ingredients]; // Corrigido para "ingredients"
-        novosValores.splice(index, 1);
-        setFormData({ ...formData, ingredients: novosValores }); // Corrigido para "ingredients"
-    };
-
-
+        const novosValores = [...formData.ingredients] // Corrigido para "ingredients"
+        novosValores.splice(index, 1)
+        setFormData({ ...formData, ingredients: novosValores }) // Corrigido para "ingredients"
+    }
 
     const handleInputModPreps = (e, index) => {
-        const novosValores = [...formData.modPreps]; // Corrigido para "modPreps"
-        novosValores[index] = e.target.value;
-        setFormData({ ...formData, modPreps: novosValores }); // Corrigido para "modPreps"
-    };
+        const novosValores = [...formData.modPreps] // Corrigido para "modPreps"
+        novosValores[index] = e.target.value
+        setFormData({ ...formData, modPreps: novosValores }) // Corrigido para "modPreps"
+    }
 
     const adicionarModPreps = () => {
-        setFormData({ ...formData, modPreps: [...formData.modPreps, ''] }); // Corrigido para "modPreps"
-    };
+        setFormData({ ...formData, modPreps: [...formData.modPreps, ''] }) // Corrigido para "modPreps"
+    }
 
     const removerModPreps = (index) => {
-        const novosValores = [...formData.modPreps]; // Corrigido para "modPreps"
-        novosValores.splice(index, 1);
-        setFormData({ ...formData, modPreps: novosValores }); // Corrigido para "modPreps"
-    };
+        const novosValores = [...formData.modPreps] // Corrigido para "modPreps"
+        novosValores.splice(index, 1)
+        setFormData({ ...formData, modPreps: novosValores }) // Corrigido para "modPreps"
+    }
     const handleInputChangesCreateRecipes = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value } = event.target
+        setFormData({ ...formData, [name]: value })
     }
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+        const file = event.target.files[0]
+        const reader = new FileReader()
         reader.onload = () => {
-            const base64Image = reader.result;
-            setFormData({ ...formData, recipeImage: base64Image });
-        };
-        reader.readAsDataURL(file);
-    };
-    const handleSubmit = async (event) => {
-        console.log(formData)
-        await api.recipe.post(formData).then((response) => {
-            alert('success')
-            setFormData("")
-        }).catch((error) => {
-            alert('Error' + error)
-            console.log(error)
-        });
+            const base64Image = reader.result
+            setFormData({ ...formData, recipeImage: base64Image })
+        }
+        reader.readAsDataURL(file)
     }
+    const handleSubmit = async (event) => {
+        const payload = { ...formData, author: user.uid }
+        await api.recipe
+            .post(payload)
+            .then((response) => {
+                console.log(response)
+                alert('success')
+                setFormData('')
+            })
+            .catch((error) => {
+                alert('Error' + error)
+                console.log(error)
+            })
+    }
+
+    const getRecipeDetails = async (id) => {
+        const data = await api.recipe.get(id)
+        setFormData(data)
+    }
+
+    const params = useParams()
+    useEffect(() => {
+        const { id } = params
+        if (!id) return
+        getRecipeDetails(id)
+    }, [])
 
     useEffect(() => {
         const handleScroll = () => {
@@ -126,7 +141,6 @@ export const CreateRecipes = ({ }) => {
         })
     }
     return (
-
         <>
             <Fade in={scrollHeight}>
                 <Box
@@ -154,25 +168,25 @@ export const CreateRecipes = ({ }) => {
                     variant="outlined"
                     sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
                 >
-                    <React.Fragment>
+                    <Fragment>
                         <RecipeForm
                             formData={formData}
                             setFormData={setFormData}
-                            handleInputChangesCreateRecipes={handleInputChangesCreateRecipes}
+                            handleInputChangesCreateRecipes={
+                                handleInputChangesCreateRecipes
+                            }
                             handleImageChange={handleImageChange}
                             handleSubmit={handleSubmit}
                             handleInputIngre={handleInputIngre}
                             adicionarIngre={adicionarIngre}
                             removerIngre={removerIngre}
-
                             handleInputModPreps={handleInputModPreps}
                             adicionarModPreps={adicionarModPreps}
                             removerModPreps={removerModPreps}
                         />
-                    </React.Fragment>
+                    </Fragment>
                 </Paper>
             </Container>
         </>
-
     )
 }
