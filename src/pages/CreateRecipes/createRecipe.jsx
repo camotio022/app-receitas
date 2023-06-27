@@ -96,19 +96,14 @@ export const CreateRecipes = ({ }) => {
     const handleSubmit = async (event) => {
         const userId = user?.uid;
         if (userId) {
-            const formDataWithAuthor = {
-                ...formData,
-                author: userId
-            };
-            await api.recipe.post(formDataWithAuthor)
+            const payload = { ...formData, author: user.uid }
+            await api.recipe
+                .post(payload)
                 .then((response) => {
-                    alert('success');
-                    setFormData("");
+                    console.log(response)
+                    alert('success')
+                    setFormData('')
                 })
-                .catch((error) => {
-                    alert('Error' + error);
-                    console.log(error);
-                });
         }
         window.location.href('/');
     };
