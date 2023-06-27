@@ -5,7 +5,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Avatar, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, Container, IconButton, styled } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -18,11 +18,11 @@ const ExpandMore = styled((props) => {
 }));
 import * as Tag from './index.js'
 import { api } from '../../api/index.js';
+import { AuthContext } from '../../contexts/AuthContext.jsx';
 
 export const FavoriteRecipes = () => {
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
-    const userString = localStorage.getItem('user');
-    const user = JSON.parse(userString);
+    const { user } = useContext(AuthContext)
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
@@ -32,17 +32,19 @@ export const FavoriteRecipes = () => {
 
     useEffect(() => {
         const fetchFavoriteRecipes = async () => {
-            try {
-                const userId = user?.uid;
-                if (userId) {
+            const userId = user.uid;
+
+            if (userId) {
+                try {
                     const recipes = await api.favoriteRecipes.get(userId);
                     setFavoriteRecipes(recipes);
-                } else {
-                    setFavoriteRecipes([]); // Define uma lista vazia se o ID do usuário não estiver disponível
+                } catch (error) {
+                    console.error("Erro ao buscar as receitas favoritas:", error);
+                    setFavoriteRecipes([]); // Define uma lista vazia em caso de erro
                 }
-            } catch (error) {
-                console.error("Erro ao buscar as receitas favoritas:", error);
-                setFavoriteRecipes([]); // Define uma lista vazia em caso de erro
+            } else {
+                console.log("Erro ao buscar as receitas favoritas:", userId)
+                setFavoriteRecipes([]); // Define uma lista vazia se o ID do usuário não estiver disponível
             }
         };
         fetchFavoriteRecipes();
@@ -59,7 +61,7 @@ export const FavoriteRecipes = () => {
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center',
-                       
+
 
                     }}>
                         <Box sx={{
@@ -102,7 +104,7 @@ export const FavoriteRecipes = () => {
                                 image={favorite?.recipeImage}
                                 alt="Paella dish"
                             />
-                            <CardContent sx={{color: 'white',}}>
+                            <CardContent sx={{ color: 'white', }}>
                                 <Typography variant="body2">
                                     {favorite?.recipeDescription}
                                 </Typography>

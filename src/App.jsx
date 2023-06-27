@@ -16,6 +16,7 @@ import { AuthContext, AuthProvider } from './contexts/AuthContext'
 import { Comunidade } from './pages/Comunidade/index.jsx'
 import { MyRecipes } from './pages/MyRecipes/index.jsx'
 import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
+import { LogoutAuto } from './LogoutAuto'
 
 const Main = () => {
     const auth = useContext(AuthContext)
@@ -73,6 +74,7 @@ function App() {
             <AuthProvider>
                 <Main />
             </AuthProvider>
+            <LogoutAuto />
         </BrowserRouter>
     )
 }

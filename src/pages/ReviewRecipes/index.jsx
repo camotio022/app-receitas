@@ -13,14 +13,13 @@ import {
 import { ShowSlider } from '../Home/CAROUSEL'
 import { Dashboard } from '../../componentes/BASEBOARD/index.jsx'
 import { api } from '../../api'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase.config';
+import { AuthContext } from '../../contexts/AuthContext'
 const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1';
 export const TopReview = () => {
-    const userString = localStorage.getItem('user');
-    const user = JSON.parse(userString);
-
+    const {user} = useContext(AuthContext)
     const matches = useMediaQuery('(min-width:700px)')
     const [recipes, setRecipes] = useState([]);
     const [imageUrls, setImageUrls] = useState([]);

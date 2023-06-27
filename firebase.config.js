@@ -16,15 +16,25 @@ import { getAnalytics } from "firebase/analytics";
 //   appId: "1:218372002302:web:d90cdca554af13cc84b0af",
 //   measurementId: "G-8S6ECJJ18E"
 // };
-const firebaseConfig = {
-  apiKey: "AIzaSyDfBNYAWvhKlpz9WxABBqW_z2ch8jZsEnU",
-  authDomain: "receitas-93bb5.firebaseapp.com",
-  projectId: "receitas-93bb5",
-  storageBucket: "receitas-93bb5.appspot.com",
-  messagingSenderId: "869306952623",
-  appId: "1:869306952623:web:14eb49598d534d3c0add5a",
-  measurementId: "G-HSHNXEK645"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDfBNYAWvhKlpz9WxABBqW_z2ch8jZsEnU",
+//   authDomain: "receitas-93bb5.firebaseapp.com",
+//   projectId: "receitas-93bb5",
+//   storageBucket: "receitas-93bb5.appspot.com",
+//   messagingSenderId: "869306952623",
+//   appId: "1:869306952623:web:14eb49598d534d3c0add5a",
+//   measurementId: "G-HSHNXEK645"
+// };
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBrBwW9CrStjRpQwSgwTGuuKGovAnZY2Cg",
+//   authDomain: "pizzariareact-25f6e.firebaseapp.com",
+//   databaseURL: "https://pizzariareact-25f6e-default-rtdb.firebaseio.com",
+//   projectId: "pizzariareact-25f6e",
+//   storageBucket: "pizzariareact-25f6e.appspot.com",
+//   messagingSenderId: "11303904011",
+//   appId: "1:11303904011:web:1aaa04f3ede9a13adc780e"
+// };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
