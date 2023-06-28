@@ -182,13 +182,14 @@ export const api = {
           const usersCollection = collection(db, 'users')
           const userDocRef = query(
             usersCollection,
-            where('id', '==', userId)
+            where('userId', '==', userId)
           )
           const userDocSnap = await getDocs(userDocRef)
-
+          
           if (userDocSnap.size === 1) {
             const userData = userDocSnap.docs[0].data()
             const favoriteRecipes = userData.favorite_recipes || []
+            console.log('passou', favoriteRecipes)
             return Object.values(favoriteRecipes)
           } else {
             return []
@@ -207,42 +208,61 @@ export const api = {
     post: async (recipeId, userId) => {
       if (recipeId && userId) {
         try {
-          const userDocRef = doc(db, 'users', userId)
-          const userDocSnap = await getDoc(userDocRef)
-
+          const userDocRef = doc(db, 'users', userId);
+          const userDocSnap = await getDoc(userDocRef);
+    
           if (userDocSnap.exists()) {
             // Obter as receitas favoritas do usuário
-            const favoriteRecipes =
-              userDocSnap.data().favorite_recipes || []
-
+            const userData = userDocSnap.data();
+            const favoriteRecipes = userData.favoriteRecipes || [];
+    
             // Verificar se a receita já está nos favoritos
             if (!favoriteRecipes.includes(recipeId)) {
+              // A receita não está nos favoritos do usuário
+    
               // Adicionar a receita aos favoritos
+              favoriteRecipes.push(recipeId);
               await updateDoc(userDocRef, {
-                favorite_recipes: arrayUnion(recipeId),
-              })
-              alert('Receita adicionada com sucesso!')
+                favoriteRecipes: favoriteRecipes,
+              });
+              alert('Receita adicionada aos favoritos com sucesso!');
             } else {
-              alert('A receita já está nos favoritos do usuário.')
+              // A receita já está nos favoritos do usuário
+              alert('A receita já está nos favoritos do usuário.');
             }
-
-            // Retornar as receitas favoritas atualizadas
-            return favoriteRecipes
+    
+            // Obter a referência da receita
+            const recipeDocRef = doc(db, 'recipes', recipeId);
+            const recipeDocSnap = await getDoc(recipeDocRef);
+    
+            if (recipeDocSnap.exists()) {
+              // A receita existe, você pode prosseguir com a atualização do likesCounter
+              const recipeData = recipeDocSnap.data();
+              const likesCounter = recipeData.likesCounter || [];
+    
+              // Verificar se o usuário já favoritou a receita
+              if (!likesCounter.includes(userId)) {
+                // Adicionar o ID do usuário ao likesCounter da receita
+                likesCounter.push(userId);
+                await updateDoc(recipeDocRef, { likesCounter: likesCounter });
+              }
+            } else {
+              console.log('Receita não encontrada');
+              return [];
+            }
           } else {
-            console.log('Usuário não encontrado')
-            return []
+            console.log('Usuário não encontrado');
+            return [];
           }
         } catch (error) {
-          console.error(
-            'Erro ao buscar as receitas favoritas:',
-            error
-          )
-          return []
+          console.error('Erro ao buscar as receitas favoritas:', error);
+          return [];
         }
       } else {
-        return [] // Retorna uma lista vazia se o ID do usuário não for fornecido
+        return []; // Retorna uma lista vazia se o ID do usuário não for fornecido
       }
     },
+
     remove: async (recipeId, userId) => {
       if (recipeId && userId) {
         const usersRef = firebase.database().ref('users')

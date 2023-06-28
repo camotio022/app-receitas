@@ -97,7 +97,7 @@ export const CreateRecipes = ({ }) => {
     const handleSubmit = async (event) => {
         const userId = user?.uid;
         if (userId) {
-            const payload = { ...formData, author: user.uid }
+            const payload = { ...formData, author: user.uid, email: user.email }
             await api.recipe
                 .post(payload)
                 .then((response) => {
@@ -106,7 +106,7 @@ export const CreateRecipes = ({ }) => {
                     setFormData('')
                 })
             }
-            navigate("/topReview")
+            navigate("/myRecipes")
     };
 
 
