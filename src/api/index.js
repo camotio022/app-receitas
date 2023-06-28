@@ -182,7 +182,7 @@ export const api = {
           const usersCollection = collection(db, 'users')
           const userDocRef = query(
             usersCollection,
-            where('userId', '==', userId)
+            where('id', '==', userId)
           )
           const userDocSnap = await getDocs(userDocRef)
 
