@@ -34,10 +34,14 @@ const Main = () => {
                 <>
                     <Links />
                     <Routes>
-                        <Route path="/topReview" element={<TopReview />} />
+                        <Route
+                            path="/topReview"
+                            element={<TopReview />}
+                        />
                         <Route
                             path="/createRecipes"
-                            element={<CreateRecipes />}
+                            element={<CreateRecipes
+                            />}
                         />
                         <Route
                             path="/detailsRecipes/:id/edit"
@@ -47,15 +51,27 @@ const Main = () => {
                             path="/detailsRecipes/:id"
                             element={<DetailsRecipes />}
                         />
-                        <Route path="/comunidade" element={<Comunidade />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/signin" element={<SignIn />} />
-                        <Route path="/myRecipes" element={<MyRecipes />} />
+                        <Route
+                            path="/comunidade"
+                            element={<Comunidade />}
+                        />
+                        <Route
+                            path="/signup"
+                            element={<SignUp />}
+                        />
+                        <Route
+                            path="/signin"
+                            element={<SignIn />}
+                        />
+                        <Route
+                            path="/myRecipes"
+                            element={<MyRecipes />}
+                        />
                         <Route
                             path="/youfavoriteRecipes"
                             element={<FavoriteRecipes />}
                         />
-                         <Route
+                        <Route
                             path="/editerecipes/:id"
                             element={<EditRecipes />}
                         />

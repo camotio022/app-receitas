@@ -124,7 +124,6 @@ export const EditRecipes = () => {
                     value={formData.cookTime}
                     onChange={(event) => handleFieldChange('cookTime', event.target.value)}
                 />
-
                 <TextField
                     label="Serving Size"
                     name='servingSize'
@@ -132,7 +131,6 @@ export const EditRecipes = () => {
                     value={formData.servingSize}
                     onChange={(event) => handleFieldChange('servingSize', event.target.value)}
                 />
-
                 <TextField
                     label="Recipe Category"
                     name='recipeCategory'
@@ -140,7 +138,6 @@ export const EditRecipes = () => {
                     value={formData.recipeCategory}
                     onChange={(event) => handleFieldChange('recipeCategory', event.target.value)}
                 />
-
                 <TextField
                     label="Recipe Difficulty"
                     name='recipeDifficulty'
@@ -148,11 +145,11 @@ export const EditRecipes = () => {
                     value={formData.recipeDifficulty}
                     onChange={(event) => handleFieldChange('recipeDifficulty', event.target.value)}
                 />
-
                 <TextField
                     label="Recipe Image"
                     name='recipeImage'
                     variant="filled"
+                    
                     value={formData.recipeImage}
                     onChange={(event) => handleFieldChange('recipeImage', event.target.value)}
                 />
@@ -161,6 +158,8 @@ export const EditRecipes = () => {
                     label="Cooking Tips"
                     name='cookingTips'
                     variant="filled"
+                    type='number'
+
                     value={formData.cookingTips}
                     onChange={(event) => handleFieldChange('cookingTips', event.target.value)}
                 />
@@ -169,6 +168,8 @@ export const EditRecipes = () => {
                     label="Calories"
                     name='calories'
                     variant="filled"
+                    type='number'
+
                     value={formData.calories}
                     onChange={(event) => handleFieldChange('calories', event.target.value)}
                 />
@@ -177,6 +178,8 @@ export const EditRecipes = () => {
                     label="Carbs"
                     name='carbs'
                     variant="filled"
+                    type='number'
+
                     value={formData.carbs}
                     onChange={(event) => handleFieldChange('carbs', event.target.value)}
                 />
@@ -184,6 +187,8 @@ export const EditRecipes = () => {
                 <TextField
                     label="Protein"
                     name='protein'
+                    type='number'
+
                     variant="filled"
                     value={formData.protein}
                     onChange={(event) => handleFieldChange('protein', event.target.value)}
@@ -192,6 +197,8 @@ export const EditRecipes = () => {
                 <TextField
                     label="Fat"
                     name='fat'
+                    type='number'
+
                     variant="filled"
                     value={formData.fat}
                     onChange={(event) => handleFieldChange('fat', event.target.value)}
@@ -200,6 +207,7 @@ export const EditRecipes = () => {
                 <TextField
                     label="Sod"
                     name='sod'
+                    type='number'
                     variant="filled"
                     value={formData.sod}
                     onChange={(event) => handleFieldChange('sod', event.target.value)}
@@ -208,6 +216,8 @@ export const EditRecipes = () => {
                 <TextField
                     label="Gord"
                     name='gord'
+                    type='number'
+
                     variant="filled"
                     value={formData.gord}
                     onChange={(event) => handleFieldChange('gord', event.target.value)}
@@ -216,6 +226,8 @@ export const EditRecipes = () => {
                 <TextField
                     label="Author"
                     name='author'
+                    type='number'
+
                     variant="filled"
                     value={formData.author}
                     onChange={(event) => handleFieldChange('author', event.target.value)}
@@ -225,6 +237,7 @@ export const EditRecipes = () => {
                     label="Ranking"
                     name='ranking'
                     variant="filled"
+                    type='number'
                     value={formData.ranking}
                     onChange={(event) => handleFieldChange('ranking', event.target.value)}
                 />
@@ -233,6 +246,7 @@ export const EditRecipes = () => {
                     label="Creation Date"
                     name='creationDate'
                     variant="filled"
+                    type='date'
                     value={formData.creationDate}
                     onChange={(event) => handleFieldChange('creationDate', event.target.value)}
                 />
@@ -241,6 +255,7 @@ export const EditRecipes = () => {
                     label="Name"
                     name='name'
                     variant="filled"
+                    type='text'
                     value={formData.name}
                     onChange={(event) => handleFieldChange('name', event.target.value)}
                 />
@@ -248,6 +263,7 @@ export const EditRecipes = () => {
                 <TextField
                     label="Email"
                     name='email'
+                    type='email'
                     variant="filled"
                     value={formData.email}
                     onChange={(event) => handleFieldChange('email', event.target.value)}

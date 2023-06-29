@@ -190,32 +190,38 @@ export const api = {
     get: async (userId) => {
       if (userId) {
         try {
-          const usersCollection = collection(db, 'users')
+          const usersCollection = collection(db, 'users');
           const userDocRef = query(
             usersCollection,
-            where('userId', '==', userId)
-          )
-          const userDocSnap = await getDocs(userDocRef)
-
+            where('id', '==', userId)
+          );
+          const userDocSnap = await getDocs(userDocRef);
+    
           if (userDocSnap.size === 1) {
-            const userData = userDocSnap.docs[0].data()
-            const favoriteRecipes = userData.favorite_recipes || []
-            console.log('passou', favoriteRecipes)
-            return Object.values(favoriteRecipes)
+            const userData = userDocSnap.docs[0].data();
+            const favoriteRecipes = userData.favoriteRecipes || [];
+            const recipePromises = favoriteRecipes.map(async (recipeId) => {
+              const recipeDocRef = doc(db, 'recipes', recipeId);
+              const recipeDocSnap = await getDoc(recipeDocRef);
+              if (recipeDocSnap.exists()) {
+                return recipeDocSnap.data();
+              }
+            });
+            const recipeData = await Promise.all(recipePromises);
+            console.log('Dados das receitas favoritas:', recipeData);
+            return recipeData.filter((recipe) => recipe !== undefined);
           } else {
-            return []
+            return [];
           }
         } catch (error) {
-          console.error(
-            'Erro ao buscar as receitas favoritas:',
-            error
-          )
-          return []
+          console.error('Erro ao buscar as receitas favoritas:', error);
+          return [];
         }
       } else {
-        return [] // Retorna uma lista vazia se o ID do usuário não for fornecido
+        return [];
       }
     },
+    
     post: async (recipeId, userId) => {
       if (recipeId && userId) {
         try {

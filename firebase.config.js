@@ -25,15 +25,7 @@ import { getAnalytics } from "firebase/analytics";
 //   appId: "1:869306952623:web:14eb49598d534d3c0add5a",
 //   measurementId: "G-HSHNXEK645"
 // };
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBrBwW9CrStjRpQwSgwTGuuKGovAnZY2Cg",
-//   authDomain: "pizzariareact-25f6e.firebaseapp.com",
-//   databaseURL: "https://pizzariareact-25f6e-default-rtdb.firebaseio.com",
-//   projectId: "pizzariareact-25f6e",
-//   storageBucket: "pizzariareact-25f6e.appspot.com",
-//   messagingSenderId: "11303904011",
-//   appId: "1:11303904011:web:1aaa04f3ede9a13adc780e"
-// };
+
 const firebaseConfig = {
   apiKey: "AIzaSyDm3Zl3eFWzhYwcZR4WQfn22fMX4fMYaYU",
   authDomain: "appreceitas-3daf2.firebaseapp.com",
@@ -47,4 +39,4 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-const analytics = getAnalytics(app);
+const analytics = getAnalytics(app); 
