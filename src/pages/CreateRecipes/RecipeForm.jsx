@@ -25,97 +25,12 @@ export const RecipeForm = ({
     handleSubmit,
     handleImageChange,
 }) => {
-    const [activeStep, setActiveStep] = React.useState(0)
-    const [valores, setValores] = React.useState([])
-    const stepNames = [
-        'Ingredientes',
-        'mod. preparos',
-        'Nutricionais',
-        'pessoais',
-    ]
-    const [stepsData, setStepsData] = React.useState([
-        { inputs: [], prep: [] }, // Etapa 0
-        { inputs: [], prep: [] }, // Etapa 1
-        { inputs: [], prep: [] }, // Etapa 2
-        { inputs: [], prep: [] }, // Etapa 3
-    ])
-
-    const [step, setStep] = React.useState(0) // Variável de estado para controlar o passo atual
-
-    const handleInputsChange = (event, index) => {
-        const newInputs = [...stepsData[step].inputs]
-        newInputs[index] = event.target.value
-        const newStepsData = [...stepsData]
-        newStepsData[step].inputs = newInputs
-        setStepsData(newStepsData)
-    }
-
-    const AddStep = () => {
-        const newPrep = [...stepsData[step].prep, '']
-        const newStepsData = [...stepsData]
-        newStepsData[step].prep = newPrep
-        setStepsData(newStepsData)
-    }
-
-    const removeInput = (index) => {
-        const newPrep = [...stepsData[step].prep]
-        newPrep.splice(index, 1)
-        const newStepsData = [...stepsData]
-        newStepsData[step].prep = newPrep
-        setStepsData(newStepsData)
-    }
-
-    const handleNext = () => {
-        setActiveStep(activeStep + 1)
-    }
-
-    console.log(formData.ingredientes)
     return (
         <>
-            <Typography component="h1" variant="h4" align="center">
-                {step === stepsData.length
-                    ? 'Estados da sua receita'
-                    : 'Criação de receitas'}
-            </Typography>
-            <Stepper activeStep={step} sx={{ pt: 3, pb: 5 }}>
-                {stepNames.map((_, index) => (
-                    <Step key={index}>
-                        <StepLabel>
-                            {index < step ? 'Concluído' : stepNames[index]}
-                        </StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-            {step === stepNames.length && (
-                <>
-                    <React.Fragment>
-                        <Typography variant="h5" gutterBottom>
-                            Obrigado pela sua contribuição{' '}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            Receita criada com sucesso! Obrigado pela sua
-                            contribuição, o número da sua receita é: 23, id:
-                            sdarewesdsssZ\DaqSSSXx
-                        </Typography>
-                    </React.Fragment>
-                    <Grid xs={12} gap={3}>
-                        <Button
-                            size="small"
-                            sx={{ mt: 4, mr: 2 }}
-                            variant="outlined"
-                        >
-                            <Link href={'/TopReview'}>
-                                {'Ver a sua receita'}
-                            </Link>
-                        </Button>
-                        <Button size="small" sx={{ mt: 4 }} variant="outlined">
-                            <Link href="/">{'Voltar para home'}</Link>
-                        </Button>
-                    </Grid>
-                </>
-            )}
+           
+         
             <Typography variant="h6" gutterBottom>
-                Ingredientes
+                Criação de receitas
             </Typography>
             <Grid container spacing={2} sx={{ transition: '300ms' }}>
                 <Grid item xs={12}>

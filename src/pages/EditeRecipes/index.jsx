@@ -1,4 +1,4 @@
-import { Container, Paper, TextField } from '@mui/material';
+import { Container, Grid, Paper, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../../api';
@@ -110,6 +110,8 @@ export const EditRecipes = () => {
                 gap: 2,
                 padding: 2
             }}>
+
+
                 <TextField
                     label="Recipe Title"
                     name='recipeTitle'
@@ -139,21 +141,13 @@ export const EditRecipes = () => {
                     onChange={(event) => handleFieldChange('recipeCategory', event.target.value)}
                 />
                 <TextField
-                    label="Recipe Difficulty"
-                    name='recipeDifficulty'
-                    variant="filled"
-                    value={formData.recipeDifficulty}
-                    onChange={(event) => handleFieldChange('recipeDifficulty', event.target.value)}
-                />
-                <TextField
                     label="Recipe Image"
                     name='recipeImage'
                     variant="filled"
-                    
+
                     value={formData.recipeImage}
                     onChange={(event) => handleFieldChange('recipeImage', event.target.value)}
                 />
-
                 <TextField
                     label="Cooking Tips"
                     name='cookingTips'
@@ -163,7 +157,6 @@ export const EditRecipes = () => {
                     value={formData.cookingTips}
                     onChange={(event) => handleFieldChange('cookingTips', event.target.value)}
                 />
-
                 <TextField
                     label="Calories"
                     name='calories'
@@ -173,7 +166,6 @@ export const EditRecipes = () => {
                     value={formData.calories}
                     onChange={(event) => handleFieldChange('calories', event.target.value)}
                 />
-
                 <TextField
                     label="Carbs"
                     name='carbs'
@@ -183,7 +175,6 @@ export const EditRecipes = () => {
                     value={formData.carbs}
                     onChange={(event) => handleFieldChange('carbs', event.target.value)}
                 />
-
                 <TextField
                     label="Protein"
                     name='protein'
@@ -193,7 +184,6 @@ export const EditRecipes = () => {
                     value={formData.protein}
                     onChange={(event) => handleFieldChange('protein', event.target.value)}
                 />
-
                 <TextField
                     label="Fat"
                     name='fat'
@@ -203,7 +193,6 @@ export const EditRecipes = () => {
                     value={formData.fat}
                     onChange={(event) => handleFieldChange('fat', event.target.value)}
                 />
-
                 <TextField
                     label="Sod"
                     name='sod'
@@ -212,6 +201,7 @@ export const EditRecipes = () => {
                     value={formData.sod}
                     onChange={(event) => handleFieldChange('sod', event.target.value)}
                 />
+
 
                 <TextField
                     label="Gord"
@@ -223,6 +213,7 @@ export const EditRecipes = () => {
                     onChange={(event) => handleFieldChange('gord', event.target.value)}
                 />
 
+
                 <TextField
                     label="Author"
                     name='author'
@@ -232,7 +223,6 @@ export const EditRecipes = () => {
                     value={formData.author}
                     onChange={(event) => handleFieldChange('author', event.target.value)}
                 />
-
                 <TextField
                     label="Ranking"
                     name='ranking'
@@ -241,7 +231,6 @@ export const EditRecipes = () => {
                     value={formData.ranking}
                     onChange={(event) => handleFieldChange('ranking', event.target.value)}
                 />
-
                 <TextField
                     label="Creation Date"
                     name='creationDate'
@@ -250,7 +239,6 @@ export const EditRecipes = () => {
                     value={formData.creationDate}
                     onChange={(event) => handleFieldChange('creationDate', event.target.value)}
                 />
-
                 <TextField
                     label="Name"
                     name='name'
@@ -268,7 +256,6 @@ export const EditRecipes = () => {
                     value={formData.email}
                     onChange={(event) => handleFieldChange('email', event.target.value)}
                 />
-
                 <TextField
                     label="Country"
                     name='country'
@@ -276,8 +263,8 @@ export const EditRecipes = () => {
                     value={formData.country}
                     onChange={(event) => handleFieldChange('country', event.target.value)}
                 />
-
             </Paper>
+
             <UpdateButton onClick={handleUpdateClick} loading={loading} />
         </Container>
     );
