@@ -24,7 +24,7 @@ export const Menu_links = styled(Stack)(({ theme }) => ({
     transition: 'all.5s',
     boxShadow: 'rgb(38, 57, 77) 0px 20px 30px -10px',
     padding: '1em',
-    backgroundColor: theme.palette.background,
+    // backgroundColor: theme.palette.background,
     color: '#fff',
 }))
 
@@ -48,9 +48,9 @@ export const MenuBar = styled(Stack)(({ theme }) => ({
     flexDirection: 'row',
     justifyContent: "space-between",
     width: '100%',
-    height: '7%',
+    height: '6%',
     background: theme.palette.primary.dark,
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.primary.main.primary,
     color: '#fff',
     padding: '15px',
     transition: 'all 0.5s ease-in-out'

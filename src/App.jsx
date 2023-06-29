@@ -18,6 +18,7 @@ import { MyRecipes } from './pages/MyRecipes/index.jsx'
 import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
 import { LogoutAuto } from './LogoutAuto'
 import { EditRecipes } from './pages/EditeRecipes/index.jsx'
+import { HomePage } from './pages/Home/index.jsx'
 
 const Main = () => {
     const auth = useContext(AuthContext)
@@ -32,8 +33,12 @@ const Main = () => {
         <ThemeProvider theme={theme}>
             {auth.isLoggedIn ? (
                 <>
-                    <Links />
+                    {/* <Links /> */}
                     <Routes>
+                        <Route
+                            path="/home"
+                            element={<HomePage />}
+                        />
                         <Route
                             path="/topReview"
                             element={<TopReview />}
