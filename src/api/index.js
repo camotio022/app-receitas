@@ -46,10 +46,7 @@ export const api = {
       const firestore = getFirestore()
 
       const usersCollection = collection(firestore, 'users')
-      const emailQuery = query(
-        usersCollection,
-        where('email', '==', email)
-      )
+      const emailQuery = query(usersCollection, where('email', '==', email))
       const emailQuerySnapshot = await getDocs(emailQuery)
       if (!emailQuerySnapshot.empty) {
         alert('O email já está sendo usado por outro usuário.')
@@ -103,13 +100,13 @@ export const api = {
     },
     update: async (recipeId, updatedData) => {
       try {
-        const recipeDocRef = doc(db, 'recipes', recipeId);
-        await updateDoc(recipeDocRef, updatedData, { merge: true });
-        console.log('Receita atualizada com sucesso!');
+        const recipeDocRef = doc(db, 'recipes', recipeId)
+        await updateDoc(recipeDocRef, updatedData, { merge: true })
+        console.log('Receita atualizada com sucesso!')
       } catch (error) {
-        console.error('Erro ao atualizar a receita:', error);
+        console.error('Erro ao atualizar a receita:', error)
       }
-    }
+    },
   },
 
   ingredientes: {
@@ -120,8 +117,8 @@ export const api = {
         const ingredientesQuery = query(ingredientesRef)
         const ingredientesSnapshot = await getDocs(ingredientesQuery)
         if (!ingredientesSnapshot.empty) {
-          const ingredientesData = ingredientesSnapshot.docs.map(
-            (doc) => doc.data()
+          const ingredientesData = ingredientesSnapshot.docs.map((doc) =>
+            doc.data()
           )
           return ingredientesData
         } else {
@@ -138,8 +135,8 @@ export const api = {
         const ingredientesQuery = query(ingredientesRef)
         const ingredientesSnapshot = await getDocs(ingredientesQuery)
         if (!ingredientesSnapshot.empty) {
-          const ingredientesData = ingredientesSnapshot.docs.map(
-            (doc) => doc.data()
+          const ingredientesData = ingredientesSnapshot.docs.map((doc) =>
+            doc.data()
           )
           return ingredientesData
         } else {
@@ -148,9 +145,7 @@ export const api = {
       }
     },
   },
-  editerecipes: {
-
-  },
+  editerecipes: {},
   myRecipes: {
     get: async (authorId) => {
       if (authorId) {
@@ -188,95 +183,104 @@ export const api = {
   },
   favoriteRecipes: {
     get: async (userId) => {
-      if (userId) {
-        try {
-          const usersCollection = collection(db, 'users');
-          const userDocRef = query(
-            usersCollection,
-            where('id', '==', userId)
-          );
-          const userDocSnap = await getDocs(userDocRef);
-    
-          if (userDocSnap.size === 1) {
-            const userData = userDocSnap.docs[0].data();
-            const favoriteRecipes = userData.favoriteRecipes || [];
-            const recipePromises = favoriteRecipes.map(async (recipeId) => {
-              const recipeDocRef = doc(db, 'recipes', recipeId);
-              const recipeDocSnap = await getDoc(recipeDocRef);
-              if (recipeDocSnap.exists()) {
-                return recipeDocSnap.data();
-              }
-            });
-            const recipeData = await Promise.all(recipePromises);
-            console.log('Dados das receitas favoritas:', recipeData);
-            return recipeData.filter((recipe) => recipe !== undefined);
-          } else {
-            return [];
-          }
-        } catch (error) {
-          console.error('Erro ao buscar as receitas favoritas:', error);
-          return [];
-        }
-      } else {
-        return [];
-      }
+      // atual - pegando as receitas do usuário e pegando os dados de cada uma delas
+      // ideal - pegar as receitas que foram favoritadas pelo usuário
+      const recipesCollection = collection(db, 'recipes')
+      // receitas que já foram favoritadas pelo usuário
+      const recipesRef = await getDocs(
+        query(
+          recipesCollection,
+          where('likesCounter', 'array-contains', userId)
+        )
+      )
+      let recipesData = []
+      recipesRef.forEach((el) => recipesData.push(el.data()))
+      console.log(recipesData)
+      return recipesData
+      // if (!userId) return []
+
+      // try {
+      //   const userDocRef = await getDoc(doc(db, 'users', userId))
+      //   if (!userDocRef.exists()) {
+      //     console.error('Usuário não existe')
+      //     return
+      //   }
+      //   const userData = userDocRef.data()
+      //   console.log('usuário', userData)
+      //   const favoriteRecipes = userData.favoriteRecipes || []
+      //   const recipePromises = favoriteRecipes.map(async (recipeId) => {
+      //     const recipeDocRef = doc(db, 'recipes', recipeId)
+      //     const recipeDocSnap = await getDoc(recipeDocRef)
+      //     if (recipeDocSnap.exists()) {
+      //       return recipeDocSnap.data()
+      //     }
+      //   })
+      //   const recipeData = await Promise.all(recipePromises)
+      //   console.log('Dados das receitas favoritas:', recipeData)
+      //   return recipeData.filter((recipe) => recipe !== undefined)
+
+      //   // const usersCollection = collection(db, 'users')
+      //   // const userDocRef = query(usersCollection, where('id', '==', userId))
+      //   // const userDocSnap = await getDocs(userDocRef)
+
+      //   // if (userDocSnap.size === 1) {
+      //   //   const userData = userDocSnap.docs[0].data()
+      //   //   const favoriteRecipes = userData.favoriteRecipes || []
+      //   //   const recipePromises = favoriteRecipes.map(async (recipeId) => {
+      //   //     const recipeDocRef = doc(db, 'recipes', recipeId)
+      //   //     const recipeDocSnap = await getDoc(recipeDocRef)
+      //   //     if (recipeDocSnap.exists()) {
+      //   //       return recipeDocSnap.data()
+      //   //     }
+      //   //   })
+      //   //   const recipeData = await Promise.all(recipePromises)
+      //   //   console.log('Dados das receitas favoritas:', recipeData)
+      //   //   return recipeData.filter((recipe) => recipe !== undefined)
+      //   // } else {
+      //   //   return []
+      //   // }
+      // } catch (error) {
+      //   console.error('Erro ao buscar as receitas favoritas:', error)
+      //   return []
+      // }
     },
-    
     post: async (recipeId, userId) => {
       if (recipeId && userId) {
         try {
-          const userDocRef = doc(db, 'users', userId);
-          const userDocSnap = await getDoc(userDocRef);
+          const userDocRef = doc(db, 'users', userId)
+          const userDocSnap = await getDoc(userDocRef)
 
-          if (userDocSnap.exists()) {
-            // Obter as receitas favoritas do usuário
-            const userData = userDocSnap.data();
-            const favoriteRecipes = userData.favoriteRecipes || [];
+          if (!userDocSnap.exists()) {
+            console.log('Usuário não encontrado')
+            return []
+          }
 
-            // Verificar se a receita já está nos favoritos
-            if (!favoriteRecipes.includes(recipeId)) {
-              // A receita não está nos favoritos do usuário
+          // Obter a referência da receita
+          const recipeDocRef = doc(db, 'recipes', recipeId)
+          const recipeDocSnap = await getDoc(recipeDocRef)
 
-              // Adicionar a receita aos favoritos
-              favoriteRecipes.push(recipeId);
-              await updateDoc(userDocRef, {
-                favoriteRecipes: favoriteRecipes,
-              });
-              alert('Receita adicionada aos favoritos com sucesso!');
-            } else {
-              // A receita já está nos favoritos do usuário
-              alert('A receita já está nos favoritos do usuário.');
-            }
+          if (!recipeDocSnap.exists()) {
+            console.log('Receita não encontrada')
+            return []
+          }
+          // A receita existe, você pode prosseguir com a atualização do likesCounter
+          const recipeData = recipeDocSnap.data()
+          const likesCounter = recipeData.likesCounter || []
 
-            // Obter a referência da receita
-            const recipeDocRef = doc(db, 'recipes', recipeId);
-            const recipeDocSnap = await getDoc(recipeDocRef);
-
-            if (recipeDocSnap.exists()) {
-              // A receita existe, você pode prosseguir com a atualização do likesCounter
-              const recipeData = recipeDocSnap.data();
-              const likesCounter = recipeData.likesCounter || [];
-
-              // Verificar se o usuário já favoritou a receita
-              if (!likesCounter.includes(userId)) {
-                // Adicionar o ID do usuário ao likesCounter da receita
-                likesCounter.push(userId);
-                await updateDoc(recipeDocRef, { likesCounter: likesCounter });
-              }
-            } else {
-              console.log('Receita não encontrada');
-              return [];
-            }
-          } else {
-            console.log('Usuário não encontrado');
-            return [];
+          // Verificar se o usuário já favoritou a receita
+          if (!likesCounter.includes(userId)) {
+            // Adicionar o ID do usuário ao likesCounter da receita
+            likesCounter.push(userId)
+            await updateDoc(recipeDocRef, {
+              likesCounter: likesCounter,
+            })
           }
         } catch (error) {
-          console.error('Erro ao buscar as receitas favoritas:', error);
-          return [];
+          console.error('Erro ao buscar as receitas favoritas:', error)
+          return []
         }
       } else {
-        return []; // Retorna uma lista vazia se o ID do usuário não for fornecido
+        return [] // Retorna uma lista vazia se o ID do usuário não for fornecido
       }
     },
 
@@ -300,10 +304,7 @@ export const api = {
           console.log('Receita removida dos favoritos')
           return true
         } catch (error) {
-          console.error(
-            'Erro ao remover a receita dos favoritos:',
-            error
-          )
+          console.error('Erro ao remover a receita dos favoritos:', error)
           return false
         }
       } else {
