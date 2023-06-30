@@ -17,11 +17,13 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { api } from '../../api'
 import { AuthContext } from '../../contexts/AuthContext'
-import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-export const CreateRecipes = ({}) => {
+
+export const CreateRecipes = ({ }) => {
     const { user } = useContext(AuthContext)
     const [scrollHeight, setScrollHeight] = useState(0)
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         recipeTitle: '',
         recipeDescription: '',
@@ -87,37 +89,26 @@ export const CreateRecipes = ({}) => {
         const file = event.target.files[0]
         const reader = new FileReader()
         reader.onload = () => {
-            const base64Image = reader.result
-            setFormData({ ...formData, recipeImage: base64Image })
-        }
-        reader.readAsDataURL(file)
-    }
+            const base64Image = reader.result;
+            setFormData({ ...formData, recipeImage: base64Image });
+        };
+        reader.readAsDataURL(file);
+    };
     const handleSubmit = async (event) => {
-        const payload = { ...formData, author: user.uid }
-        await api.recipe
-            .post(payload)
-            .then((response) => {
-                console.log(response)
-                alert('success')
-                setFormData('')
-            })
-            .catch((error) => {
-                alert('Error' + error)
-                console.log(error)
-            })
-    }
+        const userId = user?.uid;
+        if (userId) {
+            const payload = { ...formData, author: user.uid, email: user.email }
+            await api.recipe
+                .post(payload)
+                .then((response) => {
+                    console.log(response)
+                    alert('success')
+                    setFormData('')
+                })
+            }
+            navigate("/myRecipes")
+    };
 
-    const getRecipeDetails = async (id) => {
-        const data = await api.recipe.get(id)
-        setFormData(data)
-    }
-
-    const params = useParams()
-    useEffect(() => {
-        const { id } = params
-        if (!id) return
-        getRecipeDetails(id)
-    }, [])
 
     useEffect(() => {
         const handleScroll = () => {

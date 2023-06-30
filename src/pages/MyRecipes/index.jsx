@@ -18,6 +18,7 @@ import {
     Divider,
     Pagination,
     PaginationItem,
+    Avatar,
 } from '@mui/material'
 import {
     Forum as ForumIcon,
@@ -36,7 +37,7 @@ import {
     MoreVert,
 } from '@mui/icons-material'
 
-import { green, red } from '@mui/material/colors'
+import { green, orange, red } from '@mui/material/colors'
 import { AuthContext } from '../../contexts/AuthContext'
 export const MyRecipes = () => {
     const { user } = useContext(AuthContext)
@@ -235,104 +236,105 @@ export const MyRecipes = () => {
                                                         {handleOptions[
                                                             index
                                                         ] && (
-                                                            <Tag.Options>
-                                                                <Tag.PaperOptions
-                                                                    className={`floating-menu ${
-                                                                        floatingMenu ===
-                                                                        index
+                                                                <Tag.Options>
+                                                                    <Tag.PaperOptions
+                                                                        className={`floating-menu ${floatingMenu ===
+                                                                            index
                                                                             ? 'open'
                                                                             : ''
-                                                                    }`}
-                                                                >
-                                                                    <MenuList>
-                                                                        <MenuItem>
-                                                                            <ListItemIcon>
-                                                                                <DetailsIcon fontSize="small" />
-                                                                            </ListItemIcon>
-                                                                            <ListItemText>
-                                                                                Detalhar
-                                                                            </ListItemText>
-                                                                            <Typography
-                                                                                variant="body2"
-                                                                                color="text.secondary"
+                                                                            }`}
+                                                                    >
+                                                                        <MenuList>
+                                                                            <MenuItem>
+                                                                                <ListItemIcon>
+                                                                                    <DetailsIcon fontSize="small" />
+                                                                                </ListItemIcon>
+                                                                                <ListItemText>
+                                                                                    Detalhar
+                                                                                </ListItemText>
+                                                                                <Typography
+                                                                                    variant="body2"
+                                                                                    color="text.secondary"
+                                                                                >
+                                                                                    Control
+                                                                                    +
+                                                                                    V
+                                                                                </Typography>
+                                                                            </MenuItem>
+                                                                            <Link href={`/editerecipes/${recipe?.id}`}>
+                                                                                <MenuItem >
+                                                                                    <ListItemIcon>
+                                                                                        <EditIcon fontSize="small" />
+                                                                                    </ListItemIcon>
+                                                                                    <ListItemText>
+                                                                                        Editar
+                                                                                        minha
+                                                                                        receita
+                                                                                    </ListItemText>
+                                                                                    <Typography
+                                                                                        variant="body2"
+                                                                                        color="text.secondary"
+                                                                                    >
+                                                                                        Control
+                                                                                        +
+                                                                                        E
+                                                                                    </Typography>
+                                                                                </MenuItem>
+                                                                            </Link>
+                                                                            <MenuItem
+                                                                                onClick={() =>
+                                                                                    deleteRecipe(
+                                                                                        recipe?.id,
+                                                                                        recipe?.recipeTitle
+                                                                                    )
+                                                                                }
+                                                                                sx={{
+                                                                                    color: red[500],
+                                                                                }}
                                                                             >
-                                                                                Control
-                                                                                +
-                                                                                V
-                                                                            </Typography>
-                                                                        </MenuItem>
-                                                                        <MenuItem>
-                                                                            <ListItemIcon>
-                                                                                <EditIcon fontSize="small" />
-                                                                            </ListItemIcon>
-                                                                            <ListItemText>
-                                                                                Editar
-                                                                                minha
-                                                                                receita
-                                                                            </ListItemText>
-                                                                            <Typography
-                                                                                variant="body2"
-                                                                                color="text.secondary"
+                                                                                <ListItemIcon>
+                                                                                    <DeleteIcon
+                                                                                        sx={{
+                                                                                            color: red[500],
+                                                                                        }}
+                                                                                        fontSize="small"
+                                                                                    />
+                                                                                </ListItemIcon>
+                                                                                <ListItemText>
+                                                                                    Deletar
+                                                                                    a
+                                                                                    receita
+                                                                                </ListItemText>
+                                                                                <Typography
+                                                                                    variant="body2"
+                                                                                    color="text.secondary"
+                                                                                >
+                                                                                    Control
+                                                                                    +
+                                                                                    D
+                                                                                </Typography>
+                                                                            </MenuItem>
+                                                                            <Divider />
+                                                                            <MenuItem
+                                                                                onClick={() =>
+                                                                                    handleClickOutsideMenu(
+                                                                                        index
+                                                                                    )
+                                                                                }
                                                                             >
-                                                                                Control
-                                                                                +
-                                                                                E
-                                                                            </Typography>
-                                                                        </MenuItem>
-                                                                        <MenuItem
-                                                                            onClick={() =>
-                                                                                deleteRecipe(
-                                                                                    recipe?.id,
-                                                                                    recipe?.recipeTitle
-                                                                                )
-                                                                            }
-                                                                            sx={{
-                                                                                color: red[500],
-                                                                            }}
-                                                                        >
-                                                                            <ListItemIcon>
-                                                                                <DeleteIcon
-                                                                                    sx={{
-                                                                                        color: red[500],
-                                                                                    }}
-                                                                                    fontSize="small"
-                                                                                />
-                                                                            </ListItemIcon>
-                                                                            <ListItemText>
-                                                                                Deletar
-                                                                                a
-                                                                                receita
-                                                                            </ListItemText>
-                                                                            <Typography
-                                                                                variant="body2"
-                                                                                color="text.secondary"
-                                                                            >
-                                                                                Control
-                                                                                +
-                                                                                D
-                                                                            </Typography>
-                                                                        </MenuItem>
-                                                                        <Divider />
-                                                                        <MenuItem
-                                                                            onClick={() =>
-                                                                                handleClickOutsideMenu(
-                                                                                    index
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <ListItemIcon>
-                                                                                <CloseIcon fontSize="small" />
-                                                                            </ListItemIcon>
-                                                                            <ListItemText>
-                                                                                Fechar
-                                                                                o
-                                                                                menu
-                                                                            </ListItemText>
-                                                                        </MenuItem>
-                                                                    </MenuList>
-                                                                </Tag.PaperOptions>
-                                                            </Tag.Options>
-                                                        )}
+                                                                                <ListItemIcon>
+                                                                                    <CloseIcon fontSize="small" />
+                                                                                </ListItemIcon>
+                                                                                <ListItemText>
+                                                                                    Fechar
+                                                                                    o
+                                                                                    menu
+                                                                                </ListItemText>
+                                                                            </MenuItem>
+                                                                        </MenuList>
+                                                                    </Tag.PaperOptions>
+                                                                </Tag.Options>
+                                                            )}
                                                     </Box>
                                                 </Stack>
                                             </Stack>
@@ -347,14 +349,7 @@ export const MyRecipes = () => {
                                             >
                                                 <Tag.Author>
                                                     <Tag.AuthorImage>
-                                                        <img
-                                                            style={{
-                                                                borderRadius:
-                                                                    '10px',
-                                                            }}
-                                                            src={user?.photoURL}
-                                                            alt=""
-                                                        />
+                                                        <Avatar sx={{ bgcolor: orange[500] }} alt={recipe?.name} src={user?.photoURL} />
                                                     </Tag.AuthorImage>
                                                     <Box
                                                         sx={{
@@ -392,7 +387,7 @@ export const MyRecipes = () => {
                                                                             : 'medium'
                                                                     }
                                                                 />
-                                                                233
+                                                                {recipe?.favoritesCounter}
                                                             </Stack>
                                                             <Stack
                                                                 spacing={2}
@@ -430,8 +425,6 @@ export const MyRecipes = () => {
                         )
                     })}
                 </Tag.Cards>
-                {/* Paginação */}
-                {/* <Dashboard /> */}
             </Tag.Container>
             {top && (
                 <>

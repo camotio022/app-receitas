@@ -16,65 +16,62 @@ import { AuthContext, AuthProvider } from './contexts/AuthContext'
 import { Comunidade } from './pages/Comunidade/index.jsx'
 import { MyRecipes } from './pages/MyRecipes/index.jsx'
 import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
+import { LogoutAuto } from './LogoutAuto'
+import { EditRecipes } from './pages/EditeRecipes/index.jsx'
+import { HomePage } from './pages/Home/index.jsx'
 
 const Main = () => {
-    const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext)
 
-    const [useDarkMode, setUseDarkMode] = useState(false)
-    const handleToggleMode = () => {
-        setUseDarkMode(!useDarkMode)
-    }
-    const theme = useDarkMode ? darkTheme : lightTheme
+  const [useDarkMode, setUseDarkMode] = useState(false)
+  const handleToggleMode = () => {
+    setUseDarkMode(!useDarkMode)
+  }
+  const theme = useDarkMode ? darkTheme : lightTheme
 
-    return (
-        <ThemeProvider theme={theme}>
-            {auth.isLoggedIn ? (
-                <>
-                    <Links />
-                    <Routes>
-                        <Route path="/topReview" element={<TopReview />} />
-                        <Route
-                            path="/createRecipes"
-                            element={<CreateRecipes />}
-                        />
-                        <Route
-                            path="/detailsRecipes/:id/edit"
-                            element={<CreateRecipes />}
-                        />
-                        <Route
-                            path="/detailsRecipes/:id"
-                            element={<DetailsRecipes />}
-                        />
-                        <Route path="/comunidade" element={<Comunidade />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/signin" element={<SignIn />} />
-                        <Route path="/myRecipes" element={<MyRecipes />} />
-                        <Route
-                            path="/youfavoriteRecipes"
-                            element={<FavoriteRecipes />}
-                        />
-                    </Routes>
-                </>
-            ) : (
-                <Routes>
-                    <Route path="/" element={<SignIn />} />
-                    <Route path="/signup" element={<SignUp />} />
-                </Routes>
-            )}
-            <ThemeButton handleClick={handleToggleMode} />
-            <CssBaseline />
-        </ThemeProvider>
-    )
+  return (
+    <ThemeProvider theme={theme}>
+      {auth.isLoggedIn ? (
+        <>
+          {/* <Links /> */}
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/topReview" element={<TopReview />} />
+            <Route path="/createRecipes" element={<CreateRecipes />} />
+            <Route
+              path="/detailsRecipes/:id/edit"
+              element={<CreateRecipes />}
+            />
+            <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
+            <Route path="/comunidade" element={<Comunidade />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/myRecipes" element={<MyRecipes />} />
+            <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
+            <Route path="/editerecipes/:id" element={<EditRecipes />} />
+          </Routes>
+        </>
+      ) : (
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      )}
+      <ThemeButton handleClick={handleToggleMode} />
+      <CssBaseline />
+    </ThemeProvider>
+  )
 }
 
 function App() {
-    return (
-        <BrowserRouter>
-            <AuthProvider>
-                <Main />
-            </AuthProvider>
-        </BrowserRouter>
-    )
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Main />
+      </AuthProvider>
+      <LogoutAuto />
+    </BrowserRouter>
+  )
 }
 
 export { useContext }
