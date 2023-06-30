@@ -57,7 +57,7 @@ const Main = () => {
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       )}
-      <ThemeButton handleClick={handleToggleMode} />
+      {/* <ThemeButton handleClick={handleToggleMode} /> */}
       <CssBaseline />
     </ThemeProvider>
   )

@@ -1,4 +1,4 @@
-import { styled, Stack, Box, InputBase, alpha } from "@mui/material";
+import { styled, Stack, Box, InputBase, alpha, Paper, List, ListSubheader } from "@mui/material";
 import { orange } from "@mui/material/colors";
 export const Wrapper = styled('div')(({ theme }) => ({
     display: "flex",
@@ -11,13 +11,26 @@ export const Wrapper = styled('div')(({ theme }) => ({
     top: 0,
     left: 0,
 }))
+
+export const MenuBar = styled(Stack)(({ theme }) => ({
+    display: 'flex',
+    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    width: '100%',
+    height: '100%',
+    color: '#fff',
+    gap: '1rem',
+    transition: 'all 0.5s ease-in-out'
+}))
 export const MenuItemsLinks = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    height: '22%',
-    background: theme.palette.primary.light,
+    minHeight: '22%',
+    height: 'auto',
+    background: "rgb(47,79,79)",
     color: 'white',
     padding: '0.5rem'
 }))
@@ -25,8 +38,19 @@ export const ItemsLinks = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '40%',
+    maxWidth: '40%',
+    width: 'auto',
     color: 'white',
+}))
+export const MinhaLista = styled(List)(({ theme }) => ({
+    transition: 'all 0.5s ease-in-out'
+}))
+export const ListSub = styled(ListSubheader)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    height: '7%',
+    background: 'transparent',
 }))
 export const Search = styled(Box)(({ theme }) => ({
     position: 'relative',
@@ -70,4 +94,13 @@ export const StyledInputBase = styled(InputBase)(({ theme }) => ({
             },
         },
     },
+}));
+
+export const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    flexGrow: 1,
 }));
