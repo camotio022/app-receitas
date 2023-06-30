@@ -11,7 +11,7 @@ export const Container = styled(Stack)(({ theme }) => ({
     color: 'red',
     zIndex: 1,
     backgroundColor: 'white',
-    overflow: 'auto',
+    overflow: 'hidden',
     paddingBottom: '5rem',
 }))
 export const Midias = styled(CardMedia)(({ theme }) => ({
