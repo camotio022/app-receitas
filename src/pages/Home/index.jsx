@@ -3,7 +3,9 @@ import "./index.css";
 
 import churros from "../../images/imgsPages/churos.jpg";
 import avatar from "../../images/mocks/avatar.jpg";
-import { RecipeCard } from "../../componentes/RecipeCard";
+import * as Tag from "./styles";
+import { ShowSlider } from "./CAROUSEL/index.jsx";
+import { TopReview } from "../ReviewRecipes/index.jsx";
 
 const recipes = [
   {
@@ -17,16 +19,17 @@ const recipes = [
     commentsCount: 5,
   },
 ];
+{/* {recipes.map((recipe) => (
+  <RecipeCard {...recipe} />
+))} */}
 
 export const HomePage = () => {
   return (
     <>
-      <div className="wrapper">
-        <Links />
-        {/* {recipes.map((recipe) => (
-          <RecipeCard {...recipe} />
-        ))} */}
-      </div>
+      <Tag.Wrapper id="wrapper">
+        sxfshdjzhf
+        {/* <TopReview/> */}
+      </Tag.Wrapper>
     </>
   );
 };

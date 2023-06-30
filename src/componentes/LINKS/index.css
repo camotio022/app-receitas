@@ -1,3 +1,30 @@
-* {
-    
+@media only screen and (min-width: 810px) {
+    .none {
+        display: none;
+    }
+    .display-block {
+        display: flex !important;
+    }
+}
+@media only screen and (max-width: 810px) {
+    .none {
+        display: none;
+    }
+    .display-block {
+        display: none ;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .display-block {
+        display: none;
+    }
+}
+a {
+    text-decoration: none;
 }

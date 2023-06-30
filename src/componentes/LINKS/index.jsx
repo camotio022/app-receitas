@@ -1,106 +1,450 @@
+import {
+    RememberMe as RememberMeIcon,
+    Diversity2 as Diversity2Icon,
+    Diversity3 as Diversity3Icon,
+    KeyboardArrowUp as KeyboardArrowUpIcon,
+    ArrowDropDown as ArrowDropDownIcon,
+    ArrowDropUp as ArrowDropUpIcon,
+    Menu as MenuIcon,
+    MenuOpen as MenuOpenIcon,
+    Close as CloseIcon,
+    Home as HomeIcon,
+    Layers as LayersIcon,
+    Book as BookIcon,
+    Kitchen as KitchenIcon,
+    Beenhere as BeenhereIcon,
+    People as PeopleIcon,
+    Login as LoginIcon,
+    PersonAdd as PersonAddIcon,
+    RestaurantMenu as RestaurantMenuIcon,
+    PlayCircle as PlayCircleIcon,
+    Bookmarks as BookmarksIcon,
+    BookmarkAdd as BookmarkAddIcon,
+    Info as InfoIcon,
+    Star as StarIcon,
+    AlternateEmail as AlternateEmailIcon,
+    Inbox as InboxIcon,
+    Drafts as DraftsIcon,
+    Send as SendIcon,
+    House as HouseIcon,
+    LastPage as LastPageIcon,
+    Bookmark as BookmarkIcon,
+    EditNote as EditNoteIcon,
+    Textsms as TextsmsIcon,
+    MarkUnreadChatAlt as MarkUnreadChatAltIcon,
+    QuestionAnswer as QuestionAnswerIcon,
+    Settings as SettingsIcon,
+    Block as BlockIcon,
+    Logout as LogoutIcon,
+    Terminal as TerminalIcon,
+    TaxiAlert as TaxiAlertIcon,
+    AdminPanelSettings as AdminPanelSettingsIcon,
+    DinnerDining as DinnerDiningIcon,
+    Favorite as FavoriteIcon,
+    ExpandLess,
+    ExpandMore,
+    StarBorder,
+} from '@mui/icons-material'
 
+import {
+    List,
+    ListSubheader,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Collapse,
+    Box,
+    Stack,
+    useMediaQuery,
+    Menu,
+    MenuItem,
+    Fab,
+    Link,
+    Fade,
+} from '@mui/material'
 
-
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import LayersIcon from '@mui/icons-material/Layers';
-import BookIcon from '@mui/icons-material/Book';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import BeenhereIcon from '@mui/icons-material/Beenhere';
-import PeopleIcon from '@mui/icons-material/People';
-import { Link } from 'react-router-dom'
-import { Box, Stack, Typography } from "@mui/material";
-import * as Tag from "./styles";
+import * as Tag from './styles'
+import Logo from '../../images/logo/logo-menu.png'
 import './index.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+
+import { useContext } from 'react'
+import { AuthContext } from '../../contexts/AuthContext'
 
 const links = [
-    { icon: <HomeIcon />, name: 'Home', href: '' },
-    { icon: <LayersIcon />, name: 'Pages', href: '' },
-    { icon: <KitchenIcon />, name: 'Recitas', href: '' },
-    { icon: <BookIcon />, name: 'Blog', href: '' },
-    { icon: <PeopleIcon />, name: 'Comunidade', href: '' },
+    {
+        icon: <HomeIcon />,
+        name: 'Home',
+        onClick: 'home',
+        children: [
+            {
+                icon: <HouseIcon />,
+                name: 'Página principal',
+                onClick: 'home',
+            },
+
+            { icon: <LastPageIcon />, name: 'Sub página', onClick: 'subPage' },
+            {
+                icon: <BookmarkIcon />,
+                name: 'Receitas favoritas',
+                onClick: 'favRecipes',
+            },
+            { icon: <EditNoteIcon />, name: 'Rascunho', onClick: 'draft' },
+        ],
+    },
+    {
+        icon: <LayersIcon />,
+        name: 'Pages',
+        onClick: 'pages',
+        children: [
+            {
+                name: 'User Login',
+                icon: <LoginIcon />,
+                link: '/signin',
+            },
+            { name: 'User Register', icon: <PersonAddIcon /> },
+            { name: 'Single Video', icon: <PlayCircleIcon /> },
+            { name: 'Single Book', icon: <BookmarksIcon /> },
+           
+            { name: 'About us', icon: <InfoIcon /> },
+            { name: 'Top Review', icon: <StarIcon />, link: '/topReview', },
+            { name: 'Contacts', icon: <AlternateEmailIcon /> },
+        ],
+    },
+    {
+        icon: <KitchenIcon />,
+        name: 'Recitas',
+        onClick: 'recipes',
+        children: [
+            {
+                name: 'Minhas Receitas',
+                icon: <BookIcon />,
+                link: '/myRecipes',
+            },
+            { name: 'Receitas Favoritas', icon: <FavoriteIcon />,link: '/youfavoriteRecipes', },
+            { name: 'Top Review', icon: <StarIcon /> },
+            {
+                name: 'Create Recipe',
+                icon: <BookmarkAddIcon />,
+                link: '/createRecipes',
+            },
+            { name: 'Gerador de receitas', icon: <DinnerDiningIcon /> },
+        ],
+    },
+    {
+        icon: <BookIcon />,
+        name: 'Blog',
+        onClick: 'blog',
+        children: [
+            {
+                icon: <TextsmsIcon />,
+                name: 'Blog 1',
+                onClick: 'blog1',
+            },
+
+            {
+                icon: <MarkUnreadChatAltIcon />,
+                name: 'Blog 2',
+                onClick: 'blog2',
+            },
+            {
+                icon: <QuestionAnswerIcon />,
+                name: 'Blog 3 (Single)',
+                onClick: 'blog2',
+            },
+        ],
+    },
+    {
+        icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community',
+        children: [
+            { name: 'Comunidade', icon: <Diversity3Icon />, link: '/comunidade', onClick: 'community'},
+            { name: 'Grupos', icon: <RememberMeIcon /> },
+        ],
+    },
+    {
+        icon: <SettingsIcon />,
+        name: 'Advanced settings',
+        onClick: 'adSettings',
+        children: [
+            { icon: <TerminalIcon />, name: 'Mode root', onClick: 'root' },
+            {
+                icon: <AdminPanelSettingsIcon />,
+                name: 'Mode admin',
+                onClick: 'admin',
+            },
+            {
+                icon: <TaxiAlertIcon />,
+                name: 'Red alert mode ',
+                onClick: 'Red',
+            },
+            { icon: <LogoutIcon />, name: 'Log out', onClick: 'logout' },
+            {
+                icon: <BlockIcon />,
+                name: 'Delete account',
+                onClick: 'deleaccont',
+            },
+        ],
+    },
 ]
-export const Links_a = ({
-    name, href, icon
+
+const Links_b = ({
+    name,
+    icon,
+    handleClick,
+    handleClose,
+    anchorEl,
+    children,
+    selectedLink,
 }) => {
-    const[show, setShow] = useState(true)
-    const showIcon =()=> {
-        setShow(!show)
-    }
-    return (
-        <Tag.Link onClick={showIcon}>
-            <Tag.IconLink className='iconLnk'>
-                {icon}
-            </Tag.IconLink>
-            <Tag.Aa to={href}>
-                <Box>
-                    {name}
-                </Box>
-            </Tag.Aa>
-            <Tag.ShowlinkIcon >
-                {show?<ArrowDropDownIcon fontSize='large' sx={{
-                    color: 'text.secondary'
-                }} />: <ArrowDropUpIcon fontSize='large' sx={{
-                    color: 'green'
-                }}/>}
-            </Tag.ShowlinkIcon>
-        </Tag.Link>
-    )
-}
-
-
-
-export const Links = () => {
-    const ShowLinks = () => {
-
+    const { logout } = useContext(AuthContext)
+    const isSelected = selectedLink === name
+    const handleLinkClick = (link) => {
+        if (link.onClick === 'logout') {
+            logout() // Chame a função logout aqui
+        } else {
+            // Lógica para lidar com outros links
+        }
     }
     return (
         <>
-            <Tag.Menu_links>
-                <Tag.Logo variant='h4'>20MinutesOk</Tag.Logo>
-                <Tag.ShowlinkIcon >
-                    <MenuIcon fontSize='large' onClick={ShowLinks} />
-                </Tag.ShowlinkIcon>
-
-                <Tag.Links>
-                        <Stack
-                            direction='row'
-                            display="flex"
-                            justifyContent='space-between'
-                            alignItems='center'
-                            width="100%"
+            <Stack
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0rem',
+                }}
+                id="basic-button"
+                aria-controls={isSelected ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={isSelected ? 'true' : undefined}
+                onClick={handleClick}
+            >
+                <Stack>{icon}</Stack>
+                <Stack>{name}</Stack>
+            </Stack>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={isSelected}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+                {children?.length > 0 &&
+                    children.map((child, index) => (
+                        <MenuItem
+                            key={index}
+                            onClick={() => handleLinkClick(child)}
                         >
-                            <Tag.IconMenu sx={{
-                                color: 'text.secondary'
-                            }} variant='h4'>
-                                20MinutesOk
-                            </Tag.IconMenu>
-                            <Tag.IconMenu sx={{
-                                color: 'text.secondary',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: "center",
-                                justifyContent: "flex-end",
-                                padding: "0 0.5em"
-                            }}>
-                                <CloseIcon onClick={ShowLinks} fontSize='large' />
-                            </Tag.IconMenu>
-                        </Stack>
-                        {
-                            links.map((li) => {
-                                return (
-
-                                    <Links_a key={li.name} {...li} />
-                                )
-                            })
-                        }
-                </Tag.Links>
-
-            </Tag.Menu_links>
+                            <ListItemIcon>{child.icon}</ListItemIcon>
+                            <ListItemText>
+                                <Link href={child.link}>{child.name}</Link>
+                            </ListItemText>
+                        </MenuItem>
+                    ))}
+            </Menu>
         </>
+    )
+}
+export const Links_a = ({
+    name,
+    handleClick,
+    icon,
+    children,
+    selectedLink,
+}) => {
+    const { logout } = useContext(AuthContext)
+    const handleLinkClick = (link) => {
+        if (link.onClick === 'logout') {
+            logout() // Chame a função logout aqui
+        } else {
+            // Lógica para lidar com outros links
+        }
+    }
+    const isSelected = selectedLink === name
+
+    return (
+        <>
+            <ListItemButton sx={{ color: 'white' }} onClick={handleClick}>
+                <ListItemIcon sx={{ color: 'white' }}>{icon}</ListItemIcon>
+                <ListItemText primary={name} />
+                {isSelected ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={isSelected} timeout="auto" unmountOnExit>
+                <List sx={{ color: 'white' }} component="div" disablePadding>
+                    {children &&
+                        children?.length > 0 &&
+                        children.map((child) => (
+                            <ListItemButton
+                                key={child?.name}
+                                onClick={() => handleLinkClick(child)}
+                                sx={{ pl: 4, borderLeft: '20px solid white' }}
+                            >
+                                <ListItemIcon>{child.icon}</ListItemIcon>
+                                <Link href={child?.link}>
+                                    <ListItemText primary={child.name} />
+                                </Link>
+                            </ListItemButton>
+                        ))}
+                </List>
+            </Collapse>
+        </>
+    )
+
+    // )
+}
+
+export const Links = () => {
+    const { logout } = useContext(AuthContext)
+    const [scrollHeight, setScrollHeight] = useState(0)
+    const [selectedLink, setSelectedLink] = useState()
+    const [anchorEl, setAnchorEl] = useState(null)
+    useEffect(() => {
+        const handleScroll = () => {
+            const height = window.scrollY || 0
+            setScrollHeight(height)
+        }
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll)
+
+            // Limpe o evento de scroll quando o componente for desmontado
+            return () => {
+                window.removeEventListener('scroll', handleScroll)
+            }
+        }
+    }, [])
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    }
+
+    const handleSelectLink = (event, newLink) => {
+        if (selectedLink === newLink) {
+            setSelectedLink(null)
+            return
+        }
+
+        console.log(selectedLink, newLink.onClick)
+        setSelectedLink(newLink)
+        setAnchorEl(event.target)
+    }
+
+    const handleClose = () => {
+        setSelectedLink(null)
+        setAnchorEl(null)
+    }
+
+    const [showLinks, setShowLinks] = useState(false)
+
+    const matches = useMediaQuery('(min-width:700px)')
+    const matchesMobileSmall = useMediaQuery('(min-width:550px)')
+    if (matches) {
+        return (
+            <>
+                <Tag.MenuBar sx={scrollHeight > 50 ? { opacity: "0", ml: '-100%' } : {}}>
+                    <Fade in={scrollHeight}>
+                        <Box
+                            onClick={scrollToTop}
+                            role="presentation"
+                            sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                        >
+                            <Fab size="small" aria-label="scroll back to top">
+                                <KeyboardArrowUpIcon />
+                            </Fab>
+                        </Box>
+                    </Fade>
+                    <Stack>
+                        <img src={Logo} alt="" />
+                    </Stack>
+                    {links.map((li) => (
+                        <Links_b
+                            key={li.name}
+                            {...li}
+                            handleClose={handleClose}
+                            handleClick={(event) =>
+                                handleSelectLink(event, li.name)
+                            }
+                            selectedLink={selectedLink}
+                            anchorEl={anchorEl}
+                        />
+                    ))}
+                </Tag.MenuBar>
+            </>
+        )
+    }
+    return (
+        <Box>
+            <Tag.MenuBar sx={scrollHeight > 50 ? {} : { height: '8rem' }}>
+                <Fade in={scrollHeight}>
+                    <Box
+                        onClick={scrollToTop}
+                        role="presentation"
+                        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                    >
+                        <Fab size="small" aria-label="scroll back to top">
+                            <KeyboardArrowUpIcon />
+                        </Fab>
+                    </Box>
+                </Fade>
+                <Stack>
+                    <img src={Logo} alt="" />
+                </Stack>
+                <Stack>
+                    {!showLinks ? (
+                        <MenuIcon onClick={(e) => setShowLinks(!showLinks)} />
+                    ) : (
+                        <MenuOpenIcon
+                            onClick={(e) => setShowLinks(!showLinks)}
+                        />
+                    )}
+                </Stack>
+            </Tag.MenuBar>
+            {showLinks && (
+                <Tag.MinhaLista
+                    sx={{
+                        width: !matchesMobileSmall ? '100%' : '60%',
+                    }}
+                    component="nav"
+                    aria-labelledby="nested-list-subheader"
+                    subheader={
+                        <Tag.ListSub
+                            sx={{
+                                justifyContent: !matchesMobileSmall
+                                    ? 'space-between'
+                                    : 'flex-start',
+                            }}
+                            component="div"
+                            id="nested-list-subheader"
+                        >
+                            <img src={Logo} alt="" />
+                            {!matchesMobileSmall && (
+                                <CloseIcon
+                                    onClick={(e) => setShowLinks(!showLinks)}
+                                />
+                            )}
+                        </Tag.ListSub>
+                    }
+                >
+                    {links.map((li) => {
+                        return (
+                            <Links_a
+                                key={li.name}
+                                {...li}
+                                handleClick={(event) =>
+                                    handleSelectLink(event, li.name)
+                                }
+                                selectedLink={selectedLink}
+                            />
+                        )
+                    })}
+                </Tag.MinhaLista>
+            )}
+        </Box>
     )
 }
