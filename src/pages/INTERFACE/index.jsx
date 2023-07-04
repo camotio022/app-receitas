@@ -1,14 +1,9 @@
 import { Links } from "../../componentes/LINKS";
-import "./index.css";
+import * as Tag from './index.js';
 
-import churros from "../../images/imgsPages/churos.jpg";
-import avatar from "../../images/mocks/avatar.jpg";
 import { Avatar, Box, Collapse, Container, Divider, Fab, Fade, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material";
-import * as Tag from './styles'
-import { green, orange } from "@mui/material/colors";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
-import { Logo } from "../../componentes/LOGO";
+
 import {
   Notifications as NotificationsIcon,
   Search as SearchIcon,
@@ -72,7 +67,8 @@ import {
   StarBorder,
 } from '@mui/icons-material'
 import { Button } from "bootstrap";
-import { CardRecipes } from "./CARDRECIPES";
+import { Logo } from "../../componentes/LOGO";
+import { AuthContext } from "../../contexts/AuthContext";
 const links = [
   {
     icon: <HomeIcon />,
@@ -306,7 +302,7 @@ const actions = [
   { icon: <ShareIcon />, name: 'Share' },
 ];
 
-export const HomePage = () => {
+export const INTERFACE = ({RENDERPAGE}) => {
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const { user } = useContext(AuthContext)
@@ -636,24 +632,20 @@ export const HomePage = () => {
                 })}
               </Tag.MinhaLista>
             </Tag.MenuItemsLinks>
-            <Tag.MenuItemsLinks
+            <Stack
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: "center",
-                padding: '10px',
                 width: '70%',
                 height: '100%',
-                bgcolor: '#f8fafb',
+                bgcolor: "transparent",
+                overflow:'auto',
               }}>
-              <CardRecipes />
-
-            </Tag.MenuItemsLinks>
+              {RENDERPAGE}
+            </Stack>
           </Tag.MenuItemsLinks>
           <Box sx={{
             position: 'fixed',
-            bottom: '1rem',
-            right: '3rem',
+            bottom: '0.3rem',
+            right: '2rem',
             height: 320,
             transform:
               'translateZ(0px)',
