@@ -33,16 +33,13 @@ export const Title = styled(Typography)(({ theme }) => ({
 }))
 export const Cards = styled(Stack)(({ theme }) => ({
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: '2rem',
+    alignItems: "center",
     width: '100%',
-    height: 'auto',
-    padding: '3%',
-    background: '#f5f5f5',
-    paddingBottom: '13rem'
+    height: '100',
+    flexWrap: 'wrap',
+    gap: "2rem",
+    marginBlock: '5rem'
 }))
 
 export const Card = styled(Stack)(({ theme }) => ({
