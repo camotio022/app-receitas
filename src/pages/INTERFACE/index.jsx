@@ -364,7 +364,7 @@ export const INTERFACE = ({RENDERPAGE}) => {
       <>
         <Tag.Wrapper>
           <Tag.Wrapper sx={{
-            height: 'auto',
+            height: '12vh',
             boxShadow: "0 1px 1px rgba(0, 0, 0, 0.5)",
 
           }}>
@@ -574,9 +574,9 @@ export const INTERFACE = ({RENDERPAGE}) => {
 
           <Tag.MenuItemsLinks sx={{
             position: 'absolute',
-            mt: '11.3vh',
+            mt: '12vh',
             width: '100%',
-            height: '88.7vh',
+            height: '88.5vh',
             display: 'flex',
             justifyContent: 'flex-start',
             alignItems: "flex-start",
