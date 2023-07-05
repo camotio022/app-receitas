@@ -18,6 +18,7 @@ import { useEffect } from 'react'
 import { api } from '../../api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { INTERFACE } from '../INTERFACE/index.jsx'
 
 
 export const CreateRecipes = ({ }) => {
@@ -105,8 +106,8 @@ export const CreateRecipes = ({ }) => {
                     alert('success')
                     setFormData('')
                 })
-            }
-            navigate("/myRecipes")
+        }
+        navigate("/myRecipes")
     };
 
 
@@ -133,51 +134,55 @@ export const CreateRecipes = ({ }) => {
     }
     return (
         <>
-            <Fade in={scrollHeight}>
-                <Box
-                    onClick={scrollToTop}
-                    role="presentation"
-                    sx={{ position: 'fixed', bottom: 16, right: 16 }}
+            <INTERFACE RENDERPAGE={<>
+                <Fade in={scrollHeight}>
+                    <Box
+                        onClick={scrollToTop}
+                        role="presentation"
+                        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                    >
+                        <Fab size="small" aria-label="scroll back to top">
+                            <KeyboardArrowUpIcon />
+                        </Fab>
+                    </Box>
+                </Fade>
+                <Container
+                    component="main"
+                    maxWidth="sm"
+                    sx={{
+                        mb: 4,
+                        mt: 15,
+                        display: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
                 >
-                    <Fab size="small" aria-label="scroll back to top">
-                        <KeyboardArrowUpIcon />
-                    </Fab>
-                </Box>
-            </Fade>
-            <Container
-                component="main"
-                maxWidth="sm"
-                sx={{
-                    mb: 4,
-                    mt: 15,
-                    display: 'center',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Paper
-                    variant="outlined"
-                    sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-                >
-                    <Fragment>
-                        <RecipeForm
-                            formData={formData}
-                            setFormData={setFormData}
-                            handleInputChangesCreateRecipes={
-                                handleInputChangesCreateRecipes
-                            }
-                            handleImageChange={handleImageChange}
-                            handleSubmit={handleSubmit}
-                            handleInputIngre={handleInputIngre}
-                            adicionarIngre={adicionarIngre}
-                            removerIngre={removerIngre}
-                            handleInputModPreps={handleInputModPreps}
-                            adicionarModPreps={adicionarModPreps}
-                            removerModPreps={removerModPreps}
-                        />
-                    </Fragment>
-                </Paper>
-            </Container>
+                    <Paper
+                        variant="outlined"
+                        sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+                    >
+                        <Fragment>
+                            <RecipeForm
+                                formData={formData}
+                                setFormData={setFormData}
+                                handleInputChangesCreateRecipes={
+                                    handleInputChangesCreateRecipes
+                                }
+                                handleImageChange={handleImageChange}
+                                handleSubmit={handleSubmit}
+                                handleInputIngre={handleInputIngre}
+                                adicionarIngre={adicionarIngre}
+                                removerIngre={removerIngre}
+                                handleInputModPreps={handleInputModPreps}
+                                adicionarModPreps={adicionarModPreps}
+                                removerModPreps={removerModPreps}
+                            />
+                        </Fragment>
+                    </Paper>
+                </Container>
+
+            </>} />
+
         </>
     )
 }
