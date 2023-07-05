@@ -515,27 +515,26 @@ export const MyRecipes = () => {
                     <>
                         {' '}
                         {myRecipes.length > itemsPerPage && (
-                            <Tag.Pagination
-                                spacing={2}
-                                sx={{ transition: '.3s', mt: '3' }}
-                            >
+                            <Tag.Pagination spacing={2} sx={{
+                                position: 'relative',
+                                transition: '.3s',
+                                mt: '3',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+
+                            }}>
                                 <Pagination
-                                    count={Math.ceil(
-                                        currentRecipes.length / itemsPerPage
-                                    )}
+                                    count={Math.ceil(recipes.length / itemsPerPage)}
                                     page={currentPage}
                                     onChange={handlePageChange}
-                                    renderItem={(item) => (
-                                        <PaginationItem {...item} />
-                                    )}
+                                    renderItem={(item) => <PaginationItem {...item} />}
                                 />
                             </Tag.Pagination>
                         )}
                     </>
                 )}
-
-
-
             </>
         } />
 

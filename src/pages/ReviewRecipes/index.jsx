@@ -109,7 +109,7 @@ export const TopReview = (props) => {
   const indexOfLastRecipe = currentPage * itemsPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
   const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
-  
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
@@ -176,16 +176,29 @@ export const TopReview = (props) => {
     fetchImages()
   }, [])
   const fevoritingRecipe = async (recipeId, userId) => {
-    if (!recipeId || !userId) return
-    // Lógica para favoritar a receita
+    if (!recipeId || !userId) return;
+  
     try {
-      await api.favoriteRecipes.post(recipeId, userId)
-    } catch (err) {
-      console.log(err, 'não encontrado')
-      console.log(err)
+      const recipeData = await api.favoriteRecipes.get(recipeId);
+      
+      if (!recipeData) {
+        console.log('Receita não encontrada');
+        return;
+      }
+  
+      const likesCounter = recipeData.likesCounter || [];
+  
+      if (!likesCounter.includes(userId)) {
+        await api.favoriteRecipes.post(recipeId, userId);
+        alert('Receita favoritada com sucesso!');
+      } else {
+        alert('Usuário já favoritou a receita.');
+      }
+    } catch (error) {
+      alert('Erro ao favoritar a receita:', error);
+      // Trate o erro de acordo com suas necessidades, por exemplo, exibindo uma mensagem de erro ao usuário.
     }
-  }
-    ;
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -218,10 +231,13 @@ export const TopReview = (props) => {
         <>
           <Box
             sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              ail: 'center',
+              justifyContent: 'center',
               bgcolor: 'background.paper',
-              width: '500',
+              width: '100%',
               position: 'relative',
-              minHeight: 200,
               color: 'red'
             }}
           >
@@ -312,7 +328,7 @@ export const TopReview = (props) => {
                                       onClick={() =>
                                         fevoritingRecipe(recipe?.id, user?.uid)
                                       }
-                                      title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                      title={`Favoritar está receita ${recipe?.recipeTitle}`}
                                       followCursor
                                     >
                                       <FavoriteIcon />
@@ -491,22 +507,31 @@ export const TopReview = (props) => {
                 </Stack>
               </>}
           </Box>
-          {top && (
-            <>
-              {' '}
-              {recipes.length > itemsPerPage && (
-                <Tag.Pagination spacing={2} sx={{ transition: '.3s', mt: '3' }}>
-                  <Pagination
-                    count={Math.ceil(recipes.length / itemsPerPage)}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    renderItem={(item) => <PaginationItem {...item} />}
-                  />
-                </Tag.Pagination>
-              )}
-            </>
-          )}
         </>
+        {top && (
+          <>
+            {' '}
+            {recipes.length > itemsPerPage && (
+              <Tag.Pagination spacing={2} sx={{
+                position: 'relative',
+                transition: '.3s',
+                mt: '3',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+
+              }}>
+                <Pagination
+                  count={Math.ceil(recipes.length / itemsPerPage)}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  renderItem={(item) => <PaginationItem {...item} />}
+                />
+              </Tag.Pagination>
+            )}
+          </>
+        )}
       </>
 
     } />

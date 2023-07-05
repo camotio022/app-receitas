@@ -36,10 +36,11 @@ export const Cards = styled(Stack)(({ theme }) => ({
     justifyContent: 'center',
     alignItems: "center",
     width: '100%',
-    height: '100',
+    height: '100%',
     flexWrap: 'wrap',
     gap: "2rem",
-    marginBlock: '5rem'
+    marginBlock: '5rem',
+    bgcolor: '#f8fafb',
 }))
 
 export const Card = styled(Stack)(({ theme }) => ({

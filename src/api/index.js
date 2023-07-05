@@ -197,119 +197,83 @@ export const api = {
       recipesRef.forEach((el) => recipesData.push(el.data()))
       console.log(recipesData)
       return recipesData
-      // if (!userId) return []
 
-      // try {
-      //   const userDocRef = await getDoc(doc(db, 'users', userId))
-      //   if (!userDocRef.exists()) {
-      //     console.error('Usuário não existe')
-      //     return
-      //   }
-      //   const userData = userDocRef.data()
-      //   console.log('usuário', userData)
-      //   const favoriteRecipes = userData.favoriteRecipes || []
-      //   const recipePromises = favoriteRecipes.map(async (recipeId) => {
-      //     const recipeDocRef = doc(db, 'recipes', recipeId)
-      //     const recipeDocSnap = await getDoc(recipeDocRef)
-      //     if (recipeDocSnap.exists()) {
-      //       return recipeDocSnap.data()
-      //     }
-      //   })
-      //   const recipeData = await Promise.all(recipePromises)
-      //   console.log('Dados das receitas favoritas:', recipeData)
-      //   return recipeData.filter((recipe) => recipe !== undefined)
-
-      //   // const usersCollection = collection(db, 'users')
-      //   // const userDocRef = query(usersCollection, where('id', '==', userId))
-      //   // const userDocSnap = await getDocs(userDocRef)
-
-      //   // if (userDocSnap.size === 1) {
-      //   //   const userData = userDocSnap.docs[0].data()
-      //   //   const favoriteRecipes = userData.favoriteRecipes || []
-      //   //   const recipePromises = favoriteRecipes.map(async (recipeId) => {
-      //   //     const recipeDocRef = doc(db, 'recipes', recipeId)
-      //   //     const recipeDocSnap = await getDoc(recipeDocRef)
-      //   //     if (recipeDocSnap.exists()) {
-      //   //       return recipeDocSnap.data()
-      //   //     }
-      //   //   })
-      //   //   const recipeData = await Promise.all(recipePromises)
-      //   //   console.log('Dados das receitas favoritas:', recipeData)
-      //   //   return recipeData.filter((recipe) => recipe !== undefined)
-      //   // } else {
-      //   //   return []
-      //   // }
-      // } catch (error) {
-      //   console.error('Erro ao buscar as receitas favoritas:', error)
-      //   return []
-      // }
     },
     post: async (recipeId, userId) => {
       if (recipeId && userId) {
         try {
-          const userDocRef = doc(db, 'users', userId)
-          const userDocSnap = await getDoc(userDocRef)
-
-          if (!userDocSnap.exists()) {
-            console.log('Usuário não encontrado')
-            return []
-          }
-
           // Obter a referência da receita
-          const recipeDocRef = doc(db, 'recipes', recipeId)
-          const recipeDocSnap = await getDoc(recipeDocRef)
+          const recipeDocRef = doc(db, 'recipes', recipeId);
+          const recipeDocSnap = await getDoc(recipeDocRef);
 
           if (!recipeDocSnap.exists()) {
-            console.log('Receita não encontrada')
-            return []
+            console.log('Receita não encontrada');
+            return [];
           }
           // A receita existe, você pode prosseguir com a atualização do likesCounter
-          const recipeData = recipeDocSnap.data()
-          const likesCounter = recipeData.likesCounter || []
+          const recipeData = recipeDocSnap.data();
+          const likesCounter = recipeData.likesCounter || [];
 
           // Verificar se o usuário já favoritou a receita
-          if (!likesCounter.includes(userId)) {
+          const userAlreadyLiked = likesCounter.includes(userId);
+          if (!userAlreadyLiked) {
             // Adicionar o ID do usuário ao likesCounter da receita
-            likesCounter.push(userId)
+            likesCounter.push(userId);
             await updateDoc(recipeDocRef, {
               likesCounter: likesCounter,
-            })
+            });
           }
         } catch (error) {
-          console.error('Erro ao buscar as receitas favoritas:', error)
-          return []
+          console.error('Erro ao buscar as receitas favoritas:', error);
+          return [];
         }
       } else {
-        return [] // Retorna uma lista vazia se o ID do usuário não for fornecido
+        return []; // Retorna uma lista vazia se o ID do usuário não for fornecido
       }
     },
+
 
     remove: async (recipeId, userId) => {
       if (recipeId && userId) {
-        const usersRef = firebase.database().ref('users')
-
         try {
-          const snapshot = await usersRef
-            .child(userId)
-            .child('favorite_recipes')
-            .once('value')
-          const recipes = snapshot.val() || []
-          const updatedRecipes = Object.values(recipes).filter(
-            (id) => id !== recipeId
-          )
-          await usersRef
-            .child(userId)
-            .child('favorite_recipes')
-            .set(updatedRecipes)
-          console.log('Receita removida dos favoritos')
-          return true
+          // Obter a referência da receita
+          const recipeDocRef = doc(db, 'recipes', recipeId);
+          const recipeDocSnap = await getDoc(recipeDocRef);
+    
+          if (!recipeDocSnap.exists()) {
+            console.log('Receita não encontrada');
+            return false;
+          }
+    
+          // A receita existe, você pode prosseguir com a remoção do likesCounter
+          const recipeData = recipeDocSnap.data();
+          const likesCounter = recipeData.likesCounter || [];
+    
+          // Verificar se o usuário já favoritou a receita
+          const userIndex = likesCounter.indexOf(userId);
+          if (userIndex !== -1) {
+            // Remover o ID do usuário do likesCounter da receita
+            likesCounter.splice(userIndex, 1);
+    
+            // Atualizar o documento da receita com a lista de likes atualizada
+            await updateDoc(recipeDocRef, {
+              likesCounter: likesCounter,
+            });
+    
+            console.log('Usuário removido dos likesCounter da receita');
+            return true;
+          } else {
+            console.log('Usuário não encontrado nos likesCounter da receita');
+            return false;
+          }
         } catch (error) {
-          console.error('Erro ao remover a receita dos favoritos:', error)
-          return false
+          console.error('Erro ao remover o usuário dos likesCounter da receita:', error);
+          return false;
         }
       } else {
-        return false // Retorna falso se o ID do usuário ou da receita não for fornecido
+        return false; // Retorna falso se o ID da receita ou do usuário não forem fornecidos
       }
     },
   },
+    
 }
