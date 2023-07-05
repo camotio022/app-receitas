@@ -176,16 +176,29 @@ export const TopReview = (props) => {
     fetchImages()
   }, [])
   const fevoritingRecipe = async (recipeId, userId) => {
-    if (!recipeId || !userId) return
-    // Lógica para favoritar a receita
+    if (!recipeId || !userId) return;
+  
     try {
-      await api.favoriteRecipes.post(recipeId, userId)
-    } catch (err) {
-      console.log(err, 'não encontrado')
-      console.log(err)
+      const recipeData = await api.favoriteRecipes.get(recipeId);
+      
+      if (!recipeData) {
+        console.log('Receita não encontrada');
+        return;
+      }
+  
+      const likesCounter = recipeData.likesCounter || [];
+  
+      if (!likesCounter.includes(userId)) {
+        await api.favoriteRecipes.post(recipeId, userId);
+        alert('Receita favoritada com sucesso!');
+      } else {
+        alert('Usuário já favoritou a receita.');
+      }
+    } catch (error) {
+      alert('Erro ao favoritar a receita:', error);
+      // Trate o erro de acordo com suas necessidades, por exemplo, exibindo uma mensagem de erro ao usuário.
     }
-  }
-    ;
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -315,7 +328,7 @@ export const TopReview = (props) => {
                                       onClick={() =>
                                         fevoritingRecipe(recipe?.id, user?.uid)
                                       }
-                                      title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                      title={`Favoritar está receita ${recipe?.recipeTitle}`}
                                       followCursor
                                     >
                                       <FavoriteIcon />
