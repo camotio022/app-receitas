@@ -28,7 +28,6 @@ const Main = () => {
     setUseDarkMode(!useDarkMode)
   }
   const theme = useDarkMode ? darkTheme : lightTheme
-
   return (
     <ThemeProvider theme={theme}>
       {auth.isLoggedIn ? (
@@ -36,7 +35,8 @@ const Main = () => {
           {/* <Links /> */}
           <Routes>
             <Route path="/home" element={<HomePage />} />
-            <Route path="/topReview" element={<TopReview />} />
+            <Route path="/" element={<TopReview />} />
+            <Route path="/TopReview" element={<TopReview />} />
             <Route path="/createRecipes" element={<CreateRecipes />} />
             <Route
               path="/detailsRecipes/:id/edit"

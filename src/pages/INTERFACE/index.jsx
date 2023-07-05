@@ -2,7 +2,7 @@ import { Links } from "../../componentes/LINKS";
 import * as Tag from './index.js';
 
 import { Avatar, Box, Collapse, Container, Divider, Fab, Fade, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import {
   Notifications as NotificationsIcon,
@@ -302,7 +302,7 @@ const actions = [
   { icon: <ShareIcon />, name: 'Share' },
 ];
 
-export const INTERFACE = ({RENDERPAGE}) => {
+export const INTERFACE = ({ RENDERPAGE }) => {
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const { user } = useContext(AuthContext)
@@ -313,6 +313,39 @@ export const INTERFACE = ({RENDERPAGE}) => {
   const [scrollHeight, setScrollHeight] = useState(0)
   const [selectedLink, setSelectedLink] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
+  const scrollRef = useRef(null);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const element = scrollRef.current;
+      if (element) {
+        const { scrollTop, clientHeight, scrollHeight } = element;
+        const isTop = scrollTop === 0;
+        const isBottom = scrollTop + clientHeight === scrollHeight;
+
+        setIsAtTop(isTop);
+        setIsAtBottom(isBottom);
+      }
+      if (isTop) {
+        console.log('Está no topo!');
+      } else if (isBottom) {
+        console.log('Está no final!');
+      }
+    };
+
+    if (scrollRef.current) {
+      scrollRef.current.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const height = window.scrollY || 0
@@ -632,15 +665,17 @@ export const INTERFACE = ({RENDERPAGE}) => {
                 })}
               </Tag.MinhaLista>
             </Tag.MenuItemsLinks>
-            <Stack
-              sx={{
+            <div
+              ref={scrollRef}
+              style={{
+             
                 width: '70%',
-                height: '100%',
+                height: '88.5vh',
                 bgcolor: "transparent",
-                overflow:'auto',
+                overflow: 'auto',
               }}>
               {RENDERPAGE}
-            </Stack>
+            </div>
           </Tag.MenuItemsLinks>
           <Box sx={{
             position: 'fixed',

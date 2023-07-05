@@ -47,7 +47,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 import { INTERFACE } from '../INTERFACE/index.jsx'
 import { useTheme } from '@emotion/react';
 import { CardCover } from '@mui/joy';
-const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'
+import { CircularProgress } from '@mui/material';
 
 
 function TabPanel(props) {
@@ -96,8 +96,9 @@ const fabGreenStyle = {
 
 
 
-export const TopReview = () => {
+export const TopReview = (props) => {
   const { user } = useContext(AuthContext)
+  const [isLoading, setIsLoading] = useState(true);
   const theme = useTheme();
   const [value, setValue] = useState(0)
   const matches = useMediaQuery('(min-width:700px)')
@@ -113,12 +114,30 @@ export const TopReview = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 50));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const obterrecipes = async () => {
-    const recipesData = await api.recipe.get()
-    setRecipes(recipesData)
-    // console.log('IDs', recipesData.map(recipe => recipe?.id))
-  }
+    setIsLoading(true);
+    try {
+      const recipesData = await api.recipe.get();
+      setRecipes(recipesData);
+    } catch (error) {
+      // Lida com erros, se necessário
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     // Recupere os usuários do Firebase
     obterrecipes()
@@ -156,19 +175,6 @@ export const TopReview = () => {
     }
     fetchImages()
   }, [])
-  if (currentRecipes.length === 0) {
-    return (
-      <Tag.Wrapper
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="h3">Receitas não encontradas</Typography>
-      </Tag.Wrapper>
-    )
-  }
   const fevoritingRecipe = async (recipeId, userId) => {
     if (!recipeId || !userId) return
     // Lógica para favoritar a receita
@@ -179,9 +185,7 @@ export const TopReview = () => {
       console.log(err)
     }
   }
-
     ;
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -230,237 +234,262 @@ export const TopReview = () => {
                 variant="fullWidth"
                 aria-label="action tabs example"
               >
-                <Tab label="Card Recipes" {...a11yProps(0)} />
-                <Tab label="images Recipes" {...a11yProps(1)} />
+                <Tab sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+
+                }} label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FolderIcon style={{ marginRight: '0.5rem' }} />
+                    Folder cards
+                  </div>
+                } {...a11yProps(0)} />
+                <Tab label={
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <ImageIcon style={{ marginRight: '0.5rem' }} />
+                    Image cards
+                  </div>
+                } {...a11yProps(1)} />
               </Tabs>
             </AppBar>
-            <Stack
-              sx={{ width: "100%" }}
-              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-              index={value}
-              onChangeIndex={handleChangeIndex}
-            >
-              <TabPanel fullWidth value={value} index={0} dir={theme.direction}>
-                <Tag.Cards>
-                  {currentRecipes.map((recipe) => {
-                    return (
-                      <>
-                        <Tag.Card key={recipe?.id}>
-                          <Stack width={'100%'}>
-                            <Tooltip
-                              sx={{ cursor: 'pointer' }}
-                              title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
-                              followCursor
-                            >
-                              <img className="img" src={recipe?.recipeImage} alt="" />
-                            </Tooltip>
-                            <Stack padding={2} spacing={2}>
-                              <Typography color={'gray'} variant="h6" sx={noWrap}>
-                                <Link
-                                  href={`/detailsRecipes/${recipe?.id}`}
-                                  color="inherit"
-                                  underline="hover"
-                                >
-                                  {recipe?.recipeTitle}
-                                </Link>
-                              </Typography>
-                              <Stack direction="row" justifyContent={'space-between'}>
-                                <Stack direction="row" spacing={2}>
-                                  {
-                                    <Box color={'#ffa505'}>
-                                      <Rating
-                                        name={matches ? 'size-medium' : 'size-large'}
-                                        disabled={recipe.authorId === user.uid}
-                                        defaultValue={1}
-                                      />
-                                    </Box>
-                                  }
-                                  <Typography variant="p">
-                                    {recipe?.starsLikedCounter}
-                                  </Typography>
-                                </Stack>
 
-                                <Tag.FavoritingRecipe
-                                  onClick={() =>
-                                    fevoritingRecipe(recipe?.id, user?.uid)
-                                  }
-                                  title={`Favoritar está receita ${recipe?.titleRecipe}`}
+            {isLoading ? <>
+              <Tag.Cards sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress variant="indeterminate" value={progress} size={80} />
+                <Typography variant="h6" sx={{ marginLeft: '10px' }}>
+                  {`${progress}%`}
+                </Typography>
+              </Tag.Cards>
+            </> :
+              <>
+                <Stack
+                  sx={{ width: "100%" }}
+                  axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                  index={value}
+                  onChangeIndex={handleChangeIndex}
+                >
+                  <TabPanel fullWidth value={value} index={0} dir={theme.direction}>
+                    <Tag.Cards>
+                      {currentRecipes.map((recipe) => {
+                        return (
+                          <>
+                            <Tag.Card key={recipe?.id}>
+                              <Stack width={'100%'}>
+                                <Tooltip
+                                  sx={{ cursor: 'pointer' }}
+                                  title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
                                   followCursor
                                 >
-                                  <FavoriteIcon />
-                                </Tag.FavoritingRecipe>
-                              </Stack>
-                              <Stack
-                                spacing={1}
-                                borderTop={'0.1rem solid #f5f5f5f5'}
-                                direction="row"
-                                width={'100%'}
-                                justifyContent="space-between"
-                              >
-                                <Tag.Author>
-                                  <Tag.AuthorImage>
-                                    <img
-                                      style={{
-                                        borderRadius: '10px',
-                                      }}
-                                      src={
-                                        recipe?.authorId === user.uid
-                                          ? user.photoURL
-                                          : recipe?.avatar
-                                      }
-                                      alt=""
-                                    />
-                                  </Tag.AuthorImage>
-                                  <Box
-                                    sx={{
-                                      display: 'flex',
-                                      alignItems: 'flex-start',
-                                      justifyContent: 'space-between',
-                                      flexDirection: 'column',
-                                      height: '100%',
-                                      fontSize: '13px',
-                                      color: '#565656',
-                                    }}
-                                    id="info"
-                                  >
-                                    {recipe?.authorId === user.uid ? (
-                                      <>
-                                        <Typography sx={noWrap} variant="subtitle1">
-                                          {user.displayName}
-                                        </Typography>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Typography sx={noWrap} variant="subtitle1">
-                                          {recipe?.name}
-                                        </Typography>
-                                      </>
-                                    )}
-
-                                    <Stack direction="row" spacing={2}>
-                                      <Stack direction="row" gap={1}>
-                                        <FavoriteIcon
-                                          fontSize={matches ? 'small' : 'medium'}
-                                        />
-                                        233
-                                      </Stack>
-                                      <Stack spacing={2} gap={1} direction="row">
-                                        <ForumIcon
-                                          fontSize={matches ? 'small' : 'medium'}
-                                        />
-                                        {recipe?.commentsCounter}
-                                      </Stack>
-                                    </Stack>
-                                  </Box>
-                                </Tag.Author>
-                                <Tag.ReviewScore variant={matches ? 'subtitle1' : 'h4'}>
-                                  {recipe?.ranking}
-                                </Tag.ReviewScore>
-                              </Stack>
-                            </Stack>
-                          </Stack>
-                        </Tag.Card>
-                      </>
-                    )
-                  })}
-                </Tag.Cards>
-              </TabPanel>
-              <TabPanel value={value} index={1} dir={theme.direction}>
-                <Box sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                  alignItems: "center",
-                  width: '100%',
-                  height: '100%',
-                  gap: 5,
-                  marginBlock: '5rem'
-               
-                }}>
-                  {currentRecipes.map((recipe, index) => {
-                    return (
-                      <>
-                        <Card
-                          key={index}
-                          sx={{
-                            height: "30%",
-                            width: 250,
-                            bgcolor: 'initial',
-                            boxShadow: 'none',
-                            '--Card-padding': '0px',
-                          }}
-                        >
-                          <Box sx={{ position: 'relative' }}>
-                          <Avatar src={recipe?.recipeImage} sx={{border: '3px solid green',position: "absolute", mt: 1, ml: 1}}>
-                            
-                          </Avatar>
-                            <CardMedia
-                              component="img"
-                              src={recipe?.recipeImage !== null? recipe?.recipeImage
-                              :"https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg"} 
-                              alt={recipe?.recipeTitle}
-                            />
-                            <CardCover
-                              className="gradient-cover"
-                              sx={{
-                                '&:hover, &:focus-within': {
-                                  opacity: 1,
-                                },
-                                opacity: 0,
-                                transition: '0.1s ease-in',
-                                background:
-                                  'linear-gradient(180deg, transparent 62%, rgba(0,0,0,0.00345888) 63.94%, rgba(0,0,0,0.014204) 65.89%, rgba(0,0,0,0.0326639) 67.83%, rgba(0,0,0,0.0589645) 69.78%, rgba(0,0,0,0.0927099) 71.72%, rgba(0,0,0,0.132754) 73.67%, rgba(0,0,0,0.177076) 75.61%, rgba(0,0,0,0.222924) 77.56%, rgba(0,0,0,0.267246) 79.5%, rgba(0,0,0,0.30729) 81.44%, rgba(0,0,0,0.341035) 83.39%, rgba(0,0,0,0.367336) 85.33%, rgba(0,0,0,0.385796) 87.28%, rgba(0,0,0,0.396541) 89.22%, rgba(0,0,0,0.4) 91.17%)',
-                              }}
-                            >
-                              <Box>
-                                <Box
-                                  sx={{
-                                    p: 2,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent:'center',
-                                    flexGrow: 1,
-                                    alignSelf: 'flex-end',
-                                    color: 'white'
-                                  }}
-                                >
-                                  <Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
+                                  <img className="img" src={recipe?.recipeImage} alt="" />
+                                </Tooltip>
+                                <Stack padding={2} spacing={2}>
+                                  <Typography color={'gray'} variant="h6" sx={noWrap}>
                                     <Link
-                                      href="#dribbble-shot"
-                                      overlay
-                                      underline="none"
-                                      sx={{
-                                        color: '#fff',
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                        display: 'block',
-                                      }}
+                                      href={`/detailsRecipes/${recipe?.id}`}
+                                      color="inherit"
+                                      underline="hover"
                                     >
-                                      {recipe?.recipeTitle.split(' ')[0]}
+                                      {recipe?.recipeTitle}
                                     </Link>
                                   </Typography>
-                                  <IconButton size="sm" color="white" sx={{ ml: 'auto' }}>
-                                    <CreateNewFolder sx={{ color: 'white' }} />
-                                  </IconButton>
-                                  <IconButton size="sm" color="white">
-                                    <ThumbUpIcon sx={{ color: 'white' }} />
-                                  </IconButton>
-                                  <IconButton size="sm" color="white">
-                                    <Favorite sx={{ color: 'white' }} />
-                                    <Typography sx={{ color: 'white' }}>10.7K</Typography>
-                                  </IconButton>
-                                </Box>
-                              </Box>
-                            </CardCover>
-                          </Box>
-                        </Card>
+                                  <Stack direction="row" justifyContent={'space-between'}>
+                                    <Stack direction="row" spacing={2}>
+                                      {
+                                        <Box color={'#ffa505'}>
+                                          <Rating
+                                            name={matches ? 'size-medium' : 'size-large'}
+                                            disabled={recipe.authorId === user.uid}
+                                            defaultValue={1}
+                                          />
+                                        </Box>
+                                      }
+                                      <Typography variant="p">
+                                        {recipe?.starsLikedCounter}
+                                      </Typography>
+                                    </Stack>
 
-                      </>
-                    )
-                  })}
-                </Box>
-              </TabPanel>
-            </Stack>
+                                    <Tag.FavoritingRecipe
+                                      onClick={() =>
+                                        fevoritingRecipe(recipe?.id, user?.uid)
+                                      }
+                                      title={`Favoritar está receita ${recipe?.titleRecipe}`}
+                                      followCursor
+                                    >
+                                      <FavoriteIcon />
+                                    </Tag.FavoritingRecipe>
+                                  </Stack>
+                                  <Stack
+                                    spacing={1}
+                                    borderTop={'0.1rem solid #f5f5f5f5'}
+                                    direction="row"
+                                    width={'100%'}
+                                    justifyContent="space-between"
+                                  >
+                                    <Tag.Author>
+                                      <Tag.AuthorImage>
+                                        <img
+                                          style={{
+                                            borderRadius: '10px',
+                                          }}
+                                          src={
+                                            recipe?.authorId === user.uid
+                                              ? user.photoURL
+                                              : recipe?.avatar
+                                          }
+                                          alt=""
+                                        />
+                                      </Tag.AuthorImage>
+                                      <Box
+                                        sx={{
+                                          display: 'flex',
+                                          alignItems: 'flex-start',
+                                          justifyContent: 'space-between',
+                                          flexDirection: 'column',
+                                          height: '100%',
+                                          fontSize: '13px',
+                                          color: '#565656',
+                                        }}
+                                        id="info"
+                                      >
+                                        {recipe?.authorId === user.uid ? (
+                                          <>
+                                            <Typography sx={noWrap} variant="subtitle1">
+                                              {user.displayName}
+                                            </Typography>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <Typography sx={noWrap} variant="subtitle1">
+                                              {recipe?.name}
+                                            </Typography>
+                                          </>
+                                        )}
+
+                                        <Stack direction="row" spacing={2}>
+                                          <Stack direction="row" gap={1}>
+                                            <FavoriteIcon
+                                              fontSize={matches ? 'small' : 'medium'}
+                                            />
+                                            233
+                                          </Stack>
+                                          <Stack spacing={2} gap={1} direction="row">
+                                            <ForumIcon
+                                              fontSize={matches ? 'small' : 'medium'}
+                                            />
+                                            {recipe?.commentsCounter}
+                                          </Stack>
+                                        </Stack>
+                                      </Box>
+                                    </Tag.Author>
+                                    <Tag.ReviewScore variant={matches ? 'subtitle1' : 'h4'}>
+                                      {recipe?.ranking}
+                                    </Tag.ReviewScore>
+                                  </Stack>
+                                </Stack>
+                              </Stack>
+                            </Tag.Card>
+                          </>
+                        )
+                      })}
+                    </Tag.Cards>
+                  </TabPanel>
+                  <TabPanel value={value} index={1} dir={theme.direction}>
+                    <Box sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'center',
+                      alignItems: "center",
+                      width: '100%',
+                      height: '100%',
+                      gap: 5,
+                      marginBlock: '5rem'
+
+                    }}>
+                      {currentRecipes.map((recipe, index) => {
+                        return (
+                          <>
+                            <Card
+                              key={index}
+                              sx={{
+                                height: "30%",
+                                width: 250,
+                                bgcolor: 'initial',
+                                boxShadow: 'none',
+                                '--Card-padding': '0px',
+                              }}
+                            >
+                              <Box sx={{ position: 'relative' }}>
+                                <Avatar src={recipe?.recipeImage} sx={{ border: '3px solid green', position: "absolute", mt: 1, ml: 1 }}>
+
+                                </Avatar>
+                                <CardMedia
+                                  component="img"
+                                  src={recipe?.recipeImage !== null ? recipe?.recipeImage
+                                    : "https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg"}
+                                  alt={recipe?.recipeTitle}
+                                />
+                                <CardCover
+                                  className="gradient-cover"
+                                  sx={{
+                                    '&:hover, &:focus-within': {
+                                      opacity: 1,
+                                    },
+                                    opacity: 0,
+                                    transition: '0.1s ease-in',
+                                    background:
+                                      'linear-gradient(180deg, transparent 62%, rgba(0,0,0,0.00345888) 63.94%, rgba(0,0,0,0.014204) 65.89%, rgba(0,0,0,0.0326639) 67.83%, rgba(0,0,0,0.0589645) 69.78%, rgba(0,0,0,0.0927099) 71.72%, rgba(0,0,0,0.132754) 73.67%, rgba(0,0,0,0.177076) 75.61%, rgba(0,0,0,0.222924) 77.56%, rgba(0,0,0,0.267246) 79.5%, rgba(0,0,0,0.30729) 81.44%, rgba(0,0,0,0.341035) 83.39%, rgba(0,0,0,0.367336) 85.33%, rgba(0,0,0,0.385796) 87.28%, rgba(0,0,0,0.396541) 89.22%, rgba(0,0,0,0.4) 91.17%)',
+                                  }}
+                                >
+                                  <Box>
+                                    <Box
+                                      sx={{
+                                        p: 2,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        flexGrow: 1,
+                                        alignSelf: 'flex-end',
+                                        color: 'white'
+                                      }}
+                                    >
+                                      <Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
+                                        <Link
+                                          href="#dribbble-shot"
+                                          overlay
+                                          underline="none"
+                                          sx={{
+                                            color: '#fff',
+                                            textOverflow: 'ellipsis',
+                                            overflow: 'hidden',
+                                            display: 'block',
+                                          }}
+                                        >
+                                          {recipe?.recipeTitle.split(' ')[0]}
+                                        </Link>
+                                      </Typography>
+                                      <IconButton size="sm" color="white" sx={{ ml: 'auto' }}>
+                                        <CreateNewFolder sx={{ color: 'white' }} />
+                                      </IconButton>
+                                      <IconButton size="sm" color="white">
+                                        <ThumbUpIcon sx={{ color: 'white' }} />
+                                      </IconButton>
+                                      <IconButton size="sm" color="white">
+                                        <Favorite sx={{ color: 'white' }} />
+                                        <Typography sx={{ color: 'white' }}>10.7K</Typography>
+                                      </IconButton>
+                                    </Box>
+                                  </Box>
+                                </CardCover>
+                              </Box>
+                            </Card>
+
+                          </>
+                        )
+                      })}
+                    </Box>
+                  </TabPanel>
+                </Stack>
+              </>}
           </Box>
           {top && (
             <>
@@ -479,6 +508,7 @@ export const TopReview = () => {
           )}
         </>
       </>
+
     } />
 
 
