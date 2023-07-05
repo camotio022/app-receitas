@@ -442,25 +442,6 @@ export const DetailsRecipes = () => {
                             mt: '5rem',
                         }}
                     >
-                        {/* <CardCover
-                            sx={{
-                                width: '100%',
-                                height: '20rem',
-                                position: 'sticky',
-                            }}
-                        >
-                            <video
-                                autoPlay={true}
-                                loop
-                                muted
-                                poster="https://youtu.be/q9NSaHr9k58?t=7"
-                            >
-                                <source
-                                    src="https://youtu.be/q9NSaHr9k58?t=7"
-                                    type="video/mp4"
-                                />
-                            </video>
-                        </CardCover> */}
                         <CardContent sx={{ zIndex: 1, opacity: 1 }}>
                             <Typography
                                 level="h6"

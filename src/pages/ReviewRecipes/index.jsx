@@ -109,7 +109,7 @@ export const TopReview = (props) => {
   const indexOfLastRecipe = currentPage * itemsPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
   const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
-  
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
@@ -218,10 +218,13 @@ export const TopReview = (props) => {
         <>
           <Box
             sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              ail: 'center',
+              justifyContent: 'center',
               bgcolor: 'background.paper',
-              width: '500',
+              width: '100%',
               position: 'relative',
-              minHeight: 200,
               color: 'red'
             }}
           >
@@ -270,7 +273,7 @@ export const TopReview = (props) => {
                 >
                   <TabPanel fullWidth value={value} index={0} dir={theme.direction}>
                     <Tag.Cards>
-                      {currentRecipes.map((recipe) => {
+                      {myRecipes.map((recipe) => {
                         return (
                           <>
                             <Tag.Card key={recipe?.id}>
@@ -491,21 +494,6 @@ export const TopReview = (props) => {
                 </Stack>
               </>}
           </Box>
-          {top && (
-            <>
-              {' '}
-              {recipes.length > itemsPerPage && (
-                <Tag.Pagination spacing={2} sx={{ transition: '.3s', mt: '3' }}>
-                  <Pagination
-                    count={Math.ceil(recipes.length / itemsPerPage)}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    renderItem={(item) => <PaginationItem {...item} />}
-                  />
-                </Tag.Pagination>
-              )}
-            </>
-          )}
         </>
       </>
 

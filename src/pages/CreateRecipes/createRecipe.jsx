@@ -135,17 +135,6 @@ export const CreateRecipes = ({ }) => {
     return (
         <>
             <INTERFACE RENDERPAGE={<>
-                <Fade in={scrollHeight}>
-                    <Box
-                        onClick={scrollToTop}
-                        role="presentation"
-                        sx={{ position: 'fixed', bottom: 16, right: 16 }}
-                    >
-                        <Fab size="small" aria-label="scroll back to top">
-                            <KeyboardArrowUpIcon />
-                        </Fab>
-                    </Box>
-                </Fade>
                 <Container
                     component="main"
                     maxWidth="sm"

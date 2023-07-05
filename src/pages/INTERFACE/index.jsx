@@ -300,6 +300,7 @@ const actions = [
   { icon: <SaveIcon />, name: 'Save' },
   { icon: <PrintIcon />, name: 'Print' },
   { icon: <ShareIcon />, name: 'Share' },
+  { icon: <KeyboardArrowUpIcon />, name: 'Move scroll' },
 ];
 
 export const INTERFACE = ({ RENDERPAGE }) => {
@@ -316,20 +317,6 @@ export const INTERFACE = ({ RENDERPAGE }) => {
   const [isAtTop, setIsAtTop] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(false);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const height = window.scrollY || 0
-  //     setScrollHeight(height)
-  //   }
-  //   if (typeof window !== 'undefined') {
-  //     window.addEventListener('scroll', handleScroll)
-
-  //     // Limpe o evento de scroll quando o componente for desmontado
-  //     return () => {
-  //       window.removeEventListener('scroll', handleScroll)
-  //     }
-  //   }
-  // }, [])
 
   useEffect(() => {
     let timeoutId;
@@ -394,6 +381,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
             borderBottom: '1px solid #e3e9ed',
             top: 0,
             left: 0,
+            zIndex: 9999,
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
           }}>
@@ -412,7 +400,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     <Box
                       onClick={scrollToTop}
                       role="presentation"
-                      sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                      sx={{ position: 'fixed', bottom: "2rem", right: "2rem" }}
                     >
                       <Fab size="small" aria-label="scroll back to top">
                         <KeyboardArrowUpIcon />
@@ -609,15 +597,14 @@ export const INTERFACE = ({ RENDERPAGE }) => {
               </Tag.ItemsLinks>
             </Tag.MenuItemsLinks>
           </Tag.Wrapper >
-
-
           <Tag.MenuItemsLinks sx={{
             width: '100%',
-            height: scrollHeight > 20 ? "94.5vh" : '88.5vh',
+            minHeight: scrollHeight > 20 ? "94.5vh" : '88.5vh',
+            height: 'auto',
             display: 'flex',
             justifyContent: 'flex-start',
             alignItems: "flex-start",
-            bgcolor: '#f8fafb',
+            bgcolor: 'transparent',
             padding: '0',
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
@@ -628,8 +615,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                 bottom: 0,
                 flexDirection: 'column',
                 width: '30%',
-                minHeight: scrollHeight > 20 ? "94.5vh" : '88.5vh',
-                height: "auto",
+                height: scrollHeight > 20 ? "94.5vh" : '88.5vh',
                 borderRight: '1px solid #e3e9ed',
                 bgcolor: '#f8fafb',
                 transition: "all 0.5s ease",
@@ -637,7 +623,6 @@ export const INTERFACE = ({ RENDERPAGE }) => {
               }}>
               <Tag.MinhaLista
                 sx={{
-
                   width: !matchesMobileSmall ? '100%' : '100%',
                 }}
                 component="nav"
@@ -678,22 +663,22 @@ export const INTERFACE = ({ RENDERPAGE }) => {
             <div
               ref={scrollRef}
               style={{
+                marginTop: scrollHeight > 20 && '6.5vh',
                 marginLeft: scrollHeight > 20 ? '30%' : '0',
                 width: '70%',
-                height: scrollHeight > 20 ? "100%" : "100%",
-                bgcolor: "transparent",
+                minHeight: '100%',
+                height: "auto" ,
+                bgcolor: '#f8fafb',
                 transition: "all 0.5s ease",
                 transition: "height 0.3s ease",
               }}>
               {RENDERPAGE}
             </div>
           </Tag.MenuItemsLinks>
-
-
           <Box sx={{
             position: 'fixed',
-            bottom: '0.3rem',
-            right: '2rem',
+            bottom: '3.5rem',
+            right: '1.5rem',
             height: 320,
             transform:
               'translateZ(0px)',

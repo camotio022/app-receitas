@@ -32,14 +32,15 @@ export const Title = styled(Typography)(({ theme }) => ({
     width: '100%',
 }))
 export const Cards = styled(Stack)(({ theme }) => ({
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
     flexWrap: 'wrap',
     gap: '2rem',
     width: '100%',
-    height: '100%',
+    height: 'auto',
+    bgcolor: '#f8fafb',
     marginBlock: '5rem'
 }))
 
