@@ -381,7 +381,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
             borderBottom: '1px solid #e3e9ed',
             top: 0,
             left: 0,
-            zIndex: 9999,
+            zIndex: scrollHeight && 9999,
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
           }}>

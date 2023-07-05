@@ -273,7 +273,7 @@ export const TopReview = (props) => {
                 >
                   <TabPanel fullWidth value={value} index={0} dir={theme.direction}>
                     <Tag.Cards>
-                      {myRecipes.map((recipe) => {
+                      {currentRecipes.map((recipe) => {
                         return (
                           <>
                             <Tag.Card key={recipe?.id}>
@@ -495,6 +495,30 @@ export const TopReview = (props) => {
               </>}
           </Box>
         </>
+        {top && (
+          <>
+            {' '}
+            {recipes.length > itemsPerPage && (
+              <Tag.Pagination spacing={2} sx={{
+                position: 'relative',
+                transition: '.3s',
+                mt: '3',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+
+              }}>
+                <Pagination
+                  count={Math.ceil(recipes.length / itemsPerPage)}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  renderItem={(item) => <PaginationItem {...item} />}
+                />
+              </Tag.Pagination>
+            )}
+          </>
+        )}
       </>
 
     } />
