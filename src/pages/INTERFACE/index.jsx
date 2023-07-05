@@ -305,11 +305,10 @@ const actions = [
 export const INTERFACE = ({ RENDERPAGE }) => {
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
-  const { user } = useContext(AuthContext)
+  const { user, logout } = useContext(AuthContext)
   const firstLatter = user.displayName.charAt(0);
   const words = user.displayName.split(' ');
   const firstWord = words[0];
-  const { logout } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
   const [selectedLink, setSelectedLink] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -438,6 +437,8 @@ export const INTERFACE = ({ RENDERPAGE }) => {
               <Tag.ItemsLinks sx={{
                 justifyContent: 'flex-end',
                 alignItems: 'center',
+                mr: 3
+                
               }}>
                 <NotificationsIcon />
                 <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -446,12 +447,12 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     <IconButton
                       onClick={handleClick}
                       size="small"
-                      sx={{ ml: 2 }}
+                      sx={{ ml: 2, color: 'white' }}
                       aria-controls={open ? 'account-menu' : undefined}
                       aria-haspopup="true"
                       aria-expanded={open ? 'true' : undefined}
                     >
-                      <Avatar href={user?.photoURL} sx={{ width: 32, height: 32 }}>{firstLatter}</Avatar>
+                      <Avatar href={user?.photoURL} sx={{ width: 32, height: 32,border: '3px solid white' }}>{firstLatter}</Avatar>
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -520,7 +521,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     </ListItemIcon>
                     Settings
                   </MenuItem>
-                  <MenuItem onClick={Close}>
+                  <MenuItem onClick={logout}>
                     <ListItemIcon>
                       <Logout fontSize="small" />
                     </ListItemIcon>
@@ -530,6 +531,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                 <Link>{firstWord}</Link>
               </Tag.ItemsLinks>
             </Tag.MenuItemsLinks>
+
             <Tag.MenuItemsLinks sx={{
               bgcolor: 'transparent',
               borderLeft: '15px solid #e3e9ed',
@@ -565,7 +567,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
               }
               }>
                 {[{
-                  link: 'yourFavoriteRecipes',
+                  link: '/yourFavoriteRecipes',
                   icon: <FavoriteIcon />,
                   title: 'Receitas Favoritas'
                 }, {
@@ -574,7 +576,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   title: 'Minhas Receitas'
                 },
                 {
-                  link: 'colletions',
+                  link: '/colletions',
                   icon: <FolderIcon />,
                   title: 'Folder'
                 }, {

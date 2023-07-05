@@ -39,10 +39,8 @@ export const Cards = styled(Stack)(({ theme }) => ({
     flexWrap: 'wrap',
     gap: '2rem',
     width: '100%',
-    height: 'auto',
-    padding: '3rem  0 3rem 0',
-    background: '#f5f5f5',
-    paddingBottom: '13rem'
+    height: '100%',
+    marginBlock: '5rem'
 }))
 
 export const Card = styled(Stack)(({ theme }) => ({

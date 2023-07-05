@@ -98,7 +98,6 @@ const fabGreenStyle = {
 
 export const TopReview = (props) => {
   const { user } = useContext(AuthContext)
-  const [isLoading, setIsLoading] = useState(true);
   const theme = useTheme();
   const [value, setValue] = useState(0)
   const matches = useMediaQuery('(min-width:700px)')
@@ -110,10 +109,11 @@ export const TopReview = (props) => {
   const indexOfLastRecipe = currentPage * itemsPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
   const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
-
+  
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
+  const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
