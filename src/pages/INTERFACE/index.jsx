@@ -442,7 +442,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                       aria-haspopup="true"
                       aria-expanded={open ? 'true' : undefined}
                     >
-                      <Avatar href={user?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}>{firstLatter}</Avatar>
+                      <Avatar src={user?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}>{firstLatter}</Avatar>
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -483,11 +483,11 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                 >
                   {[
                     {
-                      name: 'Profile',
-                      icon: <Avatar />
+                      name: user?.displayName,
+                      icon: <Avatar src={user?.photoURL}/>
                     }, {
                       name: 'My account',
-                      icon: <Avatar />
+                      icon: <Avatar src={user?.photoURL}/>
                     }
                   ].map((item, index) => {
                     return (
@@ -531,7 +531,11 @@ export const INTERFACE = ({ RENDERPAGE }) => {
               transition: "height 0.3s ease",
             }}>
               <Tag.ItemsLinks>
-                <Logo />
+                <Logo logoStyle={{
+                  marginLeft: '-0.51rem',
+                  paddingLeft: '10px',
+                  filter: 'brightness(0.1) saturate(0.8) hue-rotate(10deg)',
+                }}/>
               </Tag.ItemsLinks>
               <Tag.ItemsLinks>
                 <Tag.Search sx={{ width: 'auto' }}>
