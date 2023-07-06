@@ -1,4 +1,4 @@
-import { styled, Stack, Box, InputBase, alpha, Paper, List, ListSubheader } from "@mui/material";
+import { styled, Stack, Box, InputBase, alpha, Paper, List, ListSubheader, Typography } from "@mui/material";
 import { orange } from "@mui/material/colors";
 export const Wrapper = styled('div')(({ theme }) => ({
     display: "flex",
@@ -105,4 +105,16 @@ export const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
     flexGrow: 1,
+}));
+export const ItemMenu = styled(Typography)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: "10px",
+    padding: "1rem",
+    varian: "body1",
+    fontWeight: "bold",
+    fontFamily: "Arial",
+    fontSize: "16px",
+    color: "primary"
 }));

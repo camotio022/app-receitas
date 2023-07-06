@@ -96,7 +96,7 @@ export const EditRecipes = () => {
     const [loading, setLoading] = useState(false);
     const theme = useTheme();
     const [value, setValue] = useState(0)
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
@@ -138,10 +138,11 @@ export const EditRecipes = () => {
         } catch (error) {
             console.error('Erro ao atualizar os campos:', error);
         }
+        setIsLoading(false);
     };
 
     const handleUpdateClick = async () => {
-
+        setIsLoading(true);
         try {
             await handleUpdateRecipe();
             const updatedRecipe = await api.recipe.get(id);
@@ -152,7 +153,6 @@ export const EditRecipes = () => {
             console.error('Erro ao atualizar a receita:', error);
         }
         setIsLoading(false);
-        window.location.href = `/detailsRecipes/${id}`
     };
     const handleChange = (event, newValue) => {
         setValue(newValue);

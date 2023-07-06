@@ -1,8 +1,11 @@
 import { Links } from "../../componentes/LINKS";
 import * as Tag from './index.js';
 
-import { Avatar, Box, Collapse, Container, Divider, Fab, Fade, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material";
+import { Avatar, Box, Collapse, Container, Divider, Fab, Fade, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, SwipeableDrawer, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
+import { useLocation } from 'react-router-dom';
+import Breadcrumbs from '@mui/joy/Breadcrumbs';
+import Button from '@mui/joy/Button';
 
 import {
   Notifications as NotificationsIcon,
@@ -13,6 +16,10 @@ import {
   Share as ShareIcon,
   Edit as EditIcon,
   Folder as FolderIcon,
+  Mail as MailIcon,
+  Sort as SortIcon,
+  Category as CategoryIcon,
+  ColorLens as ColorLensIcon,
   Settings,
   PersonAdd,
   Logout,
@@ -62,11 +69,12 @@ import {
   AdminPanelSettings as AdminPanelSettingsIcon,
   DinnerDining as DinnerDiningIcon,
   Favorite as FavoriteIcon,
+  Tune as TuneIcon,
   ExpandLess,
   ExpandMore,
   StarBorder,
 } from '@mui/icons-material'
-import { Button } from "bootstrap";
+
 import { Logo } from "../../componentes/LOGO";
 import { AuthContext } from "../../contexts/AuthContext";
 const links = [
@@ -95,17 +103,10 @@ const links = [
     name: 'Pages',
     onClick: 'pages',
     children: [
-      {
-        name: 'User Login',
-        icon: <LoginIcon />,
-        link: '/signin',
-      },
-      { name: 'User Register', icon: <PersonAddIcon /> },
+      { name: 'Top Review', icon: <StarIcon />, link: '/topReview', },
       { name: 'Single Video', icon: <PlayCircleIcon /> },
       { name: 'Single Book', icon: <BookmarksIcon /> },
-
       { name: 'About us', icon: <InfoIcon /> },
-      { name: 'Top Review', icon: <StarIcon />, link: '/topReview', },
       { name: 'Contacts', icon: <AlternateEmailIcon /> },
     ],
   },
@@ -120,7 +121,7 @@ const links = [
         link: '/myRecipes',
       },
       { name: 'Receitas Favoritas', icon: <FavoriteIcon />, link: '/youfavoriteRecipes', },
-      { name: 'Top Review', icon: <StarIcon /> },
+
       {
         name: 'Create Recipe',
         icon: <BookmarkAddIcon />,
@@ -174,13 +175,7 @@ const links = [
         icon: <TaxiAlertIcon />,
         name: 'Red alert mode ',
         onClick: 'Red',
-      },
-      { icon: <LogoutIcon />, name: 'Log out', onClick: 'logout' },
-      {
-        icon: <BlockIcon />,
-        name: 'Delete account',
-        onClick: 'deleaccont',
-      },
+      }
     ],
   },
 ]
@@ -304,6 +299,7 @@ const actions = [
 ];
 
 export const INTERFACE = ({ RENDERPAGE }) => {
+
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const { user, logout } = useContext(AuthContext)
@@ -316,8 +312,18 @@ export const INTERFACE = ({ RENDERPAGE }) => {
   const scrollRef = useRef(null);
   const [isAtTop, setIsAtTop] = useState(true);
   const [isAtBottom, setIsAtBottom] = useState(false);
-
-
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((pathname) => pathname !== '');
+  localStorage.setItem('breadcrumbs', JSON.stringify(pathnames));
+  const storedBreadcrumbs = JSON.parse(localStorage.getItem('breadcrumbs'));
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const toggleDrawer = (openDrawer) => () => {
+    setOpenDrawer(openDrawer);
+  };
+  const [openDrawerRight, setOpenDrawerRight] = useState(false);
+  const toggleDrawerRight = (openDrawerRight) => () => {
+    setOpenDrawerRight(openDrawerRight);
+  };
   useEffect(() => {
     let timeoutId;
 
@@ -410,18 +416,24 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   <Stack>
                     <img src={Logo} alt="" />
                   </Stack>
-                  {links.map((li) => (
-                    <Links_b
-                      key={li.name}
-                      {...li}
-                    // handleClose={handleClose}
-                    // handleClick={(event) =>
-                    //   handleSelectLink(event, li.name)
-                    // }
-                    // selectedLink={selectedLink}
-                    // anchorEl={anchorEl}
-                    />
-                  ))}
+                  <Box sx={{ display: 'flex', alignItems: "center", justifyContent: "center", height: '100%' }}>
+                    {storedBreadcrumbs.map((pathname, index) => {
+                      const routeTo = `/${storedBreadcrumbs.slice(0, index + 1).join('/')}`;
+                      return (
+                        <Link
+                          sx={{ mr: 0.5, color: 'white' }}
+                          key={routeTo}
+                          href={routeTo}
+                        >
+                          <Box sx={{ textTransform: 'uppercase', mr: 0.5, display: 'flex', alignItems: "center", justifyContent: "center", height: '100%' }}>
+                            <FolderIcon sx={{ mr: 0.5, color: 'white' }} />
+                            {pathname}
+                          </Box>
+                        </Link>
+                      );
+                    })}
+                  </Box>
+
                 </Tag.MenuBar>
               </Tag.ItemsLinks>
               <Tag.ItemsLinks sx={{
@@ -484,10 +496,10 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   {[
                     {
                       name: user?.displayName,
-                      icon: <Avatar src={user?.photoURL}/>
+                      icon: <Avatar src={user?.photoURL} />
                     }, {
                       name: 'My account',
-                      icon: <Avatar src={user?.photoURL}/>
+                      icon: <Avatar src={user?.photoURL} />
                     }
                   ].map((item, index) => {
                     return (
@@ -535,7 +547,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   marginLeft: '-0.51rem',
                   paddingLeft: '10px',
                   filter: 'brightness(0.1) saturate(0.8) hue-rotate(10deg)',
-                }}/>
+                }} />
               </Tag.ItemsLinks>
               <Tag.ItemsLinks>
                 <Tag.Search sx={{ width: 'auto' }}>
@@ -627,7 +639,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
               }}>
               <Tag.MinhaLista
                 sx={{
-                  width: !matchesMobileSmall ? '100%' : '100%',
+                  width: !matchesMobileSmall ? '30%' : '100%',
                 }}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
@@ -671,7 +683,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                 marginLeft: scrollHeight > 20 ? '30%' : '0',
                 width: '70%',
                 minHeight: '100%',
-                height: "auto" ,
+                height: "auto",
                 bgcolor: '#f8fafb',
                 transition: "all 0.5s ease",
                 transition: "height 0.3s ease",
@@ -708,9 +720,351 @@ export const INTERFACE = ({ RENDERPAGE }) => {
   }
   return (
     <>
-      <Tag.Wrapper id="wrapper">
-        opacity
-      </Tag.Wrapper>
+      <Tag.Wrapper sx={{ gap: 0 }}>
+        <Tag.Wrapper sx={{
+          position: scrollHeight > 20 ? "fixed" : "relative",
+          height: scrollHeight > 20 ? '5.5vh' : '11.5vh',
+          borderBottom: '1px solid #e3e9ed',
+          top: 0,
+          left: 0,
+          zIndex: scrollHeight && 9999,
+          transition: "all 0.5s ease",
+          transition: "height 0.3s ease",
+        }}>
+          <Tag.MenuItemsLinks sx={scrollHeight > 20 ? {
+            transition: "all 0.5s ease",
+            transition: "height 0.3s ease",
+          } : {
+
+          }}>
+            <Tag.ItemsLinks sx={{
+              maxWidth: '70%',
+              width: 'auto'
+            }}>
+              <Tag.MenuBar >
+                <Fade in={scrollHeight}>
+                  <Box
+                    onClick={scrollToTop}
+                    role="presentation"
+                    sx={{ position: 'fixed', bottom: "2rem", right: "2rem" }}
+                  >
+                    <Fab size="small" aria-label="scroll back to top">
+                      <KeyboardArrowUpIcon />
+                    </Fab>
+                  </Box>
+                </Fade>
+                <Stack>
+                  <img src={Logo} alt="" />
+                </Stack>
+                <Stack>
+                  {/* abrir o menu lado esqierdo */}
+                  <MenuIcon onClick={toggleDrawer(true)} />
+                  <div>
+                    <SwipeableDrawer
+                      sx={{
+                        width: matchesMobileSmall ? '30%' : '100%',
+                      }}
+                      anchor="left"
+                      open={openDrawer}
+                      onClose={toggleDrawer(false)}
+                      onOpen={toggleDrawer(true)}
+                    >
+                      <Tag.ItemsLinks sx={{
+                        padding: 1.6
+                      }}>
+                        <Logo logoStyle={{
+                          marginLeft: '-0.51rem',
+                          paddingLeft: '10px',
+                          filter: 'brightness(0.1) saturate(0.8) hue-rotate(10deg)',
+                        }} />
+                      </Tag.ItemsLinks>
+                      <Divider />
+                      <Tag.MinhaLista
+                        sx={{ width: 350 }}
+                        role="presentation"
+                        onKeyDown={toggleDrawer(false)}
+                        component="nav"
+                        aria-labelledby="nested-list-subheader"
+                      >
+                        {links.map((li) => {
+                          return (
+                            <Links_a
+                              key={li.name}
+                              {...li}
+                              handleClick={(event) =>
+                                handleSelectLink(event, li.name)
+                              }
+                              selectedLink={selectedLink}
+                            />
+                          )
+                        })}
+                        <Divider />
+                      </Tag.MinhaLista>
+                    </SwipeableDrawer>
+                  </div>
+                </Stack>
+              </Tag.MenuBar>
+            </Tag.ItemsLinks>
+            <Tag.ItemsLinks sx={{
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              mr: 3
+
+            }}>
+              <NotificationsIcon />
+              <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+
+                <Tooltip title="Account settings">
+                  <IconButton
+                    onClick={handleClick}
+                    size="small"
+                    sx={{ ml: 2, color: 'white' }}
+                    aria-controls={open ? 'account-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                  >
+                    <Avatar src={user?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}>{firstLatter}</Avatar>
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Menu
+                opens={opens}
+                id="account-menu"
+                open={open}
+                onClose={Close}
+                onClick={Close}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                {[
+                  {
+                    name: user?.displayName,
+                    icon: <Avatar src={user?.photoURL} />
+                  }, {
+                    name: 'My account',
+                    icon: <Avatar src={user?.photoURL} />
+                  }
+                ].map((item, index) => {
+                  return (
+                    <>
+                      <MenuItem key={item?.name} onClick={Close}>
+                        {item?.icon} {item?.name}
+                      </MenuItem>
+                    </>
+                  )
+                })}
+                <Divider />
+                <MenuItem onClick={Close}>
+                  <ListItemIcon>
+                    <PersonAdd fontSize="small" />
+                  </ListItemIcon>
+                  Add another account
+                </MenuItem>
+                <MenuItem onClick={Close}>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Settings
+                </MenuItem>
+                <MenuItem onClick={logout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </Menu>
+              <Link>{firstWord}</Link>
+            </Tag.ItemsLinks>
+          </Tag.MenuItemsLinks>
+
+          <Tag.MenuItemsLinks sx={{
+            display: scrollHeight > 20 ? 'none' : 'flex',
+            bgcolor: 'transparent',
+            borderLeft: '15px solid #e3e9ed',
+            height: scrollHeight > 20 ? "0vh " : '6vh',
+            transition: "all 0.5s ease",
+            transition: "height 0.3s ease",
+          }}>
+            <Stack>
+              <Logo logoStyle={{
+                marginLeft: '-0.51rem',
+                paddingLeft: '10px',
+                filter: 'brightness(0.1) saturate(0.8) hue-rotate(10deg)',
+              }} />
+            </Stack>
+            <Tag.ItemsLinks>
+              <Tag.Search sx={{ width: 'auto' }}>
+                <Tag.SearchIconWrapper>
+                  <CloseIcon />
+                </Tag.SearchIconWrapper>
+                <Tag.StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Tag.Search>
+
+              <SearchIcon sx={{
+                borderRadius: '1px',
+                padding: '2px',
+                height: '2.3rem',
+                width: 'auto',
+                bgcolor: "#374957"
+              }}></SearchIcon>
+
+            </Tag.ItemsLinks>
+            <Tag.ItemsLinks sx={{
+              justifyContent: 'flex-end',
+              color: "#374957",
+              mr: 2
+            }
+            }>
+              <TuneIcon onClick={toggleDrawerRight(true)} />
+              <SwipeableDrawer
+                sx={{
+                  width: matchesMobileSmall ? '30%' : '100%',
+                }}
+                anchor="right"
+                open={openDrawerRight}
+                onClose={toggleDrawerRight(false)}
+                onOpen={toggleDrawerRight(true)}
+              >
+                <Tag.ItemsLinks sx={{
+                  padding: 1.6
+                }}>
+                  <Logo logoStyle={{
+                    marginLeft: '-0.51rem',
+                    paddingLeft: '10px',
+                    filter: 'brightness(0.1) saturate(0.8) hue-rotate(10deg)',
+                  }} />
+                </Tag.ItemsLinks>
+                <Divider />
+                <Stack
+                  sx={{ width: 350 }}
+                  role="presentation"
+                  onKeyDown={toggleDrawerRight(false)}
+                  component="nav"
+                  aria-labelledby="nested-list-subheader"
+
+                >
+                  <Tag.ItemMenu>
+                    <SortIcon />
+                    Classificar por
+                  </Tag.ItemMenu>
+
+                  <Tag.ItemMenu>
+                    <CategoryIcon />
+                    Tipo de recurso
+                  </Tag.ItemMenu>
+                  <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap:"15px",
+                    flexWrap: 'wrap',
+                    width: '100%',
+                    padding: '1rem'
+                  }}>
+                    <Tag.Item>
+                      Recipe card
+                    </Tag.Item>
+                    <Tag.Item>
+                      Image card
+                    </Tag.Item>
+                    <Tag.Item>
+                      card text
+                    </Tag.Item>
+                    <Tag.Item>
+                      Only image
+                    </Tag.Item>
+                  </Box>
+
+                  <Tag.ItemMenu>
+                    <ColorLensIcon />
+                    Aplicar temas
+                  </Tag.ItemMenu>
+
+                </Stack>
+              </SwipeableDrawer>
+            </Tag.ItemsLinks>
+          </Tag.MenuItemsLinks>
+        </Tag.Wrapper >
+        <Tag.MenuItemsLinks sx={{
+          width: '100%',
+          minHeight: scrollHeight > 20 ? "94.5vh" : '88.5vh',
+          height: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: "flex-start",
+          bgcolor: 'transparent',
+          padding: '0',
+          transition: "all 0.5s ease",
+          transition: "height 0.3s ease",
+        }}>
+
+          <div
+            ref={scrollRef}
+            style={{
+              marginTop: scrollHeight > 20 && '6.5vh',
+              width: '100%',
+              minHeight: '100%',
+              height: "auto",
+              bgcolor: '#f8fafb',
+              transition: "all 0.5s ease",
+              transition: "height 0.3s ease",
+            }}>
+            {RENDERPAGE}
+          </div>
+        </Tag.MenuItemsLinks>
+        <Box sx={{
+          position: 'fixed',
+          bottom: '3.5rem',
+          right: '1.5rem',
+          height: 320,
+          transform:
+            'translateZ(0px)',
+          flexGrow: 1,
+        }}>
+          <SpeedDial
+            ariaLabel="SpeedDial openIcon example"
+            icon={<SpeedDialIcon openIcon={<EditIcon />} />}
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                sx={{ bgcolor: '#374957', color: 'white' }}
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+              />
+            ))}
+          </SpeedDial>
+        </Box>
+      </Tag.Wrapper >
     </>
   );
 };
