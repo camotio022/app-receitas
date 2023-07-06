@@ -383,10 +383,12 @@ export const INTERFACE = ({ RENDERPAGE }) => {
         <Tag.Wrapper sx={{ gap: 0 }}>
           <Tag.Wrapper sx={{
             position: scrollHeight > 20 ? "fixed" : "relative",
-            height: scrollHeight > 20 ? '5.5vh' : '11.5vh',
+            height: 'auto',
+            fontSize: '100% !important',
             borderBottom: '1px solid #e3e9ed',
             top: 0,
             left: 0,
+
             zIndex: scrollHeight && 9999,
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
@@ -723,7 +725,8 @@ export const INTERFACE = ({ RENDERPAGE }) => {
       <Tag.Wrapper sx={{ gap: 0 }}>
         <Tag.Wrapper sx={{
           position: scrollHeight > 20 ? "fixed" : "relative",
-          height: scrollHeight > 20 ? '5.5vh' : '11.5vh',
+          height: 'auto',
+          fontSize: '100% !important',
           borderBottom: '1px solid #e3e9ed',
           top: 0,
           left: 0,
