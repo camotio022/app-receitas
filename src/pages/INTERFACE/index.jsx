@@ -1,12 +1,38 @@
 import { Links } from "../../componentes/LINKS";
 import * as Tag from './index.js';
-
-import { Avatar, Box, Collapse, Container, Divider, Fab, Fade, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, SwipeableDrawer, Tooltip, Typography, useMediaQuery } from "@mui/material";
-import { useContext, useEffect, useRef, useState } from "react";
+import {
+  Avatar,
+  Box,
+  Collapse,
+  Divider,
+  Fab,
+  Fade,
+  IconButton,
+  Link,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  Stack,
+  SwipeableDrawer,
+  Tooltip,
+  Typography,
+  useMediaQuery
+} from "@mui/material";
+import {
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { useLocation } from 'react-router-dom';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Button from '@mui/joy/Button';
-
 import {
   Notifications as NotificationsIcon,
   Search as SearchIcon,
@@ -73,8 +99,7 @@ import {
   ExpandLess,
   ExpandMore,
   StarBorder,
-} from '@mui/icons-material'
-
+} from '@mui/icons-material';
 import { Logo } from "../../componentes/LOGO";
 import { AuthContext } from "../../contexts/AuthContext";
 const links = [
@@ -297,11 +322,11 @@ const actions = [
   { icon: <ShareIcon />, name: 'Share' },
   { icon: <KeyboardArrowUpIcon />, name: 'Move scroll' },
 ];
-
 export const INTERFACE = ({ RENDERPAGE }) => {
-
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
+  const [perfil, setperfil] = useState(false)
+  const [opens, setopens] = useState(null);
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user.displayName.charAt(0);
   const words = user.displayName.split(' ');
@@ -326,7 +351,6 @@ export const INTERFACE = ({ RENDERPAGE }) => {
   };
   useEffect(() => {
     let timeoutId;
-
     const handleScroll = () => {
       clearTimeout(timeoutId);
 
@@ -353,7 +377,6 @@ export const INTERFACE = ({ RENDERPAGE }) => {
     })
   }
   const [showLinks, setShowLinks] = useState(false)
-
   const handleSelectLink = (event, newLink) => {
     if (selectedLink === newLink) {
       setSelectedLink(null)
@@ -368,8 +391,6 @@ export const INTERFACE = ({ RENDERPAGE }) => {
     setSelectedLink(null)
     setAnchorEl(null)
   }
-  const [perfil, setperfil] = useState(false)
-  const [opens, setopens] = useState(null);
   const open = Boolean(opens);
   const handleClick = (event) => {
     setopens(event.currentTarget);
