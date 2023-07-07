@@ -98,7 +98,6 @@ export const EditRecipes = () => {
     const [value, setValue] = useState(0)
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
-
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 50));
@@ -122,14 +121,12 @@ export const EditRecipes = () => {
         }
         fetchRecipe();
     }, [id]);
-
     const handleFieldChange = (fieldName, value) => {
         setFormData((prevData) => ({
             ...prevData,
             [fieldName]: value,
         }));
     };
-
     const handleUpdateRecipe = async () => {
         setIsLoading(true);
         try {
@@ -140,7 +137,6 @@ export const EditRecipes = () => {
         }
         setIsLoading(false);
     };
-
     const handleUpdateClick = async () => {
         setIsLoading(true);
         try {
@@ -157,15 +153,16 @@ export const EditRecipes = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
     const handleChangeIndex = (index) => {
         setValue(index);
     };
-
     const transitionDuration = {
         enter: theme.transitions.duration.enteringScreen,
         exit: theme.transitions.duration.leavingScreen,
     };
+
+
+    
     return (
         <>
             <INTERFACE RENDERPAGE={<>
