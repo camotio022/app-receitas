@@ -36,7 +36,7 @@ const Main = () => {
           <Routes>
             <Route path="/home" element={<HomePage />} />
             <Route path="/" element={<TopReview />} />
-            <Route path="/TopReview" element={<TopReview />} />
+            <Route path="/topReview" element={<TopReview />} />
             <Route path="/createRecipes" element={<CreateRecipes />} />
             <Route
               path="/detailsRecipes/:id/edit"
