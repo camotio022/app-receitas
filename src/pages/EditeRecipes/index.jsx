@@ -161,8 +161,6 @@ export const EditRecipes = () => {
         exit: theme.transitions.duration.leavingScreen,
     };
 
-
-    
     return (
         <>
             <INTERFACE RENDERPAGE={<>
