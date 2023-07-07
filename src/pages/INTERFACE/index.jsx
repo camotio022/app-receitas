@@ -388,16 +388,14 @@ export const INTERFACE = ({ RENDERPAGE }) => {
             borderBottom: '1px solid #e3e9ed',
             top: 0,
             left: 0,
-
             zIndex: scrollHeight && 9999,
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
           }}>
-            <Tag.MenuItemsLinks sx={scrollHeight > 20 ? {
+            <Tag.MenuItemsLinks sx={{
+              display: scrollHeight > 20 ? 'none' : 'flex',
               transition: "all 0.5s ease",
               transition: "height 0.3s ease",
-            } : {
-
             }}>
               <Tag.ItemsLinks sx={{
                 maxWidth: '70%',
@@ -537,10 +535,9 @@ export const INTERFACE = ({ RENDERPAGE }) => {
             </Tag.MenuItemsLinks>
 
             <Tag.MenuItemsLinks sx={{
-              display: scrollHeight > 20 ? 'none' : 'flex',
-              bgcolor: 'transparent',
-              borderLeft: '15px solid #e3e9ed',
-              height: scrollHeight > 20 ? "0vh " : '6vh',
+              bgcolor: scrollHeight > 20 ? 'white' : 'transparent',
+
+              height: '6vh',
               transition: "all 0.5s ease",
               transition: "height 0.3s ease",
             }}>
@@ -734,11 +731,10 @@ export const INTERFACE = ({ RENDERPAGE }) => {
           transition: "all 0.5s ease",
           transition: "height 0.3s ease",
         }}>
-          <Tag.MenuItemsLinks sx={scrollHeight > 20 ? {
+          <Tag.MenuItemsLinks sx={{
+            display: scrollHeight > 20 ? 'none' : 'flex',
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
-          } : {
-
           }}>
             <Tag.ItemsLinks sx={{
               maxWidth: '70%',
@@ -907,10 +903,10 @@ export const INTERFACE = ({ RENDERPAGE }) => {
           </Tag.MenuItemsLinks>
 
           <Tag.MenuItemsLinks sx={{
-            display: scrollHeight > 20 ? 'none' : 'flex',
-            bgcolor: 'transparent',
-            borderLeft: '15px solid #e3e9ed',
-            height: scrollHeight > 20 ? "0vh " : '6vh',
+
+            bgcolor: scrollHeight > 20 ? 'white' : 'transparent',
+
+            height: '6vh',
             transition: "all 0.5s ease",
             transition: "height 0.3s ease",
           }}>
@@ -988,7 +984,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap:"15px",
+                    gap: "15px",
                     flexWrap: 'wrap',
                     width: '100%',
                     padding: '1rem'
