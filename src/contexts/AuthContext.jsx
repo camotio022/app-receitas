@@ -35,11 +35,14 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         checkUserAuthentication()
     }, [])
+    
     const login = (userData) => {
         setIsLoggedIn(true)
         localStorage.setItem('isLoggedIn', 'true')
         localStorage.setItem('user', JSON.stringify(userData))
     }
+
+
     const logout = () => {
         alert('Logout')
         // Lógica de logout
@@ -48,7 +51,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('isLoggedIn')
         localStorage.removeItem('user')
         // Outras lógicas de remoção do token de autenticação, como cookies ou localStorage
-
         // Redireciona o usuário para a rota raiz
         window.location.replace('/')
     }
@@ -97,6 +99,8 @@ export const AuthProvider = ({ children }) => {
                 console.log(error);
             });
     };
+
+
     const loginWithEmailAndPassword = async (email, password) => {
         const auth = getAuth()
         signInWithEmailAndPassword(auth, email, password)
@@ -110,6 +114,42 @@ export const AuthProvider = ({ children }) => {
                 console.log(error.message)
             })
     }
+
+
+    const loginWithFacebook = async () => {
+        const auth = getAuth();
+        const provider = new FacebookAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const { user } = result;
+                const userData = {
+                    id: user.uid,
+                    name: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    // outros dados que você queira adicionar
+                };
+                // Adicione os dados do usuário ao Firestore
+                const firestore = getFirestore();
+                setDoc(doc(firestore, 'users', user.uid), userData)
+                    .then(() => {
+                        console.log('Dados do usuário adicionados com sucesso ao Firestore.');
+                        // Faça o que precisar com os dados do usuário e redirecione para a página desejada
+                        navigate('/topReview');
+                    })
+                    .catch((error) => {
+                        console.error('Erro ao adicionar dados do usuário ao Firestore:', error);
+                    });
+            })
+            .catch((error) => {
+                // Trate os erros
+                console.log(error);
+            });
+    };
+
+
     return (
         <AuthContext.Provider
             value={{
@@ -118,6 +158,7 @@ export const AuthProvider = ({ children }) => {
                 logout,
                 loginWithGoogle,
                 loginWithEmailAndPassword,
+                loginWithFacebook,
                 user,
             }}
         >
