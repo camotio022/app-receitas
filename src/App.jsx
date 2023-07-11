@@ -19,6 +19,7 @@ import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
 import { LogoutAuto } from './LogoutAuto'
 import { EditRecipes } from './pages/EditeRecipes/index.jsx'
 import { HomePage } from './pages/Home/index.jsx'
+import { PerfilUser } from './pages/USERFILES/EDITUSERPAGE/index.jsx'
 
 const Main = () => {
   const auth = useContext(AuthContext)
@@ -42,6 +43,7 @@ const Main = () => {
               path="/detailsRecipes/:id/edit"
               element={<CreateRecipes />}
             />
+            <Route path="/edituser/:id" element={<PerfilUser />} />
             <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/signup" element={<SignUp />} />

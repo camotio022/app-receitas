@@ -63,6 +63,15 @@ export const api = {
       console.log('Usuário criado com sucesso:', userDocRef.id)
       window.location.replace('/')
     },
+    update: async (userId) => {
+      try {
+        const userDocRef = doc(db, 'users', userId)
+        await updateDoc(userDocRef, updatedData, { merge: true })
+        console.log('usuario atualizada com sucesso!')
+      } catch (error) {
+        console.error('Erro ao atualizar a usuario:', error)
+      }
+    },
   },
 
   recipe: {

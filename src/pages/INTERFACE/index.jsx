@@ -50,7 +50,8 @@ import {
   PersonAdd,
   Logout,
   Add,
-  Collections
+  Collections,
+  Edit
 } from '@mui/icons-material';
 import {
   RememberMe as RememberMeIcon,
@@ -102,6 +103,7 @@ import {
 } from '@mui/icons-material';
 import { Logo } from "../../componentes/LOGO";
 import { AuthContext } from "../../contexts/AuthContext";
+
 const links = [
   {
     icon: <HomeIcon />,
@@ -906,6 +908,14 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     <PersonAdd fontSize="small" />
                   </ListItemIcon>
                   Add another account
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <Link href={`edituser/${user?.uid}`}>
+                      <Edit fontSize="small" />
+                    </Link>
+                  </ListItemIcon>
+                  edit my profile
                 </MenuItem>
                 <MenuItem onClick={Close}>
                   <ListItemIcon>
