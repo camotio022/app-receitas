@@ -14,7 +14,8 @@ import {
 } from 'firebase/firestore'
 import { db } from '../../firebase.config'
 import { User } from './entities/User.jsx'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+
 
 const getCollection = async (collectionPath) => {
   const collectionSnap = await getDocs(collection(db, collectionPath))
@@ -42,26 +43,45 @@ export const api = {
       return 'users'
     },
     post: async (payload) => {
-      const { id, email, name, lastName, password } = payload
-      const firestore = getFirestore()
+      const { id, email, name, lastName, password } = payload;
+      const auth = getAuth();
 
-      const usersCollection = collection(firestore, 'users')
-      const emailQuery = query(usersCollection, where('email', '==', email))
-      const emailQuerySnapshot = await getDocs(emailQuery)
-      if (!emailQuerySnapshot.empty) {
-        alert('O email já está sendo usado por outro usuário.')
-        window.location.replace('/signup')
-        return
+      try {
+        // Criar o usuário no Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Atualizar o perfil do usuário com o nome
+        await updateProfile(user, { displayName: `${name} ${lastName}` });
+
+        const firestore = getFirestore();
+        const usersCollection = collection(firestore, 'users');
+
+        // Verificar se o email já está sendo usado por outro usuário
+        const emailQuery = query(usersCollection, where('email', '==', email));
+        const emailQuerySnapshot = await getDocs(emailQuery);
+
+        if (!emailQuerySnapshot.empty) {
+          alert('O email já está sendo usado por outro usuário.');
+          window.location.replace('/signup');
+          return;
+        }
+
+        // Adicionar os dados do usuário ao Firestore
+        const userDocRef = await addDoc(usersCollection, {
+          id: user.uid,
+          email,
+          name,
+          lastName,
+          // outros dados que você queira adicionar
+        });
+
+        console.log('Usuário criado com sucesso:', userDocRef.id);
+        window.location.replace('/');
+      } catch (error) {
+        console.error('Erro ao criar usuário e vincular perfil:', error);
+        // Trate o erro conforme necessário
       }
-      const userDocRef = await addDoc(usersCollection, {
-        email,
-        name,
-        lastName,
-        password,
-        // outros dados que você queira adicionar
-      })
-      console.log('Usuário criado com sucesso:', userDocRef.id)
-      window.location.replace('/')
     },
     update: async (userId) => {
       try {
@@ -248,27 +268,27 @@ export const api = {
           // Obter a referência da receita
           const recipeDocRef = doc(db, 'recipes', recipeId);
           const recipeDocSnap = await getDoc(recipeDocRef);
-    
+
           if (!recipeDocSnap.exists()) {
             console.log('Receita não encontrada');
             return false;
           }
-    
+
           // A receita existe, você pode prosseguir com a remoção do likesCounter
           const recipeData = recipeDocSnap.data();
           const likesCounter = recipeData.likesCounter || [];
-    
+
           // Verificar se o usuário já favoritou a receita
           const userIndex = likesCounter.indexOf(userId);
           if (userIndex !== -1) {
             // Remover o ID do usuário do likesCounter da receita
             likesCounter.splice(userIndex, 1);
-    
+
             // Atualizar o documento da receita com a lista de likes atualizada
             await updateDoc(recipeDocRef, {
               likesCounter: likesCounter,
             });
-    
+
             console.log('Usuário removido dos likesCounter da receita');
             return true;
           } else {
@@ -284,5 +304,5 @@ export const api = {
       }
     },
   },
-    
+
 }

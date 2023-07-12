@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         checkUserAuthentication()
     }, [])
-    
+
     const login = (userData) => {
         setIsLoggedIn(true)
         localStorage.setItem('isLoggedIn', 'true')
@@ -103,6 +103,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginWithEmailAndPassword = async (email, password) => {
         const auth = getAuth()
+        if (!email && !password) return
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 setUser(userCredential.user)
@@ -111,7 +112,7 @@ export const AuthProvider = ({ children }) => {
             .catch((error) => {
                 const errorCode = error.code
                 const errorMessage = error.message
-                console.log(error.message)
+                alert(error.message)
             })
     }
 

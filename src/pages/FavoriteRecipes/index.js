@@ -2,7 +2,7 @@ import { Container, styled } from "@mui/material";
 
 export const Contain = styled(Container)(({ theme }) => ({
     display: 'flex',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
     width: '100%',

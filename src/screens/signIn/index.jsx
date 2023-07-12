@@ -105,24 +105,22 @@ const validateFields = ({ email, password, setShowAlert }) => {
 export const SignIn = () => {
     const { login, loginWithGoogle, loginWithEmailAndPassword } =
         useContext(AuthContext)
-    const [data, setData] = useState({})
-
+    const [data, setData] = useState({
+        email: '',
+        password: ''
+    })
     const [showAlert, setShowAlert] = useState('')
-
     const navigate = useNavigate()
-
     const [showPasswprd, setShowPasswprd] = useState(false)
     const handleChange = (e) => {
         const { name, value } = e.target
         setData((old) => ({ ...old, [name]: value }))
-
         validateFields({
             email: data.email,
             password: data.password,
             setShowAlert,
         })
     }
-
     const handleLoginWithGoogle = () =>
         loginWithGoogle(data?.email, data?.password)
     const handleLoginWithEmailAndPassword = () =>

@@ -272,7 +272,7 @@ export const PerfilUser = () => {
     const [userValues, setUserValues] = useState({});
 
     const handleEditClick = () => {
-        setIsEditing(true);
+        setIsEditing(!isEditing);
     };
 
     const handleSaveClick = async () => {
@@ -281,11 +281,10 @@ export const PerfilUser = () => {
         try {
             await api.user.update(userValues, id);
             console.log("Dados do usuário atualizados com sucesso!");
-            setIsEditing(false);
         } catch (error) {
-            setIsEditing(true);
-            console.error("Erro ao atualizar os dados do usuário:", error);
+            console.log("Erro ao atualizar os dados do usuário:", error);
         } finally {
+            setIsEditing(false);
         }
     };
     const handleChange = (event) => {
