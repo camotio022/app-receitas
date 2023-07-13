@@ -1,37 +1,24 @@
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material'
-import { Box } from './styles'
+import { KeyboardArrowUp } from '@mui/icons-material'
+import { Box, Fab, Fade } from '@mui/material'
 
-import {
-  Edit as EditIcon,
-  FileCopy as FileCopyIcon,
-  Save as SaveIcon,
-  Print as PrintIcon,
-  Share as ShareIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
-} from '@mui/icons-material'
-const actions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
-  { icon: <ShareIcon />, name: 'Share' },
-  { icon: <KeyboardArrowUpIcon />, name: 'Move scroll' },
-]
-export const ScrollToTopButton = () => {
+export const ScrollToTopButton = ({ scrollHeight }) => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
   return (
-    <Box>
-      <SpeedDial
-        ariaLabel="SpeedDial openIcon example"
-        icon={<SpeedDialIcon openIcon={<EditIcon />} />}
+    <Fade in={scrollHeight != 0}>
+      <Box
+        onClick={scrollToTop}
+        role="presentation"
+        sx={{ position: 'fixed', bottom: '2rem', right: '2rem' }}
       >
-        {actions.map((action) => (
-          <SpeedDialAction
-            sx={{ bgcolor: '#374957', color: 'white' }}
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-          />
-        ))}
-      </SpeedDial>
-    </Box>
+        <Fab size="small" aria-label="scroll back to top">
+          <KeyboardArrowUp />
+        </Fab>
+      </Box>
+    </Fade>
   )
 }

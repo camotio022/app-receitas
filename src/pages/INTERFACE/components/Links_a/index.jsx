@@ -2,13 +2,13 @@ import { useContext } from 'react'
 import { AuthContext } from '../../../../contexts/AuthContext'
 import {
   Collapse,
-  Link,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
+import { Link } from 'react-router-dom'
 
 export const Links_a = ({
   name,
@@ -26,7 +26,6 @@ export const Links_a = ({
     }
   }
   const isSelected = selectedLink === name
-
   return (
     <>
       <ListItemButton sx={{ color: 'black' }} onClick={handleClick}>
@@ -39,18 +38,22 @@ export const Links_a = ({
           {children &&
             children?.length > 0 &&
             children.map((child) => (
-              <ListItemButton
-                key={child?.name}
-                onClick={() => handleLinkClick(child)}
-                sx={{ pl: 4, borderLeft: '20px solid #e3e9ed' }}
-              >
-                <ListItemIcon sx={{ color: 'black' }}>
-                  {child.icon}
-                </ListItemIcon>
-                <Link href={child?.link}>
-                  <ListItemText primary={child.name} sx={{ color: 'black' }} />
-                </Link>
-              </ListItemButton>
+              <Link to={child?.onClick || child?.link}>
+                <ListItemButton
+                  key={child?.name}
+                  sx={{ pl: 4, borderLeft: '20px solid #e3e9ed' }}
+                >
+                  <ListItemIcon sx={{ color: 'black' }}>
+                    {child.icon}
+                  </ListItemIcon>
+                  <Link href={child?.link}>
+                    <ListItemText
+                      primary={child.name}
+                      sx={{ color: 'black' }}
+                    />
+                  </Link>
+                </ListItemButton>
+              </Link>
             ))}
         </List>
       </Collapse>

@@ -1,14 +1,37 @@
-import { Links } from "../../componentes/LINKS";
-import "./index.css";
+import { Links } from '../../componentes/LINKS'
+import './index.css'
 
-import churros from "../../images/imgsPages/churos.jpg";
-import avatar from "../../images/mocks/avatar.jpg";
-import { Avatar, Box, Collapse, Container, Divider, Fab, Fade, IconButton, Link, List, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, Tooltip, Typography, useMediaQuery } from "@mui/material";
+import churros from '../../images/imgsPages/churos.jpg'
+import avatar from '../../images/mocks/avatar.jpg'
+import {
+  Avatar,
+  Box,
+  Collapse,
+  Container,
+  Divider,
+  Fab,
+  Fade,
+  IconButton,
+  Link,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  Stack,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import * as Tag from './styles'
-import { green, orange } from "@mui/material/colors";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
-import { Logo } from "../../componentes/LOGO";
+import { green, orange } from '@mui/material/colors'
+import { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../../contexts/AuthContext'
+import { Logo } from '../../componentes/LOGO'
 import {
   Notifications as NotificationsIcon,
   Search as SearchIcon,
@@ -22,8 +45,8 @@ import {
   PersonAdd,
   Logout,
   Add,
-  Collections
-} from '@mui/icons-material';
+  Collections,
+} from '@mui/icons-material'
 import {
   RememberMe as RememberMeIcon,
   Diversity2 as Diversity2Icon,
@@ -71,8 +94,8 @@ import {
   ExpandMore,
   StarBorder,
 } from '@mui/icons-material'
-import { Button } from "bootstrap";
-import { CardRecipes } from "./CARDRECIPES";
+import { Button } from 'bootstrap'
+import { CardRecipes } from './CARDRECIPES'
 const links = [
   {
     icon: <HomeIcon />,
@@ -109,7 +132,7 @@ const links = [
       { name: 'Single Book', icon: <BookmarksIcon /> },
 
       { name: 'About us', icon: <InfoIcon /> },
-      { name: 'Top Review', icon: <StarIcon />, link: '/topReview', },
+      { name: 'Top Review', icon: <StarIcon />, link: '/topReview' },
       { name: 'Contacts', icon: <AlternateEmailIcon /> },
     ],
   },
@@ -121,9 +144,13 @@ const links = [
       {
         name: 'Minhas Receitas',
         icon: <BookIcon />,
-        link: '/myRecipes',
+        link: '/my-recipes',
       },
-      { name: 'Receitas Favoritas', icon: <FavoriteIcon />, link: '/youfavoriteRecipes', },
+      {
+        name: 'Receitas Favoritas',
+        icon: <FavoriteIcon />,
+        link: '/youfavoriteRecipes',
+      },
       { name: 'Top Review', icon: <StarIcon /> },
       {
         name: 'Create Recipe',
@@ -157,9 +184,16 @@ const links = [
     ],
   },
   {
-    icon: <PeopleIcon />, name: 'Comunidade', onClick: 'community',
+    icon: <PeopleIcon />,
+    name: 'Comunidade',
+    onClick: 'community',
     children: [
-      { name: 'Comunidade', icon: <Diversity3Icon />, link: '/comunidade', onClick: 'community' },
+      {
+        name: 'Comunidade',
+        icon: <Diversity3Icon />,
+        link: '/comunidade',
+        onClick: 'community',
+      },
       { name: 'Grupos', icon: <RememberMeIcon /> },
     ],
   },
@@ -215,7 +249,7 @@ const Links_b = ({
           justifyContent: 'space-between',
           gap: '10px',
           borderRight: '1px solid',
-          paddingRight: '15px'
+          paddingRight: '15px',
         }}
         id="basic-button"
         aria-controls={isSelected ? 'basic-menu' : undefined}
@@ -237,10 +271,7 @@ const Links_b = ({
       >
         {children?.length > 0 &&
           children.map((child, index) => (
-            <MenuItem
-              key={index}
-              onClick={() => handleLinkClick(child)}
-            >
+            <MenuItem key={index} onClick={() => handleLinkClick(child)}>
               <ListItemIcon>{child.icon}</ListItemIcon>
               <ListItemText>
                 <Link href={child.link}>{child.name}</Link>
@@ -285,7 +316,9 @@ export const Links_a = ({
                 onClick={() => handleLinkClick(child)}
                 sx={{ pl: 4, borderLeft: '20px solid #e3e9ed' }}
               >
-                <ListItemIcon sx={{ color: 'black' }} >{child.icon}</ListItemIcon>
+                <ListItemIcon sx={{ color: 'black' }}>
+                  {child.icon}
+                </ListItemIcon>
                 <Link href={child?.link}>
                   <ListItemText primary={child.name} sx={{ color: 'black' }} />
                 </Link>
@@ -304,15 +337,15 @@ const actions = [
   { icon: <SaveIcon />, name: 'Save' },
   { icon: <PrintIcon />, name: 'Print' },
   { icon: <ShareIcon />, name: 'Share' },
-];
+]
 
 export const HomePage = () => {
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const { user } = useContext(AuthContext)
-  const firstLatter = user.displayName.charAt(0);
-  const words = user.displayName.split(' ');
-  const firstWord = words[0];
+  const firstLatter = user.displayName.charAt(0)
+  const words = user.displayName.split(' ')
+  const firstWord = words[0]
   const { logout } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
   const [selectedLink, setSelectedLink] = useState()
@@ -355,29 +388,34 @@ export const HomePage = () => {
     setAnchorEl(null)
   }
   const [perfil, setperfil] = useState(false)
-  const [opens, setopens] = useState(null);
-  const open = Boolean(opens);
+  const [opens, setopens] = useState(null)
+  const open = Boolean(opens)
   const handleClick = (event) => {
-    setopens(event.currentTarget);
-  };
+    setopens(event.currentTarget)
+  }
   const Close = () => {
-    setopens(null);
-  };
+    setopens(null)
+  }
   if (matches) {
     return (
       <>
         <Tag.Wrapper>
-          <Tag.Wrapper sx={{
-            height: 'auto',
-            boxShadow: "0 1px 1px rgba(0, 0, 0, 0.5)",
-
-          }}>
+          <Tag.Wrapper
+            sx={{
+              height: 'auto',
+              boxShadow: '0 1px 1px rgba(0, 0, 0, 0.5)',
+            }}
+          >
             <Tag.MenuItemsLinks>
-              <Tag.ItemsLinks sx={{
-                maxWidth: '70%',
-                width: 'auto'
-              }}>
-                <Tag.MenuBar sx={scrollHeight > 50 ? { opacity: "0", ml: '-100%' } : {}}>
+              <Tag.ItemsLinks
+                sx={{
+                  maxWidth: '70%',
+                  width: 'auto',
+                }}
+              >
+                <Tag.MenuBar
+                  sx={scrollHeight > 50 ? { opacity: '0', ml: '-100%' } : {}}
+                >
                   <Fade in={scrollHeight}>
                     <Box
                       onClick={scrollToTop}
@@ -396,23 +434,30 @@ export const HomePage = () => {
                     <Links_b
                       key={li.name}
                       {...li}
-                    // handleClose={handleClose}
-                    // handleClick={(event) =>
-                    //   handleSelectLink(event, li.name)
-                    // }
-                    // selectedLink={selectedLink}
-                    // anchorEl={anchorEl}
+                      // handleClose={handleClose}
+                      // handleClick={(event) =>
+                      //   handleSelectLink(event, li.name)
+                      // }
+                      // selectedLink={selectedLink}
+                      // anchorEl={anchorEl}
                     />
                   ))}
                 </Tag.MenuBar>
               </Tag.ItemsLinks>
-              <Tag.ItemsLinks sx={{
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-              }}>
+              <Tag.ItemsLinks
+                sx={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}
+              >
                 <NotificationsIcon />
-                <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                  }}
+                >
                   <Tooltip title="Account settings">
                     <IconButton
                       onClick={handleClick}
@@ -422,7 +467,12 @@ export const HomePage = () => {
                       aria-haspopup="true"
                       aria-expanded={open ? 'true' : undefined}
                     >
-                      <Avatar href={user?.photoURL} sx={{ width: 32, height: 32 }}>{firstLatter}</Avatar>
+                      <Avatar
+                        href={user?.photoURL}
+                        sx={{ width: 32, height: 32 }}
+                      >
+                        {firstLatter}
+                      </Avatar>
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -464,11 +514,12 @@ export const HomePage = () => {
                   {[
                     {
                       name: 'Profile',
-                      icon: <Avatar />
-                    }, {
+                      icon: <Avatar />,
+                    },
+                    {
                       name: 'My account',
-                      icon: <Avatar />
-                    }
+                      icon: <Avatar />,
+                    },
                   ].map((item, index) => {
                     return (
                       <>
@@ -501,11 +552,13 @@ export const HomePage = () => {
                 <Link>{firstWord}</Link>
               </Tag.ItemsLinks>
             </Tag.MenuItemsLinks>
-            <Tag.MenuItemsLinks sx={{
-              bgcolor: 'transparent',
-              borderLeft: '15px solid #e3e9ed',
-              height: 'auto'
-            }}>
+            <Tag.MenuItemsLinks
+              sx={{
+                bgcolor: 'transparent',
+                borderLeft: '15px solid #e3e9ed',
+                height: 'auto',
+              }}
+            >
               <Tag.ItemsLinks>
                 <Logo />
               </Tag.ItemsLinks>
@@ -520,50 +573,57 @@ export const HomePage = () => {
                   />
                 </Tag.Search>
 
-                <SearchIcon sx={{
-                  borderRadius: '1px',
-                  padding: '2px',
-                  height: '2.3rem',
-                  width: 'auto',
-                  bgcolor: "#374957"
-                }}></SearchIcon>
-
+                <SearchIcon
+                  sx={{
+                    borderRadius: '1px',
+                    padding: '2px',
+                    height: '2.3rem',
+                    width: 'auto',
+                    bgcolor: '#374957',
+                  }}
+                ></SearchIcon>
               </Tag.ItemsLinks>
 
-              <Tag.ItemsLinks sx={{
-                justifyContent: 'flex-end',
-
-              }
-              }>
-                {[{
-                  link: 'yourFavoriteRecipes',
-                  icon: <FavoriteIcon />,
-                  title: 'Receitas Favoritas'
-                }, {
-                  link: '/myRecipes',
-                  icon: <DinnerDiningIcon />,
-                  title: 'Minhas Receitas'
-                },
-                {
-                  link: 'colletions',
-                  icon: <FolderIcon />,
-                  title: 'Folder'
-                }, {
-                  link: '/createRecipe',
-                  icon: <Add />,
-                  title: 'Criar uma receita'
-                }].map((item, index) => {
+              <Tag.ItemsLinks
+                sx={{
+                  justifyContent: 'flex-end',
+                }}
+              >
+                {[
+                  {
+                    link: 'yourFavoriteRecipes',
+                    icon: <FavoriteIcon />,
+                    title: 'Receitas Favoritas',
+                  },
+                  {
+                    link: '/my-recipes',
+                    icon: <DinnerDiningIcon />,
+                    title: 'Minhas Receitas',
+                  },
+                  {
+                    link: 'colletions',
+                    icon: <FolderIcon />,
+                    title: 'Folder',
+                  },
+                  {
+                    link: '/createRecipe',
+                    icon: <Add />,
+                    title: 'Criar uma receita',
+                  },
+                ].map((item, index) => {
                   return (
-                    <Box sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textAlign: 'center',
-                    }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                      }}
+                    >
                       <Tooltip title={item?.title}>
                         <IconButton
                           size="small"
-                          sx={{ ml: 2, color: "#374957" }}
+                          sx={{ ml: 2, color: '#374957' }}
                         >
                           {item?.icon}
                         </IconButton>
@@ -573,20 +633,21 @@ export const HomePage = () => {
                 })}
               </Tag.ItemsLinks>
             </Tag.MenuItemsLinks>
-          </Tag.Wrapper >
+          </Tag.Wrapper>
 
-
-          <Tag.MenuItemsLinks sx={{
-            position: 'absolute',
-            mt: '11.3vh',
-            width: '100%',
-            height: '88.7vh',
-            display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: "flex-start",
-            bgcolor: '#f8fafb',
-            padding: '0'
-          }}>
+          <Tag.MenuItemsLinks
+            sx={{
+              position: 'absolute',
+              mt: '11.3vh',
+              width: '100%',
+              height: '88.7vh',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              bgcolor: '#f8fafb',
+              padding: '0',
+            }}
+          >
             <Tag.MenuItemsLinks
               sx={{
                 bottom: 0,
@@ -595,10 +656,10 @@ export const HomePage = () => {
                 height: '100%',
                 borderRight: '1px solid #e3e9ed',
                 bgcolor: '#f8fafb',
-              }}>
+              }}
+            >
               <Tag.MinhaLista
                 sx={{
-
                   width: !matchesMobileSmall ? '100%' : '100%',
                 }}
                 component="nav"
@@ -615,9 +676,7 @@ export const HomePage = () => {
                   >
                     <img src={Logo} alt="" />
                     {!matchesMobileSmall && (
-                      <CloseIcon
-                        onClick={(e) => setShowLinks(!showLinks)}
-                      />
+                      <CloseIcon onClick={(e) => setShowLinks(!showLinks)} />
                     )}
                   </Tag.ListSub>
                 }
@@ -627,9 +686,7 @@ export const HomePage = () => {
                     <Links_a
                       key={li.name}
                       {...li}
-                      handleClick={(event) =>
-                        handleSelectLink(event, li.name)
-                      }
+                      handleClick={(event) => handleSelectLink(event, li.name)}
                       selectedLink={selectedLink}
                     />
                   )
@@ -640,25 +697,26 @@ export const HomePage = () => {
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: "center",
+                alignItems: 'center',
                 padding: '10px',
                 width: '70%',
                 height: '100%',
                 bgcolor: '#f8fafb',
-              }}>
+              }}
+            >
               <CardRecipes />
-
             </Tag.MenuItemsLinks>
           </Tag.MenuItemsLinks>
-          <Box sx={{
-            position: 'fixed',
-            bottom: '1rem',
-            right: '3rem',
-            height: 320,
-            transform:
-              'translateZ(0px)',
-            flexGrow: 1,
-          }}>
+          <Box
+            sx={{
+              position: 'fixed',
+              bottom: '1rem',
+              right: '3rem',
+              height: 320,
+              transform: 'translateZ(0px)',
+              flexGrow: 1,
+            }}
+          >
             <SpeedDial
               ariaLabel="SpeedDial openIcon example"
               icon={<SpeedDialIcon openIcon={<EditIcon />} />}
@@ -673,15 +731,14 @@ export const HomePage = () => {
               ))}
             </SpeedDial>
           </Box>
-        </Tag.Wrapper >
+        </Tag.Wrapper>
       </>
     )
   }
+  console.log('home')
   return (
     <>
-      <Tag.Wrapper id="wrapper">
-        opacity
-      </Tag.Wrapper>
+      <Tag.Wrapper id="wrapper">opacity</Tag.Wrapper>
     </>
-  );
-};
+  )
+}

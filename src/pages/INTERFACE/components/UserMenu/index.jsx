@@ -19,14 +19,21 @@ import {
   PersonAdd,
   Logout,
 } from '@mui/icons-material'
+import { links } from './links'
 
-export const UserMenu = ({ handleClick, handleClose, opens, Close }) => {
+export const UserMenu = ({
+  handleClick,
+  handleClose,
+  open,
+  Close,
+  anchorEl,
+}) => {
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user.displayName.charAt(0)
   const words = user.displayName.split(' ')
   const firstWord = words[0]
   return (
-    <>
+    <Stack direction="row" alignItems="center" justifyContent="center">
       <NotificationsIcon />
 
       <Box
@@ -59,55 +66,20 @@ export const UserMenu = ({ handleClick, handleClose, opens, Close }) => {
         </Tooltip>
       </Box>
       <Menu
-        opens={opens}
         id="account-menu"
         open={open}
         onClose={Close}
         onClick={Close}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
-        }}
+        anchorEl={anchorEl}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Stack>
-          {[
-            {
-              name: user?.displayName,
-              icon: <Avatar src={user?.photoURL} />,
-            },
-            {
-              name: 'My account',
-              icon: <Avatar src={user?.photoURL} />,
-            },
-          ].map((item, index) => {
+          {links(user)?.map((item) => {
             return (
               <>
-                <MenuItem key={item?.name} onClick={Close}>
-                  {item?.icon} {item?.name}
+                <MenuItem key={item} onClick={Close}>
+                  <Avatar src={user?.photoURL} /> {item}
                 </MenuItem>
               </>
             )
@@ -134,6 +106,6 @@ export const UserMenu = ({ handleClick, handleClose, opens, Close }) => {
         </Stack>
       </Menu>
       <Link>{firstWord}</Link>
-    </>
+    </Stack>
   )
 }

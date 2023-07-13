@@ -46,7 +46,7 @@ const Main = () => {
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/myRecipes" element={<MyRecipes />} />
+            <Route path="/my-recipes" element={<MyRecipes />} />
             <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
             <Route path="/editerecipes/:id" element={<EditRecipes />} />
           </Routes>
