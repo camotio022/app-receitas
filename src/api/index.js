@@ -83,13 +83,24 @@ export const api = {
         // Trate o erro conforme necessário
       }
     },
-    update: async (userId) => {
+    updateCover: async (userId, updatedData) => {
       try {
-        const userDocRef = doc(db, 'users', userId)
-        await updateDoc(userDocRef, updatedData, { merge: true })
-        console.log('usuario atualizada com sucesso!')
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, { coverImage: updatedData.coverImage });
+        console.log('Imagem de capa atualizada com sucesso!');
       } catch (error) {
-        console.error('Erro ao atualizar a usuario:', error)
+        console.error('Erro ao atualizar a imagem de capa:', error);
+      }
+    },
+
+    update: async (userId, updatedData) => {
+      console.log('updateData', updatedData);
+      try {
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, updatedData, { merge: true });
+        console.log('Usuário atualizado com sucesso!');
+      } catch (error) {
+        console.error('Erro ao atualizar o usuário:', error);
       }
     },
   },
