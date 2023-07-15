@@ -485,8 +485,6 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   opens={opens}
                   id="account-menu"
                   open={open}
-                  onClose={Close}
-                  onClick={Close}
                   PaperProps={{
                     elevation: 0,
                     sx: {
@@ -539,6 +537,14 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                       <PersonAdd fontSize="small" />
                     </ListItemIcon>
                     Add another account
+                  </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Link href={`/edituser/${user?.uid}`}>
+                        <PersonAdd fontSize="small" />
+                      </Link>
+                    </ListItemIcon>
+                    Editar meu perfil
                   </MenuItem>
                   <MenuItem onClick={Close}>
                     <ListItemIcon>

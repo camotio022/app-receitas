@@ -1,6 +1,6 @@
 
 
-import { Avatar, Box, Button, Card, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Input, Stack, SwipeableDrawer, TextField, Typography } from "@mui/material"
+import { Alert, Avatar, Box, Button, Card, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Input, Stack, SwipeableDrawer, TextField, Typography } from "@mui/material"
 import { Logo } from '../../../componentes/LOGO/index'
 import * as Tag from './index.js'
 import {
@@ -9,10 +9,6 @@ import {
     ColorLens as ColorLensIcon,
     Close,
     Edit,
-    Save,
-    Send,
-    Photo,
-    Camera,
     CameraAlt
 } from '@mui/icons-material'
 import { useEffect, useState } from "react"
@@ -23,7 +19,7 @@ import { number } from "prop-types"
 export const PerfilUser = () => {
 
     const { id } = useParams()
-    const [editingField, setEditingField] = useState(null);
+    const [editingField, setEditingField] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
     const [userValues, setUserValues] = useState({});
@@ -32,10 +28,18 @@ export const PerfilUser = () => {
     const handleEditClick = () => {
         setIsEditing(!isEditing);
     };
-
-    const handleClickOpen = () => {
+    const handleClickOpen = (value) => {
+        setEditingField("");
         setOpen(!open);
+        if (value === "coverImage") {
+            setEditingField("coverImage");
+        }
+        if(value === "photoURL"){
+
+            setEditingField("photoURL");
+        }
     };
+
 
     const handleClose = () => {
         setOpen(!open);
@@ -73,6 +77,7 @@ export const PerfilUser = () => {
         setIsEditing(false);
 
     };
+
     const handleSaveCoverImage = async () => {
         if (!userValues.coverImage) {
             console.log('Nenhuma imagem de capa selecionada.');
@@ -80,14 +85,14 @@ export const PerfilUser = () => {
         }
         try {
             // Verificar se o campo coverImage está definido em userValues
-            if (userValues.coverImage) {
+            if (editingField === "coverImage") {
                 // Chamar a função updateCover passando o ID do usuário e os dados atualizados
                 await api.user.updateCover(id, { coverImage: userValues.coverImage });
                 console.log('Imagem de capa atualizada com sucesso!');
             }
 
             // Verificar se o campo photoURL está definido em userValues
-            if (userValues.photoURL) {
+            if (editingField === "photoURL") {
                 // Chamar a função update passando o ID do usuário e os dados atualizados
                 await api.user.update(id, { photoURL: userValues.photoURL });
                 console.log('PhotoURL atualizado com sucesso!');
@@ -98,30 +103,30 @@ export const PerfilUser = () => {
 
         handleClose();
     };
-
-
     const handleChange = (event) => {
         setUserValues({ ...userValues, [event.target.name]: event.target.value });
     };
-    const handleEditPhotoURL = () => {
-        setEditingField("photoURL");
-    };
-
-    const handleEditCoverImage = () => {
-        setEditingField("coverImage");
-    };
-
     const handleCoverImageChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
 
         reader.onload = () => {
             const base64Image = reader.result;
-            const updatedData = { coverImage: base64Image, photoURL: base64Image };
+            let updatedData = {};
+
+            if (editingField === 'coverImage') {
+                updatedData = { ...updatedData, coverImage: base64Image };
+            } else {
+                updatedData = { ...updatedData, photoURL: base64Image };
+            }
+
             setUserValues({ ...userValues, ...updatedData });
         };
+
+
         reader.readAsDataURL(file);
     };
+
 
     useEffect(() => {
         if (!id) return;
@@ -163,8 +168,9 @@ export const PerfilUser = () => {
                         justifyContent: 'flex-end',
                         position: 'relative',
                         width: '100%',
-                        height: '400px',
-                        background: 'linear-gradient(to bottom, #ff9f00, #ffbf69)',
+
+                        backgroundImage: `url(${userValues?.coverImage})`,
+                        backgroundSize: 'cover',
                         '&::after': {
                             content: '""',
                             position: 'absolute',
@@ -172,7 +178,7 @@ export const PerfilUser = () => {
                             left: 0,
                             width: '100%',
                             height: '100%',
-                            backgroundImage: 'url(url-da-imagem-padrão)',
+                            backgroundImage: `url(${userValues?.coverImage})`,
                             backgroundSize: 'cover',
                             opacity: 0.5,
                         }
@@ -180,7 +186,7 @@ export const PerfilUser = () => {
                     component="div"
                     image={userValues?.coverImage}
                 >
-                    <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={handleEditCoverImage}>
+                    <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
                         Editar a foto da capa
                     </Button>
                 </CardMedia>
@@ -193,7 +199,7 @@ export const PerfilUser = () => {
                     <Box>
                         <Avatar src={userValues?.photoURL} sx={{ zIndex: 0, width: 100, height: 100, border: '5px solid white' }} >
                         </Avatar>
-                        <CameraAlt onClick={handleEditPhotoURL} sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }} />
+                        <CameraAlt onClick={() => handleClickOpen("photoURL")} sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }} />
                     </Box>
                     <Box>
                         <Typography variant="h6" sx={{ fontWeight: 900, color: 'white' }}>{userValues?.name}</Typography>
@@ -242,14 +248,6 @@ export const PerfilUser = () => {
                                                     name="name"
                                                     label="Nome"
                                                     value={userValues.name || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="email"
-                                                    label="E-mail"
-                                                    value={userValues.email || ''}
                                                     onChange={handleChange}
                                                 />
                                             </Grid>
@@ -391,40 +389,28 @@ export const PerfilUser = () => {
                     </Box>
                 </Stack>
             </SwipeableDrawer>
-
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>FOTO CAPA</DialogTitle>
+                <CardMedia sx={{ width: "100%", height: 300 }} 
+                component="img" 
+                image={editingField === 'coverImage'? userValues?.coverImage : userValues?.photoURL}>
+
+                </CardMedia>
                 <DialogContent>
                     <DialogContentText>
                         Escolha uma imagem para usar como foto de capa!
                     </DialogContentText>
-                    {editingField === "photoURL" ? (
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="img"
-                            label="Imagem"
-                            type="file"
-                            accept="image/*"
-                            fullWidth
-                            variant="standard"
-                            onChange={handleCoverImageChange}
-                        />
-                    ) : editingField === "coverImage" ? (
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="img"
-                            label="Imagem de capa"
-                            type="file"
-                            accept="image/*"
-                            fullWidth
-                            variant="standard"
-                            onChange={handleCoverImageChange}
-                        />
-                    ) : null}
-
-
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="img"
+                        label={editingField === 'coverImage' ? "Image cover" : "Imagem photoURL"}
+                        type="file"
+                        accept="image/*"
+                        fullWidth
+                        variant="standard"
+                        onChange={handleCoverImageChange}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>voltar</Button>
