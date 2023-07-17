@@ -92,7 +92,7 @@ export const Comunidade = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={StyeleTable}>Info users</TableCell>
-                                    <TableCell style={StyeleTable}>Posts</TableCell>
+                                    <TableCell style={StyeleTable}>Emails</TableCell>
                                     <TableCell style={StyeleTable}>Recipes</TableCell>
                                     <TableCell style={StyeleTable}>Folls</TableCell>
                                     <TableCell style={StyeleTable}>Following</TableCell>
@@ -105,9 +105,10 @@ export const Comunidade = () => {
                                         <TableRow>
 
                                             <TableCell sx={{ display: 'flex', alignItems: "center", gap: '1rem' }}>
-                                                <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.avatar} />
+                                                <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
                                                 <Stack>{user.name}</Stack>
                                             </TableCell>
+                                            <TableCell>{user?.email}</TableCell>
 
 
                                             <TableCell>{user?.postCount}</TableCell>
