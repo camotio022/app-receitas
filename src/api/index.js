@@ -43,7 +43,12 @@ export const api = {
         }
         return {}
       }
-      return 'users'
+      const querySnapshot = await getDocs(collection(db, 'users'))
+      const usersData = []
+      querySnapshot.forEach((doc) => {
+        usersData.push(doc.data())
+      })
+      return usersData
     },
     post: async (payload) => {
       const {
@@ -127,7 +132,6 @@ export const api = {
         console.error('Erro ao atualizar a imagem de capa:', error)
       }
     },
-
     update: async (userId, updatedData) => {
       console.log('updateData', updatedData)
       try {
