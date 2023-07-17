@@ -103,6 +103,8 @@ import {
 } from '@mui/icons-material';
 import { Logo } from "../../componentes/LOGO";
 import { AuthContext } from "../../contexts/AuthContext";
+import { api } from "../../api";
+import { async } from "@firebase/util";
 
 const links = [
   {
@@ -329,10 +331,11 @@ export const INTERFACE = ({ RENDERPAGE }) => {
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const [perfil, setperfil] = useState(false)
   const [opens, setopens] = useState(null);
+  const [newUser, setNewUser] = useState(null)
   const { user, logout } = useContext(AuthContext)
-  const firstLatter = user.displayName.charAt(0);
-  const words = user.displayName.split(' ');
-  const firstWord = words[0];
+console.log(newUser)
+  const firstLatter = newUser?.name?.charAt(0);
+  const words = newUser?.name?.split(' ');
   const [scrollHeight, setScrollHeight] = useState(0)
   const [selectedLink, setSelectedLink] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -351,6 +354,24 @@ export const INTERFACE = ({ RENDERPAGE }) => {
   const toggleDrawerRight = (openDrawerRight) => () => {
     setOpenDrawerRight(openDrawerRight);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user?.uid) return;
+  
+      try {
+        const userData = await api.user.get(user?.uid);
+        setNewUser(userData);
+        console.log(newUser, userData) // Defina o estado newUser com os dados do usuário obtidos pela API.
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchData();
+  
+  }, [user?.uid]);
+  
+  
   useEffect(() => {
     let timeoutId;
     const handleScroll = () => {
@@ -477,7 +498,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                       aria-haspopup="true"
                       aria-expanded={open ? 'true' : undefined}
                     >
-                      <Avatar src={user?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}>{firstLatter}</Avatar>
+                      <Avatar src={newUser?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}></Avatar>
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -517,10 +538,10 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   {[
                     {
                       name: user?.displayName,
-                      icon: <Avatar src={user?.photoURL} />
+                      icon: <Avatar src={newUser?.photoURL} />
                     }, {
                       name: 'My account',
-                      icon: <Avatar src={user?.photoURL} />
+                      icon: <Avatar src={newUser?.photoURL} />
                     }
                   ].map((item, index) => {
                     return (
@@ -559,7 +580,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     Logout
                   </MenuItem>
                 </Menu>
-                <Link>{firstWord}</Link>
+                <Link></Link>
               </Tag.ItemsLinks>
             </Tag.MenuItemsLinks>
 
@@ -852,7 +873,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                   >
-                    <Avatar src={user?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}>{firstLatter}</Avatar>
+                    <Avatar src={newUser?.photoURL} sx={{ width: 32, height: 32, border: '3px solid white' }}></Avatar>
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -894,10 +915,10 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                 {[
                   {
                     name: user?.displayName,
-                    icon: <Avatar src={user?.photoURL} />
+                    icon: <Avatar src={newUser?.photoURL} />
                   }, {
                     name: 'My account',
-                    icon: <Avatar src={user?.photoURL} />
+                    icon: <Avatar src={newUser?.photoURL} />
                   }
                 ].map((item, index) => {
                   return (
@@ -936,7 +957,7 @@ export const INTERFACE = ({ RENDERPAGE }) => {
                   Logout
                 </MenuItem>
               </Menu>
-              <Link>{firstWord}</Link>
+              <Link></Link>
             </Tag.ItemsLinks>
           </Tag.MenuItemsLinks>
 

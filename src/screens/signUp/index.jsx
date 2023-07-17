@@ -64,6 +64,7 @@ export const SignUp = () => {
         email: '',
         lastName: '',
         name: '',
+      
     })
     const [datasFocos, setNameFocos] = useState({
         passwordFocos: false,

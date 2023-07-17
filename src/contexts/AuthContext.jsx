@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
             if (userDataFromLocalStorage) {
                 setUserData(userDataFromLocalStorage)
                 setUser(userDataFromLocalStorage)
+                console.log(userDataFromLocalStorage)
             }
         }
     }
@@ -41,8 +42,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('isLoggedIn', 'true')
         localStorage.setItem('user', JSON.stringify(userData))
     }
-
-
     const logout = () => {
         alert('Logout')
         // Lógica de logout

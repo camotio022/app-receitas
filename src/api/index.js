@@ -14,8 +14,11 @@ import {
 } from 'firebase/firestore'
 import { db } from '../../firebase.config'
 import { User } from './entities/User.jsx'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth'
 
 const getCollection = async (collectionPath) => {
   const collectionSnap = await getDocs(collection(db, collectionPath))
@@ -43,28 +46,49 @@ export const api = {
       return 'users'
     },
     post: async (payload) => {
-      const { id, email, name, lastName, password } = payload;
-      const auth = getAuth();
+      const {
+        id,
+        email,
+        name,
+        lastName,
+        password,
+        coverImage,
+        photoURL,
+        address,
+        birthday,
+        age,
+        phoneNumber,
+        occupation,
+        education,
+        hobbies,
+        socialMedia,
+        bio,
+      } = payload
+      const auth = getAuth()
 
       try {
         // Criar o usuário no Firebase Auth
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        )
+        const user = userCredential.user
 
         // Atualizar o perfil do usuário com o nome
-        await updateProfile(user, { displayName: `${name} ${lastName}` });
+        await updateProfile(user, { displayName: `${name} ${lastName}` })
 
-        const firestore = getFirestore();
-        const usersCollection = collection(firestore, 'users');
+        const firestore = getFirestore()
+        const usersCollection = collection(firestore, 'users')
 
         // Verificar se o email já está sendo usado por outro usuário
-        const emailQuery = query(usersCollection, where('email', '==', email));
-        const emailQuerySnapshot = await getDocs(emailQuery);
+        const emailQuery = query(usersCollection, where('email', '==', email))
+        const emailQuerySnapshot = await getDocs(emailQuery)
 
         if (!emailQuerySnapshot.empty) {
-          alert('O email já está sendo usado por outro usuário.');
-          window.location.replace('/signup');
-          return;
+          alert('O email já está sendo usado por outro usuário.')
+          window.location.replace('/signup')
+          return
         }
 
         // Adicionar os dados do usuário ao Firestore
@@ -73,34 +97,45 @@ export const api = {
           email,
           name,
           lastName,
+          coverImage: '',
+          photoURL: '',
+          address: '',
+          birthday: '',
+          age: '',
+          phoneNumber: null,
+          occupation: '',
+          education: '',
+          hobbies: '',
+          socialMedia: '',
+          bio: '',
           // outros dados que você queira adicionar
-        });
+        })
 
-        console.log('Usuário criado com sucesso:', userDocRef.id);
-        window.location.replace('/');
+        console.log('Usuário criado com sucesso:', userDocRef.id)
+        window.location.replace('/')
       } catch (error) {
-        console.error('Erro ao criar usuário e vincular perfil:', error);
+        console.error('Erro ao criar usuário e vincular perfil:', error)
         // Trate o erro conforme necessário
       }
     },
     updateCover: async (userId, updatedData) => {
       try {
-        const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, { coverImage: updatedData.coverImage });
-        console.log('Imagem de capa atualizada com sucesso!');
+        const userDocRef = doc(db, 'users', userId)
+        await updateDoc(userDocRef, { coverImage: updatedData.coverImage })
+        console.log('Imagem de capa atualizada com sucesso!')
       } catch (error) {
-        console.error('Erro ao atualizar a imagem de capa:', error);
+        console.error('Erro ao atualizar a imagem de capa:', error)
       }
     },
 
     update: async (userId, updatedData) => {
-      console.log('updateData', updatedData);
+      console.log('updateData', updatedData)
       try {
-        const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, updatedData, { merge: true });
-        console.log('Usuário atualizado com sucesso!');
+        const userDocRef = doc(db, 'users', userId)
+        await updateDoc(userDocRef, updatedData, { merge: true })
+        console.log('Usuário atualizado com sucesso!')
       } catch (error) {
-        console.error('Erro ao atualizar o usuário:', error);
+        console.error('Erro ao atualizar o usuário:', error)
       }
     },
   },
@@ -237,83 +272,83 @@ export const api = {
       recipesRef.forEach((el) => recipesData.push(el.data()))
       console.log(recipesData)
       return recipesData
-
     },
     post: async (recipeId, userId) => {
       if (recipeId && userId) {
         try {
           // Obter a referência da receita
-          const recipeDocRef = doc(db, 'recipes', recipeId);
-          const recipeDocSnap = await getDoc(recipeDocRef);
+          const recipeDocRef = doc(db, 'recipes', recipeId)
+          const recipeDocSnap = await getDoc(recipeDocRef)
 
           if (!recipeDocSnap.exists()) {
-            console.log('Receita não encontrada');
-            return [];
+            console.log('Receita não encontrada')
+            return []
           }
           // A receita existe, você pode prosseguir com a atualização do likesCounter
-          const recipeData = recipeDocSnap.data();
-          const likesCounter = recipeData.likesCounter || [];
+          const recipeData = recipeDocSnap.data()
+          const likesCounter = recipeData.likesCounter || []
 
           // Verificar se o usuário já favoritou a receita
-          const userAlreadyLiked = likesCounter.includes(userId);
+          const userAlreadyLiked = likesCounter.includes(userId)
           if (!userAlreadyLiked) {
             // Adicionar o ID do usuário ao likesCounter da receita
-            likesCounter.push(userId);
+            likesCounter.push(userId)
             await updateDoc(recipeDocRef, {
               likesCounter: likesCounter,
-            });
+            })
           }
         } catch (error) {
-          console.error('Erro ao buscar as receitas favoritas:', error);
-          return [];
+          console.error('Erro ao buscar as receitas favoritas:', error)
+          return []
         }
       } else {
-        return []; // Retorna uma lista vazia se o ID do usuário não for fornecido
+        return [] // Retorna uma lista vazia se o ID do usuário não for fornecido
       }
     },
-
 
     remove: async (recipeId, userId) => {
       if (recipeId && userId) {
         try {
           // Obter a referência da receita
-          const recipeDocRef = doc(db, 'recipes', recipeId);
-          const recipeDocSnap = await getDoc(recipeDocRef);
+          const recipeDocRef = doc(db, 'recipes', recipeId)
+          const recipeDocSnap = await getDoc(recipeDocRef)
 
           if (!recipeDocSnap.exists()) {
-            console.log('Receita não encontrada');
-            return false;
+            console.log('Receita não encontrada')
+            return false
           }
 
           // A receita existe, você pode prosseguir com a remoção do likesCounter
-          const recipeData = recipeDocSnap.data();
-          const likesCounter = recipeData.likesCounter || [];
+          const recipeData = recipeDocSnap.data()
+          const likesCounter = recipeData.likesCounter || []
 
           // Verificar se o usuário já favoritou a receita
-          const userIndex = likesCounter.indexOf(userId);
+          const userIndex = likesCounter.indexOf(userId)
           if (userIndex !== -1) {
             // Remover o ID do usuário do likesCounter da receita
-            likesCounter.splice(userIndex, 1);
+            likesCounter.splice(userIndex, 1)
 
             // Atualizar o documento da receita com a lista de likes atualizada
             await updateDoc(recipeDocRef, {
               likesCounter: likesCounter,
-            });
+            })
 
-            console.log('Usuário removido dos likesCounter da receita');
-            return true;
+            console.log('Usuário removido dos likesCounter da receita')
+            return true
           } else {
-            console.log('Usuário não encontrado nos likesCounter da receita');
-            return false;
+            console.log('Usuário não encontrado nos likesCounter da receita')
+            return false
           }
         } catch (error) {
-          console.error('Erro ao remover o usuário dos likesCounter da receita:', error);
-          return false;
+          console.error(
+            'Erro ao remover o usuário dos likesCounter da receita:',
+            error
+          )
+          return false
         }
       } else {
-        return false; // Retorna falso se o ID da receita ou do usuário não forem fornecidos
+        return false // Retorna falso se o ID da receita ou do usuário não forem fornecidos
       }
     },
   },
-
 }

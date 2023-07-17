@@ -15,6 +15,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../api"
 import { number } from "prop-types"
+import { INTERFACE } from "../../INTERFACE/index.jsx"
 
 export const PerfilUser = () => {
 
@@ -34,7 +35,7 @@ export const PerfilUser = () => {
         if (value === "coverImage") {
             setEditingField("coverImage");
         }
-        if(value === "photoURL"){
+        if (value === "photoURL") {
 
             setEditingField("photoURL");
         }
@@ -142,281 +143,271 @@ export const PerfilUser = () => {
     }, [id]);
     return (
         <>
-            <SwipeableDrawer
-                anchor="top"
-                open={true}
-                onClose={true}
-                onOpen={true}
-            >
-                <Tag.ItemsLinks sx={{
-                    bgcolor: '#374957',
-                    padding: 1.6
-                }}>
-                    <Logo logoStyle={{
-                        marginLeft: '-0.51rem',
-                        paddingLeft: '10px',
-                        filter: 'brightness(0.9) saturate(0.8) hue-rotate(10deg)',
-                    }} />
-                    <Close />
-                </Tag.ItemsLinks>
-                <CardMedia
-                    sx={{
-                        maxHeight: 400,
-                        height: 400,
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        justifyContent: 'flex-end',
-                        position: 'relative',
-                        width: '100%',
 
-                        backgroundImage: `url(${userValues?.coverImage})`,
-                        backgroundSize: 'cover',
-                        '&::after': {
-                            content: '""',
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            backgroundImage: `url(${userValues?.coverImage})`,
-                            backgroundSize: 'cover',
-                            opacity: 0.5,
-                        }
-                    }}
-                    component="div"
-                    image={userValues?.coverImage}
-                >
-                    <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
-                        Editar a foto da capa
-                    </Button>
-                </CardMedia>
-                <Tag.ItemsLinks sx={{
-                    justifyContent: 'flex-start !important',
-                    gap: 1,
-                    padding: 1.6,
-                    mt: '-3.8rem',
-                }}>
-                    <Box>
-                        <Avatar src={userValues?.photoURL} sx={{ zIndex: 0, width: 100, height: 100, border: '5px solid white' }} >
-                        </Avatar>
-                        <CameraAlt onClick={() => handleClickOpen("photoURL")} sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }} />
-                    </Box>
-                    <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 900, color: 'white' }}>{userValues?.name}</Typography>
-                        <Typography>30 receitas</Typography>
-                    </Box>
-                </Tag.ItemsLinks>
-                <Tag.ItemMenu >
-                    EDITAR O PERFIL
-                </Tag.ItemMenu>
+            <INTERFACE RENDERPAGE={<>
 
                 <Stack
-                    sx={{ width: '100vw', height: '100vh' }}
-                    role="presentation"
-                    onKeyDown={true}
-                    component="nav"
-                    aria-labelledby="nested-list-subheader"
+                    anchor="top"
+                    open={true}
+                    onClose={true}
+                    onOpen={true}
                 >
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: "15px",
-                        flexWrap: 'wrap',
-                        width: '100%',
-                        padding: '1rem'
-                    }}>
-                        <Card
-                            sx={{
+               
+                    <CardMedia
+                        sx={{
+                            maxHeight: 400,
+                            height: 400,
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                            justifyContent: 'flex-end',
+                            width: '100%',
+                            backgroundImage: `url(${userValues?.coverImage})`,
+                            backgroundSize: '100%',
+                            '&::after': {
+                                content: '""',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
                                 width: '100%',
-                                fontFamily: 'Arial, sans-serif',
-                                transition: 'background-color 0.3s ease',
-                                '&:hover': { boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' },
-                                background: 'linear-gradient(to bottom, #e0e0e0, #f5f5f5)',
-                                borderRadius: '12px',
-                            }}
-                        >
-                            <CardContent>
-                                {isEditing ? (
-                                    <>
-                                        <Tag.ItemMenu>
-                                            Editando
-                                        </Tag.ItemMenu>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="name"
-                                                    label="Nome"
-                                                    value={userValues.name || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="birthday"
-                                                    label="Aniversário"
-                                                    type="date"
-                                                    value={userValues.birthday || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="age"
-                                                    label="Idade"
-                                                    type="number"
-                                                    value={userValues.age || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="address"
-                                                    label="Endereço"
-                                                    value={userValues.address || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="phoneNumber"
-                                                    label="Telefone"
-                                                    type="tel"
-                                                    value={userValues.phoneNumber || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="occupation"
-                                                    label="Ocupação"
-                                                    value={userValues.occupation || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="education"
-                                                    label="Educação"
-                                                    value={userValues.education || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="hobbies"
-                                                    label="Hobbies"
-                                                    value={userValues.hobbies || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="socialMedia"
-                                                    label="Mídias Sociais"
-                                                    value={userValues.socialMedia || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={4}>
-                                                <TextField
-                                                    name="bio"
-                                                    label="Biografia"
-                                                    multiline
-                                                    rows={4}
-                                                    value={userValues.bio || ''}
-                                                    onChange={handleChange}
-                                                />
-                                            </Grid>
+                                height: '100%',
+                                opacity: 0.5,
+                            }
+                        }}
+                        component="div"
+                        image={userValues?.coverImage}
+                    >
+                        <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
+                            Editar a foto da capa
+                        </Button>
+                    </CardMedia>
+                    <Tag.ItemsLinks sx={{
+                        justifyContent: 'flex-start !important',
+                        gap: 1,
+                        padding: 1.6,
+                        mt: '-3.8rem',
+                    }}>
+                        <Box>
+                            <Avatar src={userValues?.photoURL} sx={{ zIndex: 0, width: 100, height: 100, border: '5px solid white' }} >
+                            </Avatar>
+                            <CameraAlt onClick={() => handleClickOpen("photoURL")} sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }} />
+                        </Box>
+                        <Box>
+                            <Stack variant="h6" sx={{ fontWeight: 900, color: 'black' }}>{userValues?.name}</Stack>
+                            <Stack sx={{ fontWeight: 100, color: 'black' }}>30 receitas</Stack>
+                        </Box>
+                    </Tag.ItemsLinks>
+                    <Tag.ItemMenu >
+                        EDITAR O PERFIL
+                    </Tag.ItemMenu>
 
-                                        </Grid>
-                                        <Button variant="contained" onClick={() => handleSaveClick(id)}>
-                                            Salvar as informações
-                                        </Button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Tag.ItemMenu>
-                                            Apresentação
-                                        </Tag.ItemMenu>
-                                        <CardContent>
-                                            <Typography variant="body1" component="div">
-                                                Name: {userValues.name}
-                                            </Typography>
-                                            <Typography variant="body1" component="div">
-                                                Email: {userValues.email}
-                                            </Typography>
-                                            <Typography variant="body1" component="div">
-                                                Aniversário: {userValues.birthday}
-                                            </Typography>
+                    <Stack
+                        role="presentation"
+                        onKeyDown={true}
+                        component="nav"
+                        aria-labelledby="nested-list-subheader"
+                    >
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: "15px",
+                            flexWrap: 'wrap',
+                            width: '100%',
+                        }}>
+                            <Card
+                                sx={{
+                                    width: '100%',
+                                    fontFamily: 'Arial, sans-serif',
+                                    transition: 'background-color 0.3s ease',
+                                    '&:hover': { boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' },
+                                    background: 'linear-gradient(to bottom, #e0e0e0, #f5f5f5)',
+                                    borderRadius: '12px',
+                                }}
+                            >
+                                <CardContent>
+                                    {isEditing ? (
+                                        <>
+                                            <Tag.ItemMenu>
+                                                Editando
+                                            </Tag.ItemMenu>
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="name"
+                                                        label="Nome"
+                                                        value={userValues.name || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="birthday"
+                                                        label="Aniversário"
+                                                        type="date"
+                                                        value={userValues.birthday || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="age"
+                                                        label="Idade"
+                                                        type="number"
+                                                        value={userValues.age || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="address"
+                                                        label="Endereço"
+                                                        value={userValues.address || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="phoneNumber"
+                                                        label="Telefone"
+                                                        type="tel"
+                                                        value={userValues.phoneNumber || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="occupation"
+                                                        label="Ocupação"
+                                                        value={userValues.occupation || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="education"
+                                                        label="Educação"
+                                                        value={userValues.education || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="hobbies"
+                                                        label="Hobbies"
+                                                        value={userValues.hobbies || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="socialMedia"
+                                                        label="Mídias Sociais"
+                                                        value={userValues.socialMedia || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={6} md={4}>
+                                                    <TextField
+                                                        name="bio"
+                                                        label="Biografia"
+                                                        multiline
+                                                        rows={4}
+                                                        value={userValues.bio || ''}
+                                                        onChange={handleChange}
+                                                    />
+                                                </Grid>
 
-                                            <Typography variant="body1" component="div">
-                                                Endereço: {userValues.address}
-                                            </Typography>
+                                            </Grid>
+                                            <Button variant="contained" onClick={() => handleSaveClick(id)}>
+                                                Salvar as informações
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Tag.ItemMenu>
+                                                Apresentação
+                                            </Tag.ItemMenu>
+                                            <CardContent>
+                                                <Stack variant="body1" component="div">
+                                                    Name: {userValues.name}
+                                                </Stack>
+                                                <Stack variant="body1" component="div">
+                                                    Email: {userValues.email}
+                                                </Stack>
+                                                <Stack variant="body1" component="div">
+                                                    Aniversário: {userValues.birthday}
+                                                </Stack>
 
-                                            <Typography variant="body1" component="div">
-                                                Telefone: {userValues.phoneNumber}
-                                            </Typography>
+                                                <Stack variant="body1" component="div">
+                                                    Endereço: {userValues.address}
+                                                </Stack>
 
-                                            <Typography variant="body1" component="div">
-                                                Ocupação: {userValues.occupation}
-                                            </Typography>
+                                                <Stack variant="body1" component="div">
+                                                    Telefone: {userValues.phoneNumber}
+                                                </Stack>
 
-                                            <Typography variant="body1" component="div">
-                                                Educação: {userValues.education}
-                                            </Typography>
+                                                <Stack variant="body1" component="div">
+                                                    Ocupação: {userValues.occupation}
+                                                </Stack>
 
-                                            <Typography variant="body1" component="div">
-                                                Hobbies: {userValues.hobbies}
-                                            </Typography>
+                                                <Stack variant="body1" component="div">
+                                                    Educação: {userValues.education}
+                                                </Stack>
 
-                                            <Typography variant="body1" component="div">
-                                                Mídias Sociais: {userValues.socialMedia}
-                                            </Typography>
+                                                <Stack variant="body1" component="div">
+                                                    Hobbies: {userValues.hobbies}
+                                                </Stack>
 
-                                            <Typography variant="body1" component="div">
-                                                Biografia: {userValues.bio}
-                                            </Typography>
+                                                <Stack variant="body1" component="div">
+                                                    Mídias Sociais: {userValues.socialMedia}
+                                                </Stack>
 
-                                        </CardContent>
-                                        <Tag.ItemMenu>
-                                            <Edit onClick={handleEditClick} />
-                                        </Tag.ItemMenu>
-                                    </>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </Box>
+                                                <Stack variant="body1" component="div">
+                                                    Biografia: {userValues.bio}
+                                                </Stack>
+
+                                            </CardContent>
+                                            <Tag.ItemMenu>
+                                                <Edit onClick={handleEditClick} />
+                                            </Tag.ItemMenu>
+                                        </>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </Box>
+                    </Stack>
                 </Stack>
-            </SwipeableDrawer>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>FOTO CAPA</DialogTitle>
-                <CardMedia sx={{ width: "100%", height: 300 }} 
-                component="img" 
-                image={editingField === 'coverImage'? userValues?.coverImage : userValues?.photoURL}>
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>FOTO CAPA</DialogTitle>
+                    <CardMedia sx={{ width: "100%", height: 300 }}
+                        component="img"
+                        image={editingField === 'coverImage' ? userValues?.coverImage : userValues?.photoURL}>
 
-                </CardMedia>
-                <DialogContent>
-                    <DialogContentText>
-                        Escolha uma imagem para usar como foto de capa!
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="img"
-                        label={editingField === 'coverImage' ? "Image cover" : "Imagem photoURL"}
-                        type="file"
-                        accept="image/*"
-                        fullWidth
-                        variant="standard"
-                        onChange={handleCoverImageChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>voltar</Button>
-                    <Button onClick={handleSaveCoverImage}>Salvar</Button>
-                </DialogActions>
-            </Dialog>
+                    </CardMedia>
+                    <DialogContent>
+                        <DialogContentText>
+                            Escolha uma imagem para usar como foto de capa!
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="img"
+                            label={editingField === 'coverImage' ? "Image cover" : "Imagem photoURL"}
+                            type="file"
+                            accept="image/*"
+                            fullWidth
+                            variant="standard"
+                            onChange={handleCoverImageChange}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>voltar</Button>
+                        <Button onClick={handleSaveCoverImage}>Salvar</Button>
+                    </DialogActions>
+                </Dialog>
+
+            </>} />
+
 
         </>
     )
