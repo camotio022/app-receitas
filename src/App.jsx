@@ -37,7 +37,7 @@ const Main = () => {
           <Routes>
             <Route path="/home" element={<HomePage />} />
             <Route path="/" element={<TopReview />} />
-            <Route path="/TopReview" element={<TopReview />} />
+            <Route path="/topReview" element={<TopReview />} />
             <Route path="/createRecipes" element={<CreateRecipes />} />
             <Route
               path="/detailsRecipes/:id/edit"
@@ -48,7 +48,7 @@ const Main = () => {
             <Route path="/comunidade" element={<Comunidade />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/myRecipes" element={<MyRecipes />} />
+            <Route path="/my-recipes" element={<MyRecipes />} />
             <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
             <Route path="/editerecipes/:id" element={<EditRecipes />} />
           </Routes>
