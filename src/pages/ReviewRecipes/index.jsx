@@ -231,7 +231,7 @@ export const TopReview = (props) => {
           flexDirection: 'column',
           ail: 'center',
           justifyContent: 'center',
-          bgcolor: 'blue',
+  
           width: '100%',
           position: 'relative',
           color: 'red',
@@ -514,7 +514,7 @@ export const TopReview = (props) => {
                                       display: 'block',
                                     }}
                                   >
-                                    {recipe?.recipeTitle.split(' ')[0]}
+                                    {recipe?.recipeTitle?.split(' ')[0]}
                                   </Link>
                                 </Typography>
                                 <IconButton

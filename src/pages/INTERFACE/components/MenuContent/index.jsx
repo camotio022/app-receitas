@@ -73,7 +73,7 @@ export const MenuContent = ({
         </S.Header>
         <Stack
           direction="row"
-          sx={{ width: '100vw', height: '90vh', background: 'green' }}
+          sx={{ width: '100vw', height: '90vh'}}
         >
           <S.SideMenu>
             <S.MinhaLista

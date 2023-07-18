@@ -8,13 +8,9 @@ export const Container = styled('div')(({ scrollHeight }) => ({
   zIndex: scrollHeight && 9999,
   transition: 'all 0.5s ease',
   transition: 'height 0.3s ease',
-  background: 'lightblue',
   width: '100vw',
   height: '100vh',
   overflow: 'hidden',
-  //   position: scrollHeight > 20 ? 'fixed' : 'relative',
-  //   height: '100%',
-  //   overflow: 'hidden',
 }))
 
 export const Header = styled('div')(({ scrollHeight }) => ({
@@ -45,7 +41,6 @@ export const SideMenu = styled(Box)(() => ({
   bgcolor: '#f8fafb',
   transition: 'all 0.5s ease',
   transition: 'height 0.3s ease',
-  background: 'purple',
 }))
 
 export const Content = styled(Stack)(() => ({
