@@ -119,7 +119,7 @@ export const api = {
         console.log('Usuário criado com sucesso:', userDocRef.id)
         window.location.replace('/')
       } catch (error) {
-        console.error('Erro ao criar usuário e vincular perfil:', error)
+        alert('Erro ao criar usuário e vincular perfil:', error)
         // Trate o erro conforme necessário
       }
     },
@@ -127,19 +127,19 @@ export const api = {
       try {
         const userDocRef = doc(db, 'users', userId)
         await updateDoc(userDocRef, { coverImage: updatedData.coverImage })
-        console.log('Imagem de capa atualizada com sucesso!')
+        alert('Imagem de capa atualizada com sucesso!')
       } catch (error) {
-        console.error('Erro ao atualizar a imagem de capa:', error)
+        alert('Erro ao atualizar a imagem de capa:', error)
       }
     },
     update: async (userId, updatedData) => {
-      console.log('updateData', updatedData)
+      alert('updateData', updatedData)
       try {
         const userDocRef = doc(db, 'users', userId)
         await updateDoc(userDocRef, updatedData, { merge: true })
-        console.log('Usuário atualizado com sucesso!')
+        alert('Usuário atualizado com sucesso!')
       } catch (error) {
-        console.error('Erro ao atualizar o usuário:', error)
+        alert('Erro ao atualizar o usuário:', error)
       }
     },
   },
@@ -162,7 +162,7 @@ export const api = {
         return docSnap.data()
       } else {
         // doc.data() will be undefined in this case
-        console.log('No such document!')
+        alert('No such document!')
       }
     },
 
@@ -181,9 +181,9 @@ export const api = {
       try {
         const recipeDocRef = doc(db, 'recipes', recipeId)
         await updateDoc(recipeDocRef, updatedData, { merge: true })
-        console.log('Receita atualizada com sucesso!')
+        alert('Receita atualizada com sucesso!')
       } catch (error) {
-        console.error('Erro ao atualizar a receita:', error)
+        alert('Erro ao atualizar a receita:', error)
       }
     },
   },
@@ -240,7 +240,7 @@ export const api = {
           })
           return recipes
         } catch (error) {
-          console.error('Erro ao buscar as receitas:', error)
+          alert('Erro ao buscar as receitas:', error)
           return [] // Retorna uma lista vazia em caso de erro
         }
       } else {
@@ -251,10 +251,10 @@ export const api = {
       if (recipeId) {
         try {
           await deleteDoc(doc(db, 'recipes', recipeId))
-          console.log('Receita deletada com sucesso')
+          alert('Receita deletada com sucesso')
           // Faça algo após deletar a receita, se necessário
         } catch (error) {
-          console.error('Erro ao deletar a receita:', error)
+          alert('Erro ao deletar a receita:', error)
           // Trate o erro adequadamente
         }
       }
@@ -302,7 +302,7 @@ export const api = {
             })
           }
         } catch (error) {
-          console.error('Erro ao buscar as receitas favoritas:', error)
+          alert('Erro ao buscar as receitas favoritas:', error)
           return []
         }
       } else {
@@ -344,7 +344,7 @@ export const api = {
             return false
           }
         } catch (error) {
-          console.error(
+          alert(
             'Erro ao remover o usuário dos likesCounter da receita:',
             error
           )

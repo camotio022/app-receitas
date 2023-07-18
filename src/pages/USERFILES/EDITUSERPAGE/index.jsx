@@ -337,35 +337,27 @@ export const PerfilUser = () => {
                                                 <Stack variant="body1" component="div">
                                                     Aniversário: {userValues.birthday}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Endereço: {userValues.address}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Telefone: {userValues.phoneNumber}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Ocupação: {userValues.occupation}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Educação: {userValues.education}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Hobbies: {userValues.hobbies}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Mídias Sociais: {userValues.socialMedia}
                                                 </Stack>
-
                                                 <Stack variant="body1" component="div">
                                                     Biografia: {userValues.bio}
                                                 </Stack>
-
                                             </CardContent>
                                             <Tag.ItemMenu>
                                                 <Edit onClick={handleEditClick} />
@@ -405,7 +397,6 @@ export const PerfilUser = () => {
                         <Button onClick={handleSaveCoverImage}>Salvar</Button>
                     </DialogActions>
                 </Dialog>
-
             </>} />
 
 
