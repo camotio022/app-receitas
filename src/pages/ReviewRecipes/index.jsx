@@ -480,7 +480,7 @@ export const TopReview = (props) => {
                                             display: 'block',
                                           }}
                                         >
-                                          {recipe?.recipeTitle.split(' ')[0]}
+                                          {recipe?.recipeTitle?.split(' ')[0]}
                                         </Link>
                                       </Typography>
                                       <IconButton size="sm" color="white" sx={{ ml: 'auto' }}>
