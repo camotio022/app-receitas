@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button, Link } from '@mui/material';
 import * as Tag from './index'
 import { grey, orange } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
@@ -12,9 +12,7 @@ import { db } from '../../../firebase.config'
 export const Comunidade = () => {
     const [loading, setLoading] = useState(false);
     const [recipesCount, setRecipesCount] = useState({});
-
     const [usuarios, setUsuarios] = useState();
-
     useEffect(() => {
         const obterUsuarios = async () => {
             try {
@@ -28,7 +26,6 @@ export const Comunidade = () => {
                 console.log(error);
             }
         };
-
         console.log(usuarios);
         obterUsuarios();
     }, []);
@@ -102,7 +99,9 @@ export const Comunidade = () => {
                                         <TableBody key={index}>
                                             <TableRow>
                                                 <TableCell sx={{ display: 'flex', alignItems: "center", gap: '1rem' }}>
-                                                    <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
+                                                    <Link href={`/edituser/${user.id}`}>
+                                                        <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
+                                                    </Link>
                                                     <Stack>{user.name}</Stack>
                                                 </TableCell>
                                                 <TableCell>{user?.email}</TableCell>

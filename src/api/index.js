@@ -187,7 +187,6 @@ export const api = {
       }
     },
   },
-
   ingredientes: {
     get: async (id) => {
       if (id) {

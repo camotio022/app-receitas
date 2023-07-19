@@ -29,8 +29,8 @@ export const UserMenu = ({
   anchorEl,
 }) => {
   const { user, logout } = useContext(AuthContext)
-  const firstLatter = user.displayName.charAt(0)
-  const words = user.displayName.split(' ')
+  const firstLatter = user?.displayName?.charAt(0)
+  const words = user?.displayName?.split(' ')
   const firstWord = words[0]
   return (
     <Stack direction="row" alignItems="center" justifyContent="center">
@@ -91,6 +91,14 @@ export const UserMenu = ({
             </ListItemIcon>
             Add another account
           </MenuItem>
+          <Link href={`/edituser/${user.uid}`}>
+            <MenuItem>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Edit user
+            </MenuItem>
+          </Link>
           <MenuItem onClick={Close}>
             <ListItemIcon>
               <Settings fontSize="small" />

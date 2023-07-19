@@ -11,15 +11,17 @@ import {
     Edit,
     CameraAlt
 } from '@mui/icons-material'
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../api"
 import { number } from "prop-types"
 import { INTERFACE } from "../../INTERFACE/index.jsx"
+import { AuthContext } from "../../../contexts/AuthContext"
 
 export const PerfilUser = () => {
 
     const { id } = useParams()
+    const { user } = useContext(AuthContext)
     const [editingField, setEditingField] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
@@ -127,8 +129,6 @@ export const PerfilUser = () => {
 
         reader.readAsDataURL(file);
     };
-
-
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
@@ -165,7 +165,6 @@ export const PerfilUser = () => {
                 <INTERFACE RENDERPAGE={<>
                     <Stack
                     >
-
                         <CardMedia
                             sx={{
                                 maxHeight: 400,
@@ -174,6 +173,7 @@ export const PerfilUser = () => {
                                 alignItems: 'flex-end',
                                 justifyContent: 'flex-end',
                                 width: '100%',
+                                bgcolor: 'gray',
                                 backgroundImage: `url(${userValues?.coverImage})`,
                                 backgroundSize: '100%',
                                 '&::after': {
@@ -185,9 +185,10 @@ export const PerfilUser = () => {
                             component="div"
                             image={userValues?.coverImage}
                         >
-                            <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
-                                Editar a foto da capa
-                            </Button>
+                            {user.uid === id &&
+                                <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
+                                    Editar a foto da capa
+                                </Button>}
                         </CardMedia>
                         <Tag.ItemsLinks sx={{
                             justifyContent: 'flex-start !important',
@@ -198,7 +199,12 @@ export const PerfilUser = () => {
                             <Box>
                                 <Avatar src={userValues?.photoURL} sx={{ zIndex: 0, width: 100, height: 100, border: '5px solid white' }} >
                                 </Avatar>
-                                <CameraAlt onClick={() => handleClickOpen("photoURL")} sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }} />
+                                {user.uid === id &&
+                                    <CameraAlt
+                                        onClick={() => handleClickOpen("photoURL")}
+                                        sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }}
+                                    />
+                                }
                             </Box>
                             <Box>
                                 <Stack variant="h6" sx={{ fontWeight: 900, color: 'black' }}>{userValues?.name || userValues?.displayName}</Stack>
@@ -365,9 +371,10 @@ export const PerfilUser = () => {
                                                         Biografia: {userValues.bio}
                                                     </Stack>
                                                 </CardContent>
-                                                <Tag.ItemMenu>
-                                                    <Edit onClick={handleEditClick} />
-                                                </Tag.ItemMenu>
+                                                {user.uid === id &&
+                                                    <Tag.ItemMenu>
+                                                        <Edit onClick={handleEditClick} />
+                                                    </Tag.ItemMenu>}
                                             </>
                                         )}
                                     </CardContent>
