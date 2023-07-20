@@ -51,20 +51,6 @@ function a11yProps(index) {
     };
 }
 
-const fabStyle = {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-};
-
-const fabGreenStyle = {
-    color: 'common.white',
-    bgcolor: green[500],
-    '&:hover': {
-        bgcolor: green[600],
-    },
-};
-
 export const EditRecipes = () => {
     const { id } = useParams();
     const [docRec, setDocRec] = useState();
@@ -312,7 +298,6 @@ export const EditRecipes = () => {
                                 label="Gord"
                                 name='gord'
                                 type='number'
-
                                 variant="filled"
                                 value={formData.gord}
                                 onChange={(event) => handleFieldChange('gord', event.target.value)}
@@ -323,7 +308,6 @@ export const EditRecipes = () => {
                                 label="Author"
                                 name='author'
                                 type='number'
-
                                 variant="filled"
                                 value={formData.author}
                                 onChange={(event) => handleFieldChange('author', event.target.value)}
