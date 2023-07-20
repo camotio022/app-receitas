@@ -1,7 +1,13 @@
-AllProjet {
-    -- Remover o componente INTERFACE.
-    -- Remover todos os estilos: {sx na tela principal}.
-}
+## AllProjet [
+    {   
+        -- Remover o componente INTERFACE.
+        -- Remover todos os estilos: {sx na tela principal}.
+    },
+    {   
+        -- O Card das receitas será Componentizado.
+        -- Toda página que necessáriamente vai usar o card da receita, Usará o componente das receitas.
+    }
+]
 
 ## CREATE RECIPES {
     -- Remover a função de os scroll, e pegar o scroll do window.
@@ -22,7 +28,7 @@ AllProjet {
 }
 
 ## favoriteRecipes {
-    -- AllProjet
+    -- AllProjet[0]
 }
 
 ## INTERFACE {
@@ -33,4 +39,9 @@ AllProjet {
         Body - apenas um wrapper para o conteúdo de cada página
         Footer - botões que ficam fixos na parte de baixo e outras coisas referentes a um rodapé, se houver
     }
+}
+## MyRecipes {
+    -- AllProjet[0]
+    -- Remover o card das receitas.
+    -- Usar o componente das receitas.
 }

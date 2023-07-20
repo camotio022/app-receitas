@@ -144,35 +144,13 @@ export const MyRecipes = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
-  // esse código fica rodando a cada segundo, precisaríamos verificar como evitar isso
-  //   useEffect(() => {
-  //     const interval = setInterval(() => {
-  //       setProgress((prevProgress) =>
-  //         prevProgress >= 100 ? 0 : prevProgress + 50
-  //       )
-  //     }, 1000)
-
-  //     return () => {
-  //       clearInterval(interval)
-  //     }
-  //   }, [])
   const noWrap = {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
   }
   const handleScroll = () => {
-    // const windowHeight = window.innerHeight
-    // const documentHeight = document.documentElement.scrollHeight
-    // const scrollTop =
-    //   window.pageYOffset ||
-    //   document.documentElement.scrollTop ||
-    //   document.body.scrollTop
-    // if (scrollTop + windowHeight >= documentHeight) {
-    //   setTop(true)
-    // } else {
-    //   setTop(false)
-    // }
+
   }
 
   useEffect(() => {
