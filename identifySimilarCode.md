@@ -6,6 +6,10 @@
     {   
         -- O Card das receitas será Componentizado.
         -- Toda página que necessáriamente vai usar o card da receita, Usará o componente das receitas.
+    },
+    {
+        -- Todo código que estiver comentado será removido do arguivo.
+        -- Todo pasta não usada será removido.
     }
 ]
 
@@ -18,7 +22,7 @@
 }
 
 ## DetailsRecipes {
-    -- AllProjet
+    -- AllProjet[0]
     -- Componentizar a tag Typography, está muito repetido em várias partes.
     -- Toda tag que estiver na página com o sx acima de 5 linhas será Componentizado.
 }
@@ -48,4 +52,9 @@
 ## TopReviews {
     -- AllProjet[0]
     -- AllProjet[1]
+}
+## EDITEUSER {
+    -- AllProjet[0]
+    -- remover o TextField e usar,
+    -- usar o componente do TextField
 }
