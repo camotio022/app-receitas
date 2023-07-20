@@ -10,6 +10,7 @@
     {
         -- Todo código que estiver comentado será removido do arguivo.
         -- Todo pasta não usada será removido.
+        -- Todo código tem que uma nomenclatura significativa e vísivel ao código.
     }
 ]
 
@@ -17,7 +18,7 @@
     -- Remover a função de os scroll, e pegar o scroll do window.
 
     RecipeForm {
-        -- Componentizar o a tag Grid junto com o seu TextField
+        -- Componentizar a tag Grid junto com o seu TextField
     }
 }
 
