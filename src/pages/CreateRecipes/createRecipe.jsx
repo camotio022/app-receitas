@@ -20,7 +20,7 @@ import { AuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { INTERFACE } from '../INTERFACE/index.jsx'
 
-export const CreateRecipes = ({}) => {
+export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
   const navigate = useNavigate()
@@ -106,7 +106,7 @@ export const CreateRecipes = ({}) => {
     }
     navigate('/my-recipes')
   }
-
+  //Remover a função de os scroll, e pegar o scroll do tela.
   useEffect(() => {
     const handleScroll = () => {
       const height = window.scrollY || 0

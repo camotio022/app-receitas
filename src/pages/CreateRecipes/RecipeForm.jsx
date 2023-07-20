@@ -27,8 +27,7 @@ export const RecipeForm = ({
 }) => {
     return (
         <>
-           
-         
+            -- Componentizar o a tag Grid junto com o seu TextField
             <Typography variant="h6" gutterBottom>
                 Criação de receitas
             </Typography>
@@ -330,7 +329,6 @@ export const RecipeForm = ({
                     />
                 </Grid>
             </Grid>
-
             <Typography variant="h6" gutterBottom mt={3}>
                 Dados do criador
             </Typography>
