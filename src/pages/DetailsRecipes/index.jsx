@@ -1,18 +1,12 @@
 import {
     Alert,
-    Box,
     Button,
     Card,
     CardActions,
-    CardContent,
-    CardMedia,
     Checkbox,
     FormControlLabel,
-    FormGroup,
     LinearProgress,
-    Link,
     Stack,
-    Tooltip,
     Typography,
     useMediaQuery,
 } from '@mui/material'
@@ -30,11 +24,11 @@ import {
 } from '@mui/icons-material'
 
 import * as Tag from './index.js'
-import { green, grey, orange } from '@mui/material/colors'
+import { grey, orange } from '@mui/material/colors'
 import { useEffect, useState } from 'react'
 import { api } from '../../api/index.js'
 import { INTERFACE } from '../INTERFACE/index.jsx'
-// import { CardCover } from '@mui/material'
+
 
 export const DetailsRecipes = () => {
     const { id } = useParams()
@@ -403,42 +397,7 @@ export const DetailsRecipes = () => {
                                     mt: '15rem',
                                 }}
                             >
-                                <CardContent sx={{ zIndex: 1, opacity: 1, height: '100%' }}>
-                                    
-                                    <iframe
-                                        src="https://www.youtube.com/embed/tWcYLB0kkXk"
-                                        title="YouTube Video"
-                                        width="100%"
-                                        height="100%"
-                                        frameBorder="0"
-                                        allowFullScreen
-                                    ></iframe>
-                                </CardContent>
                             </Card>
-
-                            {/* <Card component="ul"
-                                sx={{
-                                    flexGrow: 1,
-                                    minWidth: "90%",
-                                    height: '20rem',
-                                    mt: '15rem',
-                                }}
-                            >
-                                <CardContent sx={{ zIndex: 1, opacity: 1, height: '100%' }}>
-                                    {recipe?.videoUrls.length > 0 && recipe?.videoUrls.map((videoUrl, index) => (
-                                        <video
-                                            key={index}
-                                            src={videoUrl}
-                                            controls
-                                            width="100%"
-                                            height="100%"
-                                        />
-                                    ))}
-                                </CardContent>
-                            </Card> */}
-
-
-
                         </Card>
                     </Tag.Container>
                 </>
