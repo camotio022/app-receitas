@@ -25,4 +25,12 @@ AllProjet {
     -- AllProjet
 }
 
-
+## INTERFACE {
+    -- Renomear a tag INTERFACE para MainLayout.
+    -- Dividir para 4 componentes: {
+        Header - logo principal, ícone para abrir o menu lateral, menu do usuário
+        Sidebar - menu com itens de navegação, tanto desktop como mobile
+        Body - apenas um wrapper para o conteúdo de cada página
+        Footer - botões que ficam fixos na parte de baixo e outras coisas referentes a um rodapé, se houver
+    }
+}
