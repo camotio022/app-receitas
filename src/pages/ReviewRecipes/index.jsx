@@ -112,18 +112,6 @@ export const TopReview = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [progress, setProgress] = useState(0)
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setProgress((prevProgress) =>
-  //       prevProgress >= 100 ? 0 : prevProgress + 50
-  //     )
-  //   }, 1000)
-
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
-  // }, [])
-
   const obterrecipes = async () => {
     setIsLoading(true)
     try {
@@ -137,7 +125,7 @@ export const TopReview = (props) => {
   }
 
   useEffect(() => {
-    // Recupere os usuários do Firebase
+
     obterrecipes()
   }, [])
   const noWrap = {
@@ -205,10 +193,6 @@ export const TopReview = (props) => {
     setValue(index)
   }
 
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  }
   const fabs = [
     {
       color: 'primary',
