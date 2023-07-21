@@ -9,7 +9,6 @@ import { StepsCreateRecipes } from './componentes/createRecipesAddSteps/index.js
 import { CategoryCreateRecipes } from './componentes/createRecipesCategory/index.jsx'
 import { MoreFieldsCreateRecipes } from './componentes/createRecipesMoreFields/index.jsx'
 import { UserInfoCreateRecipes } from './componentes/createRecipeUserInfo/index.jsx'
-
 export const RecipeForm = ({
     setFormData,
     formData,
@@ -22,32 +21,29 @@ export const RecipeForm = ({
         novosValores[index] = e.target.value
         setFormData({ ...formData, ingredients: novosValores })
     }
-
     const adicionarIngre = () => {
         setFormData({ ...formData, ingredients: [...formData.ingredients, ''] })
     }
-
     const removerIngre = (index) => {
         const novosValores = [...formData.ingredients]
         novosValores.splice(index, 1)
         setFormData({ ...formData, ingredients: novosValores })
     }
-
     const handleInputModPreps = (e, index) => {
         const novosValores = [...formData.modPreps]
         novosValores[index] = e.target.value
         setFormData({ ...formData, modPreps: novosValores })
     }
-
     const adicionarModPreps = () => {
         setFormData({ ...formData, modPreps: [...formData.modPreps, ''] })
     }
-
     const removerModPreps = (index) => {
         const novosValores = [...formData?.modPreps]
         novosValores.splice(index, 1)
         setFormData({ ...formData, modPreps: novosValores })
     }
+
+    
     return (
         <>
             <MyTypography title={"Criação de receiatas"} variant="h6" />
@@ -64,7 +60,6 @@ export const RecipeForm = ({
                     adicionarModPreps={adicionarModPreps}
                     removerModPreps={removerModPreps}
                 />
-
             </Grid>
             <MyTypography title={"Categorias e Nutrição"} variant="h6" gutterBottom mt={3} />
             <Grid container spacing={3}>
@@ -72,13 +67,11 @@ export const RecipeForm = ({
                     handleInputChangesCreateRecipes={handleInputChangesCreateRecipes}
                     formData={formData}
                 />
-
                 <MoreFieldsCreateRecipes
                     formData={formData}
                     handleImageChange={handleImageChange}
                     handleInputChangesCreateRecipes={handleInputChangesCreateRecipes}
                 />
-
             </Grid>
             <Typography title={"Dados do criador"} variant="h6" gutterBottom mt={3} />
             <Grid container spacing={3}>
