@@ -1,25 +1,20 @@
 import { Fragment, useContext } from 'react'
-import CssBaseline from '@mui/material/CssBaseline'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
-const authorId = 'nfgTOWtnXyNeXbAZ6sWFmgDC7bk1'
 import {
   KeyboardArrowUp as KeyboardArrowUpIcon,
   ArrowDropDown as ArrowDropDownIcon,
 } from '@mui/icons-material'
 
-import './index.css'
+import './styles/index.css'
 import { RecipeForm } from './RecipeForm'
-import { Fab, Fade } from '@mui/material'
+
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { api } from '../../api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { INTERFACE } from '../INTERFACE/index.jsx'
-
 export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
@@ -49,42 +44,10 @@ export const CreateRecipes = ({ }) => {
     email: '',
     country: '',
   })
-  const handleInputIngre = (e, index) => {
-    const novosValores = [...formData.ingredients] // Corrigido para "ingredients"
-    novosValores[index] = e.target.value
-    setFormData({ ...formData, ingredients: novosValores }) // Corrigido para "ingredients"
-  }
-
-  const adicionarIngre = () => {
-    setFormData({ ...formData, ingredients: [...formData.ingredients, ''] }) // Corrigido para "ingredients"
-  }
-
-  const removerIngre = (index) => {
-    const novosValores = [...formData.ingredients] // Corrigido para "ingredients"
-    novosValores.splice(index, 1)
-    setFormData({ ...formData, ingredients: novosValores }) // Corrigido para "ingredients"
-  }
-
-  const handleInputModPreps = (e, index) => {
-    const novosValores = [...formData.modPreps] // Corrigido para "modPreps"
-    novosValores[index] = e.target.value
-    setFormData({ ...formData, modPreps: novosValores }) // Corrigido para "modPreps"
-  }
-
-  const adicionarModPreps = () => {
-    setFormData({ ...formData, modPreps: [...formData.modPreps, ''] }) // Corrigido para "modPreps"
-  }
-
-  const removerModPreps = (index) => {
-    const novosValores = [...formData.modPreps] // Corrigido para "modPreps"
-    novosValores.splice(index, 1)
-    setFormData({ ...formData, modPreps: novosValores }) // Corrigido para "modPreps"
-  }
   const handleInputChangesCreateRecipes = (event) => {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
   }
-
   const handleImageChange = (event) => {
     const file = event.target.files[0]
     const reader = new FileReader()
@@ -106,7 +69,6 @@ export const CreateRecipes = ({ }) => {
     }
     navigate('/my-recipes')
   }
-  //Remover a função de os scroll, e pegar o scroll do tela.
   useEffect(() => {
     const handleScroll = () => {
       const height = window.scrollY || 0
@@ -114,20 +76,11 @@ export const CreateRecipes = ({ }) => {
     }
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', handleScroll)
-
-      // Limpe o evento de scroll quando o componente for desmontado
       return () => {
         window.removeEventListener('scroll', handleScroll)
       }
     }
   }, [])
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
-  }
   return (
     <>
       <INTERFACE
@@ -157,12 +110,6 @@ export const CreateRecipes = ({ }) => {
                     }
                     handleImageChange={handleImageChange}
                     handleSubmit={handleSubmit}
-                    handleInputIngre={handleInputIngre}
-                    adicionarIngre={adicionarIngre}
-                    removerIngre={removerIngre}
-                    handleInputModPreps={handleInputModPreps}
-                    adicionarModPreps={adicionarModPreps}
-                    removerModPreps={removerModPreps}
                   />
                 </Fragment>
               </Paper>
