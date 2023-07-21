@@ -29,7 +29,6 @@ export const RecipeForm = ({
             <MyTypography title={"Criação de receiatas"} variant="h6" />
 
             <Grid container spacing={2} sx={{ transition: '300ms' }}>
-
                 <MyTextField
                     id="recipeTitle"
                     name="recipeTitle"
@@ -37,8 +36,6 @@ export const RecipeForm = ({
                     label="Insirá o titulo da receita"
                     value={formData?.recipeTitle}
                 />
-
-
                 <MyTextField
                     id="recipeDescription"
                     name="recipeDescription"
@@ -48,8 +45,6 @@ export const RecipeForm = ({
                     onChange={handleInputChangesCreateRecipes}
                     value={formData?.recipeDescription}
                 />
-
-
                 <Grid item xs={12} sx={{
                     mt: '1rem',
                     height: formData?.ingredients?.length > 0 ? 'auto' : 0, transition: '.3s'
