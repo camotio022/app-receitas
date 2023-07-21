@@ -13,6 +13,12 @@ import {
     Image as ImageIcon
 } from '@mui/icons-material'
 import * as Tag from './styles/index.js'
+import { UserEditFieldsRecipe } from './componentes/UserEditFieldsRecipe/index.jsx';
+import { MoreEditFieldsRecipe } from './componentes/MoreFieldsEditRecipe/index.jsx';
+import { CategoryEditRecipe } from './componentes/CategoryEditRecipe/index.jsx';
+import { HeaderEditRecipe } from './componentes/HeaderEditRecipe/index.jsx';
+import { MyAppBar } from './componentes/AppBar';
+import { ProgressEditRecipe } from './componentes/ProgressEditRecipe';
 
 const UpdateButton = ({ onClick, loading }) => {
     return (
@@ -43,14 +49,12 @@ TabPanel.PropTypes = {
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
 };
-
 function a11yProps(index) {
     return {
         id: `action-tab-${index}`,
         'aria-controls': `action-tabpanel-${index}`,
     };
 }
-
 export const EditRecipes = () => {
     const { id } = useParams();
     const [docRec, setDocRec] = useState();
@@ -139,197 +143,34 @@ export const EditRecipes = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    const handleChangeIndex = (index) => {
-        setValue(index);
-    };
-    const transitionDuration = {
-        enter: theme.transitions.duration.enteringScreen,
-        exit: theme.transitions.duration.leavingScreen,
-    };
-
     return (
         <>
             <INTERFACE RENDERPAGE={<>
-                <AppBar position="static" color="default">
-                    <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="fullWidth"
-                        aria-label="action tabs example"
-                    >
-                        <Tab sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-
-                        }} label={
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <EditIcon style={{ marginRight: '0.5rem' }} />
-                                EDITAR MINHA RECEITA
-                            </div>
-                        } {...a11yProps(0)} />
-
-                    </Tabs>
-                </AppBar>
+                <MyAppBar
+                    handleChange={handleChange}
+                    a11yProps={a11yProps}
+                    value={value}
+                />
                 {isLoading ? <>
-                    <Tag.Cards sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                        <CircularProgress variant="indeterminate" value={progress} size={80} />
-                        <Typography variant="h6" sx={{ marginLeft: '10px' }}>
-                            {`${progress}%`}
-                        </Typography>
-                    </Tag.Cards>
+                    <ProgressEditRecipe progress={progress} />
                 </> :
                     <Tag.MyContainer>
                         <Tag.MyPaper>
-                            <TextField
-                                label="Recipe Title"
-                                name='recipeTitle'
-                                variant="filled"
-                                value={formData.recipeTitle}
-                                onChange={(event) => handleFieldChange('recipeTitle', event.target.value)}
+                            <HeaderEditRecipe
+                                formData={formData}
+                                handleFieldChange={handleFieldChange}
                             />
-                            <TextField
-                                label="Cook Time"
-                                name='cookTime'
-                                variant="filled"
-                                value={formData.cookTime}
-                                onChange={(event) => handleFieldChange('cookTime', event.target.value)}
+                            <CategoryEditRecipe
+                                formData={formData}
+                                handleFieldChange={handleFieldChange}
                             />
-                            <TextField
-                                label="Serving Size"
-                                name='servingSize'
-                                variant="filled"
-                                value={formData.servingSize}
-                                onChange={(event) => handleFieldChange('servingSize', event.target.value)}
-                            />
-                            <TextField
-                                label="Recipe Category"
-                                name='recipeCategory'
-                                variant="filled"
-                                value={formData.recipeCategory}
-                                onChange={(event) => handleFieldChange('recipeCategory', event.target.value)}
-                            />
-                            <TextField
-                                label="Recipe Image"
-                                name='recipeImage'
-                                variant="filled"
+                            <MoreEditFieldsRecipe
+                                formData={formData}
+                                handleFieldChange={handleFieldChange} />
 
-                                value={formData.recipeImage}
-                                onChange={(event) => handleFieldChange('recipeImage', event.target.value)}
-                            />
-                            <TextField
-                                label="Cooking Tips"
-                                name='cookingTips'
-                                variant="filled"
-                                type='number'
-
-                                value={formData.cookingTips}
-                                onChange={(event) => handleFieldChange('cookingTips', event.target.value)}
-                            />
-                            <TextField
-                                label="Calories"
-                                name='calories'
-                                variant="filled"
-                                type='number'
-
-                                value={formData.calories}
-                                onChange={(event) => handleFieldChange('calories', event.target.value)}
-                            />
-                            <TextField
-                                label="Carbs"
-                                name='carbs'
-                                variant="filled"
-                                type='number'
-
-                                value={formData.carbs}
-                                onChange={(event) => handleFieldChange('carbs', event.target.value)}
-                            />
-                            <TextField
-                                label="Protein"
-                                name='protein'
-                                type='number'
-
-                                variant="filled"
-                                value={formData.protein}
-                                onChange={(event) => handleFieldChange('protein', event.target.value)}
-                            />
-                            <TextField
-                                label="Fat"
-                                name='fat'
-                                type='number'
-
-                                variant="filled"
-                                value={formData.fat}
-                                onChange={(event) => handleFieldChange('fat', event.target.value)}
-                            />
-                            <TextField
-                                label="Sod"
-                                name='sod'
-                                type='number'
-                                variant="filled"
-                                value={formData.sod}
-                                onChange={(event) => handleFieldChange('sod', event.target.value)}
-                            />
-
-
-                            <TextField
-                                label="Gord"
-                                name='gord'
-                                type='number'
-                                variant="filled"
-                                value={formData.gord}
-                                onChange={(event) => handleFieldChange('gord', event.target.value)}
-                            />
-
-
-                            <TextField
-                                label="Author"
-                                name='author'
-                                type='number'
-                                variant="filled"
-                                value={formData.author}
-                                onChange={(event) => handleFieldChange('author', event.target.value)}
-                            />
-                            <TextField
-                                label="Ranking"
-                                name='ranking'
-                                variant="filled"
-                                type='number'
-                                value={formData.ranking}
-                                onChange={(event) => handleFieldChange('ranking', event.target.value)}
-                            />
-                            <TextField
-                                label="Creation Date"
-                                name='creationDate'
-                                variant="filled"
-                                type='date'
-                                value={formData.creationDate}
-                                onChange={(event) => handleFieldChange('creationDate', event.target.value)}
-                            />
-                            <TextField
-                                label="Name"
-                                name='name'
-                                variant="filled"
-                                type='text'
-                                value={formData.name}
-                                onChange={(event) => handleFieldChange('name', event.target.value)}
-                            />
-
-                            <TextField
-                                label="Email"
-                                name='email'
-                                type='email'
-                                variant="filled"
-                                value={formData.email}
-                                onChange={(event) => handleFieldChange('email', event.target.value)}
-                            />
-                            <TextField
-                                label="Country"
-                                name='country'
-                                variant="filled"
-                                value={formData.country}
-                                onChange={(event) => handleFieldChange('country', event.target.value)}
+                            <UserEditFieldsRecipe
+                                handleFieldChange={handleFieldChange}
+                                formData={formData}
                             />
                         </Tag.MyPaper>
                         <Divider />
