@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button, Link } from '@mui/material';
-import * as Tag from './index'
+import * as Tag from './styles/index'
 import { grey, orange } from '@mui/material/colors';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -26,7 +26,6 @@ export const Comunidade = () => {
                 console.log(error);
             }
         };
-        console.log(usuarios);
         obterUsuarios();
     }, []);
     const countRecipesPerUser = async (usuarios) => {
@@ -40,29 +39,16 @@ export const Comunidade = () => {
                 const recipesCount = querySnapshot.size;
                 recipesCountPerUser[usuario.id] = recipesCount;
 
-                console.log(`Receitas do usuário ${usuario.id}:`, querySnapshot.docs.map((doc) => doc.data()));
             } catch (error) {
-                console.log(`Erro ao obter as receitas do usuário ${usuario.id}:`, error);
                 recipesCountPerUser[usuario.id] = 0;
             }
         }
-
-        console.log('recipesCountPerUser:', recipesCountPerUser);
-
         return recipesCountPerUser;
     };
-
-
-
-
-    console.log(usuarios); // 3. Estado 'usuarios' ainda vazio aqui, pois useEffect ainda não foi executado.
-
     const StyeleTable = {
         fontWeight: 'bold', color: orange[900]
     }
-    function handleClick() {
-        setLoading(!loading);
-    }
+
     return (
         <>
             <INTERFACE RENDERPAGE={<>
@@ -74,8 +60,6 @@ export const Comunidade = () => {
                     width: '100%',
                     height: '100vh',
                 }}>
-
-
                     <Container
                         component="main"
                         maxWidth="sm"
@@ -117,12 +101,6 @@ export const Comunidade = () => {
 
                 </Stack>
             </>} />
-
-
-
-
-
-
         </>
     )
 }
