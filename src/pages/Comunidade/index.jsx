@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button, Link } from '@mui/material';
 import * as Tag from './styles/index'
-import { grey, orange } from '@mui/material/colors';
-import SendIcon from '@mui/icons-material/Send';
-import LoadingButton from '@mui/lab/LoadingButton';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { orange } from '@mui/material/colors';
+
 import { api } from '../../api';
 import { INTERFACE } from '../INTERFACE/index.jsx';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase.config'
 export const Comunidade = () => {
-    const [loading, setLoading] = useState(false);
     const [recipesCount, setRecipesCount] = useState({});
     const [usuarios, setUsuarios] = useState();
     useEffect(() => {
