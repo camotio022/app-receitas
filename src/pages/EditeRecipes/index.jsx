@@ -5,14 +5,14 @@ import { api } from '../../api';
 import { Button, CircularProgress } from '@mui/material';
 import { INTERFACE } from '../INTERFACE/index.jsx';
 import PropTypes from 'prop-types';
-import { green } from '@mui/material/colors';
+
 import { useTheme } from '@emotion/react';
 import {
     Edit as EditIcon,
     Folder as FolderIcon,
     Image as ImageIcon
 } from '@mui/icons-material'
-import * as Tag from './index.js'
+import * as Tag from './styles/index.js'
 
 const UpdateButton = ({ onClick, loading }) => {
     return (
@@ -180,29 +180,8 @@ export const EditRecipes = () => {
                         </Typography>
                     </Tag.Cards>
                 </> :
-                    <Container sx={{
-                        width: "100%",
-                        height: "auto",
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 2,
-                        bgcolor: 'transparent !important',
-                        marginBlock: '5rem'
-                    }}>
-                        <Paper sx={{
-                            width: "100%",
-                            height: "100%",
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexWrap: "wrap",
-                            gap: 2,
-                            paddingBlock: '3rem',
-                        }}>
-
-
+                    <Tag.MyContainer>
+                        <Tag.MyPaper>
                             <TextField
                                 label="Recipe Title"
                                 name='recipeTitle'
@@ -352,11 +331,11 @@ export const EditRecipes = () => {
                                 value={formData.country}
                                 onChange={(event) => handleFieldChange('country', event.target.value)}
                             />
-                        </Paper>
+                        </Tag.MyPaper>
                         <Divider />
                         <UpdateButton fullWidth={true} onClick={handleUpdateClick} loading={loading} />
 
-                    </Container>}
+                    </Tag.MyContainer>}
             </>} />
 
 
