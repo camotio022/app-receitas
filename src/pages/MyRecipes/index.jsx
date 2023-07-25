@@ -48,6 +48,8 @@ import { AuthContext } from '../../contexts/AuthContext'
 import { INTERFACE } from '../INTERFACE/index.jsx'
 import { Tabs } from '@mui/base'
 import { useTheme } from '@emotion/react'
+import { AppBarMyrecipes } from './componentes/AppBar'
+import { ProgressMyRecipes } from './componentes/progress'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -182,65 +184,13 @@ export const MyRecipes = () => {
   return (
     <INTERFACE>
       <>
-        <AppBar
-          sx={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          position="static"
-          color="default"
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-            aria-label="action tabs example"
-          >
-            <Tab
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              label={
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '100%',
-                  }}
-                >
-                  <FolderIcon style={{ marginRight: '0.5rem' }} />
-                  MINHAS RECEITAS
-                </div>
-              }
-              {...a11yProps(0)}
-            />
-          </Tabs>
-        </AppBar>
+        <AppBarMyrecipes
+          handleChange={handleChange}
+          value={value}
+        />
         {isLoading ? (
           <>
-            <Tag.Cards
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-              }}
-            >
-              <CircularProgress
-                variant="indeterminate"
-                value={progress}
-                size={80}
-              />
-              <Typography variant="h6" sx={{ marginLeft: '10px' }}>
-                {`${progress}%`}
-              </Typography>
-            </Tag.Cards>
+            <ProgressMyRecipes progress={progress} />
           </>
         ) : (
           <TabPanel value={value} index={0} dir={theme.direction}>
@@ -296,9 +246,8 @@ export const MyRecipes = () => {
                               {handleOptions[index] && (
                                 <Tag.Options>
                                   <Tag.PaperOptions
-                                    className={`floating-menu ${
-                                      floatingMenu === index ? 'open' : ''
-                                    }`}
+                                    className={`floating-menu ${floatingMenu === index ? 'open' : ''
+                                      }`}
                                   >
                                     <MenuList>
                                       <MenuItem>
