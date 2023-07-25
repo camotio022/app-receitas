@@ -114,7 +114,7 @@ const links = [
   },
   {
     icon: <KitchenIcon />,
-    name: 'Recitas',
+    name: 'Receitas',
     onClick: 'recipes',
     children: [
       {

@@ -46,7 +46,7 @@ export const RecipeForm = ({
     
     return (
         <>
-            <MyTypography title={"Criação de receiatas"} variant="h6" />
+            <MyTypography title={"Criação de receitas"} variant="h6" />
             <HeaderCreateRecipes
                 handleInputIngre={handleInputIngre}
                 adicionarIngre={adicionarIngre}

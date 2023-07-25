@@ -105,10 +105,6 @@ export const CardRecipes = () => {
                     )
                 })}
             </Box>
-
-
-
-
         </>
     )
 }

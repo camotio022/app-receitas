@@ -1,47 +1,5 @@
-import { styled, Stack, Box, Typography, Tooltip } from '@mui/material'
-export const Wrapper = styled('div')(({ theme }) => ({
-    display: "flex",
-    flexDirection: 'column',
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: '5rem',
-    padding: '3%',
-    width: "100%",
-    height: "100vh",
-}))
-
-export const Container = styled(Stack)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    gap: '5%',
-    width: '100%',
-    minHeight: '40%',
-    fontSize: '100%',
-    background: theme.palette.background.paper,
-
-}))
-export const HeaderView = styled(Stack)(({ theme }) => ({
-    borderBottom: `1px solid ${theme.palette.primary.light}`,
-    paddingBottom: '1rem',
-}))
-export const Title = styled(Typography)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-}))
-export const Cards = styled(Stack)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: "center",
-    width: '100%',
-    height: '100%',
-    flexWrap: 'wrap',
-    gap: "2rem",
-    marginBlock: '5rem',
-    bgcolor: '#f8fafb',
-}))
+import styled from "@emotion/styled";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
 
 export const Card = styled(Stack)(({ theme }) => ({
     display: 'flex',
@@ -120,41 +78,4 @@ export const AuthorImage = styled(Box)(({ theme }) => ({
         width: '100%',
         height: '100%',
     },
-}))
-export const Pagination = styled(Stack)(({ theme }) => ({
-    position: 'fixed',
-    bottom: '3rem',
-}))
-export const MenuItemsLinks = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '1rem',
-    flexWrap: 'wrap',
-    padding: '10px',
-    width: '100%',
-    height: '100%',
-    bgcolor: '#f8fafb',
-}))
-
-export const CardImage = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    gap: 5,
-    marginBlock: '5rem',
-}))
-
-export const ContainerTopReview = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    gap: 5,
-    marginBlock: '5rem',
 }))
