@@ -83,40 +83,34 @@ export const CreateRecipes = ({ }) => {
   }, [])
   return (
     <>
-      <INTERFACE
-        RENDERPAGE={
-          <>
-            <Container
-              component="main"
-              maxWidth="sm"
-              sx={{
-                mb: 4,
-                mt: 15,
-                display: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Paper
-                variant="outlined"
-                sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-              >
-                <Fragment>
-                  <RecipeForm
-                    formData={formData}
-                    setFormData={setFormData}
-                    handleInputChangesCreateRecipes={
-                      handleInputChangesCreateRecipes
-                    }
-                    handleImageChange={handleImageChange}
-                    handleSubmit={handleSubmit}
-                  />
-                </Fragment>
-              </Paper>
-            </Container>
-          </>
-        }
-      />
+      <Container
+        component="main"
+        maxWidth="sm"
+        sx={{
+          mb: 4,
+          mt: 15,
+          display: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Paper
+          variant="outlined"
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+        >
+          <Fragment>
+            <RecipeForm
+              formData={formData}
+              setFormData={setFormData}
+              handleInputChangesCreateRecipes={
+                handleInputChangesCreateRecipes
+              }
+              handleImageChange={handleImageChange}
+              handleSubmit={handleSubmit}
+            />
+          </Fragment>
+        </Paper>
+      </Container>
     </>
   )
 }

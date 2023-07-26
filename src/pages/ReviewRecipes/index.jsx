@@ -39,11 +39,6 @@ TabPanel.PropTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 }
-const fabStyle = {
-  position: 'absolute',
-  bottom: 16,
-  right: 16,
-}
 export const TopReview = (props) => {
   const { user } = useContext(AuthContext)
   const theme = useTheme()
@@ -122,7 +117,6 @@ export const TopReview = (props) => {
       }
     } catch (error) {
       alert('Erro ao favoritar a receita:', error)
-      // Trate o erro de acordo com suas necessidades, por exemplo, exibindo uma mensagem de erro ao usuário.
     }
   }
   const handleChange = (event, newValue) => {
@@ -132,7 +126,7 @@ export const TopReview = (props) => {
     setValue(index)
   }
   return (
-    <INTERFACE>
+    <>
       <Box>
         <AppBarTopic
           value={value}
@@ -212,6 +206,6 @@ export const TopReview = (props) => {
           </>
         )}
       </>
-    </INTERFACE>
+    </>
   )
 }

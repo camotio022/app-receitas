@@ -48,56 +48,54 @@ export const Comunidade = () => {
 
     return (
         <>
-            <INTERFACE RENDERPAGE={<>
-                <Stack sx={{
-                    display: 'center',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                    height: '100vh',
-                }}>
-                    <Container
-                        component="main"
-                        maxWidth="sm"
+            <Stack sx={{
+                display: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100vh',
+            }}>
+                <Container
+                    component="main"
+                    maxWidth="sm"
+                >
+                    <Paper
+                        variant="outlined"
+                        sx={{ my: { xs: 3, md: 12 }, p: { xs: 3, md: 3 }, width: "100%" }}
                     >
-                        <Paper
-                            variant="outlined"
-                            sx={{ my: { xs: 3, md: 12 }, p: { xs: 3, md: 3 }, width: "100%" }}
-                        >
 
-                            <h2>Comunidade de usuários</h2>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell style={StyeleTable}>Info users</TableCell>
-                                        <TableCell style={StyeleTable}>Emails</TableCell>
-                                        <TableCell style={StyeleTable}>Recipes</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                {usuarios?.map((user, index) => {
-                                    return (
-                                        <TableBody key={index}>
-                                            <TableRow>
-                                                <TableCell sx={{ display: 'flex', alignItems: "center", gap: '1rem' }}>
-                                                    <Link href={`/edituser/${user.id}`}>
-                                                        <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
-                                                    </Link>
-                                                    <Stack>{user.name}</Stack>
-                                                </TableCell>
-                                                <TableCell>{user?.email}</TableCell>
-                                                <TableCell>{user?.postCount}</TableCell>
-                                            </TableRow>
+                        <h2>Comunidade de usuários</h2>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell style={StyeleTable}>Info users</TableCell>
+                                    <TableCell style={StyeleTable}>Emails</TableCell>
+                                    <TableCell style={StyeleTable}>Recipes</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            {usuarios?.map((user, index) => {
+                                return (
+                                    <TableBody key={index}>
+                                        <TableRow>
+                                            <TableCell sx={{ display: 'flex', alignItems: "center", gap: '1rem' }}>
+                                                <Link href={`/edituser/${user.id}`}>
+                                                    <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
+                                                </Link>
+                                                <Stack>{user.name}</Stack>
+                                            </TableCell>
+                                            <TableCell>{user?.email}</TableCell>
+                                            <TableCell>{user?.postCount}</TableCell>
+                                        </TableRow>
 
-                                        </TableBody>
-                                    )
-                                })}
-                            </Table>
-                        </Paper>
-                    </Container>
+                                    </TableBody>
+                                )
+                            })}
+                        </Table>
+                    </Paper>
+                </Container>
 
-                </Stack>
-            </>} />
+            </Stack>
         </>
     )
 }

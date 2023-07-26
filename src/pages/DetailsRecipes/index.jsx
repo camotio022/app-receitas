@@ -5,8 +5,6 @@ import { useParams } from 'react-router-dom'
 import * as Tag from './styles/index.js'
 import { grey, orange } from '@mui/material/colors'
 import React, { useEffect, useState } from 'react'
-import { api } from '../../api/index.js'
-import { INTERFACE } from '../INTERFACE/index.jsx'
 import { CardMidiaDetailRecipe } from './componentes/CardMidiaDetailsRecipes/index.jsx'
 import { PreviaDetailsRecipe } from './componentes/previaDetailsRecipe/index.jsx'
 import { NutricionaisDetailsRecipe } from './componentes/nutriDetailsRecipe/index.jsx'
@@ -44,32 +42,32 @@ export const DetailsRecipes = () => {
     }
     return (
         <>
-            <INTERFACE RENDERPAGE={
-                <>
-                    <Tag.Container>
-                        <Tag.CardMediaContain>
-                            <CardMidiaDetailRecipe
-                                recipe={recipe}
-                            />
-                            <PreviaDetailsRecipe
-                                recipe={recipe}
-                            />
-                            <NutricionaisDetailsRecipe recipe={recipe} />
-                            <IngredientDetailsRecipe recipe={recipe} />
-                            <StepsDetailsRecipe recipe={recipe} />
-                            <Card component="ul"
-                                sx={{
-                                    flexGrow: 1,
-                                    minWidth: "90%",
-                                    height: '20rem',
-                                    mt: '15rem',
-                                }}
-                            >
-                            </Card>
-                        </Tag.CardMediaContain>
-                    </Tag.Container>
-                </>
-            } />
+
+
+            <Tag.Container>
+                <Tag.CardMediaContain>
+                    <CardMidiaDetailRecipe
+                        recipe={recipe}
+                    />
+                    <PreviaDetailsRecipe
+                        recipe={recipe}
+                    />
+                    <NutricionaisDetailsRecipe recipe={recipe} />
+                    <IngredientDetailsRecipe recipe={recipe} />
+                    <StepsDetailsRecipe recipe={recipe} />
+                    <Card component="ul"
+                        sx={{
+                            flexGrow: 1,
+                            minWidth: "90%",
+                            height: '20rem',
+                            mt: '15rem',
+                        }}
+                    >
+                    </Card>
+                </Tag.CardMediaContain>
+            </Tag.Container>
+
+
         </>
     )
 }

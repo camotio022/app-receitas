@@ -93,7 +93,7 @@ export const PerfilUser = () => {
     }, [id]);
     if (!id) {
         return (
-            <INTERFACE RENDERPAGE={<>
+            <>
                 <Dialog open={true} onClose={handleClose}>
                     <DialogTitle>INFORMAÇÕES DO ESTADO</DialogTitle>
                     <DialogContent>
@@ -105,7 +105,7 @@ export const PerfilUser = () => {
                         <Link href="/topReview">Voltar</Link>
                     </DialogActions>
                 </Dialog>
-            </>} />
+            </>
         )
     }
     if (id) {

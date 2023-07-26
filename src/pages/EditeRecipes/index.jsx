@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../../api';
 import { Button, CircularProgress } from '@mui/material';
-import { INTERFACE } from '../INTERFACE/index.jsx';
 import PropTypes from 'prop-types';
 
 import { useTheme } from '@emotion/react';
@@ -145,41 +144,37 @@ export const EditRecipes = () => {
     };
     return (
         <>
-            <INTERFACE RENDERPAGE={<>
-                <MyAppBar
-                    handleChange={handleChange}
-                    a11yProps={a11yProps}
-                    value={value}
-                />
-                {isLoading ? <>
-                    <ProgressEditRecipe progress={progress} />
-                </> :
-                    <Tag.MyContainer>
-                        <Tag.MyPaper>
-                            <HeaderEditRecipe
-                                formData={formData}
-                                handleFieldChange={handleFieldChange}
-                            />
-                            <CategoryEditRecipe
-                                formData={formData}
-                                handleFieldChange={handleFieldChange}
-                            />
-                            <MoreEditFieldsRecipe
-                                formData={formData}
-                                handleFieldChange={handleFieldChange} />
+            <MyAppBar
+                handleChange={handleChange}
+                a11yProps={a11yProps}
+                value={value}
+            />
+            {isLoading ? <>
+                <ProgressEditRecipe progress={progress} />
+            </> :
+                <Tag.MyContainer>
+                    <Tag.MyPaper>
+                        <HeaderEditRecipe
+                            formData={formData}
+                            handleFieldChange={handleFieldChange}
+                        />
+                        <CategoryEditRecipe
+                            formData={formData}
+                            handleFieldChange={handleFieldChange}
+                        />
+                        <MoreEditFieldsRecipe
+                            formData={formData}
+                            handleFieldChange={handleFieldChange} />
 
-                            <UserEditFieldsRecipe
-                                handleFieldChange={handleFieldChange}
-                                formData={formData}
-                            />
-                        </Tag.MyPaper>
-                        <Divider />
-                        <UpdateButton fullWidth={true} onClick={handleUpdateClick} loading={loading} />
+                        <UserEditFieldsRecipe
+                            handleFieldChange={handleFieldChange}
+                            formData={formData}
+                        />
+                    </Tag.MyPaper>
+                    <Divider />
+                    <UpdateButton fullWidth={true} onClick={handleUpdateClick} loading={loading} />
 
-                    </Tag.MyContainer>}
-            </>} />
-
-
+                </Tag.MyContainer>}
         </>
     );
 };
