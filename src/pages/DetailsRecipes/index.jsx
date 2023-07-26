@@ -11,6 +11,7 @@ import { NutricionaisDetailsRecipe } from './componentes/nutriDetailsRecipe/inde
 import { IngredientDetailsRecipe } from './componentes/IngredientsDetailsRecipe/index.jsx'
 import { StepsDetailsRecipe } from './componentes/StepsDetailsRecipe/index.jsx'
 import { LoadingDetailsRecipe } from './componentes/loadingDetailsRecipe/index.jsx'
+import { api } from '../../api/index.js'
 export const DetailsRecipes = () => {
     const { id } = useParams()
     const [recipe, setrecipe] = useState(null)

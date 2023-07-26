@@ -40,10 +40,7 @@ const Main = () => {
               <Route path="/" element={<TopReview />} />
               <Route path="/topReview" element={<TopReview />} />
               <Route path="/createRecipes" element={<CreateRecipes />} />
-              <Route
-                path="/detailsRecipes/:id/edit"
-                element={<CreateRecipes />}
-              />
+              
               <Route path="/edituser/:id" element={<PerfilUser />} />
               <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
               <Route path="/comunidade" element={<Comunidade />} />
@@ -52,6 +49,10 @@ const Main = () => {
               <Route path="/my-recipes" element={<MyRecipes />} />
               <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
               <Route path="/editerecipes/:id" element={<EditRecipes />} />
+              <Route
+                path="/detailsRecipes/:id/edit"
+                element={<CreateRecipes />}
+              />
             </Routes>
           </>} />
         </>
