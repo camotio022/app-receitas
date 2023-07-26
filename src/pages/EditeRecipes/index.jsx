@@ -1,15 +1,4 @@
-import {
-  AppBar,
-  Container,
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { AppBar, Container, Divider, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../../api'
