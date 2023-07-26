@@ -3,7 +3,6 @@ import * as Tag from './index.js'
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../api"
-import { INTERFACE } from "../../INTERFACE/index.jsx"
 import { AuthContext } from "../../../contexts/AuthContext"
 import { CardMediaUser } from "./componentes/cardMedia/index.jsx"
 import { ForumEditInfoUser } from "./componentes/editUserForm/index.jsx"
@@ -25,7 +24,6 @@ export const PerfilUser = () => {
             setEditingField("coverImage");
         }
         if (value === "photoURL") {
-
             setEditingField("photoURL");
         }
     };
@@ -38,23 +36,17 @@ export const PerfilUser = () => {
             return;
         }
         try {
-            // Verificar se o campo coverImage está definido em userValues
             if (editingField === "coverImage") {
-                // Chamar a função updateCover passando o ID do usuário e os dados atualizados
                 await api.user.updateCover(id, { coverImage: userValues.coverImage });
                 console.log('Imagem de capa atualizada com sucesso!');
             }
-
-            // Verificar se o campo photoURL está definido em userValues
             if (editingField === "photoURL") {
-                // Chamar a função update passando o ID do usuário e os dados atualizados
                 await api.user.update(id, { photoURL: userValues.photoURL });
                 console.log('PhotoURL atualizado com sucesso!');
             }
         } catch (error) {
             console.error('Erro ao atualizar a imagem:', error);
         }
-
         handleClose();
     };
     const handleChange = (event) => {
@@ -111,45 +103,43 @@ export const PerfilUser = () => {
     if (id) {
         return (
             <>
-                <INTERFACE RENDERPAGE={<>
-                    <Stack
-                    >
-                        <CardMediaUser
-                            handleClickOpen={handleClickOpen}
-                            userValues={userValues}
-                            user={user}
-                            id={id}
-                        />
-                        <Tag.ItemMenu >
-                            EDITAR O PERFIL
-                        </Tag.ItemMenu>
-                        <Stack>
-                            <Box sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: "15px",
-                                flexWrap: 'wrap',
-                                width: '100%',
-                            }}>
-                                <ForumEditInfoUser
-                                    isEditing={isEditing}
-                                    userValues={userValues}
-                                    handleChange={handleChange}
-                                    handleEditClick={handleEditClick}
-                                    user={user}
-                                />
-                            </Box>
-                        </Stack>
-                    </Stack>
-                    <MyDialog
-                        open={open}
-                        editingField={editingField}
-                        handleClose={handleClose}
-                        handleCoverImageChange={handleCoverImageChange}
-                        handleSaveCoverImage={handleSaveCoverImage}
+                <Stack
+                >
+                    <CardMediaUser
+                        handleClickOpen={handleClickOpen}
+                        userValues={userValues}
+                        user={user}
+                        id={id}
                     />
-                </>} />
+                    <Tag.ItemMenu >
+                        EDITAR O PERFIL
+                    </Tag.ItemMenu>
+                    <Stack>
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: "15px",
+                            flexWrap: 'wrap',
+                            width: '100%',
+                        }}>
+                            <ForumEditInfoUser
+                                isEditing={isEditing}
+                                userValues={userValues}
+                                handleChange={handleChange}
+                                handleEditClick={handleEditClick}
+                                user={user}
+                            />
+                        </Box>
+                    </Stack>
+                </Stack>
+                <MyDialog
+                    open={open}
+                    editingField={editingField}
+                    handleClose={handleClose}
+                    handleCoverImageChange={handleCoverImageChange}
+                    handleSaveCoverImage={handleSaveCoverImage}
+                />
             </>
         )
     }

@@ -3,7 +3,7 @@ import { Close, Delete, Details, Edit } from '@mui/icons-material';
 import { Divider, Link, ListItemIcon, ListItemText, MenuItem, MenuList, Typography } from '@mui/material';
 import { red } from '@mui/material/colors';
 import * as Tag from '../../index.js';
-
+import { MyDialogComponent } from '../../../../componentes/DIALOG/index.jsx';
 export const OptionsMyRecipes = ({
   handleClickOutsideMenu,
   floatingMenu,
@@ -17,7 +17,7 @@ export const OptionsMyRecipes = ({
         className={`floating-menu ${floatingMenu === index ? 'open' : ''}`}
       >
         <MenuList>
-          <MenuItem onClick={() => { /* Handler para detalhar a receita */ }}>
+          <MenuItem onClick={() => { }}>
             <ListItemIcon>
               <Details fontSize="small" />
             </ListItemIcon>
@@ -72,5 +72,5 @@ export const OptionsMyRecipes = ({
         </MenuList>
       </Tag.PaperOptions>
     </Tag.Options>
-  );
-};
+  )
+}

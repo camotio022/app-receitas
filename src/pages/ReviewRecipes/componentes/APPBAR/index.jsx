@@ -1,5 +1,5 @@
 
-import {Tabs } from "@mui/material";
+import { Tabs } from "@mui/material";
 import { CardGiftcard, Image } from "@mui/icons-material";
 import { Tab } from "@mui/material";
 

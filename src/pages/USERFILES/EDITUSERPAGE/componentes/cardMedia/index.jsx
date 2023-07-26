@@ -42,15 +42,9 @@ export const CardMediaUser = ({
                 padding: 1.6,
                 mt: '-3.8rem',
             }}>
-                <Box>
+                <Box onDoubleClick={() => handleClickOpen("photoURL")}>
                     <Avatar src={userValues?.photoURL} sx={{ zIndex: 0, width: 100, height: 100, border: '5px solid white' }} >
                     </Avatar>
-                    {user.uid === id &&
-                        <CameraAlt
-                            onClick={() => handleClickOpen("photoURL")}
-                            sx={{ position: 'absolute', ml: '4.5rem', mt: "-2rem", zIndex: 1 }}
-                        />
-                    }
                 </Box>
                 <Box>
                     <Stack variant="h6" sx={{ fontWeight: 900, color: 'black' }}>{userValues?.name || userValues?.displayName}</Stack>
