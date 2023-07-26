@@ -9,7 +9,7 @@ export const Container = styled(Stack)(({ theme }) => ({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     width: '100%',
-    height: '100%',
+    height: 'auto',
     color: 'red',
 
 }))
