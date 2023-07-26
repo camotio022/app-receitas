@@ -16,7 +16,7 @@ import { MenuContent } from './components/MenuContent/index.jsx'
 import { Links_a } from './components/Links_a/index.jsx'
 import { links } from './consts/links.jsx'
 
-export const MainLayout = ({ RENDERPAGE, children }) => {
+export const MainLayout = ({ children }) => {
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const [opens, setopens] = useState(null)
@@ -73,7 +73,7 @@ export const MainLayout = ({ RENDERPAGE, children }) => {
       links={links}
       selectedLink={selectedLink}
       anchorEl={anchorEl}
-      RENDERPAGE={RENDERPAGE || children}
+      RENDERPAGE={children}
       handleSelectLink={handleSelectLink}
       handleOpenUserMenu={handleOpenUserMenu}
     >

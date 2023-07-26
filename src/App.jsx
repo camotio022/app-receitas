@@ -29,12 +29,12 @@ const Main = () => {
     <ThemeProvider theme={theme}>
       {auth.isLoggedIn ? (
         <>
-          <MainLayout RENDERPAGE={<>
+          <MainLayout>
             <Routes>
               <Route path="/" element={<TopReview />} />
               <Route path="/topReview" element={<TopReview />} />
               <Route path="/createRecipes" element={<CreateRecipes />} />
-              
+
               <Route path="/edituser/:id" element={<PerfilUser />} />
               <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
               <Route path="/comunidade" element={<Comunidade />} />
@@ -48,7 +48,7 @@ const Main = () => {
                 element={<CreateRecipes />}
               />
             </Routes>
-          </>} />
+          </MainLayout>
         </>
       ) : (
         <Routes>
