@@ -20,6 +20,7 @@ import { LogoutAuto } from './LogoutAuto'
 import { EditRecipes } from './pages/EditeRecipes/index.jsx'
 import { HomePage } from './pages/Home/index.jsx'
 import { PerfilUser } from './pages/USERFILES/EDITUSERPAGE/index.jsx'
+import { INTERFACE } from './pages/INTERFACE/index.jsx'
 
 const Main = () => {
   const auth = useContext(AuthContext)
@@ -33,25 +34,26 @@ const Main = () => {
     <ThemeProvider theme={theme}>
       {auth.isLoggedIn ? (
         <>
-          {/* <Links /> */}
-          <Routes>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/" element={<TopReview />} />
-            <Route path="/topReview" element={<TopReview />} />
-            <Route path="/createRecipes" element={<CreateRecipes />} />
-            <Route
-              path="/detailsRecipes/:id/edit"
-              element={<CreateRecipes />}
-            />
-            <Route path="/edituser/:id" element={<PerfilUser />} />
-            <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
-            <Route path="/comunidade" element={<Comunidade />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/my-recipes" element={<MyRecipes />} />
-            <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
-            <Route path="/editerecipes/:id" element={<EditRecipes />} />
-          </Routes>
+          <INTERFACE RENDERPAGE={<>
+            <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/" element={<TopReview />} />
+              <Route path="/topReview" element={<TopReview />} />
+              <Route path="/createRecipes" element={<CreateRecipes />} />
+              <Route
+                path="/detailsRecipes/:id/edit"
+                element={<CreateRecipes />}
+              />
+              <Route path="/edituser/:id" element={<PerfilUser />} />
+              <Route path="/detailsRecipes/:id" element={<DetailsRecipes />} />
+              <Route path="/comunidade" element={<Comunidade />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/my-recipes" element={<MyRecipes />} />
+              <Route path="/youfavoriteRecipes" element={<FavoriteRecipes />} />
+              <Route path="/editerecipes/:id" element={<EditRecipes />} />
+            </Routes>
+          </>} />
         </>
       ) : (
         <Routes>
