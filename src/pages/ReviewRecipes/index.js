@@ -125,3 +125,36 @@ export const Pagination = styled(Stack)(({ theme }) => ({
     position: 'fixed',
     bottom: '3rem',
 }))
+export const MenuItemsLinks = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+    flexWrap: 'wrap',
+    padding: '10px',
+    width: '100%',
+    height: '100%',
+    bgcolor: '#f8fafb',
+}))
+
+export const CardImage = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    gap: 5,
+    marginBlock: '5rem',
+}))
+
+export const ContainerTopReview = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    gap: 5,
+    marginBlock: '5rem',
+}))

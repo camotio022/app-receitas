@@ -1,49 +1,25 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
-
-export const AlertDialog = ({ dialogTitle, dialogDes }) => {
-    const [open, setOpen] = useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
+export const MyDialogComponent = ({
+    tittle,
+    content,
+    open,
+    message,
+    setMessage
+}) => {
     return (
-        <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open alert dialog
-            </Button>
-            <Dialog
-                open={true}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {dialogTitle}
-                </DialogTitle>
+        <>
+            <Dialog open={open} onClose={false}>
+                <DialogTitle>{tittle}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {dialogDes}
+                    <DialogContentText>
+                        {message}
                     </DialogContentText>
                 </DialogContent>
+                {content}
                 <DialogActions>
-                    <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        Agree
-                    </Button>
+                    <Button onClick={() => setMessage("")}>voltar</Button>
                 </DialogActions>
             </Dialog>
-        </div>
-    );
+        </>
+    )
 }

@@ -7,15 +7,15 @@ import { getAnalytics } from 'firebase/analytics'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: 'AIzaSyBjjWcfY3cJCbsT2Wz4X9ssR3Q2TwJFNtM',
-    authDomain: 'app-receitas-eeb07.firebaseapp.com',
-    projectId: 'app-receitas-eeb07',
-    storageBucket: 'app-receitas-eeb07.appspot.com',
-    messagingSenderId: '218372002302',
-    appId: '1:218372002302:web:d90cdca554af13cc84b0af',
-    measurementId: 'G-8S6ECJJ18E',
-}
+// const firebaseConfig = {
+//     apiKey: 'AIzaSyBjjWcfY3cJCbsT2Wz4X9ssR3Q2TwJFNtM',
+//     authDomain: 'app-receitas-eeb07.firebaseapp.com',
+//     projectId: 'app-receitas-eeb07',
+//     storageBucket: 'app-receitas-eeb07.appspot.com',
+//     messagingSenderId: '218372002302',
+//     appId: '1:218372002302:web:d90cdca554af13cc84b0af',
+//     measurementId: 'G-8S6ECJJ18E',
+// }
 // const firebaseConfig = {
 //   apiKey: "AIzaSyDfBNYAWvhKlpz9WxABBqW_z2ch8jZsEnU",
 //   authDomain: "receitas-93bb5.firebaseapp.com",
@@ -26,15 +26,15 @@ const firebaseConfig = {
 //   measurementId: "G-HSHNXEK645"
 // };
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDm3Zl3eFWzhYwcZR4WQfn22fMX4fMYaYU",
-//   authDomain: "appreceitas-3daf2.firebaseapp.com",
-//   projectId: "appreceitas-3daf2",
-//   storageBucket: "appreceitas-3daf2.appspot.com",
-//   messagingSenderId: "821625533576",
-//   appId: "1:821625533576:web:f807658e7d61b45fa11b3d",
-//   measurementId: "G-FEGL9G9FXQ"
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyDm3Zl3eFWzhYwcZR4WQfn22fMX4fMYaYU",
+  authDomain: "appreceitas-3daf2.firebaseapp.com",
+  projectId: "appreceitas-3daf2",
+  storageBucket: "appreceitas-3daf2.appspot.com",
+  messagingSenderId: "821625533576",
+  appId: "1:821625533576:web:f807658e7d61b45fa11b3d",
+  measurementId: "G-FEGL9G9FXQ"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)

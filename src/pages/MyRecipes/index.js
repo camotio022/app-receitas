@@ -148,3 +148,15 @@ export const PaperOptions = styled(Paper)(({ theme }) => ({
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.15)',
     transition: "transform 0.3s ease-in-out",
 }))
+
+export const MenuItemsLinks = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+    flexWrap: 'wrap',
+    padding: '10px',
+    width: '100%',
+    height: '100%',
+    bgcolor: '#f8fafb',
+}))
