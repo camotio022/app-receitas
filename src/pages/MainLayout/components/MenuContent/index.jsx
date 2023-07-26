@@ -1,24 +1,17 @@
-import { Box, Fab, Fade, Grid, IconButton, Stack, Tooltip } from '@mui/material'
+import { Stack } from '@mui/material';
+
 
 import {
   Search as SearchIcon,
-  Folder as FolderIcon,
-  Add,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
   Close as CloseIcon,
-  DinnerDining as DinnerDiningIcon,
-  Favorite as FavoriteIcon,
-} from '@mui/icons-material'
-
-import * as Tag from '../../index.js'
-import * as S from './styles.js'
-import { Logo } from '../../../../componentes/LOGO/index.jsx'
-import { UserMenu } from '../UserMenu/index.jsx'
-import { Links_a } from '../Links_a/index.jsx'
-import { ScrollToTopButton } from '../ScrollToTopButton/index.jsx'
-import { TopLinks } from '../TopLinks/index.jsx'
-import { FloatingButton } from '../FloatingButton/index.jsx'
-
+} from '@mui/icons-material';
+import * as Tag from '../../index.js';
+import * as S from './styles.js';
+import { Logo } from '../../../../componentes/LOGO/index.jsx';
+import { UserMenu } from '../UserMenu/index.jsx';
+import { Links_a } from '../Links_a/index.jsx';
+import { TopLinks } from '../TopLinks/index.jsx';
+import { FloatingButton } from '../FloatingButton/index.jsx';
 export const MenuContent = ({
   scrollHeight,
   children,
@@ -39,7 +32,6 @@ export const MenuContent = ({
       <S.Container scrollHeight={scrollHeight}>
         <S.Header scrollHeight={scrollHeight}>
           <Logo />
-
           <Stack justifyContent={'flex-end'} alignItems={'center'} mr={3}>
             <UserMenu
               handleClick={handleOpenUserMenu}
@@ -73,7 +65,7 @@ export const MenuContent = ({
         </S.Header>
         <Stack
           direction="row"
-          sx={{ width: '100vw', height: '90vh'}}
+          sx={{ width: '100vw', height: '90vh' }}
         >
           <S.SideMenu>
             <S.MinhaLista
@@ -111,10 +103,7 @@ export const MenuContent = ({
 
           <S.Content>{RENDERPAGE || children}</S.Content>
         </Stack>
-
         <FloatingButton />
-
-        {/* <ScrollToTopButton scrollHeight={scrollHeight} /> */}
       </S.Container>
     </>
   )

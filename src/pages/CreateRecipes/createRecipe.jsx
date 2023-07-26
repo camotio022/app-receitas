@@ -1,10 +1,6 @@
 import { Fragment, useContext } from 'react'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
-import {
-  KeyboardArrowUp as KeyboardArrowUpIcon,
-  ArrowDropDown as ArrowDropDownIcon,
-} from '@mui/icons-material'
 
 import './styles/index.css'
 import { RecipeForm } from './RecipeForm'
@@ -14,7 +10,6 @@ import { useEffect } from 'react'
 import { api } from '../../api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { INTERFACE } from '../INTERFACE/index.jsx'
 export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)

@@ -11,21 +11,17 @@ import { Folder, Menu as MenuIcon } from '@mui/icons-material'
 import { useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { Logo } from '../../componentes/LOGO'
-import { MenuContent } from './components/MenuContent'
-import { Links_a } from './components/Links_a'
-import { links } from './consts/links'
+import { Logo } from '../../componentes/LOGO/index.jsx'
+import { MenuContent } from './components/MenuContent/index.jsx'
+import { Links_a } from './components/Links_a/index.jsx'
+import { links } from './consts/links.jsx'
 
-export const INTERFACE = ({ RENDERPAGE, children }) => {
+export const MainLayout = ({ RENDERPAGE, children }) => {
   const matches = useMediaQuery('(min-width:900px)')
   const matchesMobileSmall = useMediaQuery('(min-width:550px)')
-
-  const [perfil, setperfil] = useState(false)
   const [opens, setopens] = useState(null)
-
   const [selectedLink, setSelectedLink] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
-
   const location = useLocation()
   const pathnames = location.pathname
     .split('/')
@@ -53,7 +49,6 @@ export const INTERFACE = ({ RENDERPAGE, children }) => {
       setSelectedLink(null)
       return
     }
-
     setSelectedLink(newLink)
     setAnchorEl(event.target)
   }

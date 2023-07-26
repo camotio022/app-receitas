@@ -7,7 +7,6 @@ import {
   Box,
 } from '@mui/material'
 import { AuthContext } from '../../contexts/AuthContext'
-import { INTERFACE } from '../INTERFACE/index.jsx'
 import { useTheme } from '@emotion/react'
 import { AppBarMyrecipes } from './componentes/AppBar'
 import { ProgressMyRecipes } from './componentes/progress'

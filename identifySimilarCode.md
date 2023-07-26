@@ -36,8 +36,8 @@
     -- AllProjet[0]
 }
 
-## INTERFACE {
-    -- Renomear a tag INTERFACE para MainLayout.
+## MainLayout {
+    -- Renomear a tag MainLayout para MainLayout.
     -- Dividir para 4 componentes: {
         Header - logo principal, ícone para abrir o menu lateral, menu do usuário
         Sidebar - menu com itens de navegação, tanto desktop como mobile

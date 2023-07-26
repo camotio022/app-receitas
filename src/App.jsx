@@ -15,7 +15,7 @@ import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
 import { LogoutAuto } from './LogoutAuto'
 import { EditRecipes } from './pages/EditeRecipes/index.jsx'
 import { PerfilUser } from './pages/USERFILES/EDITUSERPAGE/index.jsx'
-import { INTERFACE } from './pages/INTERFACE/index.jsx'
+import { MainLayout } from './pages/MainLayout/index.jsx'
 
 const Main = () => {
   const auth = useContext(AuthContext)
@@ -29,7 +29,7 @@ const Main = () => {
     <ThemeProvider theme={theme}>
       {auth.isLoggedIn ? (
         <>
-          <INTERFACE RENDERPAGE={<>
+          <MainLayout RENDERPAGE={<>
             <Routes>
               <Route path="/" element={<TopReview />} />
               <Route path="/topReview" element={<TopReview />} />
@@ -56,7 +56,6 @@ const Main = () => {
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       )}
-      {/* <ThemeButton handleClick={handleToggleMode} /> */}
       <CssBaseline />
     </ThemeProvider>
   )

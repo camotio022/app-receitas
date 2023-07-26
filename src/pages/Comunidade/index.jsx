@@ -4,7 +4,6 @@ import * as Tag from './styles/index'
 import { orange } from '@mui/material/colors';
 
 import { api } from '../../api';
-import { INTERFACE } from '../INTERFACE/index.jsx';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase.config'
 export const Comunidade = () => {
