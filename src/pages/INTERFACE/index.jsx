@@ -1,4 +1,3 @@
-import { Links } from '../../componentes/LINKS'
 import * as Tag from './index.js'
 import {
   Box,
@@ -13,8 +12,6 @@ import { useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { Logo } from '../../componentes/LOGO'
-import { AuthContext } from '../../contexts/AuthContext'
-import { ScrollToTopButton } from './components/ScrollToTopButton'
 import { MenuContent } from './components/MenuContent'
 import { Links_a } from './components/Links_a'
 import { links } from './consts/links'

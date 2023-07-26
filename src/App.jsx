@@ -2,23 +2,18 @@ import './App.css'
 import React, { useContext, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { darkTheme, lightTheme } from './App/theme'
-
-import { ThemeButton } from './colors.jsx'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import { Links } from './componentes/LINKS'
 import { TopReview } from './pages/ReviewRecipes/index.jsx'
 import { DetailsRecipes } from './pages/DetailsRecipes/index.jsx'
 import { SignUp } from './screens/signUp/index.jsx'
 import { SignIn } from './screens/signIn/index.jsx'
 import { CreateRecipes } from './pages/CreateRecipes/createRecipe'
-import { NavigationHandler } from './router/NavigationHandler'
 import { AuthContext, AuthProvider } from './contexts/AuthContext'
 import { Comunidade } from './pages/Comunidade/index.jsx'
 import { MyRecipes } from './pages/MyRecipes/index.jsx'
 import { FavoriteRecipes } from './pages/FavoriteRecipes/index.jsx'
 import { LogoutAuto } from './LogoutAuto'
 import { EditRecipes } from './pages/EditeRecipes/index.jsx'
-import { HomePage } from './pages/Home/index.jsx'
 import { PerfilUser } from './pages/USERFILES/EDITUSERPAGE/index.jsx'
 import { INTERFACE } from './pages/INTERFACE/index.jsx'
 
@@ -36,7 +31,6 @@ const Main = () => {
         <>
           <INTERFACE RENDERPAGE={<>
             <Routes>
-              <Route path="/home" element={<HomePage />} />
               <Route path="/" element={<TopReview />} />
               <Route path="/topReview" element={<TopReview />} />
               <Route path="/createRecipes" element={<CreateRecipes />} />

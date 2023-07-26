@@ -1,6 +1,7 @@
-import { Folder, Image } from "@mui/icons-material";
-import { AppBar, Tabs, Tab } from "@mui/material";
-import { green } from "@mui/material/colors";
+
+import {Tabs } from "@mui/material";
+import { CardGiftcard, Image } from "@mui/icons-material";
+import { Tab } from "@mui/material";
 
 function a11yProps(index) {
   return {
@@ -8,13 +9,12 @@ function a11yProps(index) {
     'aria-controls': `action-tabpanel-${index}`,
   };
 }
-
 export const AppBarTopic = ({
-  handleChange,
-  value,
+  handleChange, value
 }) => {
+
   return (
-    <AppBar position="static" color="default">
+    <>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -27,25 +27,32 @@ export const AppBarTopic = ({
           sx={{
             display: 'flex',
             alignItems: 'center',
+            width: '100%',
           }}
           label={
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Folder style={{ marginRight: '0.5rem' }} />
-              Folder cards
+              {<CardGiftcard />}
+              {"Recipes Cards"}
             </div>
           }
           {...a11yProps(0)}
         />
         <Tab
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+          }}
           label={
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Image style={{ marginRight: '0.5rem' }} />
-              Image cards
+              {<CardGiftcard />}
+              {"Recipes Cards"}
             </div>
           }
           {...a11yProps(1)}
         />
       </Tabs>
-    </AppBar>
+
+    </>
   );
 };

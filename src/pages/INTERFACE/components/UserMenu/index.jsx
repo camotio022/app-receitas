@@ -30,8 +30,7 @@ export const UserMenu = ({
 }) => {
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user?.displayName?.charAt(0)
-  const words = user?.displayName?.split(' ')
-  const firstWord = words[0]
+  const firstWord = user?.displayName?.split(' ')[0]
   return (
     <Stack direction="row" alignItems="center" justifyContent="center">
       <NotificationsIcon />
