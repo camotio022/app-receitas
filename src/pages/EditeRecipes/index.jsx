@@ -23,13 +23,9 @@ import {
   Image as ImageIcon,
 } from '@mui/icons-material'
 import * as Tag from './styles/index.js'
-import { UserEditFieldsRecipe } from './componentes/UserEditFieldsRecipe/index.jsx'
-import { MoreEditFieldsRecipe } from './componentes/MoreFieldsEditRecipe/index.jsx'
-import { CategoryEditRecipe } from './componentes/CategoryEditRecipe/index.jsx'
-import { HeaderEditRecipe } from './componentes/HeaderEditRecipe/index.jsx'
 import { MyAppBar } from './componentes/AppBar'
 import { ProgressEditRecipe } from './componentes/ProgressEditRecipe'
-import { MyTextField } from '../../componentes/textField/textField'
+import { MyTextField } from '../../componentes/textField/textField.jsx'
 
 const UpdateButton = ({ onClick, loading }) => {
   return (
@@ -71,25 +67,7 @@ function a11yProps(index) {
     'aria-controls': `action-tabpanel-${index}`,
   }
 }
-
-const sections = [
-  {
-    title: 'Header',
-    fields: [
-      { label: 'Recipe Title', name: 'recipeTitle' },
-      { label: 'Cook Time', name: 'cookTime' },
-      { label: 'Serving Size', name: 'servingSize' },
-    ],
-  },
-  {
-    title: 'Category',
-    fields: [
-      { label: 'Recipe Category', name: 'recipeCategory' },
-      { label: 'Recipe Difficulty', name: 'recipeDifficulty' },
-    ],
-  },
-]
-
+import { sections } from './componentes/sections/index.js'
 export const EditRecipes = () => {
   const { id } = useParams()
   const [docRec, setDocRec] = useState()
@@ -194,18 +172,10 @@ export const EditRecipes = () => {
       ) : (
         <Tag.MyContainer>
           <Tag.MyPaper>
-            <HeaderEditRecipe
-              formData={formData}
-              handleFieldChange={handleFieldChange}
-            />
-            {/* <CategoryEditRecipe
-              formData={formData}
-              handleFieldChange={handleFieldChange}
-            /> */}
             {sections.map((section) => (
               <div>
                 <h2>{section.title}</h2>
-                {fields.map((field) => (
+                {section?.fields.map((field) => (
                   <MyTextField
                     key={field.name}
                     label={field.label}
@@ -219,15 +189,6 @@ export const EditRecipes = () => {
                 <Divider />
               </div>
             ))}
-            <MoreEditFieldsRecipe
-              formData={formData}
-              handleFieldChange={handleFieldChange}
-            />
-
-            <UserEditFieldsRecipe
-              handleFieldChange={handleFieldChange}
-              formData={formData}
-            />
           </Tag.MyPaper>
           <Divider />
           <UpdateButton
