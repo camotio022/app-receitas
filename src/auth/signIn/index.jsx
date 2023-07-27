@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import * as Tag from './index'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme } from '@mui/material/styles'
 import Logo from '../../images/logo/logo-menu.png'
 import {
     IconButton,
@@ -16,9 +16,7 @@ import {
     Input,
     Stack,
     LinearProgress,
-    Alert,
     Paper,
-    Avatar,
     TextField,
 } from '@mui/material'
 import { useState } from 'react'
@@ -26,16 +24,11 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import GoogleIcon from '@mui/icons-material/Google'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import { useNavigate } from 'react-router-dom'
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    signInWithPopup,
-    GoogleAuthProvider,
-} from 'firebase/auth'
-
 import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
+import { sections } from './componentes/sections.js'
+import { validateFields } from './componentes/validation.js'
+import { MyTextField } from '../../componentes/textField/textField.jsx'
 function Copyright(props) {
     return (
         <Typography
@@ -76,31 +69,7 @@ export const ComponInput = ({
     )
 }
 
-const validateFields = ({ email, password, setShowAlert }) => {
-    var regex =
-        /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/
 
-    if (
-        email === '' ||
-        email.indexOf('@') === -1 ||
-        email.indexOf('.com') === -1
-    ) {
-        setShowAlert('Preencha o campo E-MAIL corretamente!')
-        setTimeout(() => {
-            setShowAlert('')
-        }, 3000)
-        return false
-    }
-    if (password.length < 8 || !regex.exec(password)) {
-        setShowAlert(
-            'A senha deve conter no mínimo 8 caracteres, 1 caractere em maiúsculo, 2 números e 2 caracteres especiais!'
-        )
-        setTimeout(() => {
-            setShowAlert('')
-        }, 3000)
-        return false
-    }
-}
 
 export const SignIn = () => {
     const { login, loginWithGoogle, loginWithEmailAndPassword } =
@@ -195,54 +164,25 @@ export const SignIn = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 flexDirection: 'column',
-
                                 height: '100%',
                             }}
                         >
-                            <TextField
-                                sx={{ m: 1, bgcolor: 'transparent' }}
-                                helperText={showAlert}
-                                required
-                                fullWidth
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                value={data?.email}
-                                onChange={handleChange}
-                                id="filled-basic"
-                                variant="filled"
-                            />
-                            <TextField
-                                sx={{ m: 1, bgcolor: 'transparent' }}
-                                required
-                                helperText={showAlert}
-                                fullWidth
-                                placeholder="Password"
-                                name="password"
-                                type={showPasswprd ? 'text' : 'password'}
-                                value={data?.password}
-                                onChange={handleChange}
-                                autoComplete="new-password"
-                                label="password"
-                                autoFocus={showAlert}
-                                id="filled-basic"
-                                variant="filled"
-                                endAdornment={
-                                    <InputAdornment>
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={ShowPassword}
-                                        >
-                                            {showPasswprd ? (
-                                                <VisibilityOff />
-                                            ) : (
-                                                <Visibility />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
-
+                            {sections?.map((section, index) => {
+                                return (
+                                    <MyTextField
+                                        key={index}
+                                        label={section.label}
+                                        name={section.name}
+                                        type={data[section.type]}
+                                        value={data[section.name]}
+                                        helperText={showAlert}
+                                        onChange={
+                                            handleChange
+                                        }
+                                    />
+                                );
+                            })}
+        
                             <FormControlLabel
                                 control={
                                     <Checkbox value="remember" color="primary" />
