@@ -7,11 +7,11 @@ export const MyTextField = ({
 }) => {
     return (
         <>
-            <Grid item xs={12} lg={6} sx={{mb: 1}}>
+            <Grid item xs={12} lg={6} sx={{mb: 1, width: '100%'}}>
                 <TextField
                     required
                     fullWidthfullWidth
-                    fullWidth={fullWidth}
+                    fullWidth
                     variant={variant || 'filled'}
                     {...props}
                 />
