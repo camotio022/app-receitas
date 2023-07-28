@@ -173,7 +173,7 @@ export const SignIn = () => {
                                         key={index}
                                         label={section.label}
                                         name={section.name}
-                                        type={data[section.type]}
+                                        type={section.type}
                                         value={data[section.name]}
                                         helperText={showAlert}
                                         onChange={
@@ -182,7 +182,7 @@ export const SignIn = () => {
                                     />
                                 );
                             })}
-        
+
                             <FormControlLabel
                                 control={
                                     <Checkbox value="remember" color="primary" />
