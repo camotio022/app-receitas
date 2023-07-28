@@ -1,24 +1,18 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import * as Tag from './index'
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Logo } from '../../componentes/LOGO';
-import { IconButton, InputAdornment, Input, Stack, LinearProgress, Alert, Paper, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Slide, } from '@mui/material';
+import { Stack, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, } from '@mui/material';
 import { useState } from 'react';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { blue, green, grey, orange } from '@mui/material/colors';
-
 import { api } from '../../api';
-import { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { validation } from './componentes/validation';
+import { sections } from './componentes/sections';
+import { MyTextField } from '../../componentes/textField/textField.jsx';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,32 +25,7 @@ function Copyright(props) {
         </Typography>
     );
 }
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
-export const ComponInput = ({ id,
-    helperText,
-    required,
-    fullWidth,
-    label, ...props }) => {
-    return (
-        <>
-            <Input
-
-                helperText={helperText}
-                required={required}
-                fullWidth={fullWidth}
-                label={label}
-                {...props} />
-        </>
-    )
-}
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 export const SignUp = () => {
-
     const [emailError, setEmailError] = useState('');
     const [lastNameError, setLastNameError] = useState('');
     const [showPasswprd, setShowPasswprd] = useState(false)
@@ -71,7 +40,6 @@ export const SignUp = () => {
         email: '',
         lastName: '',
         name: '',
-
     })
     const [datasFocos, setNameFocos] = useState({
         passwordFocos: false,
@@ -80,7 +48,7 @@ export const SignUp = () => {
         nameFocos: false,
     })
 
-    console.log(progress)
+
     const handleChange = (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         const value = e.target.value;
@@ -88,39 +56,17 @@ export const SignUp = () => {
         setData((old) => {
             return { ...old, [name]: value };
         });
-        if (name === 'email') {
-            if (value === "" || value.indexOf('@') === -1 || value.indexOf('.com') === -1) {
-                setEmailError('Preencha o campo E-MAIL corretamente!');
-                setNameFocos(!data?.datasFocos);
-            } else {
-                setEmailError('');
-            }
-        }
-        if (name === 'lastName') {
-            if (value === "" || value.length < 3) {
-                setLastNameError('Preencha o campo SOBRENOME corretamente!');
-                setNameFocos(!data?.datasFocos);
-            } else {
-                setLastNameError('');
-            }
-        }
-        if (name === 'name') {
-            if (value === "" || value.length < 4) {
-                setNameError('Preencha o campo NOME corretamente!');
-                setNameFocos(!datasFocos?.nameFocos);
-            } else {
-                setNameError('');
-            }
-        }
-        if (name === 'password') {
-            if (value.length < 8) {
-                setPasswordError('A senha deve conter no mínimo 8 dígitos!');
-            } else if (!regex.exec(value)) {
-                setPasswordError('A senha deve conter no mínimo 1 caractere em maiúsculo, 2 números e 2 caracteres especiais!');
-            } else {
-                setPasswordError('')
-            }
-        };
+        validation({
+            regex,
+            name,
+            value,
+            data,
+            datasFocos,
+            setEmailError,
+            setNameError,
+            setLastNameError,
+            setNameFocos,
+        })
     }
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
@@ -163,12 +109,6 @@ export const SignUp = () => {
                 {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
                     <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
                 </Stack>}
-                {/* {showAlert && <Alert severity="success" color="info">
-                    Formlário enviando com sucesso.
-                </Alert>} */}
-
-
-
                 <Grid container component="form" onSubmit={submtForum} spacing={1} fullWidth sx={{ width: '100%', height: '100%' }}>
                     <Grid
                         item
@@ -188,7 +128,6 @@ export const SignUp = () => {
                         }}
                     />
                     <Grid
-
                         item
                         xs={12}
                         sm={8}
@@ -209,78 +148,21 @@ export const SignUp = () => {
                             Sign in
                         </Typography>
 
-
-
-                        <Grid item xs={12} mt={3} mb={3}>
-                            <TextField
-                                id="outlined-error-helper-text"
-                                autoComplete="given-name"
-                                name="name"
-                                required
-                                fullWidth
-                                label="First Name"
-                                value={data?.name}
-                                onChange={handleChange}
-                                autoFocus={datasFocos?.nameFocos}
-                                helperText={nameError}
-                                sx={{ color: 'red' }}
-                            />
-                        </Grid>
-                        <Grid item xs={12} mb={3}>
-                            <TextField
-                                id="outlined-error-helper-text"
-                                required
-                                fullWidth
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="family-name"
-                                value={data?.lastName}
-                                onChange={handleChange}
-                                autoFocus={datasFocos?.lastNameFocos}
-                                helperText={lastNameError}
-                            />
-                        </Grid>
-                        <Grid item xs={12} mb={3}>
-                            <TextField
-                                id="outlined-error-helper-text"
-                                required
-                                fullWidth
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                value={data?.email}
-                                onChange={handleChange}
-                                autoFocus={datasFocos?.emailFocos}
-                                helperText={emailError}
-                            />
-                        </Grid>
-                        <Grid item xs={12} mb={3}>
-                            <TextField
-                                required
-                                id="outlined-error-helper-text"
-                                fullWidth
-                                defaultValue="Hello World"
-                                placeholder="Password"
-                                name="password"
-                                type={showPasswprd ? 'text' : 'password'}
-                                value={data?.password}
-                                onChange={handleChange}
-                                autoComplete="new-password"
-                                label="password"
-                                autoFocus={datasFocos?.passwordFocos}
-                                helperText={passwordError}
-                                endAdornment={
-                                    <InputAdornment>
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={ShowPassword}
-                                        >
-                                            {showPasswprd ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
-                        </Grid>
+                        {sections?.map((section, index) => {
+                            return (
+                                <MyTextField
+                                    key={index}
+                                    label={section.label}
+                                    name={section.name}
+                                    type={section.type}
+                                    value={data[section.name]}
+                                    helperText={showAlert}
+                                    onChange={
+                                        handleChange
+                                    }
+                                />
+                            );
+                        })}
                         <Grid item xs={12} lg={6} mb={3}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -306,8 +188,6 @@ export const SignUp = () => {
                     </Grid>
                 </Grid>
             </Tag.Container>
-
-
             <Dialog open={open} onClose={handleClose} aria-describedby="alert-dialog-slide-description">
                 <DialogTitle sx={{ color: 'red' }}>{"Mensagem de erro:"}</DialogTitle>
                 <DialogContent>
