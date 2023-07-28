@@ -158,7 +158,7 @@ export const TopReview = (props) => {
           >
             <TabPanel fullWidth value={value} index={0} dir={theme.direction}>
               <Tag.MenuItemsLinks>
-                {currentRecipes.map((recipe) => {
+                {recipes.map((recipe) => {
                   return (
                     <CardRecipe
                       key={recipe.id}
@@ -178,7 +178,7 @@ export const TopReview = (props) => {
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
               <Tag.MenuItemsLinks>
-                {currentRecipes?.map((recipe, index) => {
+                {recipes?.map((recipe, index) => {
                   return (
                     <CardInImage
                       key={index}
