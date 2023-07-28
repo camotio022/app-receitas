@@ -1,10 +1,10 @@
 
 import { useContext, useEffect, useState } from 'react'
 import * as Tag from './index.js'
-import { api } from '../../../api/index.js'
 import { AuthContext } from '../../../contexts/AuthContext.jsx'
 import { CardFavoriteRecipe } from './componentes/cardFavoriteRecipe/index.jsx'
 import { ProgressFavoriteRecipes } from './componentes/progress/index.jsx'
+import { api_recipe_favorites } from '../../../api/recipes/favoriterecipes.js'
 export const FavoriteRecipes = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([])
   const { user } = useContext(AuthContext)
@@ -19,7 +19,7 @@ export const FavoriteRecipes = () => {
   const deleteFavorite = async (recipeId, userId) => {
     if (recipeId && userId) return
     try {
-      await api.favoriteRecipes.remove(recipeId, userId)
+      await api_recipes.favoriteRecipes.remove(recipeId, userId)
     } catch (error) {
       console.error(error)
     }
@@ -30,7 +30,7 @@ export const FavoriteRecipes = () => {
 
       if (userId) {
         try {
-          const recipes = await api.favoriteRecipes.get(userId)
+          const recipes = await api_recipe_favorites.favoriteRecipes.get(userId)
           setFavoriteRecipes(recipes)
         } catch (error) {
           console.error('Erro ao buscar as receitas favoritas:', error)

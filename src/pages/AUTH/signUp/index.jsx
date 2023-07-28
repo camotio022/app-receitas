@@ -9,10 +9,10 @@ import * as Tag from './index'
 import { Logo } from '../../../componentes/LOGO/index';
 import { Stack, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, } from '@mui/material';
 import { useState } from 'react';
-import { api } from '../../../api';
 import { validation } from './componentes/validation';
 import { sections } from './componentes/sections';
 import { MyTextField } from '../../../componentes/textField/textField.jsx';
+import { api_users } from '../../../api/users/users';
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -93,7 +93,7 @@ export const SignUp = () => {
         }
         try {
             setProgress(true);
-            const response = await api?.user.post(data); // Substitua 'data' pelos dados do formulário
+            const response = await api_users.user.post(data); // Substitua 'data' pelos dados do formulário
             setProgress(false);
         } catch (err) {
             setShowAlert(err.message || 'Erro desconhecido ao criar o usuário e vincular o perfil.');

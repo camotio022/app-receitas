@@ -2,11 +2,11 @@ import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTit
 import * as Tag from './index.js'
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { api } from "../../../../api/index.js"
 import { AuthContext } from "../../../../contexts/AuthContext.jsx"
 import { CardMediaUser } from "./componentes/cardMedia/index.jsx"
 import { ForumEditInfoUser } from "./componentes/editUserForm/index.jsx"
 import { MyDialog } from "./componentes/dialog/index.jsx"
+import { api_users } from "../../../../api/users/users.js"
 export const PerfilUser = () => {
     const { id } = useParams()
     const { user } = useContext(AuthContext)
@@ -37,11 +37,11 @@ export const PerfilUser = () => {
         }
         try {
             if (editingField === "coverImage") {
-                await api.user.updateCover(id, { coverImage: userValues.coverImage });
+                await api_users.user.updateCover(id, { coverImage: userValues.coverImage });
                 console.log('Imagem de capa atualizada com sucesso!');
             }
             if (editingField === "photoURL") {
-                await api.user.update(id, { photoURL: userValues.photoURL });
+                await api_users.user.update(id, { photoURL: userValues.photoURL });
                 console.log('PhotoURL atualizado com sucesso!');
             }
         } catch (error) {
@@ -75,7 +75,7 @@ export const PerfilUser = () => {
         if (!id) return;
         const fetchData = async () => {
             try {
-                const data = await api.user.get(id);
+                const data = await api_users.user.get(id);
                 setUserValues(data)
             } catch (err) {
                 console.error(err);

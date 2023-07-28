@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button, Link } from '@mui/material';
 import * as Tag from './styles/index'
 import { orange } from '@mui/material/colors';
-
-import { api } from '../../../api';
+import { api_users } from '../../../api/users/users'
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../../../firebase.config'
 export const Comunidade = () => {
@@ -12,7 +11,7 @@ export const Comunidade = () => {
     useEffect(() => {
         const obterUsuarios = async () => {
             try {
-                const usuariosData = await api.user.get();
+                const usuariosData = await api_users.user.get();
                 setUsuarios(usuariosData || []);
                 console.log(usuariosData);
 

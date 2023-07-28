@@ -109,13 +109,13 @@ export const links = [
   {
     icon: <PeopleIcon />,
     name: 'Comunidade',
-    onClick: 'community',
+    onClick: 'comunidade',
     children: [
       {
         name: 'Comunidade',
         icon: <Diversity3Icon />,
         link: '/comunidade',
-        onClick: 'community',
+        onClick: 'comunidade',
       },
       { name: 'Grupos', icon: <RememberMeIcon /> },
     ],

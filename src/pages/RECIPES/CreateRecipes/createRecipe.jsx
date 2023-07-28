@@ -9,7 +9,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { api } from '../../../api/index'
+import { api_recipes } from '../../../api/recipes/recipes'
 export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
@@ -56,7 +56,7 @@ export const CreateRecipes = ({ }) => {
     const userId = user?.uid
     if (userId) {
       const payload = { ...formData, author: user.uid, email: user.email }
-      await api.recipe.post(payload).then((response) => {
+      await api_recipes.recipe.post(payload).then((response) => {
         console.log(response)
         alert('success')
         setFormData('')

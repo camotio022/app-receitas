@@ -6,7 +6,8 @@ import {
 import PropTypes from 'prop-types'
 import * as Tag from './index'
 import './index.css'
-import { api } from '../../../api'
+import { api_recipes } from '../../../api/recipes/recipes'
+import { api_recipe_favorites } from '../../../api/recipes/favoriterecipes'
 import { useContext, useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../../../../firebase.config'
@@ -60,7 +61,7 @@ export const TopReview = (props) => {
   const obterrecipes = async () => {
     setIsLoading(true)
     try {
-      const recipesData = await api.recipe.get()
+      const recipesData = await api_recipes.recipe.get()
       setRecipes(recipesData)
     } catch (error) {
     } finally {
@@ -101,7 +102,7 @@ export const TopReview = (props) => {
   const fevoritingRecipe = async (recipeId, userId) => {
     if (!recipeId || !userId) return
     try {
-      const recipeData = await api.favoriteRecipes.get(recipeId)
+      const recipeData = await api_recipe_favorites.favoriteRecipes.get(recipeId)
 
       if (!recipeData) {
         console.log('Receita não encontrada')
@@ -109,7 +110,7 @@ export const TopReview = (props) => {
       }
       const likesCounter = recipeData.likesCounter || []
       if (!likesCounter.includes(userId)) {
-        await api.favoriteRecipes.post(recipeId, userId)
+        await api_recipe_favorites.favoriteRecipes.post(recipeId, userId)
         alert('Receita favoritada com sucesso!')
       } else {
         alert('Usuário já favoritou a receita.')
@@ -123,6 +124,18 @@ export const TopReview = (props) => {
   }
   const handleChangeIndex = (index) => {
     setValue(index)
+  }
+  if (recipes?.length === 0) {
+    return (
+      <Tag.Cards>
+        <CircularProgress
+          variant="indeterminate"
+          value={progress}
+          size={80}
+        />
+        SEM RECEITAS
+      </Tag.Cards>
+    )
   }
   return (
     <>
@@ -140,11 +153,8 @@ export const TopReview = (props) => {
               height: '100vh',
             }}
           >
-            <CircularProgress
-              variant="indeterminate"
-              value={progress}
-              size={80}
-            />
+
+
             <Typography variant="h6" sx={{ marginLeft: '10px' }}>
               {`${progress}%`}
             </Typography>

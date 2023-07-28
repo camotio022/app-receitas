@@ -4,7 +4,6 @@ import {
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { api } from '../../../api'
 import { Button, CircularProgress } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useTheme } from '@emotion/react'
@@ -54,6 +53,7 @@ function a11yProps(index) {
   }
 }
 import { sections } from './componentes/sections/index.js'
+import { api_recipes } from '../../../api/recipes/recipes'
 export const EditRecipes = () => {
   const { id } = useParams()
   const [docRec, setDocRec] = useState()
@@ -102,7 +102,7 @@ export const EditRecipes = () => {
     const fetchRecipe = async () => {
       if (id) {
         try {
-          const res = await api.recipe.get(id)
+          const res = await api_recipes.recipe.get(id)
           setDocRec(res)
           setFormData(res) // Preencha os campos editados com os valores existentes
         } catch (error) {
@@ -121,7 +121,7 @@ export const EditRecipes = () => {
   const handleUpdateRecipe = async () => {
     setIsLoading(true)
     try {
-      await api.recipe.update(id, formData)
+      await api_recipes.recipe.update(id, formData)
       console.log('Campos atualizados com sucesso')
     } catch (error) {
       console.error('Erro ao atualizar os campos:', error)
@@ -132,7 +132,7 @@ export const EditRecipes = () => {
     setIsLoading(true)
     try {
       await handleUpdateRecipe()
-      const updatedRecipe = await api.recipe.get(id)
+      const updatedRecipe = await api_recipes.recipe.get(id)
       setDocRec(updatedRecipe)
       console.log('Receita atualizada com sucesso:', updatedRecipe)
       await new Promise((resolve) => setTimeout(resolve, 2000))

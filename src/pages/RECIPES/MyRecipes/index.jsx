@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { api } from '../../../api'
 import './index.css'
 import * as Tag from './index.js'
 import {
@@ -12,6 +11,7 @@ import { AppBarMyrecipes } from './componentes/AppBar'
 import { ProgressMyRecipes } from './componentes/progress'
 import { OptionsMyRecipes } from './componentes/options'
 import { CardMyRecipes } from './componentes/cardRecipes'
+import { api_myrecipes } from '../../../api/recipes/myrecipes'
 function TabPanel(props) {
   const { children, value, index, ...other } = props
   return (
@@ -60,7 +60,7 @@ export const MyRecipes = () => {
       )
       if (response === 'sim') {
         try {
-          await api.myRecipes.delete(recipeId)
+          await api_myrecipes.myRecipes.delete(recipeId)
           alert('Receita apagada com sucesso!')
         } catch (error) {
           console.error('Erro ao apagar a receita:', error)
@@ -83,7 +83,7 @@ export const MyRecipes = () => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        const myRecipesList = await api.myRecipes.get(user.uid)
+        const myRecipesList = await api_myrecipes.myRecipes.get(user.uid)
         setMyRecipes(myRecipesList)
       } catch (error) {
         console.error('Erro ao buscar as receitas:', error)
