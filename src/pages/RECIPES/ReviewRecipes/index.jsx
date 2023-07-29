@@ -153,8 +153,6 @@ export const TopReview = (props) => {
               height: '100vh',
             }}
           >
-
-
             <Typography variant="h6" sx={{ marginLeft: '10px' }}>
               {`${progress}%`}
             </Typography>

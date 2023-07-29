@@ -42,7 +42,6 @@ export const Cards = styled(Stack)(({ theme }) => ({
     marginBlock: '5rem',
     bgcolor: '#f8fafb',
 }))
-
 export const Card = styled(Stack)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
@@ -53,6 +52,7 @@ export const Card = styled(Stack)(({ theme }) => ({
     backgroundColor: 'white',
     transition: 'all .5s ease-in-out',
     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
+    fontSize: '100% !important',
     '@media only screen and (max-width: 550px)': {
         display: 'flex',
         alignItems: 'center',
@@ -61,6 +61,7 @@ export const Card = styled(Stack)(({ theme }) => ({
         height: 'auto',
         fontSize: '100%',
         transition: 'all .5s ease-in-out',
+        fontSize: '100% !important',
     },
     '@media only screen and (min-width: 1000px)': {
         display: 'flex',
@@ -72,6 +73,7 @@ export const Card = styled(Stack)(({ theme }) => ({
         fontSize: '100%',
         boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
         transition: 'all .5s ease-in-out',
+        fontSize: '100% !important',
     },
 }))
 export const FavoritingRecipe = styled(Tooltip)(({ theme }) => ({

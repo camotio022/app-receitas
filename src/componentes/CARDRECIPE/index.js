@@ -6,7 +6,7 @@ export const Card = styled(Stack)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    width: '20rem',
+    width: '15rem',
     height: 'auto',
     backgroundColor: 'white',
     transition: 'all .5s ease-in-out',

@@ -39,6 +39,7 @@ export const CardRecipe = ({
                         overflow: 'hidden',
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
+                        fontSize: '100%'
                     }}>
                         <Link
                             href={`/detailsRecipes/${detailsRecipes}`}
@@ -112,15 +113,15 @@ export const CardRecipe = ({
                             >
                                 {author === user.uid ? (
                                     <>
-                                        <Typography variant="subtitle1">
+                                        <Stack>
                                             {displayNameAuhtor}
-                                        </Typography>
+                                        </Stack>
                                     </>
                                 ) : (
                                     <>
-                                        <Typography variant="subtitle1">
+                                        <Stack>
                                             {AuthorName}
-                                        </Typography>
+                                        </Stack>
                                     </>
                                 )}
 
@@ -141,7 +142,7 @@ export const CardRecipe = ({
                             </Box>
                         </Tag.Author>
                         <Tag.ReviewScore
-                            variant={matches ? 'subtitle1' : 'h4'}
+                            variant={matches ? 'subtitle1' : 'subtitle2'}
                         >
                             {ranking}
                         </Tag.ReviewScore>
