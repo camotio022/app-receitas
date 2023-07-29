@@ -46,37 +46,22 @@ export const MySearch = ({ searchInput }) => {
 
         fetchResults();
     }, [searchInput]);
-
+    const recipeResults = results.filter((result) => result.type === 'recipe');
+    const userResults = results.filter((result) => result.type === 'user');
     return (
         <Tag.MenuItemsLinks>
             {results.length === 0 ? (
                 <p>Nenhum resultado encontrado.</p>
             ) : (
                 <>
-                    {results.map((result) => (
-                        <div div key={result.id} >
-                            {
-                                result.type === 'user' && (
-                                    <ResultTable
-                                        key={result.id}
-                                        results={results} // Passe apenas o objeto result
-                                        searchInput={searchInput}
-                                    />
-                                )
-                            }
-                            {result.type === 'recipe' && (
-                                <>
-                                    <FolderList
-                                        key={result.id}
-                                        results={results} // Passe apenas o objeto result
-                                        searchInput={searchInput}
-                                    />
-                                </>
-                            )}
-                        </div>
-
-                    ))}
-
+                    <FolderList
+                        results={results}
+                        searchInput={searchInput}
+                    />
+                    <ResultTable
+                        results={results}
+                        searchInput={searchInput}
+                    />
                 </>
             )
             }

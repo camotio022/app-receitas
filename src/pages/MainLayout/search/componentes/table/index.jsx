@@ -35,15 +35,15 @@ export const ResultTable = ({
                                 <TableCell style={StyeleTable}>Emails</TableCell>
                             </TableRow>
                         </TableHead>
-                        {results?.map((result, index) => {
+                        {results.map((res) => {
                             return (
                                 <MapResult
-                                    index={index}
+                                    index={res.id}
                                     searchInput={searchInput}
-                                    id={result.id}
-                                    name={result.name}
-                                    photoURL={result.photoURL}
-                                    email={result.email}
+                                    id={res.id}
+                                    name={res.name}
+                                    photoURL={res.photoURL}
+                                    email={res.email}
                                 />
                             )
                         })}

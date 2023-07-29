@@ -6,28 +6,22 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import { Link } from '@mui/material';
 export const FolderList = ({ results, searchInput }) => {
-    if (!results || !Array.isArray(results)) {
-
-        return null;
-    }
-
     return (
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {results.map((item) => {
+            {results.map((res, index) => {
                 return (
-                    <Link key={item.id} href={`/detailsRecipes/${item.id}`}>
-                        {/* Certifique-se de fornecer um valor para 'to' ou 'href' */}
+                    <Link key={index} href={`/detailsRecipes/${res.id}`}>
                         <List>
                             <ListItem >
                                 <ListItemAvatar>
-                                    <Avatar src={item.recipeImage}>{item.recipeImage}</Avatar>
+                                    <Avatar src={res.recipeImage}>{res.recipeImage}</Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={
-                                        item.recipeTitle && (
+                                        res.recipeTitle && (
                                             <span
                                                 dangerouslySetInnerHTML={{
-                                                    __html: item.recipeTitle.replace(
+                                                    __html: res.recipeTitle.replace(
                                                         new RegExp(searchInput, 'gi'),
                                                         (match) => `<strong class="results">${match}</strong>`
                                                     ),
@@ -35,13 +29,13 @@ export const FolderList = ({ results, searchInput }) => {
                                             />
                                         )
                                     }
-                                    secondary={item.creationDate}
+                                    secondary={res.creationDate}
                                 />
                             </ListItem>
                         </List>
                     </Link>
-                );
+                )
             })}
-        </List>
+        </List >
     );
 };
