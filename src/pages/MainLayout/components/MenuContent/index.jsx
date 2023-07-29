@@ -12,6 +12,8 @@ import { UserMenu } from '../UserMenu/index.jsx';
 import { Links_a } from '../Links_a/index.jsx';
 import { TopLinks } from '../TopLinks/index.jsx';
 import { FloatingButton } from '../FloatingButton/index.jsx';
+import { useState } from 'react';
+import { MySearch } from '../../search/index.jsx';
 export const MenuContent = ({
   scrollHeight,
   children,
@@ -27,6 +29,7 @@ export const MenuContent = ({
   handleSelectLink,
   handleOpenUserMenu,
 }) => {
+  const [search, setSearch] = useState('')
   return (
     <>
       <S.Container scrollHeight={scrollHeight}>
@@ -49,6 +52,8 @@ export const MenuContent = ({
               <Tag.StyledInputBase
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </Tag.Search>
             <SearchIcon
@@ -100,11 +105,14 @@ export const MenuContent = ({
               })}
             </S.MinhaLista>
           </S.SideMenu>
+          {search ?
+            <S.Content><MySearch searchInput={search} /></S.Content>
+            : <S.Content>{RENDERPAGE || children}</S.Content>}
 
-          <S.Content>{RENDERPAGE || children}</S.Content>
+
         </Stack>
         <FloatingButton />
-      </S.Container>
+      </S.Container >
     </>
   )
 }

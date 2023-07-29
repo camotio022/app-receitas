@@ -1,7 +1,7 @@
-import { TableRow, TableCell, Stack, Avatar, Link } from '@mui/material';
+import { TableRow, TableCell, Stack, Avatar, Link, TableBody } from '@mui/material';
+import './index.css'
 
-
-export const MapResult = ({ index, id, name, photoURL, email }) => {
+export const MapResult = ({ index, id, name, photoURL, email, searchInput }) => {
   return (
     <>
       <TableBody key={index}>
@@ -16,9 +16,27 @@ export const MapResult = ({ index, id, name, photoURL, email }) => {
                 src={photoURL}
               />
             </Link>
-            <Stack>{name}</Stack>
+            <Stack>{name && (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: name.replace(
+                    new RegExp(searchInput, 'gi'),
+                    (match) => `<strong class="results">${match}</strong>`
+                  ),
+                }}
+              />
+            )}</Stack>
           </TableCell>
-          <TableCell>{email}</TableCell>
+          <TableCell>{email && (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: email.replace(
+                  new RegExp(searchInput, 'gi'),
+                  (match) => `<strong class="results">${match}</strong>`
+                ),
+              }}
+            />
+          )}</TableCell>
         </TableRow>
       </TableBody>
     </>

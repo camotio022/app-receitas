@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from "../../../../firebase.config.js";
 import *as Tag from './index.js'
+import { ResultTable } from './componentes/table/index.jsx';
+import { Typography } from '@mui/material';
+import { FolderList } from './componentes/recipesresults.jsx';
 export const MySearch = ({ searchInput }) => {
     const [results, setResults] = useState([]);
 
     async function searchInFirebase() {
+
         try {
             const recipeRef = collection(db, 'recipes');
             const userRef = collection(db, 'users');
@@ -31,7 +35,7 @@ export const MySearch = ({ searchInput }) => {
 
     useEffect(() => {
         async function fetchResults() {
-            if (searchInput.length >= 3) {
+            if (searchInput) {
                 const results = await searchInFirebase();
                 setResults(results);
                 console.log(results);
@@ -49,15 +53,33 @@ export const MySearch = ({ searchInput }) => {
                 <p>Nenhum resultado encontrado.</p>
             ) : (
                 <>
-                    {results.map((result)=> {
-                        return(
-                            <>{result.type === 'user' ? <>
-                            
-                            </>: 'Nada h'}</>
-                        )
-                    })}
+                    {results.map((result) => (
+                        <div div key={result.id} >
+                            {
+                                result.type === 'user' && (
+                                    <ResultTable
+                                        key={result.id}
+                                        results={results} // Passe apenas o objeto result
+                                        searchInput={searchInput}
+                                    />
+                                )
+                            }
+                            {result.type === 'recipe' && (
+                                <>
+                                    <FolderList
+                                        key={result.id}
+                                        results={results} // Passe apenas o objeto result
+                                        searchInput={searchInput}
+                                    />
+                                </>
+                            )}
+                        </div>
+
+                    ))}
+
                 </>
-            )}
-        </Tag.MenuItemsLinks>
+            )
+            }
+        </Tag.MenuItemsLinks >
     );
 };
