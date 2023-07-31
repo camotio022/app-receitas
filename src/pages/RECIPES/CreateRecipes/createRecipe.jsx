@@ -53,9 +53,16 @@ export const CreateRecipes = ({ }) => {
     reader.readAsDataURL(file)
   }
   const handleSubmit = async (event) => {
+    const date = new Date().toLocaleString()
+
     const userId = user?.uid
     if (userId) {
-      const payload = { ...formData, author: user.uid, email: user.email }
+      const payload = {
+        ...formData,
+        author: user.uid,
+        email: user.email,
+        creationDate: date
+      }
       await api_recipes.recipe.post(payload).then((response) => {
         console.log(response)
         alert('success')
