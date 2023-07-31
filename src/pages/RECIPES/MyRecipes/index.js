@@ -1,4 +1,5 @@
 import { styled, Stack, Box, Typography, Tooltip, Paper } from '@mui/material'
+import { orange } from '@mui/material/colors'
 export const Wrapper = styled('div')(({ theme }) => ({
     display: "flex",
     flexDirection: 'column',
@@ -51,7 +52,7 @@ export const Card = styled(Stack)(({ theme }) => ({
     flexDirection: 'row',
     width: '20rem',
     height: 'auto',
-    backgroundColor: 'white',
+    backgroundColor: orange[100],
     transition: 'all .5s ease-in-out',
     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
     paddingBottom: '1rem',
