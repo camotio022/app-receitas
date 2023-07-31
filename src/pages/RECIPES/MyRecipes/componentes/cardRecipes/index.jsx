@@ -31,7 +31,7 @@ export const CardMyRecipes = ({
                         <img className="img" src={recipe?.recipeImage} alt="" />
                     </Tooltip>
                     <Stack padding={2} spacing={2}>
-                        <Typography color={'gray'} variant="h6" sx={noWrap}>
+                        <Typography color={'gray'} variant="body1" sx={noWrap}>
                             <Link
                                 href={`/detailsRecipes/${recipe?.id}`}
                                 color="inherit"
@@ -88,7 +88,7 @@ export const CardMyRecipes = ({
                                     }}
                                     id="info"
                                 >
-                                    <Typography sx={noWrap} variant="subtitle1">
+                                    <Typography sx={noWrap} variant="body">
                                         {user?.displayName}
                                     </Typography>
                                     <Stack direction="row" spacing={2}>
