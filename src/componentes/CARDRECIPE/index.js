@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Box, Stack, Tooltip, Typography } from "@mui/material";
+import { orange } from "@mui/material/colors";
 
 export const Card = styled(Stack)(({ theme }) => ({
     display: 'flex',
@@ -8,7 +9,7 @@ export const Card = styled(Stack)(({ theme }) => ({
     flexDirection: 'row',
     width: '15rem',
     height: 'auto',
-    backgroundColor: 'white',
+    backgroundColor: orange[100],
     transition: 'all .5s ease-in-out',
     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
     '@media only screen and (max-width: 550px)': {
