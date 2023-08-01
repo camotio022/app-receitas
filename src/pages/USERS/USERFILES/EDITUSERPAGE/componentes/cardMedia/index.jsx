@@ -1,7 +1,9 @@
-import { CameraAlt } from "@mui/icons-material"
+import { CameraAlt, Person, PersonAdd, PersonRemove, ShowChart } from "@mui/icons-material"
 import { Avatar, Box, Button, CardMedia, Stack } from "@mui/material"
-import *as Tag from '../../index.js'
-
+import * as Tag from '../../index.js'
+import { api_users } from "../../../../../../api/users/users.js"
+import { useEffect, useState } from "react"
+import { orange } from "@mui/material/colors"
 
 export const CardMediaUser = ({
     handleClickOpen,
@@ -9,6 +11,39 @@ export const CardMediaUser = ({
     user,
     id
 }) => {
+    const [isFollowing, setIsFollowing] = useState();
+    const unfallow = async (seguidor, seguido) => {
+        if (!seguido && !seguidor) return
+        try {
+            await api_users.fallow.unfollow(seguidor, seguido)
+            setIsFollowing(false);
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+    const handleClickfallowed = async (seguidor, seguido) => {
+        if (!seguido && !seguido) return
+        try {
+            await api_users.fallow.add(seguidor, seguido)
+            setIsFollowing(true);
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+    useEffect(() => {
+        const userIdFollower = user.uid;
+        const userIdFollowed = userValues.id;
+        if (!userIdFollower || !userIdFollowed) return;
+        const hasFollowers = async () => {
+            try {
+                const fallowers = await api_users.fallow.followers(userIdFollowed, userIdFollower);
+                setIsFollowing(fallowers);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+        hasFollowers();
+    }, [isFollowing]);
     return (
         <>
             <CardMedia
@@ -31,11 +66,38 @@ export const CardMediaUser = ({
                 component="div"
                 image={userValues?.coverImage}
             >
-                {user?.uid === id &&
-                    <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
-                        Editar a foto da capa
-                    </Button>}
-            </CardMedia>
+                {
+                    user?.uid === id ?
+                        <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
+                            Editar a foto da capa
+                        </Button> :
+                        <Stack>
+                            <Button sx={{ mr: 3, mb: 1, zIndex: 1, }}
+                                variant="contained"
+                                endIcon={<ShowChart />}
+                            >
+                                ver as receitas
+                            </Button>
+                            {!isFollowing ? < Button
+                                onClick={() => handleClickfallowed(userValues?.id, user?.uid)}
+                                sx={{ mr: 3, mb: 4, zIndex: 1, }}
+                                variant="contained"
+                                endIcon={<PersonAdd />}
+                            >
+                                seguir
+                            </Button> :
+                                < Button
+                                    onClick={() => unfallow(userValues?.id, user?.uid)}
+                                    sx={{ mr: 3, mb: 4, zIndex: 1, bgcolor: orange[500] }}
+                                    variant="contained"
+                                    endIcon={<PersonRemove />}
+                                >
+                                    Deixar de seguir
+                                </Button>
+                            }
+                        </Stack>
+                }
+            </CardMedia >
             <Tag.ItemsLinks sx={{
                 justifyContent: 'flex-start !important',
                 gap: 1,
