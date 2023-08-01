@@ -126,19 +126,26 @@ export const api_users = {
       }
     }
   },
-  fallow: { 
+  fallow: {
     add: async (followed, follower) => {
-      if(!follower && !followed)return
+      if (!follower && !followed) return
       try {
         const userDocRef = doc(db, "users", followed);
         await updateDoc(userDocRef, { followers: arrayUnion(follower) });
+        const message = {
+          notification: {
+            title: 'Novo seguidor!',
+            body: 'Você tem um novo seguidor!',
+          },
+          token: userToken, // Certifique-se de que userToken esteja definido corretamente
+        };
         alert("Seguindo com sucesso!");
       } catch (error) {
         alert("Erro ao seguir o usuário: " + error.message);
       }
     },
     unfollow: async (followed, follower) => {
-      if(!follower && !followed)return
+      if (!follower && !followed) return
       try {
         const userDocRef = doc(db, "users", followed);
         await updateDoc(userDocRef, { followers: arrayRemove(follower) });
@@ -162,4 +169,21 @@ export const api_users = {
       }
     },
   },
+  sendNotificationUser: {
+    update: async (userToken) => {
+      try {
+        const message = {
+          notification: {
+            title: 'Novo seguidor!',
+            body: 'Você tem um novo seguidor!',
+          },
+          token: userToken,
+        };
+        return admin.messaging().send(message);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }
 }
+
