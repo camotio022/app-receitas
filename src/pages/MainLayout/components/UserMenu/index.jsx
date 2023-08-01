@@ -20,7 +20,6 @@ import {
   Logout,
 } from '@mui/icons-material'
 import { links } from './links'
-
 export const UserMenu = ({
   handleClick,
   handleClose,
@@ -33,13 +32,13 @@ export const UserMenu = ({
   const firstWord = user?.displayName?.split(' ')[0]
   return (
     <Stack direction="row" alignItems="center" justifyContent="center">
-      <NotificationsIcon titleAccess='12' />
+      <NotificationsIcon />
       <Stack position={'absolute'}
         sx={{
           ml: '-6rem',
           mb: '-2rem',
           fontSize: '13px'
-        }}>10</Stack>
+        }}></Stack>
       <Box
         sx={{
           display: 'flex',
