@@ -1,5 +1,4 @@
 import { styled, Stack, Box, InputBase, alpha, Paper, List, ListSubheader, Typography } from "@mui/material";
-import { orange } from "@mui/material/colors";
 export const Wrapper = styled('div')(({ theme }) => ({
     display: "flex",
     flexDirection: 'column',
@@ -57,7 +56,7 @@ export const Search = styled(Box)(({ theme }) => ({
     color: "#374957",
     border: '1px solid #e3e9ed',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: "#f8fafb7",
+    backgroundColor: "white",
     lineHeight: "1.66",
     '&:hover': {
         backgroundColor: "#f8fafb",

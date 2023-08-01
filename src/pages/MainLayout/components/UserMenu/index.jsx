@@ -33,8 +33,13 @@ export const UserMenu = ({
   const firstWord = user?.displayName?.split(' ')[0]
   return (
     <Stack direction="row" alignItems="center" justifyContent="center">
-      <NotificationsIcon />
-
+      <NotificationsIcon titleAccess='12' />
+      <Stack position={'absolute'}
+        sx={{
+          ml: '-6rem',
+          mb: '-2rem',
+          fontSize: '13px'
+        }}>10</Stack>
       <Box
         sx={{
           display: 'flex',
@@ -112,7 +117,7 @@ export const UserMenu = ({
           </MenuItem>
         </Stack>
       </Menu>
-      <Link>{firstWord}</Link>
-    </Stack>
+      <Link sx={{ color: 'white' }}>{firstWord}</Link>
+    </Stack >
   )
 }
