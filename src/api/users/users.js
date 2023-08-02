@@ -11,13 +11,14 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import { db } from "../../../firebase.config";
+import { db, messaging, analytics } from "../../../firebase.config";
+import { getMessaging, getToken } from 'firebase/messaging';
 import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-
+import { json } from "react-router-dom";
 export const api_users = {
   user: {
     get: async (id) => {
@@ -26,7 +27,6 @@ export const api_users = {
         if (docSnap.exists()) {
           return docSnap.data();
         } else {
-          // doc.data() will be undefined in this case
           console.log("No such document!");
         }
         return {};
@@ -132,14 +132,7 @@ export const api_users = {
       try {
         const userDocRef = doc(db, "users", followed);
         await updateDoc(userDocRef, { followers: arrayUnion(follower) });
-        const message = {
-          notification: {
-            title: 'Novo seguidor!',
-            body: 'Você tem um novo seguidor!',
-          },
-          token: userToken, // Certifique-se de que userToken esteja definido corretamente
-        };
-        alert("Seguindo com sucesso!");
+        console.log("Seguindo com sucesso!");
       } catch (error) {
         alert("Erro ao seguir o usuário: " + error.message);
       }
@@ -149,7 +142,7 @@ export const api_users = {
       try {
         const userDocRef = doc(db, "users", followed);
         await updateDoc(userDocRef, { followers: arrayRemove(follower) });
-        alert("Deixou de seguir com sucesso!");
+        console.log("Deixou de seguir com sucesso!");
       } catch (error) {
         alert("Erro ao deixar de seguir o usuário: " + error.message);
       }
@@ -171,19 +164,41 @@ export const api_users = {
   },
   sendNotificationUser: {
     update: async (userToken) => {
+      const messaging = getMessaging();
+      const registrationToken = await getToken(messaging);
       try {
+        const fcmApiUrl = 'https://fcm.googleapis.com/fcm/send';
         const message = {
           notification: {
             title: 'Novo seguidor!',
             body: 'Você tem um novo seguidor!',
           },
-          token: userToken,
+          to: registrationToken,
         };
-        return admin.messaging().send(message);
+        const headers = new Headers({
+          'Authorization': `key=${userToken}`,
+          'Content-Type': 'application/json',
+        });
+        const options = {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(message),
+        };
+        const response = await fetch(fcmApiUrl, options);
+        const responseData = await response.text();
+
+        if (response.ok) {
+          console.log('Notificação enviada com sucesso:', responseData);
+        } else {
+          console.log('Erro ao enviar notificação:', responseData);
+        }
       } catch (error) {
-        console.log(error.message);
+        console.log('Erro ao enviar notificação:', error.message);
       }
-    }
+    },
   }
+
+
+
 }
 

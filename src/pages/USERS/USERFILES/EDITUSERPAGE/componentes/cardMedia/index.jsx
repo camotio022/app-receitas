@@ -11,11 +11,13 @@ export const CardMediaUser = ({
     user,
     id
 }) => {
+    const userToken = "AAAAv0yytIg:APA91bHa7M_Jx_xNU_Yiauvz27XsuiHDvBPWBOOxuKSCXbq4M3P0pihVVTDRIg9zcotq7gwDNQoLO6caUWZiJKT077Ofenoy-VOofGH21mBW8CY1DcT2dMVksbp7Yl2qvCoK_DjDpBJV";
     const [isFollowing, setIsFollowing] = useState();
     const unfallow = async (seguidor, seguido) => {
         if (!seguido && !seguidor) return
         try {
             await api_users.fallow.unfollow(seguidor, seguido)
+            await api_users.sendNotificationUser.update(userToken)
             setIsFollowing(false);
         } catch (error) {
             alert(error.message)
@@ -25,6 +27,7 @@ export const CardMediaUser = ({
         if (!seguido && !seguido) return
         try {
             await api_users.fallow.add(seguidor, seguido)
+            await api_users.sendNotificationUser.update(userToken)
             setIsFollowing(true);
         } catch (error) {
             alert(error.message)
