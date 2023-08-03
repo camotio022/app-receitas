@@ -11,7 +11,7 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import { db, messaging, analytics } from "../../../firebase.config";
+import { db } from "../../../firebase.config";
 import { getMessaging, getToken } from 'firebase/messaging';
 import {
   getAuth,

@@ -1,23 +1,22 @@
-import { CameraAlt, Person, PersonAdd, PersonRemove, ShowChart } from "@mui/icons-material"
+import { CameraAlt, PersonAdd, PersonRemove, ShowChart } from "@mui/icons-material"
 import { Avatar, Box, Button, CardMedia, Stack } from "@mui/material"
 import * as Tag from '../../index.js'
 import { api_users } from "../../../../../../api/users/users.js"
 import { useEffect, useState } from "react"
 import { orange } from "@mui/material/colors"
-
+import { api_notifications } from "../../../../../../api/users/notifications.js"
 export const CardMediaUser = ({
     handleClickOpen,
     userValues,
     user,
     id
 }) => {
-    const userToken = "AAAAv0yytIg:APA91bHa7M_Jx_xNU_Yiauvz27XsuiHDvBPWBOOxuKSCXbq4M3P0pihVVTDRIg9zcotq7gwDNQoLO6caUWZiJKT077Ofenoy-VOofGH21mBW8CY1DcT2dMVksbp7Yl2qvCoK_DjDpBJV";
     const [isFollowing, setIsFollowing] = useState();
     const unfallow = async (seguidor, seguido) => {
         if (!seguido && !seguidor) return
         try {
             await api_users.fallow.unfollow(seguidor, seguido)
-            await api_users.sendNotificationUser.update(userToken)
+            await api_notifications.notification.postUnfollow(seguidor, seguido)
             setIsFollowing(false);
         } catch (error) {
             alert(error.message)
@@ -27,7 +26,7 @@ export const CardMediaUser = ({
         if (!seguido && !seguido) return
         try {
             await api_users.fallow.add(seguidor, seguido)
-            await api_users.sendNotificationUser.update(userToken)
+            await api_notifications.notification.post(seguidor, seguido)
             setIsFollowing(true);
         } catch (error) {
             alert(error.message)
@@ -47,6 +46,7 @@ export const CardMediaUser = ({
         };
         hasFollowers();
     }, [isFollowing]);
+
     return (
         <>
             <CardMedia
