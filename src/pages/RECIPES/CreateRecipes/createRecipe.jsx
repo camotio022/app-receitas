@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { api_recipes } from '../../../api/recipes/recipes'
+import { api_notifications } from '../../../api/users/notifications'
 export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
@@ -63,13 +64,16 @@ export const CreateRecipes = ({ }) => {
         email: user.email,
         creationDate: date
       }
-      await api_recipes.recipe.post(payload).then((response) => {
-        console.log(response)
-        alert('success')
+      try {
+        await api_recipes.recipe.post(payload, userId);
         setFormData('')
-      })
+        console.log('Receita criada com sucesso');
+        console.log('success');
+        // navigate('/my-recipes')
+      } catch (error) {
+        console.error('Erro ao criar receita:', error);
+      }
     }
-    navigate('/my-recipes')
   }
   useEffect(() => {
     const handleScroll = () => {
