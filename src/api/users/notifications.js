@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, setDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, addDoc, doc, setDoc, getDocs, query, where, updateDoc, getDoc } from 'firebase/firestore';
 
 const notificationsCollection = collection(db, 'notifications');
 import { db, } from "../../../firebase.config";
@@ -35,7 +35,8 @@ export const api_notifications = {
                     action: 'Você tem um novo seguidor',
                     isRead: false,
                 },
-                createdAt: new Date().toISOString(),
+                hours: new Date().toLocaleTimeString(),
+                date: new Date().toLocaleDateString(),
             };
             try {
                 const docRef = await addDoc(notificationsCollection, notificationData);
@@ -58,41 +59,104 @@ export const api_notifications = {
                         action: 'Um usuário deixou de seguir você.',
                         isRead: false,
                     },
-                    createdAt: new Date().toISOString(),
+                    hours: new Date().toLocaleTimeString(),
+                    date: new Date().toLocaleDateString(),
                 });
                 console.log('Notificação de unfollow adicionada com sucesso:', docRef.id);
             } catch (error) {
                 console.error('Erro ao adicionar notificação de unfollow:', error);
             }
         },
-    }
-}
+        hasAlreadyBeenSeen: async (userId, notificationId) => {
+            if (!userId || !notificationId) return;
+            try {
+                const notificationsRef = collection(db, 'notifications');
+                const querySnapshot = await getDocs(query(notificationsRef, where('userId', '==', userId)));
+                querySnapshot.forEach(async (doc) => {
+                    const data = doc.data();
+                    const docId = doc.ref.id;
+                    if (docId === notificationId) {
+                        await updateDoc(doc.ref, {
+                            data: {
+                                ...data.data,
+                                isRead: true,
+                                alreadyOpenedHours: new Date().toLocaleTimeString(),
+                                alreadyOpenedDate: new Date().toLocaleDateString(),
+                            },
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error('Erro ao verificar se as notificações foram lidas:', error);
+                return false;
+            }
+        },
+        markAllAsRead: async (userId) => {
+            const notificationsRef = collection(db, 'notifications');
+            const userNotificationsQuery = query(notificationsRef, where('userId', '==', userId));
+            try {
+                const querySnapshot = await getDocs(userNotificationsQuery);
+                const batch = db.batch();
+                querySnapshot.forEach((doc) => {
+                    const notificationRef = doc(db, 'notifications', doc.id);
+                    batch.update(notificationRef, {
+                        'data.isRead': true,
+                    });
+                });
+                await batch.commit();
+                console.log('Notificações do usuário marcadas como lidas com sucesso:', userId);
+            } catch (error) {
+                console.error('Erro ao marcar notificações do usuário como lidas:', error);
+            }
+        }
+    },
+    notificationCreateRecipe: {
+        newRecipe: async (shooter, docRefId) => {
+            if (!shooter || !docRefId) {
+                console.error('Parâmetros inválidos para criar notificação de nova receita.');
+                return;
+            }
+            try {
+                const receitaDataRef = await getDoc(doc(db, 'recipes', docRefId));
+                if (!receitaDataRef.exists()) {
+                    console.error('Receita não encontrada.');
+                    return;
+                }
 
- // const userToken = "AAAAv0yytIg:APA91bHa7M_Jx_xNU_Yiauvz27XsuiHDvBPWBOOxuKSCXbq4M3P0pihVVTDRIg9zcotq7gwDNQoLO6caUWZiJKT077Ofenoy-VOofGH21mBW8CY1DcT2dMVksbp7Yl2qvCoK_DjDpBJV";
-                // const messaging = getMessaging();
-                // const registrationToken = await getToken(messaging);
-                // const fcmApiUrl = 'https://fcm.googleapis.com/fcm/send';
-                // // Agora, envie a notificação para o seguido usando FCM
-                // const message = {
-                //     notification: {
-                //         title: 'Novo seguidor!',
-                //         body: 'Você tem um novo seguidor!',
-                //     },
-                //     token: userToken,
-                // };
-                // const headers = new Headers({
-                //     'Authorization': `key=${userToken}`,
-                //     'Content-Type': 'application/json',
-                // });
-                // const options = {
-                //     method: 'POST',
-                //     headers: headers,
-                //     body: JSON.stringify(message),
-                // };
-                // const response = await fetch(fcmApiUrl, options);
-                // const responseData = await response.text();
-                // if (response.ok) {
-                //     console.log('Notificação enviada com sucesso:', responseData);
-                // } else {
-                //     console.log('Erro ao enviar notificação:', responseData);
-                // }
+                const autorId = receitaDataRef.data().autor; // ID do autor da receita
+
+                const seguidoresRef = doc(db, 'users', shooter);
+                const seguidoresDoc = await getDoc(seguidoresRef);
+                if (!seguidoresDoc.exists()) {
+                    console.error('Usuário não encontrado.');
+                    return;
+                }
+
+                const seguidoresData = seguidoresDoc.data();
+                const seguidores = seguidoresData.followers;
+                const notificacoesRef = collection(db, 'notifications');
+                const notificacoesPromises = seguidores.map(async followerId => {
+                    const notificationData = {
+                        userId: followerId,
+                        data: {
+                            title: 'Nova Receita',
+                            action: `O usuário ${seguidoresData.name} criou uma nova receita: ${receitaDataRef.data().recipeTitle}`,
+                            isRead: false,
+                        },
+                        hours: new Date().toLocaleTimeString(),
+                        date: new Date().toLocaleDateString(),
+                    };
+                    await addDoc(notificacoesRef, notificationData);
+                });
+                await Promise.all(notificacoesPromises);
+                console.log('Notificações de nova receita criadas com sucesso.');
+            } catch (error) {
+                console.error('Erro ao criar notificações de nova receita:', error);
+            }
+        },
+    },
+
+};
+
+
+
