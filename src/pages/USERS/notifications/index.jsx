@@ -11,9 +11,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { CheckCircle, } from "@mui/icons-material";
-import { NotificationsProvider, useNotifications } from "./components/authNotifications";
 import { api_notifications } from "../../../api/users/notifications";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { Stack } from "@mui/material";
 export const Notifications = ({
     left, toggleDrawer,
 }) => {
@@ -31,30 +31,31 @@ export const Notifications = ({
     React.useEffect(() => {
         getNotifications();
     }, [user]);
+    const seeTheNotification = async (userId, notificationId, isRead, ) => {
+        if (!userId || !notificationId || isRead) return;
+        try {
+            await api_notifications.notification.hasAlreadyBeenSeen(userId, notificationId);
+        } catch (error) {
+            console.error('Erro ao marcar a notificação como lida:', error);
+        }
+    };
     return (
         <>
 
             <Drawer
+                sx={{
+                    width: 500,
+                }}
                 anchor="left"
                 open={left}
                 onClose={toggleDrawer('left', false)}
             >
                 <Box
-                    sx={{
-                        width: 300
-                    }}
+
                     role="presentation"
                     onClick={toggleDrawer('left', false)}
                     onKeyDown={toggleDrawer('left', false)}
                 >
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <NotificationsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={'NOTIFICAÇÕES'} />
-                        </ListItemButton>
-                    </ListItem>
                     <Drawer
                         anchor="left"
                         open={true}
@@ -71,16 +72,19 @@ export const Notifications = ({
                                     <ListItemIcon>
                                         <NotificationsIcon />
                                     </ListItemIcon>
-                                    <ListItemText primary={'NOTIFICAÇÕES'} />
+                                    <ListItemText 
+                                    primary={notifications.length>0?'NOTIFICAÇÕES':"SEM NOTIFICAÇÕES"} 
+                                    secondary={notifications.length>0 &&"Marcar todas como lidas!"}/>
                                 </ListItemButton>
                             </ListItem>
                             <Divider />
-
                             <List>
                                 {notifications.map((notification) => (
                                     <ListItem
-
-                                        key={notification.id} disablePadding >
+                                        onClick={()=>seeTheNotification
+                                            (user.uid, notification.id, notification?.data?.data?.isRead)
+                                        }
+                                        key={notification.id}>
                                         <ListItemButton sx={{
                                             backgroundColor:
                                                 !notification?.data?.data?.isRead ?
@@ -94,14 +98,21 @@ export const Notifications = ({
                                                     <NotificationsIcon
                                                         sx={!notification?.data?.data?.isRead && { color: 'green' }} />}
                                             </ListItemIcon>
-                                            <ListItemText primary={notification?.data?.data?.title}
-                                                secondary={notification.data.data.action}
+                                            <ListItemText 
+                                                primary={
+                                                    !notification?.data?.data?.isRead?
+                                                    notification?.data?.data?.title:`Aberta dia 
+                                                    ${notification.data.data.alreadyOpenedDate}
+                                                    às ${notification.data.data.alreadyOpenedHours}
+                                                `}
+                                                secondary={`
+                                                ${notification.data.data.action} - criado em: 
+                                                ${notification.data.date}`}
                                             />
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
                             </List>
-
                         </Box>
                     </Drawer>
                 </Box >
