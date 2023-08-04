@@ -7,6 +7,7 @@ import {
     updateDoc,
 } from 'firebase/firestore'
 import { db } from '../../../firebase.config'
+import { api_notifications } from '../users/notifications'
 export const api_recipes = {
     recipe: {
         get: async (id) => {
@@ -26,7 +27,8 @@ export const api_recipes = {
                 alert('No such document!')
             }
         },
-        post: async (payload) => {
+        post: async (payload, userId) => {
+            if (!userId) return
             const { id, ...rest } = payload
             if (id) {
                 return
@@ -34,8 +36,7 @@ export const api_recipes = {
             const docRef = await addDoc(collection(db, 'recipes'), {
                 ...rest,
             })
-            console.log(docRef)
-            // criar um usuario no firebase utilizando email name
+            await api_notifications.notificationCreateRecipe.newRecipe(userId, docRef.id)
         },
         update: async (recipeId, updatedData) => {
             try {
