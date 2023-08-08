@@ -14,10 +14,13 @@ import { CheckCircle, } from "@mui/icons-material";
 import { api_notifications } from "../../../api/users/notifications";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 export const Notifications = ({
     left, toggleDrawer,
 }) => {
     const [notifications, setNotifications] = useState([]);
+    const navegate = useNavigate()
+    const [noRead, setNoRead] = useState(0);
     const { user } = React.useContext(AuthContext);
     const getNotifications = async () => {
         if (!user.uid) return;
@@ -31,10 +34,23 @@ export const Notifications = ({
     React.useEffect(() => {
         getNotifications();
     }, [user]);
-    const seeTheNotification = async (userId, notificationId, isRead,) => {
-        if (!userId || !notificationId || isRead) return;
+    const seeTheNotification = async (
+        userId,
+        notificationId,
+        docType,
+        docRef,
+    ) => {
+        if (
+            !userId ||
+            !notificationId
+        ) return;
         try {
             await api_notifications.notification.hasAlreadyBeenSeen(userId, notificationId);
+            if (docType === 'receita') {
+                navegate(`/not_recipe/${docRef} `)
+            } else {
+                navegate(`/not_user/${docRef} `)
+            }
         } catch (error) {
             console.error('Erro ao marcar a notificação como lida:', error);
         }
@@ -48,23 +64,21 @@ export const Notifications = ({
                 }}
                 anchor="left"
                 open={left}
-                onClose={toggleDrawer('left', false)}
+                onClick={toggleDrawer('left', false)}
+                onKeyDown={toggleDrawer('left', false)}
             >
                 <Box
                     role="presentation"
-                    onClick={toggleDrawer('left', false)}
-                    onKeyDown={toggleDrawer('left', false)}
+
                 >
                     <Drawer
                         anchor="left"
                         open={true}
-                        onClose={toggleDrawer('left', false)}
+
                     >
                         <Box
                             sx={{ width: "100%" }}
                             role="presentation"
-                            onClick={toggleDrawer('left', false)}
-                            onKeyDown={toggleDrawer('left', false)}
                         >
                             <ListItem disablePadding>
                                 <ListItemButton>
@@ -73,7 +87,7 @@ export const Notifications = ({
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={notifications.length > 0 ? 'NOTIFICAÇÕES' : "SEM NOTIFICAÇÕES"}
-                                        secondary={notifications.length > 0 && "Marcar todas como lidas!"} />
+                                        secondary={notifications.length > 0 && `${noRead} notificações não lidas!`} />
                                 </ListItemButton>
                             </ListItem>
                             <Divider />
@@ -81,7 +95,12 @@ export const Notifications = ({
                                 {notifications.map((notification) => (
                                     <ListItem
                                         onClick={() => seeTheNotification
-                                            (user.uid, notification.id, notification?.data?.data?.isRead)
+                                            (
+                                                user.uid,
+                                                notification.id,
+                                                notification?.data?.type,
+                                                notification?.data?.docRef
+                                            )
                                         }
                                         key={notification.id}>
                                         <ListItemButton sx={{
@@ -103,11 +122,11 @@ export const Notifications = ({
                                                         notification?.data?.data?.title : `Aberta dia 
                                                     ${notification.data.data.alreadyOpenedDate}
                                                     às ${notification.data.data.alreadyOpenedHours}
-                                                `}
+            `}
                                                 secondary={`
                                                 ${notification.data.data.action} às 
                                                 ${notification.data.time.hours} 
-                                                de ${notification.data.time.date}`}
+                                                de ${notification.data.time.date} `}
                                             />
                                         </ListItemButton>
                                     </ListItem>
