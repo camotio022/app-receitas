@@ -111,6 +111,7 @@ export const PerfilUser = () => {
                 >
                     <CardMediaUser
                         isFollowing={isFollowing}
+                        setIsFollowing={setIsFollowing}
                         handleClickOpen={handleClickOpen}
                         userValues={userValues}
                         user={user}
