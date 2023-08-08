@@ -27,12 +27,17 @@ export const api_notifications = {
                 console.error('Parâmetros inválidos para enviar notificação.');
                 return;
             }
+            const userDataRef = await getDoc(doc(db, 'users', followerId));
+            if (!userDataRef.exists()) {
+                console.error('Receita não encontrada.');
+                return;
+            }
             const notificationData = {
                 userId: followedId,
                 followerId: followerId,
                 data: {
-                    title: 'Nova notificação',
-                    action: 'Você tem um novo seguidor',
+                    title: `${userDataRef.data().name}`,
+                    action: 'Começou a seguir você!',
                     isRead: false,
                 },
                 hours: new Date().toLocaleTimeString(),
@@ -51,12 +56,18 @@ export const api_notifications = {
                 console.error('Parâmetros inválidos para enviar notificação.');
                 return;
             }
+            const userDataRef = await getDoc(doc(db, 'users', followerId));
+            if (!userDataRef.exists()) {
+                console.error('Receita não encontrada.');
+                return;
+            }
             try {
                 const docRef = await addDoc(notificationsCollection, {
                     userId: followedId,
+                    unfollowerId: userDataRef.id,
                     data: {
-                        title: 'Deixaram de seguir você',
-                        action: 'Um usuário deixou de seguir você.',
+                        title: `${userDataRef.data().name}`,
+                        action: 'Deixou de seguir você.',
                         isRead: false,
                     },
                     hours: new Date().toLocaleTimeString(),
@@ -111,11 +122,12 @@ export const api_notifications = {
         }
     },
     notificationCreateRecipe: {
-        newRecipe: async (shooter, docRefId) => {
-            if (!shooter || !docRefId) {
+        newRecipe: async (docRefId) => {
+            if (!docRefId) {
                 console.error('Parâmetros inválidos para criar notificação de nova receita.');
                 return;
             }
+            console.log(docRefId)
             try {
                 const receitaDataRef = await getDoc(doc(db, 'recipes', docRefId));
                 if (!receitaDataRef.exists()) {
@@ -123,21 +135,21 @@ export const api_notifications = {
                     return;
                 }
 
-                const autorId = receitaDataRef.data().autor; // ID do autor da receita
-
-                const seguidoresRef = doc(db, 'users', shooter);
+                const autorId = receitaDataRef.data().author;
+                const seguidoresRef = doc(db, 'users', autorId);
                 const seguidoresDoc = await getDoc(seguidoresRef);
                 if (!seguidoresDoc.exists()) {
                     console.error('Usuário não encontrado.');
                     return;
                 }
-
                 const seguidoresData = seguidoresDoc.data();
                 const seguidores = seguidoresData.followers;
+                if (!seguidores) return
                 const notificacoesRef = collection(db, 'notifications');
-                const notificacoesPromises = seguidores.map(async followerId => {
+                const notificacoesPromises = seguidores.map(async shotId => {
                     const notificationData = {
-                        userId: followerId,
+                        userId: shotId,
+                        recipeCreated: receitaDataRef.id,
                         data: {
                             title: 'Nova Receita',
                             action: `O usuário ${seguidoresData.name} criou uma nova receita: ${receitaDataRef.data().recipeTitle}`,
