@@ -41,7 +41,8 @@ export const api_notifications = {
             existes(userDataRef)
             const notificationData = {
                 userId: followedId,
-                followerId: followerId,
+                docRef: followerId,
+                type: 'seguidor',
                 data: {
                     title: `${userDataRef.data().name}`,
                     action: 'Começou a seguir você!',
@@ -65,7 +66,8 @@ export const api_notifications = {
             try {
                 const docRef = await addDoc(notificationsCollection, {
                     userId: followedId,
-                    unfollowerId: userDataRef.id,
+                    docRef: userDataRef.id,
+                    type: 'seguidor',
                     data: {
                         title: `${userDataRef.data().name}`,
                         action: 'Deixou de seguir você.',
@@ -127,7 +129,6 @@ export const api_notifications = {
                 console.error('Parâmetros inválidos para criar notificação de nova receita.');
                 return;
             }
-            console.log(docRefId)
             try {
                 const receitaDataRef = await getDoc(doc(db, 'recipes', docRefId));
                 existes(receitaDataRef)
@@ -142,10 +143,11 @@ export const api_notifications = {
                 const notificacoesPromises = seguidores.map(async shotId => {
                     const notificationData = {
                         userId: shotId,
-                        recipeCreated: receitaDataRef.id,
+                        docRef: receitaDataRef.id,
+                        type: 'receita',
                         data: {
                             title: 'Nova Receita',
-                            action: `O usuário ${seguidoresData.name} criou uma nova receita: ${receitaDataRef.data().recipeTitle}`,
+                            action: `${seguidoresData.name} criou uma nova receita: ${receitaDataRef.data().recipeTitle}`,
                             isRead: false,
                         },
                         time,
