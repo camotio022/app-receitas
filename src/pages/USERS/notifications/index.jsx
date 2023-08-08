@@ -31,7 +31,7 @@ export const Notifications = ({
     React.useEffect(() => {
         getNotifications();
     }, [user]);
-    const seeTheNotification = async (userId, notificationId, isRead, ) => {
+    const seeTheNotification = async (userId, notificationId, isRead,) => {
         if (!userId || !notificationId || isRead) return;
         try {
             await api_notifications.notification.hasAlreadyBeenSeen(userId, notificationId);
@@ -51,7 +51,6 @@ export const Notifications = ({
                 onClose={toggleDrawer('left', false)}
             >
                 <Box
-
                     role="presentation"
                     onClick={toggleDrawer('left', false)}
                     onKeyDown={toggleDrawer('left', false)}
@@ -72,16 +71,16 @@ export const Notifications = ({
                                     <ListItemIcon>
                                         <NotificationsIcon />
                                     </ListItemIcon>
-                                    <ListItemText 
-                                    primary={notifications.length>0?'NOTIFICAÇÕES':"SEM NOTIFICAÇÕES"} 
-                                    secondary={notifications.length>0 &&"Marcar todas como lidas!"}/>
+                                    <ListItemText
+                                        primary={notifications.length > 0 ? 'NOTIFICAÇÕES' : "SEM NOTIFICAÇÕES"}
+                                        secondary={notifications.length > 0 && "Marcar todas como lidas!"} />
                                 </ListItemButton>
                             </ListItem>
                             <Divider />
                             <List>
                                 {notifications.map((notification) => (
                                     <ListItem
-                                        onClick={()=>seeTheNotification
+                                        onClick={() => seeTheNotification
                                             (user.uid, notification.id, notification?.data?.data?.isRead)
                                         }
                                         key={notification.id}>
@@ -98,16 +97,17 @@ export const Notifications = ({
                                                     <NotificationsIcon
                                                         sx={!notification?.data?.data?.isRead && { color: 'green' }} />}
                                             </ListItemIcon>
-                                            <ListItemText 
+                                            <ListItemText
                                                 primary={
-                                                    !notification?.data?.data?.isRead?
-                                                    notification?.data?.data?.title:`Aberta dia 
+                                                    !notification?.data?.data?.isRead ?
+                                                        notification?.data?.data?.title : `Aberta dia 
                                                     ${notification.data.data.alreadyOpenedDate}
                                                     às ${notification.data.data.alreadyOpenedHours}
                                                 `}
                                                 secondary={`
-                                                ${notification.data.data.action} - criado em: 
-                                                ${notification.data.date}`}
+                                                ${notification.data.data.action} às 
+                                                ${notification.data.time.hours} 
+                                                de ${notification.data.time.date}`}
                                             />
                                         </ListItemButton>
                                     </ListItem>
