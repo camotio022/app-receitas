@@ -7,11 +7,11 @@ import { orange } from "@mui/material/colors"
 import { api_notifications } from "../../../../../../api/users/notifications.js"
 export const CardMediaUser = ({
     handleClickOpen,
+    isFollowing,
     userValues,
     user,
     id
 }) => {
-    const [isFollowing, setIsFollowing] = useState();
     const unfallow = async (seguidor, seguido) => {
         if (!seguido && !seguidor) return
         try {
@@ -32,20 +32,8 @@ export const CardMediaUser = ({
             alert(error.message)
         }
     }
-    useEffect(() => {
-        const userIdFollower = user.uid;
-        const userIdFollowed = userValues.id;
-        if (!userIdFollower || !userIdFollowed) return;
-        const hasFollowers = async () => {
-            try {
-                const fallowers = await api_users.fallow.followers(userIdFollowed, userIdFollower);
-                setIsFollowing(fallowers);
-            } catch (error) {
-                console.error(error.message);
-            }
-        };
-        hasFollowers();
-    }, [isFollowing]);
+
+
 
     return (
         <>
