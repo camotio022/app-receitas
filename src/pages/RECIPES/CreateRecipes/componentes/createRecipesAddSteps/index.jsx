@@ -4,9 +4,21 @@ import { Delete } from "@mui/icons-material"
 
 export const StepsCreateRecipes = ({
     formData,
-    handleInputModPreps,
-    adicionarModPreps
+    setFormData,
 }) => {
+    const handleInputModPreps = (e, index) => {
+        const novosValores = [...formData.modPreps]
+        novosValores[index] = e.target.value
+        setFormData({ ...formData, modPreps: novosValores })
+    }
+    const adicionarModPreps = () => {
+        setFormData({ ...formData, modPreps: [...formData.modPreps, ''] })
+    }
+    const removerModPreps = (index) => {
+        const novosValores = [...formData?.modPreps]
+        novosValores.splice(index, 1)
+        setFormData({ ...formData, modPreps: novosValores })
+    }
     return (
         <>
             <Grid item xs={12} sx={{
