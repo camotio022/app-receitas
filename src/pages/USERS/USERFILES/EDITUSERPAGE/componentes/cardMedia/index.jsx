@@ -2,13 +2,13 @@ import { CameraAlt, PersonAdd, PersonRemove, ShowChart } from "@mui/icons-materi
 import { Avatar, Box, Button, CardMedia, Stack } from "@mui/material"
 import * as Tag from '../../index.js'
 import { api_users } from "../../../../../../api/users/users.js"
-import { useEffect, useState } from "react"
 import { orange } from "@mui/material/colors"
 import { api_notifications } from "../../../../../../api/users/notifications.js"
 export const CardMediaUser = ({
     handleClickOpen,
     isFollowing,
     userValues,
+    setIsFollowing,
     user,
     id
 }) => {
@@ -32,9 +32,6 @@ export const CardMediaUser = ({
             alert(error.message)
         }
     }
-
-
-
     return (
         <>
             <CardMedia
