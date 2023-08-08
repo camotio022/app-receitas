@@ -2,6 +2,16 @@ import { collection, addDoc, doc, setDoc, getDocs, query, where, updateDoc, getD
 
 const notificationsCollection = collection(db, 'notifications');
 import { db, } from "../../../firebase.config";
+const time = {
+    hours: new Date().toLocaleTimeString(),
+    date: new Date().toLocaleDateString(),
+}
+const existes = (value) => {
+    if (!value.exists()) {
+        console.error('Receita não encontrada.');
+        return;
+    }
+}
 export const api_notifications = {
     notification: {
         get: async (userId) => {
@@ -28,10 +38,7 @@ export const api_notifications = {
                 return;
             }
             const userDataRef = await getDoc(doc(db, 'users', followerId));
-            if (!userDataRef.exists()) {
-                console.error('Receita não encontrada.');
-                return;
-            }
+            existes(userDataRef)
             const notificationData = {
                 userId: followedId,
                 followerId: followerId,
@@ -40,13 +47,10 @@ export const api_notifications = {
                     action: 'Começou a seguir você!',
                     isRead: false,
                 },
-                hours: new Date().toLocaleTimeString(),
-                date: new Date().toLocaleDateString(),
+                time,
             };
             try {
-                const docRef = await addDoc(notificationsCollection, notificationData);
-                console.log('id do cocumento criado:', docRef.id);
-                console.log('id do seguido:', followedId);
+                await addDoc(notificationsCollection, notificationData);
             } catch (error) {
                 console.error('Erro ao adicionar notificação:', error);
             }
@@ -57,10 +61,7 @@ export const api_notifications = {
                 return;
             }
             const userDataRef = await getDoc(doc(db, 'users', followerId));
-            if (!userDataRef.exists()) {
-                console.error('Receita não encontrada.');
-                return;
-            }
+            existes(userDataRef)
             try {
                 const docRef = await addDoc(notificationsCollection, {
                     userId: followedId,
@@ -70,8 +71,7 @@ export const api_notifications = {
                         action: 'Deixou de seguir você.',
                         isRead: false,
                     },
-                    hours: new Date().toLocaleTimeString(),
-                    date: new Date().toLocaleDateString(),
+                    time,
                 });
                 console.log('Notificação de unfollow adicionada com sucesso:', docRef.id);
             } catch (error) {
@@ -130,18 +130,11 @@ export const api_notifications = {
             console.log(docRefId)
             try {
                 const receitaDataRef = await getDoc(doc(db, 'recipes', docRefId));
-                if (!receitaDataRef.exists()) {
-                    console.error('Receita não encontrada.');
-                    return;
-                }
-
+                existes(receitaDataRef)
                 const autorId = receitaDataRef.data().author;
                 const seguidoresRef = doc(db, 'users', autorId);
                 const seguidoresDoc = await getDoc(seguidoresRef);
-                if (!seguidoresDoc.exists()) {
-                    console.error('Usuário não encontrado.');
-                    return;
-                }
+                existes(seguidoresDoc)
                 const seguidoresData = seguidoresDoc.data();
                 const seguidores = seguidoresData.followers;
                 if (!seguidores) return
@@ -155,8 +148,7 @@ export const api_notifications = {
                             action: `O usuário ${seguidoresData.name} criou uma nova receita: ${receitaDataRef.data().recipeTitle}`,
                             isRead: false,
                         },
-                        hours: new Date().toLocaleTimeString(),
-                        date: new Date().toLocaleDateString(),
+                        time,
                     };
                     await addDoc(notificacoesRef, notificationData);
                 });
