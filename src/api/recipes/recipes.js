@@ -36,7 +36,7 @@ export const api_recipes = {
             const docRef = await addDoc(collection(db, 'recipes'), {
                 ...rest,
             })
-            await api_notifications.notificationCreateRecipe.newRecipe(userId, docRef.id)
+            await api_notifications.notificationCreateRecipe.newRecipe(docRef.id)
         },
         update: async (recipeId, updatedData) => {
             try {
