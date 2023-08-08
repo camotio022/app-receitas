@@ -47,9 +47,9 @@ export const Notifications = ({
         try {
             await api_notifications.notification.hasAlreadyBeenSeen(userId, notificationId);
             if (docType === 'receita') {
-                navegate(`/not_recipe/${docRef} `)
+                navegate(`/new_recipe/${docRef} `)
             } else {
-                navegate(`/not_user/${docRef} `)
+                navegate(`/new_user/${docRef} `)
             }
         } catch (error) {
             console.error('Erro ao marcar a notificação como lida:', error);
