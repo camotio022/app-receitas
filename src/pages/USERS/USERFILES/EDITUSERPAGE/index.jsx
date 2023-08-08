@@ -10,6 +10,7 @@ import { api_users } from "../../../../api/users/users.js"
 export const PerfilUser = () => {
     const { id } = useParams()
     const { user } = useContext(AuthContext)
+    const [isFollowing, setIsFollowing] = useState(false);
     const [editingField, setEditingField] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [userValues, setUserValues] = useState({});
@@ -72,10 +73,13 @@ export const PerfilUser = () => {
         reader.readAsDataURL(file);
     };
     useEffect(() => {
+        const userIdFollower = user.uid;
+        const userIdFollowed = userValues.id;
         if (!id) return;
         const fetchData = async () => {
             try {
                 const data = await api_users.user.get(id);
+                setIsFollowing(await api_users.fallow.followers(userIdFollowed, userIdFollower))
                 setUserValues(data)
             } catch (err) {
                 console.error(err);
@@ -106,6 +110,7 @@ export const PerfilUser = () => {
                 <Stack
                 >
                     <CardMediaUser
+                        isFollowing={isFollowing}
                         handleClickOpen={handleClickOpen}
                         userValues={userValues}
                         user={user}
