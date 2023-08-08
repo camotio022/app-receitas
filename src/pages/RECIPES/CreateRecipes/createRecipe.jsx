@@ -67,9 +67,7 @@ export const CreateRecipes = ({ }) => {
       try {
         await api_recipes.recipe.post(payload, userId);
         setFormData('')
-        console.log('Receita criada com sucesso');
-        console.log('success');
-        // navigate('/my-recipes')
+        navigate('/my-recipes')
       } catch (error) {
         console.error('Erro ao criar receita:', error);
       }
