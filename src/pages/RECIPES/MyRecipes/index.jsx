@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { useTheme } from '@emotion/react'
-import { AppBarMyrecipes } from './componentes/AppBar'
+
 import { ProgressMyRecipes } from './componentes/progress'
 import { OptionsMyRecipes } from './componentes/options'
 import { CardMyRecipes } from './componentes/cardRecipes'

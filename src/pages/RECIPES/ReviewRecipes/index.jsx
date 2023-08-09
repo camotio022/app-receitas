@@ -17,7 +17,6 @@ import { CircularProgress } from '@mui/material'
 import { CardRecipe } from '../../../componentes/CARDRECIPE/index.jsx'
 import { CardInImage } from './componentes/IMAGECARDS/index.jsx'
 import { PaginationComponent } from './componentes/PAGINATION'
-import { AppBarTopic } from './componentes/APPBAR'
 import { AppBarGlobal } from '../../../componentes/AppBar'
 import { Folder, Image } from '@mui/icons-material'
 
