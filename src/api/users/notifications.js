@@ -1,7 +1,7 @@
-import { collection, addDoc, doc, setDoc, getDocs, query, where, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, setDoc, getDocs, query, where, updateDoc, getDoc, getFirestore } from 'firebase/firestore';
 
 const notificationsCollection = collection(db, 'notifications');
-import { db, } from "../../../firebase.config";
+import { db } from "../../../firebase.config";
 const time = {
     hours: new Date().toLocaleTimeString(),
     date: new Date().toLocaleDateString(),
@@ -47,6 +47,8 @@ export const api_notifications = {
                     title: `${userDataRef.data().name}`,
                     action: 'Começou a seguir você!',
                     isRead: false,
+                    alreadyOpenedHours: '',
+                    alreadyOpenedDate: '',
                 },
                 time,
             };
@@ -72,6 +74,8 @@ export const api_notifications = {
                         title: `${userDataRef.data().name}`,
                         action: 'Deixou de seguir você.',
                         isRead: false,
+                        alreadyOpenedHours: '',
+                        alreadyOpenedDate: '',
                     },
                     time,
                 });
@@ -109,19 +113,26 @@ export const api_notifications = {
             const userNotificationsQuery = query(notificationsRef, where('userId', '==', userId));
             try {
                 const querySnapshot = await getDocs(userNotificationsQuery);
-                const batch = db.batch();
-                querySnapshot.forEach((doc) => {
-                    const notificationRef = doc(db, 'notifications', doc.id);
-                    batch.update(notificationRef, {
-                        'data.isRead': true,
-                    });
+
+                const updatePromises = querySnapshot.docs.map(async (doc) => {
+                    const notificationData = doc.data(); // Obtenha o campo 'data' do documento
+                    if (notificationData.data.isRead === false) {
+                        const notificationRef = doc.ref;
+                        notificationData.data.isRead = true;
+                        notificationData.data.alreadyOpenedHours = new Date().toLocaleTimeString();
+                        notificationData.data.alreadyOpenedDate = new Date().toLocaleDateString();
+                        await updateDoc(notificationRef, {
+                            data: notificationData.data,
+                        });
+                    }
                 });
-                await batch.commit();
+                await Promise.all(updatePromises);
                 console.log('Notificações do usuário marcadas como lidas com sucesso:', userId);
             } catch (error) {
                 console.error('Erro ao marcar notificações do usuário como lidas:', error);
             }
         }
+
     },
     notificationCreateRecipe: {
         newRecipe: async (docRefId) => {
@@ -149,6 +160,8 @@ export const api_notifications = {
                             title: 'Nova Receita',
                             action: `${seguidoresData.name} criou uma nova receita: ${receitaDataRef.data().recipeTitle}`,
                             isRead: false,
+                            alreadyOpenedHours: '',
+                            alreadyOpenedDate: '',
                         },
                         time,
                     };
