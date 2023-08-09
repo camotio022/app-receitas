@@ -13,15 +13,19 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { CheckCircle, } from "@mui/icons-material";
 import { api_notifications } from "../../../api/users/notifications";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { Stack } from "@mui/material";
+import { Alert, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import zIndex from "@mui/material/styles/zIndex";
+import { useEffect } from "react";
+import { useContext } from "react";
 export const Notifications = ({
     left, toggleDrawer,
 }) => {
     const [notifications, setNotifications] = useState([]);
     const navegate = useNavigate()
     const [noRead, setNoRead] = useState(0);
-    const { user } = React.useContext(AuthContext);
+    const [checkAll, setCheckAll] = useState(false)
+    const { user } = useContext(AuthContext);
     const getNotifications = async () => {
         if (!user.uid) return;
         try {
@@ -31,8 +35,16 @@ export const Notifications = ({
             console.error('Erro ao obter notificações:', error);
         }
     };
-    React.useEffect(() => {
-        getNotifications();
+    const newsNotifications = () => {
+        const unreadNotifications =
+            notifications.filter(
+                notification => !notification.data.data.isRead
+            );
+        setNoRead(unreadNotifications)
+    }
+    useEffect(() => {
+        getNotifications()
+        newsNotifications()
     }, [user]);
     const seeTheNotification = async (
         userId,
@@ -55,9 +67,20 @@ export const Notifications = ({
             console.error('Erro ao marcar a notificação como lida:', error);
         }
     };
+    const checkAllnotif = (event) => {
+        setCheckAll(!checkAll)
+        event.stopPropagation();
+    }
+    const openAllNotifications = async (event) => {
+        event.stopPropagation();
+        try {
+            await api_notifications.notification.markAllAsRead(user.uid)
+        } catch (error) {
+            console.log('Erro ao marcar a notificação como lidas:', error);
+        }
+    }
     return (
         <>
-
             <Drawer
                 sx={{
                     width: 500,
@@ -69,7 +92,6 @@ export const Notifications = ({
             >
                 <Box
                     role="presentation"
-
                 >
                     <Drawer
                         anchor="left"
@@ -80,14 +102,34 @@ export const Notifications = ({
                             sx={{ width: "100%" }}
                             role="presentation"
                         >
-                            <ListItem disablePadding>
+                            <ListItem >
                                 <ListItemButton>
-                                    <ListItemIcon>
+                                    <ListItemIcon >
                                         <NotificationsIcon />
                                     </ListItemIcon>
+
                                     <ListItemText
                                         primary={notifications.length > 0 ? 'NOTIFICAÇÕES' : "SEM NOTIFICAÇÕES"}
-                                        secondary={notifications.length > 0 && `${noRead} notificações não lidas!`} />
+                                        secondary={notifications.length > 0 && `${notifications.length} notificações`}
+                                    />
+                                    {noRead.length > 0 &&
+                                        <ListItemIcon
+                                        >
+                                            {!checkAll &&
+                                                <Alert
+                                                    onClick={checkAllnotif}
+                                                    disablePadding
+                                                    variant="filled" severity="info">
+                                                    {`${noRead.length} notificações novas!`}
+                                                </Alert>
+                                            }
+                                            {checkAll &&
+                                                <Alert onClick={openAllNotifications} variant="filled" severity="success">
+                                                    Ler todas.
+                                                </Alert>
+                                            }
+                                        </ListItemIcon>
+                                    }
                                 </ListItemButton>
                             </ListItem>
                             <Divider />
