@@ -18,6 +18,8 @@ import { CardRecipe } from '../../../componentes/CARDRECIPE/index.jsx'
 import { CardInImage } from './componentes/IMAGECARDS/index.jsx'
 import { PaginationComponent } from './componentes/PAGINATION'
 import { AppBarTopic } from './componentes/APPBAR'
+import { AppBarGlobal } from '../../../componentes/AppBar'
+import { Folder, Image } from '@mui/icons-material'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -137,12 +139,17 @@ export const TopReview = (props) => {
       </Tag.Cards>
     )
   }
+  const tabs = [
+    { icon: Folder, text: "recipe cards" },
+    { icon: Image, text: "recipe images" },
+  ];
   return (
     <>
       <Box>
-        <AppBarTopic
+        <AppBarGlobal
           value={value}
           handleChange={handleChange}
+          tabs={tabs}
         />
         {isLoading ? (
           <Tag.Cards
