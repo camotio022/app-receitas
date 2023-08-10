@@ -42,7 +42,7 @@ export const UserMenu = ({
         setLeft={setLeft}
         toggleDrawer={toggleDrawer}
       />
-      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
+
       <Stack position={'absolute'}
         sx={{
           ml: '-6rem',
@@ -127,6 +127,8 @@ export const UserMenu = ({
         </Stack>
       </Menu>
       <Link sx={{ color: 'white' }}>{firstWord}</Link>
+      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
+
     </Stack >
   )
 }
