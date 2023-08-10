@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../../../../contexts/AuthContext'
 import {
   Avatar,
@@ -20,7 +20,7 @@ import {
   Logout,
 } from '@mui/icons-material'
 import { links } from './links'
-
+import { Notifications } from '../../../USERS/notifications/index.jsx'
 export const UserMenu = ({
   handleClick,
   handleClose,
@@ -28,18 +28,27 @@ export const UserMenu = ({
   Close,
   anchorEl,
 }) => {
+  const [left, setLeft] = useState(false)
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user?.displayName?.charAt(0)
   const firstWord = user?.displayName?.split(' ')[0]
+  const toggleDrawer = () => (event) => {
+    setLeft(!left);
+  };
   return (
     <Stack direction="row" alignItems="center" justifyContent="center">
-      <NotificationsIcon titleAccess='12' />
+      <Notifications
+        left={left}
+        setLeft={setLeft}
+        toggleDrawer={toggleDrawer}
+      />
+      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
       <Stack position={'absolute'}
         sx={{
           ml: '-6rem',
           mb: '-2rem',
           fontSize: '13px'
-        }}>10</Stack>
+        }}></Stack>
       <Box
         sx={{
           display: 'flex',

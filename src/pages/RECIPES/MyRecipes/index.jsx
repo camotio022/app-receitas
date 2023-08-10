@@ -7,11 +7,13 @@ import {
 } from '@mui/material'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { useTheme } from '@emotion/react'
-import { AppBarMyrecipes } from './componentes/AppBar'
+
 import { ProgressMyRecipes } from './componentes/progress'
 import { OptionsMyRecipes } from './componentes/options'
 import { CardMyRecipes } from './componentes/cardRecipes'
 import { api_myrecipes } from '../../../api/recipes/myrecipes'
+import { AppBarGlobal } from '../../../componentes/AppBar'
+import { Folder } from '@mui/icons-material'
 function TabPanel(props) {
   const { children, value, index, ...other } = props
   return (
@@ -98,12 +100,16 @@ export const MyRecipes = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+  const tabs = [
+    { icon: Folder, text: "MINHAS RECEITAS" },
+  ];
   return (
 
     <>
-      <AppBarMyrecipes
+      <AppBarGlobal
         handleChange={handleChange}
         value={value}
+        tabs={tabs}
       />
       {isLoading ? (
         <>

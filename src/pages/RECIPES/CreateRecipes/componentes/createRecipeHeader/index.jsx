@@ -1,14 +1,29 @@
 import { Button, Grid } from "@mui/material"
 import { MyTextField } from "../../../../../componentes/textField/textField.jsx"
+import * as React from 'react'
+import { Delete } from "@mui/icons-material"
 
 
 export const HeaderCreateRecipes = ({
-    handleInputIngre,
-    adicionarIngre,
-    removerIngre,
     formData,
+    setFormData,
     handleInputChangesCreateRecipes
 }) => {
+    const handleInputIngre = (e, index) => {
+        const novosValores = [...formData?.ingredients]
+        novosValores[index] = e.target.value
+        setFormData({ ...formData, ingredients: novosValores })
+    }
+    const adicionarIngre = () => {
+        console.log(formData);
+        setFormData({ ...formData, ingredients: [...formData?.ingredients, ''] });
+    }
+    const removerIngre = (index) => {
+        const novosValores = [...formData?.ingredients];
+        novosValores.splice(index, 1);
+        setFormData({ ...formData, ingredients: novosValores });
+    }
+    
     return (
         <>
             <Grid container spacing={2} sx={{ transition: '300ms' }}>
@@ -47,7 +62,7 @@ export const HeaderCreateRecipes = ({
                                     color="error"
                                     onClick={() => removerIngre(index)}
                                     variant="outlined"
-                                    startIcon={<DeleteIcon />}
+                                    startIcon={<Delete />}
                                 >
                                     Delete Ingrediente
                                 </Button>
@@ -60,7 +75,7 @@ export const HeaderCreateRecipes = ({
                     <Button
                         size="small"
                         sx={{ mr: 2 }}
-                        onClick={adicionarIngre}
+                        onClick={()=>adicionarIngre()}
                         variant="contained"
                     >
                         + Add ingredient

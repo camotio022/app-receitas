@@ -1,14 +1,37 @@
-import { CameraAlt } from "@mui/icons-material"
+import { CameraAlt, PersonAdd, PersonRemove, ShowChart } from "@mui/icons-material"
 import { Avatar, Box, Button, CardMedia, Stack } from "@mui/material"
-import *as Tag from '../../index.js'
-
-
+import * as Tag from '../../index.js'
+import { api_users } from "../../../../../../api/users/users.js"
+import { orange } from "@mui/material/colors"
+import { api_notifications } from "../../../../../../api/users/notifications.js"
 export const CardMediaUser = ({
     handleClickOpen,
+    isFollowing,
     userValues,
+    setIsFollowing,
     user,
     id
 }) => {
+    const unfallow = async (seguidor, seguido) => {
+        if (!seguido && !seguidor) return
+        try {
+            await api_users.fallow.unfollow(seguidor, seguido)
+            await api_notifications.notification.postUnfollow(seguidor, seguido)
+            setIsFollowing(false);
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+    const handleClickfallowed = async (seguidor, seguido) => {
+        if (!seguido && !seguido) return
+        try {
+            await api_users.fallow.add(seguidor, seguido)
+            await api_notifications.notification.post(seguidor, seguido)
+            setIsFollowing(true);
+        } catch (error) {
+            alert(error.message)
+        }
+    }
     return (
         <>
             <CardMedia
@@ -31,11 +54,38 @@ export const CardMediaUser = ({
                 component="div"
                 image={userValues?.coverImage}
             >
-                {user?.uid === id &&
-                    <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
-                        Editar a foto da capa
-                    </Button>}
-            </CardMedia>
+                {
+                    user?.uid === id ?
+                        <Button sx={{ mr: 3, mb: 3, zIndex: 1, }} variant="contained" endIcon={<CameraAlt />} onClick={() => handleClickOpen("coverImage")}>
+                            Editar a foto da capa
+                        </Button> :
+                        <Stack>
+                            <Button sx={{ mr: 3, mb: 1, zIndex: 1, }}
+                                variant="contained"
+                                endIcon={<ShowChart />}
+                            >
+                                ver as receitas
+                            </Button>
+                            {!isFollowing ? < Button
+                                onClick={() => handleClickfallowed(userValues?.id, user?.uid)}
+                                sx={{ mr: 3, mb: 4, zIndex: 1, }}
+                                variant="contained"
+                                endIcon={<PersonAdd />}
+                            >
+                                seguir
+                            </Button> :
+                                < Button
+                                    onClick={() => unfallow(userValues?.id, user?.uid)}
+                                    sx={{ mr: 3, mb: 4, zIndex: 1, bgcolor: orange[500] }}
+                                    variant="contained"
+                                    endIcon={<PersonRemove />}
+                                >
+                                    Deixar de seguir
+                                </Button>
+                            }
+                        </Stack>
+                }
+            </CardMedia >
             <Tag.ItemsLinks sx={{
                 justifyContent: 'flex-start !important',
                 gap: 1,
