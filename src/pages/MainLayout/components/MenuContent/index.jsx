@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 import {
   Search as SearchIcon,
   Close as CloseIcon,
+  Menu,
 } from '@mui/icons-material';
 import * as Tag from '../../index.js';
 import * as S from './styles.js';
@@ -22,7 +23,6 @@ export const MenuContent = ({
   selectedLink,
   RENDERPAGE,
   anchorEl,
-  handleClick,
   handleClose,
   open,
   Close,
@@ -34,7 +34,7 @@ export const MenuContent = ({
     <>
       <S.Container scrollHeight={scrollHeight}>
         <S.Header scrollHeight={scrollHeight}>
-          <Logo />
+          {!matchesMobileSmall ? <Menu /> : <Logo />}
           <Stack justifyContent={'flex-end'} alignItems={'center'} mr={3}>
             <UserMenu
               handleClick={handleOpenUserMenu}
@@ -72,45 +72,46 @@ export const MenuContent = ({
           direction="row"
           sx={{ width: '100vw', height: '90vh' }}
         >
-          <S.SideMenu>
-            <S.MinhaLista
-              matchesMobileSmall={matchesMobileSmall}
-              component="nav"
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <Tag.ListSub
-                  sx={{
-                    justifyContent: !matchesMobileSmall
-                      ? 'space-between'
-                      : 'flex-start',
-                  }}
-                  component="div"
-                  id="nested-list-subheader"
-                >
-                  {!matchesMobileSmall && (
-                    <CloseIcon onClick={(e) => setShowLinks(!showLinks)} />
-                  )}
-                </Tag.ListSub>
-              }
-            >
-              {links.map((li) => {
-                return (
-                  <Links_a
-                    key={li.name}
-                    {...li}
-                    handleClick={(event) => handleSelectLink(event, li.name)}
-                    selectedLink={selectedLink}
-                  />
-                )
-              })}
-            </S.MinhaLista>
-          </S.SideMenu>
+          {matchesMobileSmall &&
+            <S.SideMenu >
+              <S.MinhaLista
+                matchesMobileSmall={matchesMobileSmall}
+                component="nav"
+                aria- labelledby="nested-list-subheader"
+                subheader={
+                  <Tag.ListSub
+                    sx={{
+                      justifyContent: !matchesMobileSmall
+                        ? 'space-between'
+                        : 'flex-start',
+                    }}
+                    component="div"
+                    id="nested-list-subheader"
+                  >
+                    {!matchesMobileSmall && (
+                      <CloseIcon onClick={(e) => setShowLinks(!showLinks)} />
+                    )}
+                  </Tag.ListSub>
+                }
+              >
+                {links.map((li) => {
+                  return (
+                    <Links_a
+                      key={li.name}
+                      {...li}
+                      handleClick={(event) => handleSelectLink(event, li.name)}
+                      selectedLink={selectedLink}
+                    />
+                  )
+                })}
+              </S.MinhaLista>
+            </S.SideMenu>}
           {search ?
             <S.Content><MySearch searchInput={search} /></S.Content>
             : <S.Content>{RENDERPAGE || children}</S.Content>}
 
 
-        </Stack>
+        </Stack >
         <FloatingButton />
       </S.Container >
     </>
