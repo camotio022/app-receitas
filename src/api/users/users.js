@@ -162,43 +162,5 @@ export const api_users = {
       }
     },
   },
-  sendNotificationUser: {
-    update: async (userToken) => {
-      const messaging = getMessaging();
-      const registrationToken = await getToken(messaging);
-      try {
-        const fcmApiUrl = 'https://fcm.googleapis.com/fcm/send';
-        const message = {
-          notification: {
-            title: 'Novo seguidor!',
-            body: 'Você tem um novo seguidor!',
-          },
-          to: registrationToken,
-        };
-        const headers = new Headers({
-          'Authorization': `key=${userToken}`,
-          'Content-Type': 'application/json',
-        });
-        const options = {
-          method: 'POST',
-          headers: headers,
-          body: JSON.stringify(message),
-        };
-        const response = await fetch(fcmApiUrl, options);
-        const responseData = await response.text();
-
-        if (response.ok) {
-          console.log('Notificação enviada com sucesso:', responseData);
-        } else {
-          console.log('Erro ao enviar notificação:', responseData);
-        }
-      } catch (error) {
-        console.log('Erro ao enviar notificação:', error.message);
-      }
-    },
-  }
-
-
-
 }
 
