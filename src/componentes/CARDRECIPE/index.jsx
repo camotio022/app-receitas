@@ -14,15 +14,16 @@ export const CardRecipe = ({
     displayNameAuhtor,
     AuthorName,
     commentsCounter,
-    ranking
+    ranking,
+    id
 }) => {
     const matches = useMediaQuery('(min-width:700px)')
     const { user } = useContext(AuthContext)
-    const comment =(userId, id)=> {
+    const comment =()=> {
         alert('Deseja comentar essa receita?')
     }
     return (
-        <Tag.Card onDoubleClick={()=>comment(user.uid)}>
+        <Tag.Card key={id} onDoubleClick={()=>comment(user.uid)}>
             <Stack width={'100%'}>
                 <Tooltip
                     sx={{ cursor: 'pointer' }}
@@ -43,7 +44,7 @@ export const CardRecipe = ({
                         fontSize: '100%'
                     }}>
                         <Link
-                            href={`/detailsRecipes/${detailsRecipes}`}
+                            href={`/detailsRecipes/${id}`}
                             color="inherit"
                             underline="hover"
                         >
