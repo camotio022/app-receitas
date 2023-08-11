@@ -83,7 +83,6 @@ export const Notifications = ({
     return (
         <>
             <Stack
-
                 anchor="left"
                 open={left}
                 onClick={toggleDrawer('left', false)}
@@ -97,7 +96,7 @@ export const Notifications = ({
                         open={left}
                     >
                         <Box
-                            sx={{ width: "80vw" }}
+                     
                             role="presentation"
                         >
                             <ListItem >
@@ -118,7 +117,7 @@ export const Notifications = ({
                                                     onClick={checkAllnotif}
                                                     disablePadding
                                                     variant="filled" severity="info">
-                                                    {`${noRead} notificações novas!`}
+                                                    {`${noRead}  novas!`}
                                                 </Alert>
                                             }
                                             {checkAll &&
