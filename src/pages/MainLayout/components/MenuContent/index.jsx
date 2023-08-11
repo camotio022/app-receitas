@@ -30,12 +30,12 @@ export const MenuContent = ({
   handleOpenUserMenu,
 }) => {
   const [search, setSearch] = useState('')
-  const [openli, setLi] = useState(false)
+  const [showLinks, setShowLinks] = useState(false);
   return (
     <>
       <S.Container scrollHeight={scrollHeight}>
         <S.Header scrollHeight={scrollHeight}>
-          {!matchesMobileSmall ? <Menu onClick={(e) => setLi(!openli)} /> : <Logo />}
+          {!matchesMobileSmall ? <Menu onClick={() => setShowLinks(!showLinks)} /> : <Logo />}
           <Stack direction="row" alignItems="center" ml={3}>
             <Tag.Search sx={{ width: 'auto' }}>
               <Tag.SearchIconWrapper>
@@ -63,31 +63,32 @@ export const MenuContent = ({
           direction="row"
           sx={{ width: '100vw', height: '90vh' }}
         >
-          {openli &&
-            <S.SideMenu sx={!matchesMobileSmall && {
-              position: 'absolute',
-              bgcolor: 'white',
-              zIndex: 1,
-              width: '100%'
+          <S.SideMenu sx={!matchesMobileSmall && {
+            display: showLinks ? "block" : "none",
+            position: 'absolute',
+            bgcolor: 'white',
+            zIndex: 1,
+            width: '100%'
+          }}
+          >
+            <S.MinhaLista
+              matchesMobileSmall={matchesMobileSmall}
+              component="nav"
+              aria- labelledby="nested-list-subheader"
+            >
+              {links.map((li) => {
+                return (
+                  <Links_a
+                    key={li.name}
+                    {...li}
+                    handleClick={(event) => handleSelectLink(event, li.name)}
+                    selectedLink={selectedLink}
+                  />
+                )
+              })}
+            </S.MinhaLista>
+          </S.SideMenu>
 
-            }}>
-              <S.MinhaLista
-                matchesMobileSmall={matchesMobileSmall}
-                component="nav"
-                aria- labelledby="nested-list-subheader"
-              >
-                {links.map((li) => {
-                  return (
-                    <Links_a
-                      key={li.name}
-                      {...li}
-                      handleClick={(event) => handleSelectLink(event, li.name)}
-                      selectedLink={selectedLink}
-                    />
-                  )
-                })}
-              </S.MinhaLista>
-            </S.SideMenu>}
           {search ?
             <S.Content><MySearch searchInput={search} /></S.Content>
             : <S.Content>{RENDERPAGE || children}</S.Content>}
