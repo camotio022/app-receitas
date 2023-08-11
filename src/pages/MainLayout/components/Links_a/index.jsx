@@ -6,6 +6,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
 } from '@mui/material'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
@@ -20,9 +21,9 @@ export const Links_a = ({
   const { logout } = useContext(AuthContext)
   const handleLinkClick = (link) => {
     if (link.onClick === 'logout') {
-      logout() // Chame a função logout aqui
+      logout()
     } else {
-      // Lógica para lidar com outros links
+
     }
   }
   const isSelected = selectedLink === name
@@ -31,7 +32,6 @@ export const Links_a = ({
       <ListItemButton sx={{ color: 'black' }} onClick={handleClick}>
         <ListItemIcon sx={{ color: 'black' }}>{icon}</ListItemIcon>
         <ListItemText primary={name} />
-        {isSelected ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={isSelected} timeout="auto" unmountOnExit>
         <List sx={{ color: 'white' }} component="div" disablePadding>
