@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { AuthContext } from '../../../../contexts/AuthContext'
 import {
   Avatar,
+  Badge,
   Box,
   Divider,
   IconButton,
@@ -35,7 +36,6 @@ export const UserMenu = ({
   const firstLatter = user?.displayName?.charAt(0)
   const firstWord = user?.displayName?.split(' ')[0]
   const [noReadFromNotifications, setNoReadFromNotifications] = useState(0);
-  console.log()
   const updateNoReadFromNotifications = (newNoRead) => {
     setNoReadFromNotifications(newNoRead);
   };
@@ -51,18 +51,17 @@ export const UserMenu = ({
         noRead={noReadFromNotifications}
         updateNoRead={updateNoReadFromNotifications}
       />
-      <Box>
+      <Badge badgeContent={noReadFromNotifications} color="error">
         <NotificationsIcon
           onClick={toggleDrawer('left', true)}
-          sx={noReadFromNotifications > 0 && {
-            zIndex: 1,
-            borderRadius: '5px',
-            border: '3px solid green',
-            margin: 0.5
+          sx={{
+            cursor: 'pointer',
           }}
         />
-        {noReadFromNotifications}
-      </Box>
+      </Badge>
+
+
+
 
       <Box
         sx={{
