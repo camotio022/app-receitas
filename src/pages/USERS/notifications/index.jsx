@@ -19,11 +19,10 @@ import zIndex from "@mui/material/styles/zIndex";
 import { useEffect } from "react";
 import { useContext } from "react";
 export const Notifications = ({
-    left, toggleDrawer,
+    left, toggleDrawer, noRead, updateNoRead
 }) => {
     const [notifications, setNotifications] = useState([]);
     const navegate = useNavigate()
-    const [noRead, setNoRead] = useState(0);
     const [checkAll, setCheckAll] = useState(false)
     const { user } = useContext(AuthContext);
     const getNotifications = async () => {
@@ -31,21 +30,23 @@ export const Notifications = ({
         try {
             const notificationsData = await api_notifications.notification.get(user.uid);
             setNotifications(notificationsData);
+            newsNotifications(notificationsData);
         } catch (error) {
             console.error('Erro ao obter notificações:', error);
         }
     };
-    const newsNotifications = () => {
+    const newsNotifications = (notificationsData) => {
         const unreadNotifications =
-            notifications.filter(
-                notification => !notification.data.data.isRead
-            );
-        setNoRead(unreadNotifications)
-    }
+            notificationsData.filter(notification => !notification.data.data.isRead);
+        updateNoRead(unreadNotifications.length);
+    };
     useEffect(() => {
-        getNotifications()
-        newsNotifications()
-    }, [user]);
+        const fetchData = async () => {
+            await getNotifications();
+        };
+        fetchData();
+        updateNoRead(noRead);
+    }, [user, noRead, updateNoRead]);
     const seeTheNotification = async (
         userId,
         notificationId,
@@ -81,10 +82,8 @@ export const Notifications = ({
     }
     return (
         <>
-            <Drawer
-                sx={{
-                    width: 500,
-                }}
+            <Stack
+
                 anchor="left"
                 open={left}
                 onClick={toggleDrawer('left', false)}
@@ -95,11 +94,10 @@ export const Notifications = ({
                 >
                     <Drawer
                         anchor="left"
-                        open={true}
-
+                        open={left}
                     >
                         <Box
-                            sx={{ width: "100%" }}
+                            sx={{ width: "80vw" }}
                             role="presentation"
                         >
                             <ListItem >
@@ -112,7 +110,7 @@ export const Notifications = ({
                                         primary={notifications.length > 0 ? 'NOTIFICAÇÕES' : "SEM NOTIFICAÇÕES"}
                                         secondary={notifications.length > 0 && `${notifications.length} notificações`}
                                     />
-                                    {noRead.length > 0 &&
+                                    {noRead > 0 &&
                                         <ListItemIcon
                                         >
                                             {!checkAll &&
@@ -120,7 +118,7 @@ export const Notifications = ({
                                                     onClick={checkAllnotif}
                                                     disablePadding
                                                     variant="filled" severity="info">
-                                                    {`${noRead.length} notificações novas!`}
+                                                    {`${noRead} notificações novas!`}
                                                 </Alert>
                                             }
                                             {checkAll &&
@@ -177,7 +175,7 @@ export const Notifications = ({
                         </Box>
                     </Drawer>
                 </Box >
-            </Drawer >
+            </Stack >
 
         </>
     )
