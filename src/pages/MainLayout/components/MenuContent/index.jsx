@@ -28,9 +28,10 @@ export const MenuContent = ({
   Close,
   handleSelectLink,
   handleOpenUserMenu,
+  showLinks,
+  setShowLinks
 }) => {
   const [search, setSearch] = useState('')
-  const [showLinks, setShowLinks] = useState(false);
   return (
     <>
       <S.Container scrollHeight={scrollHeight}>
@@ -79,6 +80,7 @@ export const MenuContent = ({
               {links.map((li) => {
                 return (
                   <Links_a
+                  setShowLinks={setShowLinks}
                     key={li.name}
                     {...li}
                     handleClick={(event) => handleSelectLink(event, li.name)}
