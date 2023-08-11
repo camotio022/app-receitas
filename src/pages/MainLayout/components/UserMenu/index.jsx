@@ -11,6 +11,7 @@ import {
   MenuItem,
   Stack,
   Tooltip,
+  useMediaQuery,
 } from '@mui/material'
 
 import {
@@ -29,6 +30,7 @@ export const UserMenu = ({
   anchorEl,
 }) => {
   const [left, setLeft] = useState(false)
+  const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user?.displayName?.charAt(0)
   const firstWord = user?.displayName?.split(' ')[0]
@@ -42,13 +44,8 @@ export const UserMenu = ({
         setLeft={setLeft}
         toggleDrawer={toggleDrawer}
       />
+      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
 
-      <Stack position={'absolute'}
-        sx={{
-          ml: '-6rem',
-          mb: '-2rem',
-          fontSize: '13px'
-        }}></Stack>
       <Box
         sx={{
           display: 'flex',
@@ -126,8 +123,7 @@ export const UserMenu = ({
           </MenuItem>
         </Stack>
       </Menu>
-      <Link sx={{ color: 'white' }}>{firstWord}</Link>
-      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
+      {matchesMobileSmall && < Link sx={{ color: 'white' }}>{firstWord}</Link>}
 
     </Stack >
   )
