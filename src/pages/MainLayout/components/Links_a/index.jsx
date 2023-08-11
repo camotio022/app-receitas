@@ -14,14 +14,10 @@ export const Links_a = ({
   icon,
   children,
   selectedLink,
+  setShowLinks
 }) => {
-  const { logout } = useContext(AuthContext)
-  const handleLinkClick = (link) => {
-    if (link.onClick === 'logout') {
-      logout()
-    }
-  }
   const isSelected = selectedLink === name
+
   return (
     <>
       <ListItemButton sx={{ color: 'black' }} onClick={handleClick}>
@@ -37,6 +33,7 @@ export const Links_a = ({
                 <ListItemButton
                   key={child?.name}
                   sx={{ pl: 4, borderLeft: '20px solid #e3e9ed' }}
+                  onClick={() => setShowLinks(false)}
                 >
                   <ListItemIcon sx={{ color: 'black' }}>
                     {child.icon}
