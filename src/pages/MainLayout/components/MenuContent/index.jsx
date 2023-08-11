@@ -30,21 +30,13 @@ export const MenuContent = ({
   handleOpenUserMenu,
 }) => {
   const [search, setSearch] = useState('')
+  const [openli, setLi] = useState(false)
   return (
     <>
       <S.Container scrollHeight={scrollHeight}>
         <S.Header scrollHeight={scrollHeight}>
-          {!matchesMobileSmall ? <Menu /> : <Logo />}
-          <Stack justifyContent={'flex-end'} alignItems={'center'} mr={3}>
-            <UserMenu
-              handleClick={handleOpenUserMenu}
-              handleClose={handleClose}
-              anchorEl={anchorEl}
-              open={open}
-              Close={Close}
-            />
-          </Stack>
-          <Stack direction="row" alignItems="center">
+          {!matchesMobileSmall ? <Menu onClick={(e) => setLi(!openli)} /> : <Logo />}
+          <Stack direction="row" alignItems="center" ml={3}>
             <Tag.Search sx={{ width: 'auto' }}>
               <Tag.SearchIconWrapper>
                 <CloseIcon />
@@ -56,43 +48,33 @@ export const MenuContent = ({
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Tag.Search>
-            <SearchIcon
-              sx={{
-                borderRadius: '1px',
-                padding: '2px',
-                height: '2.3rem',
-                width: 'auto',
-                bgcolor: '#374957',
-              }}
-            ></SearchIcon>
           </Stack>
-          <TopLinks />
+          <Stack justifyContent={'flex-end'} alignItems={'center'}>
+            <UserMenu
+              handleClick={handleOpenUserMenu}
+              handleClose={handleClose}
+              anchorEl={anchorEl}
+              open={open}
+              Close={Close}
+            />
+          </Stack>
         </S.Header>
         <Stack
           direction="row"
           sx={{ width: '100vw', height: '90vh' }}
         >
-          {matchesMobileSmall &&
-            <S.SideMenu >
+          {openli &&
+            <S.SideMenu sx={!matchesMobileSmall && {
+              position: 'absolute',
+              bgcolor: 'white',
+              zIndex: 1,
+              width: '100%'
+
+            }}>
               <S.MinhaLista
                 matchesMobileSmall={matchesMobileSmall}
                 component="nav"
                 aria- labelledby="nested-list-subheader"
-                subheader={
-                  <Tag.ListSub
-                    sx={{
-                      justifyContent: !matchesMobileSmall
-                        ? 'space-between'
-                        : 'flex-start',
-                    }}
-                    component="div"
-                    id="nested-list-subheader"
-                  >
-                    {!matchesMobileSmall && (
-                      <CloseIcon onClick={(e) => setShowLinks(!showLinks)} />
-                    )}
-                  </Tag.ListSub>
-                }
               >
                 {links.map((li) => {
                   return (
