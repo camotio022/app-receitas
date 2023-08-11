@@ -6,11 +6,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  useMediaQuery,
 } from '@mui/material'
-import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
-
 export const Links_a = ({
   name,
   handleClick,
@@ -22,8 +19,6 @@ export const Links_a = ({
   const handleLinkClick = (link) => {
     if (link.onClick === 'logout') {
       logout()
-    } else {
-
     }
   }
   const isSelected = selectedLink === name
@@ -56,7 +51,7 @@ export const Links_a = ({
               </Link>
             ))}
         </List>
-      </Collapse>
+      </Collapse >
     </>
   )
 }
