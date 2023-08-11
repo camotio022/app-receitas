@@ -17,8 +17,6 @@ export const Header = styled('div')(({ scrollHeight }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-
-  background: 'red',
   width: '100%',
   height: '10vh',
   background: '#374957',
