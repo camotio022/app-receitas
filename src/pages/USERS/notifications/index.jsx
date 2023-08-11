@@ -35,6 +35,15 @@ export const Notifications = ({
             console.error('Erro ao obter notificações:', error);
         }
     };
+    const sortedNotifications = [...notifications].sort((a, b) => {
+        if (!a.data.data.isRead && b.data.data.isRead) {
+            return -1;
+        }
+        if (a.data.data.isRead && !b.data.data.isRead) {
+            return 1;
+        }
+        return 0;
+    });
     const newsNotifications = (notificationsData) => {
         const unreadNotifications =
             notificationsData.filter(notification => !notification.data.data.isRead);
@@ -96,7 +105,7 @@ export const Notifications = ({
                         open={left}
                     >
                         <Box
-                     
+
                             role="presentation"
                         >
                             <ListItem >
@@ -131,7 +140,7 @@ export const Notifications = ({
                             </ListItem>
                             <Divider />
                             <List>
-                                {notifications.map((notification) => (
+                                {sortedNotifications.map((notification) => (
                                     <ListItem
                                         onClick={() => seeTheNotification
                                             (
