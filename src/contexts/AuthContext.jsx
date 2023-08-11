@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
             }
         }
     }
-
     useEffect(() => {
         checkUserAuthentication()
     }, [])
@@ -43,14 +42,9 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(userData))
     }
     const logout = () => {
-        alert('Logout')
-        // Lógica de logout
-        // Define isAuthenticated como false e remove o token de autenticação
         setIsLoggedIn(false)
         localStorage.removeItem('isLoggedIn')
         localStorage.removeItem('user')
-        // Outras lógicas de remoção do token de autenticação, como cookies ou localStorage
-        // Redireciona o usuário para a rota raiz
         window.location.replace('/')
     }
 
@@ -61,24 +55,19 @@ export const AuthProvider = ({ children }) => {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 const { user } = result;
-
-                // Verificar se o usuário já existe no Firestore com o mesmo e-mail
                 const firestore = getFirestore();
                 const usersRef = collection(firestore, 'users');
                 const querySnapshot = await getDocs(query(usersRef, where('email', '==', user.email)));
                 const existingUser = querySnapshot.docs[0];
 
                 if (existingUser) {
-                    // Atualizar as informações do usuário existente com os dados do Google
                     const userData = {
                         name: user.displayName,
                         photoURL: user.photoURL,
-                        // outros dados que você queira adicionar ou atualizar
                     };
                     await updateDoc(doc(usersRef, existingUser.id), userData);
                     setUser(existingUser.data());
                 } else {
-                    // Criar um novo usuário no Firestore com os dados do Google
                     const newUser = {
                         id: user.uid,
                         name: user.displayName,
