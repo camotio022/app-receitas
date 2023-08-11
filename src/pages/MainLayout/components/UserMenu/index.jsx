@@ -34,6 +34,11 @@ export const UserMenu = ({
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user?.displayName?.charAt(0)
   const firstWord = user?.displayName?.split(' ')[0]
+  const [noReadFromNotifications, setNoReadFromNotifications] = useState(0);
+  console.log()
+  const updateNoReadFromNotifications = (newNoRead) => {
+    setNoReadFromNotifications(newNoRead);
+  };
   const toggleDrawer = () => (event) => {
     setLeft(!left);
   };
@@ -43,8 +48,21 @@ export const UserMenu = ({
         left={left}
         setLeft={setLeft}
         toggleDrawer={toggleDrawer}
+        noRead={noReadFromNotifications}
+        updateNoRead={updateNoReadFromNotifications}
       />
-      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
+      <Box>
+        <NotificationsIcon
+          onClick={toggleDrawer('left', true)}
+          sx={noReadFromNotifications > 0 && {
+            zIndex: 1,
+            borderRadius: '5px',
+            border: '3px solid green',
+            margin: 0.5
+          }}
+        />
+        {noReadFromNotifications}
+      </Box>
 
       <Box
         sx={{
@@ -67,7 +85,8 @@ export const UserMenu = ({
               sx={{
                 width: 32,
                 height: 32,
-                border: '3px solid white',
+                border: noReadFromNotifications > 0 ?
+                  '3px solid green' : '3px solid white',
               }}
             >
               {firstLatter}
@@ -123,8 +142,7 @@ export const UserMenu = ({
           </MenuItem>
         </Stack>
       </Menu>
-      {matchesMobileSmall && < Link sx={{ color: 'white' }}>{firstWord}</Link>}
-
+      {matchesMobileSmall && <Link sx={{ color: 'white' }}>{firstWord}</Link>}
     </Stack >
   )
 }
