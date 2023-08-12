@@ -9,7 +9,6 @@ import { MyDialog } from "./componentes/dialog/index.jsx"
 import { api_users } from "../../../../api/users/users.js"
 export const PerfilUser = () => {
     const { id } = useParams()
-
     const { user } = useContext(AuthContext)
     const [editingField, setEditingField] = useState('');
     const [isEditing, setIsEditing] = useState(false);
@@ -145,6 +144,7 @@ export const PerfilUser = () => {
                                 handleChange={handleChange}
                                 handleEditClick={handleEditClick}
                                 user={user}
+                                handleSaveClick={handleSaveClick}
                             />
                         </Box>
                     </Stack>
