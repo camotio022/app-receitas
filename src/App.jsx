@@ -18,6 +18,7 @@ import { PerfilUser } from './pages/USERS/USERFILES/EDITUSERPAGE/index.jsx'
 import { MainLayout } from './pages/MainLayout/index.jsx'
 import { OpenNotUser } from './pages/USERS/userOpenNot/index.jsx'
 import { OpenNotifRecipe } from './pages/RECIPES/recipeOpenNotifi/index.jsx'
+import { TheirRecipes } from './pages/RECIPES/theirRecipes'
 
 const Main = () => {
   const auth = useContext(AuthContext)
@@ -34,6 +35,7 @@ const Main = () => {
           <MainLayout>
             <Routes>
               <Route path="/" element={<TopReview />} />
+              <Route path='/theirRecipes/:id' element={<TheirRecipes />} />
               <Route path="/topReview" element={<TopReview />} />
               <Route path="/createRecipes" element={<CreateRecipes />} />
               <Route path="/new_user/:id" element={<OpenNotUser />} />
