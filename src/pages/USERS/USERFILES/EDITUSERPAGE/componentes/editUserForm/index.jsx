@@ -132,6 +132,9 @@ export const ForumEditInfoUser = ({
                                 Email: {userValues.email}
                             </Stack>
                             <Stack variant="body1" component="div">
+                                Idade: {userValues.age}
+                            </Stack>
+                            <Stack variant="body1" component="div">
                                 Aniversário: {userValues.birthday}
                             </Stack>
                             <Stack variant="body1" component="div">
