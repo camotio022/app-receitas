@@ -9,8 +9,8 @@ import { MyDialog } from "./componentes/dialog/index.jsx"
 import { api_users } from "../../../../api/users/users.js"
 export const PerfilUser = () => {
     const { id } = useParams()
+
     const { user } = useContext(AuthContext)
-    const [isFollowing, setIsFollowing] = useState(false);
     const [editingField, setEditingField] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [userValues, setUserValues] = useState({});
@@ -31,6 +31,7 @@ export const PerfilUser = () => {
     const handleClose = () => {
         setOpen(!open);
     };
+    const [isFollowing, setIsFollowing] = useState(false);
     const handleSaveCoverImage = async () => {
         if (!userValues.coverImage) {
             console.log('Nenhuma imagem de capa selecionada.');
@@ -69,22 +70,31 @@ export const PerfilUser = () => {
 
             setUserValues({ ...userValues, ...updatedData });
         };
-
         reader.readAsDataURL(file);
     };
+
+    const iSfollowed = async (id) => {
+        try {
+            const result = await api_users.user.get(id);
+            if (result && result.followers.includes(user.uid)) {
+                setIsFollowing(true);
+            }
+        } catch (err) {
+        }
+    };
     useEffect(() => {
-        const userIdFollower = user.uid;
-        const userIdFollowed = userValues.id;
         if (!id) return;
         const fetchData = async () => {
             try {
                 const data = await api_users.user.get(id);
-                setIsFollowing(await api_users.fallow.followers(userIdFollowed, userIdFollower))
+                iSfollowed(data.id)
                 setUserValues(data)
+
             } catch (err) {
                 console.error(err);
             }
         };
+
         fetchData();
     }, [id]);
     if (!id) {

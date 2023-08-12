@@ -1,16 +1,16 @@
 import { CameraAlt, PersonAdd, PersonRemove, ShowChart } from "@mui/icons-material"
 import { Avatar, Box, Button, CardMedia, Stack } from "@mui/material"
 import * as Tag from '../../index.js'
-import { api_users } from "../../../../../../api/users/users.js"
 import { orange } from "@mui/material/colors"
 import { api_notifications } from "../../../../../../api/users/notifications.js"
+import { api_users } from "../../../../../../api/users/users.js"
 export const CardMediaUser = ({
     handleClickOpen,
-    isFollowing,
     userValues,
-    setIsFollowing,
     user,
-    id
+    id,
+    isFollowing,
+    setIsFollowing
 }) => {
     const unfallow = async (seguidor, seguido) => {
         if (!seguido && !seguidor) return
