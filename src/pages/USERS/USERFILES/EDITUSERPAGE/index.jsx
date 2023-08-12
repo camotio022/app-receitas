@@ -30,6 +30,29 @@ export const PerfilUser = () => {
     const handleClose = () => {
         setOpen(!open);
     };
+    const handleSaveClick = async (id) => {
+        try {
+            const updatedData = {
+                name: userValues.name,
+                email: userValues.email,
+                birthday: userValues.birthday,
+                age: userValues.age,
+                address: userValues.address,
+                phoneNumber: userValues.phoneNumber,
+                occupation: userValues.occupation,
+                education: userValues.education,
+                hobbies: userValues.hobbies,
+                socialMedia: userValues.socialMedia,
+                bio: userValues.bio
+            };
+            await api_users.user.update(id, userValues);
+            setIsEditing(!isEditing);
+        } catch (error) {
+            console.error('Erro ao atualizar dados do usuário:', error);
+        }
+    };
+
+
     const [isFollowing, setIsFollowing] = useState(false);
     const handleSaveCoverImage = async () => {
         if (!userValues.coverImage) {
@@ -81,6 +104,7 @@ export const PerfilUser = () => {
         } catch (err) {
         }
     };
+
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
