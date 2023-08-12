@@ -4,6 +4,9 @@ import * as Tag from '../../index.js'
 import { orange } from "@mui/material/colors"
 import { api_notifications } from "../../../../../../api/users/notifications.js"
 import { api_users } from "../../../../../../api/users/users.js"
+import { api_recipes } from "../../../../../../api/recipes/recipes.js"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 export const CardMediaUser = ({
     handleClickOpen,
     userValues,
@@ -12,6 +15,7 @@ export const CardMediaUser = ({
     isFollowing,
     setIsFollowing
 }) => {
+    const navigate = useNavigate()
     const unfallow = async (seguidor, seguido) => {
         if (!seguido && !seguidor) return
         try {
@@ -31,6 +35,10 @@ export const CardMediaUser = ({
         } catch (error) {
             alert(error.message)
         }
+    }
+    const seeRecipes = (id) => {
+        if (!id) return
+        navigate(`/theirRecipes/${id}`)
     }
     return (
         <>
@@ -60,7 +68,9 @@ export const CardMediaUser = ({
                             Editar a foto da capa
                         </Button> :
                         <Stack>
-                            <Button sx={{ mr: 3, mb: 1, zIndex: 1, }}
+                            <Button
+                                onClick={() => seeRecipes(id)}
+                                sx={{ mr: 3, mb: 1, zIndex: 1, }}
                                 variant="contained"
                                 endIcon={<ShowChart />}
                             >
