@@ -30,6 +30,7 @@ export const MainLayout = ({ children }) => {
   localStorage.setItem('breadcrumbs', JSON.stringify(pathnames))
   const storedBreadcrumbs = JSON.parse(localStorage.getItem('breadcrumbs'))
   const [openDrawer, setOpenDrawer] = useState(false)
+
   const toggleDrawer = (openDrawer) => () => {
     setOpenDrawer(openDrawer)
   }
@@ -37,9 +38,6 @@ export const MainLayout = ({ children }) => {
   const toggleDrawerRight = (openDrawerRight) => () => {
     setOpenDrawerRight(openDrawerRight)
   }
-console.log(showLinks)
-
-
   const handleOpenUserMenu = (e) => {
     setAnchorEl(e.target)
     setopens(true)

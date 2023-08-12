@@ -14,13 +14,12 @@ import { api_notifications } from '../../../api/users/notifications'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { Alert, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import zIndex from '@mui/material/styles/zIndex'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../../../firebase.config'
-export const Notifications = ({ left, toggleDrawer, noRead, updateNoRead }) => {
-  const [notifications, setNotifications] = useState([])
+export const Notifications = ({ left, toggleDrawer, noRead, updateNoRead, notifications, setNotifications }) => {
+
   const navegate = useNavigate()
   const [checkAll, setCheckAll] = useState(false)
   const { user } = useContext(AuthContext)
@@ -65,6 +64,10 @@ export const Notifications = ({ left, toggleDrawer, noRead, updateNoRead }) => {
     docRef
   ) => {
     if (!userId || !notificationId) return
+    console.log(userId,
+      notificationId,
+      docType,
+      docRef)
     try {
       await api_notifications.notification.hasAlreadyBeenSeen(
         userId,
@@ -102,22 +105,20 @@ export const Notifications = ({ left, toggleDrawer, noRead, updateNoRead }) => {
       querySnapshot.forEach((doc) => {
         temp.push({ id: doc.id, ...doc.data() })
       })
-      console.log({ temp })
       setNotifications(temp)
     })
     return () => unsubscribe()
   }, [])
-  console.log({ notifications })
   return (
     <>
       <Stack
-        anchor="left"
+        anchor="right"
         open={left}
-        onClick={toggleDrawer('left', false)}
-        onKeyDown={toggleDrawer('left', false)}
+        onClick={toggleDrawer('right', false)}
+        onKeyDown={toggleDrawer('right', false)}
       >
         <Box role="presentation">
-          <Drawer anchor="left" open={left}>
+          <Drawer anchor="right" open={left}>
             <Box role="presentation">
               <ListItem>
                 <ListItemButton>
@@ -169,8 +170,8 @@ export const Notifications = ({ left, toggleDrawer, noRead, updateNoRead }) => {
                       seeTheNotification(
                         user.uid,
                         notification.id,
-                        notification?.data?.type,
-                        notification?.data?.docRef
+                        notification.type,
+                        notification.docRef
                       )
                     }
                     key={notification.id}
@@ -199,17 +200,12 @@ export const Notifications = ({ left, toggleDrawer, noRead, updateNoRead }) => {
                       </ListItemIcon>
                       <ListItemText
                         primary={
-                          !notification?.data?.isRead
-                            ? notification?.data?.title
-                            : `Aberta dia 
-                                                    ${notification?.data?.alreadyOpenedDate}
-                                                    às ${notification?.data?.alreadyOpenedHours}
-            `
+                          notification?.data?.title
                         }
                         secondary={`
-                                                ${notification?.data?.action} às 
-                                                ${notification?.time?.hours} 
-                                                de ${notification?.time?.date} `}
+                        ${notification?.data?.action} às
+                        ${notification?.time?.hours}
+                        de ${notification?.time?.date} `}
                       />
                     </ListItemButton>
                   </ListItem>

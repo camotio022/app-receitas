@@ -36,6 +36,7 @@ export const UserMenu = ({
   const firstLatter = user?.displayName?.charAt(0)
   const firstWord = user?.displayName?.split(' ')[0]
   const [noReadFromNotifications, setNoReadFromNotifications] = useState(0);
+  const [notifications, setNotifications] = useState([])
   const updateNoReadFromNotifications = (newNoRead) => {
     setNoReadFromNotifications(newNoRead);
   };
@@ -50,6 +51,10 @@ export const UserMenu = ({
         toggleDrawer={toggleDrawer}
         noRead={noReadFromNotifications}
         updateNoRead={updateNoReadFromNotifications}
+        notifications={notifications
+        }
+        setNotifications={setNotifications}
+
       />
       <Badge badgeContent={noReadFromNotifications} color="error">
         <NotificationsIcon
