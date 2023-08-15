@@ -29,7 +29,7 @@ export const MenuContent = ({
   handleSelectLink,
   handleOpenUserMenu,
   showLinks,
-  setShowLinks
+  setShowLinks,
 }) => {
   const [search, setSearch] = useState('')
   return (
@@ -80,7 +80,7 @@ export const MenuContent = ({
               {links.map((li) => {
                 return (
                   <Links_a
-                  setShowLinks={setShowLinks}
+                    setShowLinks={setShowLinks}
                     key={li.name}
                     {...li}
                     handleClick={(event) => handleSelectLink(event, li.name)}

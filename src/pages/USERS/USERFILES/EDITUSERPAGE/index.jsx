@@ -1,104 +1,125 @@
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Stack,
-} from '@mui/material'
+import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack } from "@mui/material"
 import * as Tag from './index.js'
-import { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { AuthContext } from '../../../../contexts/AuthContext.jsx'
-import { CardMediaUser } from './componentes/cardMedia/index.jsx'
-import { ForumEditInfoUser } from './componentes/editUserForm/index.jsx'
-import { MyDialog } from './componentes/dialog/index.jsx'
-import { api_users } from '../../../../api/users/users.js'
+import { useContext, useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { AuthContext } from "../../../../contexts/AuthContext.jsx"
+import { CardMediaUser } from "./componentes/cardMedia/index.jsx"
+import { ForumEditInfoUser } from "./componentes/editUserForm/index.jsx"
+import { MyDialog } from "./componentes/dialog/index.jsx"
+import { api_users } from "../../../../api/users/users.js"
 export const PerfilUser = () => {
   const { id } = useParams()
   const { user } = useContext(AuthContext)
-  const [isFollowing, setIsFollowing] = useState(false)
-  const [editingField, setEditingField] = useState('')
-  const [isEditing, setIsEditing] = useState(false)
-  const [userValues, setUserValues] = useState({})
-  const [open, setOpen] = useState(false)
+  const [editingField, setEditingField] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [userValues, setUserValues] = useState({});
+  const [open, setOpen] = useState(false);
   const handleEditClick = () => {
-    setIsEditing(!isEditing)
-  }
+    setIsEditing(!isEditing);
+  };
   const handleClickOpen = (value) => {
-    setEditingField('')
-    setOpen(!open)
-    if (value === 'coverImage') {
-      setEditingField('coverImage')
+    setEditingField("");
+    setOpen(!open);
+    if (value === "coverImage") {
+      setEditingField("coverImage");
     }
-    if (value === 'photoURL') {
-      setEditingField('photoURL')
+    if (value === "photoURL") {
+      setEditingField("photoURL");
     }
-  }
+  };
   const handleClose = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
+  const handleSaveClick = async (id) => {
+    try {
+      const updatedData = {
+        name: userValues.name,
+        email: userValues.email,
+        birthday: userValues.birthday,
+        age: userValues.age,
+        address: userValues.address,
+        phoneNumber: userValues.phoneNumber,
+        occupation: userValues.occupation,
+        education: userValues.education,
+        hobbies: userValues.hobbies,
+        socialMedia: userValues.socialMedia,
+        bio: userValues.bio
+      };
+      await api_users.user.update(id, userValues);
+      setIsEditing(!isEditing);
+    } catch (error) {
+      console.error('Erro ao atualizar dados do usuário:', error);
+    }
+  };
+
+
+  const [isFollowing, setIsFollowing] = useState(false);
   const handleSaveCoverImage = async () => {
     if (!userValues.coverImage) {
-      console.log('Nenhuma imagem de capa selecionada.')
-      return
+      console.log('Nenhuma imagem de capa selecionada.');
+      return;
     }
     try {
-      if (editingField === 'coverImage') {
-        await api_users.user.updateCover(id, {
-          coverImage: userValues.coverImage,
-        })
-        console.log('Imagem de capa atualizada com sucesso!')
+      if (editingField === "coverImage") {
+        await api_users.user.updateCover(id, { coverImage: userValues.coverImage });
+        console.log('Imagem de capa atualizada com sucesso!');
       }
-      if (editingField === 'photoURL') {
-        await api_users.user.update(id, { photoURL: userValues.photoURL })
-        console.log('PhotoURL atualizado com sucesso!')
+      if (editingField === "photoURL") {
+        await api_users.user.update(id, { photoURL: userValues.photoURL });
+        console.log('PhotoURL atualizado com sucesso!');
       }
     } catch (error) {
-      console.error('Erro ao atualizar a imagem:', error)
+      console.error('Erro ao atualizar a imagem:', error);
     }
-    handleClose()
-  }
+    handleClose();
+  };
   const handleChange = (event) => {
-    setUserValues({ ...userValues, [event.target.name]: event.target.value })
-  }
+    setUserValues({ ...userValues, [event.target.name]: event.target.value });
+  };
   const handleCoverImageChange = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
+    const file = event.target.files[0];
+    const reader = new FileReader();
 
     reader.onload = () => {
-      const base64Image = reader.result
-      let updatedData = {}
+      const base64Image = reader.result;
+      let updatedData = {};
 
       if (editingField === 'coverImage') {
-        updatedData = { ...updatedData, coverImage: base64Image }
+        updatedData = { ...updatedData, coverImage: base64Image };
       } else {
-        updatedData = { ...updatedData, photoURL: base64Image }
+        updatedData = { ...updatedData, photoURL: base64Image };
       }
 
-      setUserValues({ ...userValues, ...updatedData })
-    }
+      setUserValues({ ...userValues, ...updatedData });
+    };
+    reader.readAsDataURL(file);
+  };
 
-    reader.readAsDataURL(file)
-  }
+  const iSfollowed = async (id) => {
+    try {
+      const result = await api_users.user.get(id);
+      if (result && result.followers.includes(user.uid)) {
+        setIsFollowing(true);
+      }
+    } catch (err) {
+    }
+  };
+
   useEffect(() => {
-    const userIdFollower = user.uid
-    const userIdFollowed = userValues.id
-    if (!id) return
+    if (!id) return;
     const fetchData = async () => {
       try {
-        const data = await api_users.user.get(id)
-        setIsFollowing(
-          await api_users.fallow.followers(userIdFollowed, userIdFollower)
-        )
+        const data = await api_users.user.get(id);
+        iSfollowed(data.id)
         setUserValues(data)
+
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
-    }
-    fetchData()
-  }, [id])
+    };
+
+    fetchData();
+  }, [id]);
   if (!id) {
     return (
       <>
@@ -119,7 +140,8 @@ export const PerfilUser = () => {
   if (id) {
     return (
       <>
-        <Stack>
+        <Stack
+        >
           <CardMediaUser
             isFollowing={isFollowing}
             setIsFollowing={setIsFollowing}
@@ -128,24 +150,25 @@ export const PerfilUser = () => {
             user={user}
             id={id}
           />
-          <Tag.ItemMenu>EDITAR O PERFIL</Tag.ItemMenu>
+          <Tag.ItemMenu >
+            EDITAR O PERFIL
+          </Tag.ItemMenu>
           <Stack>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '15px',
-                flexWrap: 'wrap',
-                width: '100%',
-              }}
-            >
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: "15px",
+              flexWrap: 'wrap',
+              width: '100%',
+            }}>
               <ForumEditInfoUser
                 isEditing={isEditing}
                 userValues={userValues}
                 handleChange={handleChange}
                 handleEditClick={handleEditClick}
                 user={user}
+                handleSaveClick={handleSaveClick}
               />
             </Box>
           </Stack>

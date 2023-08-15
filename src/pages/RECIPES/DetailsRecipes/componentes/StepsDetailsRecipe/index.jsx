@@ -25,7 +25,7 @@ export const StepsDetailsRecipe = ({
             <Tag.StepsContain>
                 <>
                     <Stack width={'90%'}>
-                        {recipe?.modPreps.length > 0 &&
+                        {recipe?.modPreps?.length > 0 &&
                             recipe?.modPreps.map((item, index) => {
                                 return (
                                     <ul key={index}>

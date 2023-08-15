@@ -120,9 +120,9 @@ export const api_users = {
       try {
         const userDocRef = doc(db, "users", userId);
         await updateDoc(userDocRef, updatedData, { merge: true });
-        alert("Usuário atualizado com sucesso!");
+        console.log("Usuário atualizado com sucesso!");
       } catch (error) {
-        alert("Erro ao atualizar o usuário:", error);
+        console.error
       }
     }
   },
