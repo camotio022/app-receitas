@@ -56,6 +56,6 @@ export const ItemsLinks = styled(Box)(() => ({
   background: 'yellow',
 }))
 export const MinhaLista = styled(List)(({ matchesMobileSmall }) => ({
-  width: matchesMobileSmall ? '30%' : '100%',
+  width: matchesMobileSmall ? '100%' : '100%',
   transition: 'all 0.5s ease-in-out',
 }))
