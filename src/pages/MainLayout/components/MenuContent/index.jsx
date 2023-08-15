@@ -60,43 +60,39 @@ export const MenuContent = ({
             />
           </Stack>
         </S.Header>
-        <Stack
-          direction="row"
-          sx={{ width: '100vw', height: '90vh' }}
+
+        <S.SideMenu sx={!matchesMobileSmall && {
+          display: showLinks ? "block" : "none",
+          position: 'absolute',
+          bgcolor: 'white',
+          zIndex: 1,
+          width: '100%'
+        }}
         >
-          <S.SideMenu sx={!matchesMobileSmall && {
-            display: showLinks ? "block" : "none",
-            position: 'absolute',
-            bgcolor: 'white',
-            zIndex: 1,
-            width: '100%'
-          }}
+          <S.MinhaLista
+            matchesMobileSmall={matchesMobileSmall}
+            component="nav"
+            aria- labelledby="nested-list-subheader"
           >
-            <S.MinhaLista
-              matchesMobileSmall={matchesMobileSmall}
-              component="nav"
-              aria- labelledby="nested-list-subheader"
-            >
-              {links.map((li) => {
-                return (
-                  <Links_a
-                    setShowLinks={setShowLinks}
-                    key={li.name}
-                    {...li}
-                    handleClick={(event) => handleSelectLink(event, li.name)}
-                    selectedLink={selectedLink}
-                  />
-                )
-              })}
-            </S.MinhaLista>
-          </S.SideMenu>
+            {links.map((li) => {
+              return (
+                <Links_a
+                  setShowLinks={setShowLinks}
+                  key={li.name}
+                  {...li}
+                  handleClick={(event) => handleSelectLink(event, li.name)}
+                  selectedLink={selectedLink}
+                />
+              )
+            })}
+          </S.MinhaLista>
+        </S.SideMenu>
 
-          {search ?
-            <S.Content><MySearch searchInput={search} /></S.Content>
-            : <S.Content>{RENDERPAGE || children}</S.Content>}
+        {search ?
+          <S.Content><MySearch searchInput={search} /></S.Content>
+          : <S.Content>{RENDERPAGE || children}</S.Content>}
 
 
-        </Stack >
         <FloatingButton />
       </S.Container >
     </>
