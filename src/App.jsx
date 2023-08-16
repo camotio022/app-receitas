@@ -60,9 +60,10 @@ const Main = () => {
           <Route path="/" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
-      )}
+      )
+      }
       <CssBaseline />
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 
