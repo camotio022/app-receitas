@@ -175,7 +175,7 @@ export const TopReview = (props) => {
                 {recipes.map((recipe) => {
                   return (
                     <CardRecipe
-                      key={recipe.id}
+                      id={recipe.id}
                       recipeTitle={recipe?.recipeTitle}
                       recipeImage={recipe?.recipeImage}
                       author={recipe?.author}

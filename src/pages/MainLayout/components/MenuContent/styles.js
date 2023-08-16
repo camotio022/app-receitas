@@ -17,8 +17,6 @@ export const Header = styled('div')(({ scrollHeight }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-
-  background: 'red',
   width: '100%',
   height: '10vh',
   background: '#374957',
@@ -58,6 +56,6 @@ export const ItemsLinks = styled(Box)(() => ({
   background: 'yellow',
 }))
 export const MinhaLista = styled(List)(({ matchesMobileSmall }) => ({
-  width: matchesMobileSmall ? '100%' : '30%',
+  width: matchesMobileSmall ? '100%' : '100%',
   transition: 'all 0.5s ease-in-out',
 }))

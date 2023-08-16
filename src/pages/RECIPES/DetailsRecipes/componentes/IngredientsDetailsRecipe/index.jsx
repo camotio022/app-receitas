@@ -32,8 +32,7 @@ export const IngredientDetailsRecipe = ({
                 }}
             >
                 <>
-                    {recipe?.ingredients
-                        .length > 0 &&
+                    {recipe?.ingredients?.length > 0 &&
                         recipe?.ingredients
                             .map((ingredient, index) => {
                                 return (

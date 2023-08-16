@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 import {
   Search as SearchIcon,
   Close as CloseIcon,
+  Menu,
 } from '@mui/icons-material';
 import * as Tag from '../../index.js';
 import * as S from './styles.js';
@@ -22,29 +23,21 @@ export const MenuContent = ({
   selectedLink,
   RENDERPAGE,
   anchorEl,
-  handleClick,
   handleClose,
   open,
   Close,
   handleSelectLink,
   handleOpenUserMenu,
+  showLinks,
+  setShowLinks,
 }) => {
   const [search, setSearch] = useState('')
   return (
     <>
       <S.Container scrollHeight={scrollHeight}>
         <S.Header scrollHeight={scrollHeight}>
-          <Logo />
-          <Stack justifyContent={'flex-end'} alignItems={'center'} mr={3}>
-            <UserMenu
-              handleClick={handleOpenUserMenu}
-              handleClose={handleClose}
-              anchorEl={anchorEl}
-              open={open}
-              Close={Close}
-            />
-          </Stack>
-          <Stack direction="row" alignItems="center">
+          {!matchesMobileSmall ? <Menu onClick={() => setShowLinks(!showLinks)} /> : <Logo />}
+          <Stack direction="row" alignItems="center" ml={3}>
             <Tag.Search sx={{ width: 'auto' }}>
               <Tag.SearchIconWrapper>
                 <CloseIcon />
@@ -56,61 +49,50 @@ export const MenuContent = ({
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Tag.Search>
-            <SearchIcon
-              sx={{
-                borderRadius: '1px',
-                padding: '2px',
-                height: '2.3rem',
-                width: 'auto',
-                bgcolor: '#374957',
-              }}
-            ></SearchIcon>
           </Stack>
-          <TopLinks />
+          <Stack justifyContent={'flex-end'} alignItems={'center'}>
+            <UserMenu
+              handleClick={handleOpenUserMenu}
+              handleClose={handleClose}
+              anchorEl={anchorEl}
+              open={open}
+              Close={Close}
+            />
+          </Stack>
         </S.Header>
-        <Stack
-          direction="row"
-          sx={{ width: '100vw', height: '90vh' }}
+
+        <S.SideMenu sx={!matchesMobileSmall && {
+          display: showLinks ? "block" : "none",
+          position: 'absolute',
+          bgcolor: 'white',
+          zIndex: 1,
+          width: '100%'
+        }}
         >
-          <S.SideMenu>
-            <S.MinhaLista
-              matchesMobileSmall={matchesMobileSmall}
-              component="nav"
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <Tag.ListSub
-                  sx={{
-                    justifyContent: !matchesMobileSmall
-                      ? 'space-between'
-                      : 'flex-start',
-                  }}
-                  component="div"
-                  id="nested-list-subheader"
-                >
-                  {!matchesMobileSmall && (
-                    <CloseIcon onClick={(e) => setShowLinks(!showLinks)} />
-                  )}
-                </Tag.ListSub>
-              }
-            >
-              {links.map((li) => {
-                return (
-                  <Links_a
-                    key={li.name}
-                    {...li}
-                    handleClick={(event) => handleSelectLink(event, li.name)}
-                    selectedLink={selectedLink}
-                  />
-                )
-              })}
-            </S.MinhaLista>
-          </S.SideMenu>
-          {search ?
-            <S.Content><MySearch searchInput={search} /></S.Content>
-            : <S.Content>{RENDERPAGE || children}</S.Content>}
+          <S.MinhaLista
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+          >
+            {links.map((li) => {
+              return (
+                <Links_a
+                  setShowLinks={setShowLinks}
+                  key={li.name}
+                  {...li}
+                  handleClick={(event) => handleSelectLink(event, li.name)}
+                  selectedLink={selectedLink}
+                />
+              )
+            })}
+          </S.MinhaLista>
+        </S.SideMenu>
 
+        {search ?
+          <S.Content><MySearch searchInput={search} /></S.Content>
+          : <S.Content>
 
-        </Stack>
+            {RENDERPAGE || children}
+          </S.Content>}
         <FloatingButton />
       </S.Container >
     </>

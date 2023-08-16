@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button, Link } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Grid, Stack, Container, Paper, Box, Avatar, Button, Link, Typography } from '@mui/material';
 import * as Tag from './styles/index'
 import { orange } from '@mui/material/colors';
 import { api_users } from '../../../api/users/users'
@@ -41,8 +41,14 @@ export const Comunidade = () => {
         return recipesCountPerUser;
     };
     const StyeleTable = {
-        fontWeight: 'bold', color: orange[900]
-    }
+        fontWeight: 'bold',
+        color: orange[900],
+        fontSize: '10px',
+        wordWrap: "break-word",
+        whiteSpace: "normal",
+        maxWidth: "100px"
+
+    };
 
     return (
         <>
@@ -63,13 +69,12 @@ export const Comunidade = () => {
                         sx={{ my: { xs: 3, md: 12 }, p: { xs: 3, md: 3 }, width: "100%" }}
                     >
 
-                        <h2>Comunidade de usuários</h2>
+                        <Typography variant="h6">Comunidade de Usuários</Typography>
                         <Table>
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={StyeleTable}>Info users</TableCell>
                                     <TableCell style={StyeleTable}>Emails</TableCell>
-                                    <TableCell style={StyeleTable}>Recipes</TableCell>
                                 </TableRow>
                             </TableHead>
                             {usuarios?.map((user, index) => {
@@ -80,12 +85,14 @@ export const Comunidade = () => {
                                                 <Link href={`/edituser/${user.id}`}>
                                                     <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
                                                 </Link>
-                                                <Stack>{user.name}</Stack>
+                                                <Stack sx={StyeleTable}>{user.name}</Stack>
                                             </TableCell>
-                                            <TableCell>{user?.email}</TableCell>
-                                            <TableCell>{user?.postCount}</TableCell>
+                                            <TableCell>
+                                                <div style={StyeleTable}>
+                                                    {user?.email}
+                                                </div>
+                                            </TableCell>
                                         </TableRow>
-
                                     </TableBody>
                                 )
                             })}
@@ -93,7 +100,7 @@ export const Comunidade = () => {
                     </Paper>
                 </Container>
 
-            </Stack>
+            </Stack >
         </>
     )
 }

@@ -8,6 +8,7 @@ export const ForumEditInfoUser = ({
     handleChange,
     handleEditClick,
     user,
+    handleSaveClick
 }) => {
     return (<>
         <Card
@@ -114,7 +115,7 @@ export const ForumEditInfoUser = ({
                             </Grid>
 
                         </Grid>
-                        <Button variant="contained" onClick={() => handleSaveClick(id)}>
+                        <Button variant="contained" onClick={() => handleSaveClick(userValues.id)}>
                             Salvar as informações
                         </Button>
                     </>
@@ -129,6 +130,9 @@ export const ForumEditInfoUser = ({
                             </Stack>
                             <Stack variant="body1" component="div">
                                 Email: {userValues.email}
+                            </Stack>
+                            <Stack variant="body1" component="div">
+                                Idade: {userValues.age}
                             </Stack>
                             <Stack variant="body1" component="div">
                                 Aniversário: {userValues.birthday}

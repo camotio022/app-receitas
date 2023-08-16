@@ -22,6 +22,7 @@ export const MainLayout = ({ children }) => {
   const [opens, setopens] = useState(null)
   const [selectedLink, setSelectedLink] = useState()
   const [anchorEl, setAnchorEl] = useState(null)
+  const [showLinks, setShowLinks] = useState(false)
   const location = useLocation()
   const pathnames = location.pathname
     .split('/')
@@ -29,6 +30,7 @@ export const MainLayout = ({ children }) => {
   localStorage.setItem('breadcrumbs', JSON.stringify(pathnames))
   const storedBreadcrumbs = JSON.parse(localStorage.getItem('breadcrumbs'))
   const [openDrawer, setOpenDrawer] = useState(false)
+
   const toggleDrawer = (openDrawer) => () => {
     setOpenDrawer(openDrawer)
   }
@@ -36,25 +38,24 @@ export const MainLayout = ({ children }) => {
   const toggleDrawerRight = (openDrawerRight) => () => {
     setOpenDrawerRight(openDrawerRight)
   }
-
-  const [showLinks, setShowLinks] = useState(false)
-
   const handleOpenUserMenu = (e) => {
     setAnchorEl(e.target)
     setopens(true)
   }
   const handleSelectLink = (event, newLink) => {
-    console.log(newLink)
     if (selectedLink === newLink) {
       setSelectedLink(null)
+
       return
     }
     setSelectedLink(newLink)
     setAnchorEl(event.target)
+
   }
   const handleClose = () => {
     setSelectedLink(null)
     setAnchorEl(null)
+
   }
   const open = Boolean(opens)
   const handleClick = (event) => {
@@ -68,6 +69,8 @@ export const MainLayout = ({ children }) => {
       handleClose={handleClose}
       Close={Close}
       handleClick={handleClick}
+      showLinks={showLinks}
+      setShowLinks={setShowLinks}
       open={open}
       matchesMobileSmall={matchesMobileSmall}
       links={links}
@@ -151,6 +154,7 @@ export const MainLayout = ({ children }) => {
                 {links.map((li) => {
                   return (
                     <Links_a
+                      setShowLinks={setShowLinks}
                       key={li.name}
                       {...li}
                       handleClick={(event) => handleSelectLink(event, li.name)}

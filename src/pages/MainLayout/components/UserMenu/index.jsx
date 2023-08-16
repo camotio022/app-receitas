@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { AuthContext } from '../../../../contexts/AuthContext'
 import {
   Avatar,
+  Badge,
   Box,
   Divider,
   IconButton,
@@ -11,6 +12,7 @@ import {
   MenuItem,
   Stack,
   Tooltip,
+  useMediaQuery,
 } from '@mui/material'
 
 import {
@@ -29,9 +31,15 @@ export const UserMenu = ({
   anchorEl,
 }) => {
   const [left, setLeft] = useState(false)
+  const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   const { user, logout } = useContext(AuthContext)
   const firstLatter = user?.displayName?.charAt(0)
   const firstWord = user?.displayName?.split(' ')[0]
+  const [noReadFromNotifications, setNoReadFromNotifications] = useState(0);
+  const [notifications, setNotifications] = useState([])
+  const updateNoReadFromNotifications = (newNoRead) => {
+    setNoReadFromNotifications(newNoRead);
+  };
   const toggleDrawer = () => (event) => {
     setLeft(!left);
   };
@@ -41,14 +49,25 @@ export const UserMenu = ({
         left={left}
         setLeft={setLeft}
         toggleDrawer={toggleDrawer}
+        noRead={noReadFromNotifications}
+        updateNoRead={updateNoReadFromNotifications}
+        notifications={notifications
+        }
+        setNotifications={setNotifications}
+
       />
-      <NotificationsIcon onClick={toggleDrawer('left', true)} sx={{ zIndex: 1 }} />
-      <Stack position={'absolute'}
-        sx={{
-          ml: '-6rem',
-          mb: '-2rem',
-          fontSize: '13px'
-        }}></Stack>
+      <Badge badgeContent={noReadFromNotifications} color="error">
+        <NotificationsIcon
+          onClick={toggleDrawer('left', true)}
+          sx={{
+            cursor: 'pointer',
+          }}
+        />
+      </Badge>
+
+
+
+
       <Box
         sx={{
           display: 'flex',
@@ -70,7 +89,8 @@ export const UserMenu = ({
               sx={{
                 width: 32,
                 height: 32,
-                border: '3px solid white',
+                border: noReadFromNotifications > 0 ?
+                  '3px solid green' : '3px solid white',
               }}
             >
               {firstLatter}
@@ -126,7 +146,7 @@ export const UserMenu = ({
           </MenuItem>
         </Stack>
       </Menu>
-      <Link sx={{ color: 'white' }}>{firstWord}</Link>
+      {matchesMobileSmall && <Link sx={{ color: 'white' }}>{firstWord}</Link>}
     </Stack >
   )
 }
