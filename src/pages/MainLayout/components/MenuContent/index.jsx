@@ -70,9 +70,8 @@ export const MenuContent = ({
         }}
         >
           <S.MinhaLista
-            matchesMobileSmall={matchesMobileSmall}
             component="nav"
-            aria- labelledby="nested-list-subheader"
+            aria-labelledby="nested-list-subheader"
           >
             {links.map((li) => {
               return (
@@ -90,9 +89,10 @@ export const MenuContent = ({
 
         {search ?
           <S.Content><MySearch searchInput={search} /></S.Content>
-          : <S.Content>{RENDERPAGE || children}</S.Content>}
+          : <S.Content>
 
-
+            {RENDERPAGE || children}
+          </S.Content>}
         <FloatingButton />
       </S.Container >
     </>
