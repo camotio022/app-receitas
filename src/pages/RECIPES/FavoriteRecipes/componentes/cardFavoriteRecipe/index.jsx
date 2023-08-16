@@ -7,8 +7,8 @@ import {
 } from '@mui/material'
 import *as Tag from '../../index.js'
 import { useTheme } from '@emotion/react';
-import { HeaderFavoriteCard } from './componentes/header/index.jsx';
-import { BodyFavoriteRecipeCard } from './componentes/body/index.jsx';
+import { HeaderFavoriteCard } from '../header/index.jsx';
+import { BodyFavoriteRecipeCard } from '../body/index.jsx';
 export const CardFavoriteRecipe = ({
     index,
     favorite,
