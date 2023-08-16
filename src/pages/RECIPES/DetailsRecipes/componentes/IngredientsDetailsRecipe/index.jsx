@@ -1,6 +1,7 @@
 import { Checkbox, FormControlLabel, Stack } from "@mui/material"
 import { useState } from "react"
 import * as SG from '../../styles/index.js'
+import { grey } from "@mui/material/colors"
 
 
 
@@ -69,7 +70,9 @@ export const IngredientDetailsRecipe = ({
                                         label={ingredient || ''}
                                     />
                                 )
-                            })}
+                            }
+                            )
+                    }
                 </>
             </Stack>
         </>
