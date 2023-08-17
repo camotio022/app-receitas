@@ -166,11 +166,8 @@ export const TopReview = (props) => {
         ) : (
           <Stack
             sx={{ width: '100%' }}
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={value}
-            onChangeIndex={handleChangeIndex}
           >
-            <TabPanel fullWidth value={value} index={0} dir={theme.direction}>
+            <TabPanel value={value} index={0} dir={theme.direction}>
               <Tag.MenuItemsLinks>
                 {recipes.map((recipe) => {
                   return (
@@ -196,6 +193,7 @@ export const TopReview = (props) => {
                   return (
                     <CardInImage
                       key={index}
+                      id={recipe.id}
                       recipeImage={recipe?.recipeImage}
                       recipeTitle={recipe?.recipeTitle}
                     />)

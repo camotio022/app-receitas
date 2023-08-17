@@ -6,7 +6,8 @@ import *as Tag from "../../index.js"
 
 export const CardInImage = ({
     recipeImage,
-    recipeTitle
+    recipeTitle,
+    id,
 }) => {
     return (
 
@@ -68,8 +69,7 @@ export const CardInImage = ({
                                     sx={{ fontSize: 'lg' }}
                                 >
                                     <Link
-                                        href="#dribbble-shot"
-                                        overlay
+                                        href={`/detailsRecipes/${id}`}
                                         underline="none"
                                         sx={{
                                             color: '#fff',
