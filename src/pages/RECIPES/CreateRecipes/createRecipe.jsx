@@ -92,7 +92,7 @@ export const CreateRecipes = ({ }) => {
         component="main"
         maxWidth="sm"
         sx={{
-          mb: 4,
+          mb: 15,
           mt: 15,
           display: 'center',
           alignItems: 'center',
