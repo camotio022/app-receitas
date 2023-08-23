@@ -1,19 +1,19 @@
 import {
-    Avatar,
-    Box,
     Button,
-    Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Stack, TextField, Typography,
+    Grid, List, TextField, Typography,
 } from '@mui/material'
 import *as T from './styles.js'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { api_comments } from '../../../../../api/usersComments';
-import { Reply } from '@mui/icons-material';
+import { Message } from '../message/index.jsx';
+import { AuthContext } from '../../../../../contexts/AuthContext.jsx'
 
 export const Comments = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const { id } = useParams()
+    const { user } = useContext(AuthContext)
     const getComments = async () => {
         try {
             const res = await api_comments.comments.getForRecipe(id)
@@ -22,67 +22,65 @@ export const Comments = () => {
             console.error(err)
         }
     }
-    console.log(comments)
+
     useEffect(() => {
         getComments()
         console.log(comments.map(comment => comment.replys.map(reply => reply.replys.message)))
     }, [id])
-    const handleSubmit = () => {
-
-        if (newComment) {
-            setComments([...comments, { author: 'User', content: newComment, replies: [] }]);
-            setNewComment('');
+    const postComment = async (id, message) => {
+        const data = {
+            userId: user.uid,
+            name: user.displayName,
+            avatar: user.avatarUrl,
+            commented_recipeId: id,
+            message: newComment,
         }
-    };
+    }
 
     return (
         <>
             <Typography>Comentários dessa receita</Typography>
             <List style={{ width: '90%', margin: 'auto' }}>
                 {comments.map((comment, index) => (
-                    <Stack elevation={2} style={{ padding: '10px', marginBottom: '10px' }}>
-                        <T.ContainerComments key={index}>
-                            <IconButton size="small">
-                                <Avatar src={comment.avatar} sx={{ width: 30, height: 30 }} />
-                                <Typography variant="body1">{comment.name}</Typography>
-                            </IconButton>
-                            <Typography variant="body1">{comment.message}</Typography>
-                        </T.ContainerComments>
+                    <T.StepsContain elevation={2} style={{ padding: '10px', marginBottom: '10px', borderLeft: 'none' }}>
+                        <T.StepsContainPrincipal key={index}>
+                            <Message
+                                avaH={'2.2rem'}
+                                avaW={'2.2rem'}
+                                marginLeft={""}
+                                message={comment.message}
+                                avatar={comment.avatar}
+                                name={comment.name}
+                                varinatM={'body2'}
+                            />
+                        </T.StepsContainPrincipal>
                         <T.ContainerComments>
-                            {comment.replys.map(reply => (
+                            {comment?.replys?.map(reply => (
                                 <T.StepsContain key={reply.id}>
-                                    <Box display="flex" alignItems="center">
-                                        <IconButton size="small">
-                                            <Reply />
-                                        </IconButton>
-                                        <IconButton size="small">
-                                            <Avatar src={reply.avatar} sx={{ width: 24, height: 24 }} />
-                                        </IconButton>
-                                        <Typography variant="caption">{reply?.name}</Typography>
-                                    </Box>
-                                    <Typography variant="body2">{reply.message}</Typography>
+                                    <Message
+                                        avaH={'1.7rem'}
+                                        avaW={'1.7rem'}
+                                        marginLeft={"-0.1rem"}
+                                        message={reply.message}
+                                        avatar={reply.avatar}
+                                        name={reply.name}
+                                        varinatM={'caption'}
+                                    />
                                     {reply.replys?.name?.length > 0 &&
-                                        <T.StepsContain sx={{ borderLeft: 'none' }} >
-                                            <Box display="flex" alignItems="center">
-                                                <IconButton size="small">
-                                                    <Reply />
-                                                </IconButton>
-                                                <IconButton size="small">
-                                                    <Avatar src={reply.replys.avatar} sx={{ width: 24, height: 24 }} />
-                                                </IconButton>
-                                                <Typography variant="caption">{reply.replys.name}</Typography>
-
-                                            </Box>
-                                            <Typography variant="body2">{reply.replys.message}</Typography>
-
-                                        </T.StepsContain>
+                                        <Message
+                                            avaH={'1.7rem'}
+                                            avaW={'1.7rem'}
+                                            marginLeft={"1rem"}
+                                            message={reply.replys.message}
+                                            avatar={reply.replys.avatar}
+                                            name={reply.replys.name}
+                                            varinatM={'caption'}
+                                        />
                                     }
-
                                 </T.StepsContain >
-
                             ))}
                         </T.ContainerComments >
-                    </Stack >
+                    </T.StepsContain >
                 ))}
             </List >
             <Grid container alignItems="center" spacing={2} sx={{ width: '90%' }}>
@@ -97,7 +95,7 @@ export const Comments = () => {
                 </Grid>
                 <Grid item xs={12}
                     md={3} mb={3} >
-                    <Button fullWidth onClick={handleSubmit} variant="contained" color="primary" >
+                    <Button fullWidth variant="contained" color="primary" >
                         Add Comment
                     </Button>
                 </Grid>
