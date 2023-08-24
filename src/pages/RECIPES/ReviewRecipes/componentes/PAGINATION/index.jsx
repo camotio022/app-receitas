@@ -1,7 +1,5 @@
 import { Pagination, PaginationItem } from "@mui/material"
 import *as Tag from '../../index.js'
-
-
 export const PaginationComponent = ({
     recipes,
     itemsPerPage,
@@ -16,11 +14,11 @@ export const PaginationComponent = ({
                 sx={{
                     position: 'relative',
                     transition: '.3s',
-                    mt: '3',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     width: '100%',
+                    marginTop:'5rem'
                 }}
             >
                 <Pagination
