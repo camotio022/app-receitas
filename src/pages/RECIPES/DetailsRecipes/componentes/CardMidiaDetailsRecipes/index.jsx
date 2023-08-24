@@ -11,7 +11,7 @@ export const CardMidiaDetailRecipe = ({
             <Tag.Midias
                 component="img"
                 alt="green iguana"
-                height="140"
+                height="auto"
                 image={recipe?.recipeImage}
             />
             <Stack
