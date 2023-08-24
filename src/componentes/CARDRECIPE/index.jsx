@@ -33,7 +33,7 @@ export const CardRecipe = ({
                     <img
                         style={{ height: '10rem' }}
                         className="img"
-                        src={recipeImage? recipeImage: 'https://saturdaykitchenrecipes.com/wp-content/uploads/2020/04/default-recipe-image.gif'}
+                        src={recipeImage? recipeImage: 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
                         alt={`receita de ${recipeTitle}`}
                     />
                 </Tooltip>
