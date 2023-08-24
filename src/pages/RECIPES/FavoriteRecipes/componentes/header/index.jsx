@@ -26,15 +26,13 @@ export const HeaderFavoriteCard = ({
                 subheader={favorite?.creationDate}
             />
             <CardMedia
-                sx={{
-                    display: 'none',
-                    transition: '.3s',
-                }}
                 className="imageCardMedia"
                 component="img"
-                height="194"
-                image={favorite?.recipeImage}
-                alt="Paella dish"
+                image={
+                    !favorite?.recipeImage ?
+                        "https://saturdaykitchenrecipes.com/wp-content/uploads/2020/04/default-recipe-image.gif" :
+                        favorite?.recipeImage}
+                alt={favorite?.recipeDescription}
             />
             <CardContent sx={{ color: 'white' }}>
                 <Typography variant="body2">
