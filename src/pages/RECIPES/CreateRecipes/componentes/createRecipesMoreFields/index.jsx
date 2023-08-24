@@ -1,3 +1,4 @@
+import { NativeSelect } from "@mui/material"
 import { MyTextField } from "../../../../../componentes/textField/textField.jsx"
 
 
@@ -13,7 +14,7 @@ export const MoreFieldsCreateRecipes = ({
             <MyTextField
                 id="prepTime"
                 name="prepTime"
-                label="Tempo de preparo"
+                label="Tempo de preparo em minutos"
                 autoComplete="prepTime"
                 type="number"
                 onChange={handleInputChangesCreateRecipes}
@@ -23,7 +24,7 @@ export const MoreFieldsCreateRecipes = ({
             <MyTextField
                 id="cookTime"
                 name="cookTime"
-                label="Tempo de cozimento"
+                label="Tempo de cozimento em minutos"
                 onChange={handleInputChangesCreateRecipes}
                 value={formData?.cookTime}
                 type={'number'}
