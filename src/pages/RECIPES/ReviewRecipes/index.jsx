@@ -123,9 +123,7 @@ export const TopReview = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
-  const handleChangeIndex = (index) => {
-    setValue(index)
-  }
+
   if (recipes?.length === 0) {
     return (
       <Tag.Cards>
