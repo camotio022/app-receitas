@@ -1,6 +1,4 @@
-import { Stack } from '@mui/material';
-
-
+import { Stack, useMediaQuery } from '@mui/material';
 import {
   Search as SearchIcon,
   Close as CloseIcon,
@@ -11,17 +9,14 @@ import * as S from './styles.js';
 import { Logo } from '../../../../componentes/LOGO/index.jsx';
 import { UserMenu } from '../UserMenu/index.jsx';
 import { Links_a } from '../Links_a/index.jsx';
-import { TopLinks } from '../TopLinks/index.jsx';
 import { FloatingButton } from '../FloatingButton/index.jsx';
 import { useState } from 'react';
 import { MySearch } from '../../search/index.jsx';
 export const MenuContent = ({
   scrollHeight,
   children,
-  matchesMobileSmall,
   links = [],
   selectedLink,
-  RENDERPAGE,
   anchorEl,
   handleClose,
   open,
@@ -32,11 +27,13 @@ export const MenuContent = ({
   setShowLinks,
 }) => {
   const [search, setSearch] = useState('')
+  const matchesMobileSmall = useMediaQuery('(min-width:550px)')
   return (
     <>
       <S.Container scrollHeight={scrollHeight}>
         <S.Header scrollHeight={scrollHeight}>
-          {!matchesMobileSmall ? <Menu onClick={() => setShowLinks(!showLinks)} /> : <Logo />}
+          {!matchesMobileSmall ?
+            <Menu onClick={() => setShowLinks(!showLinks)} /> : <Logo />}
           <Stack direction="row" alignItems="center" ml={3}>
             <Tag.Search sx={{ width: 'auto' }}>
               <Tag.SearchIconWrapper>
@@ -60,19 +57,15 @@ export const MenuContent = ({
             />
           </Stack>
         </S.Header>
-
-        <S.SideMenu sx={!matchesMobileSmall && {
-          display: showLinks ? "block" : "none",
-          position: 'absolute',
-          bgcolor: 'white',
-          zIndex: 1,
-          width: '100%'
-        }}
+        <S.SideMenu
         >
-          <S.MinhaLista
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-          >
+          <S.MinhaLista sx={!matchesMobileSmall && {
+            display: showLinks ? "block" : "none",
+            position: "absolute",
+            bgcolor: 'white',
+            zIndex: 1,
+            width: '100%',
+          }}>
             {links.map((li) => {
               return (
                 <Links_a
@@ -85,14 +78,21 @@ export const MenuContent = ({
               )
             })}
           </S.MinhaLista>
+          <S.Content>
+            {
+              search ?
+                <S.Content >
+                  <MySearch searchInput={search} />
+                </S.Content>
+                :
+                <S.Content
+                >
+                  {children}
+                </S.Content>
+            }
+          </S.Content>
+
         </S.SideMenu>
-
-        {search ?
-          <S.Content><MySearch searchInput={search} /></S.Content>
-          : <S.Content>
-
-            {RENDERPAGE || children}
-          </S.Content>}
         <FloatingButton />
       </S.Container >
     </>

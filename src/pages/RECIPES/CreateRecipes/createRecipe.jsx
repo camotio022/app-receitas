@@ -11,6 +11,7 @@ import { AuthContext } from '../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { api_recipes } from '../../../api/recipes/recipes'
 import { api_notifications } from '../../../api/users/notifications'
+import { rulesCreateRecipes } from './validation'
 export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
@@ -54,8 +55,8 @@ export const CreateRecipes = ({ }) => {
     reader.readAsDataURL(file)
   }
   const handleSubmit = async (event) => {
+    if(!rulesCreateRecipes(formData, setFormData))return false
     const date = new Date().toLocaleString()
-
     const userId = user?.uid
     if (userId) {
       const payload = {
@@ -91,7 +92,7 @@ export const CreateRecipes = ({ }) => {
         component="main"
         maxWidth="sm"
         sx={{
-          mb: 4,
+          mb: 15,
           mt: 15,
           display: 'center',
           alignItems: 'center',

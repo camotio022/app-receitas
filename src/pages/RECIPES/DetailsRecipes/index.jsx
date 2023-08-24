@@ -14,6 +14,7 @@ import { StepsDetailsRecipe } from './componentes/StepsDetailsRecipe/index.jsx'
 import { LoadingDetailsRecipe } from './componentes/loadingDetailsRecipe/index.jsx'
 import { api_recipes } from '../../../api/recipes/recipes.js'
 import { api_more } from '../../../api/index.js'
+import { Comments } from './componentes/comments/index.jsx'
 // ... O restante do seu código ...
 
 const Comment = ({ author, content }) => (
@@ -58,7 +59,6 @@ export const DetailsRecipes = () => {
             setNewComment('');
         }
     };
-
     if (!recipe) {
         return (
             <>
@@ -79,43 +79,7 @@ export const DetailsRecipes = () => {
                     <NutricionaisDetailsRecipe recipe={recipe} />
                     <IngredientDetailsRecipe recipe={recipe} />
                     <StepsDetailsRecipe recipe={recipe} />
-                    <Card component="ul"
-                        sx={{
-                            flexGrow: 1,
-                            minWidth: "90%",
-                            height: '20rem',
-                            mt: '15rem',
-                        }}
-                    >
-                    </Card>
-                    <Typography>Comments</Typography>
-                    <List style={{ width: '90%', margin: 'auto' }}>
-                        {comments.map((comment, index) => (
-                            <Comment
-                                key={index}
-                                author={comment.author}
-                                content={comment.content}
-                            />
-                        ))}
-                    </List>
-                    <Grid container alignItems="center" spacing={2} sx={{ width: '90%' }}>
-                        <Grid item xs={12} md={9}>
-                            <TextField
-                                label="Add a comment"
-                                variant="outlined"
-                                fullWidth
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}
-                            md={3} mb={3} >
-                            <Button fullWidth onClick={handleSubmit} variant="contained" color="primary" >
-                                Add Comment
-                            </Button>
-                        </Grid>
-                    </Grid>
-
+                    <Comments />
                 </Tag.CardMediaContain>
             </Tag.Container >
 
