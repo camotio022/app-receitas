@@ -72,6 +72,7 @@ export const DetailsRecipes = () => {
                 <Tag.CardMediaContain>
                     <CardMidiaDetailRecipe
                         recipe={recipe}
+                        id={id}
                     />
                     <PreviaDetailsRecipe
                         recipe={recipe}
