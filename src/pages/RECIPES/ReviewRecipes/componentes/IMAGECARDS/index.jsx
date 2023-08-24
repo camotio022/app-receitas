@@ -13,7 +13,7 @@ export const CardInImage = ({
 
             <Card
                 sx={{
-                    height: '30%',
+                    height: 250,
                     width: 250,
                     bgcolor: 'initial',
                     boxShadow: 'none',
@@ -32,8 +32,9 @@ export const CardInImage = ({
                     ></Avatar>
                     <CardMedia
                         component="img"
+                        sx={{height:"10rem"}}
                         src={
-                            recipeImage !== null
+                            recipeImage
                                 ? recipeImage
                                 : 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'
                         }
