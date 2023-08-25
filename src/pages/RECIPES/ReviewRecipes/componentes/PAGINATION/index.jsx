@@ -8,7 +8,6 @@ export const PaginationComponent = ({
 }) => {
     return (
         <>
-
             <Tag.Pagination
                 spacing={2}
                 sx={{
