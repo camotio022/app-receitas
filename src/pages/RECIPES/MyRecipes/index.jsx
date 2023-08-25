@@ -14,6 +14,7 @@ import { CardMyRecipes } from './componentes/cardRecipes'
 import { api_myrecipes } from '../../../api/recipes/myrecipes'
 import { AppBarGlobal } from '../../../componentes/AppBar'
 import { Folder } from '@mui/icons-material'
+import { PaginationComponent } from '../ReviewRecipes/componentes/PAGINATION'
 function TabPanel(props) {
   const { children, value, index, ...other } = props
   return (
@@ -37,7 +38,7 @@ export const MyRecipes = () => {
   const [value, setValue] = useState(0)
   const [myRecipes, setMyRecipes] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(10)
+  const itemsPerPage = 10;
   const indexOfLastRecipe = currentPage * itemsPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
   const currentRecipes = myRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
@@ -103,6 +104,9 @@ export const MyRecipes = () => {
   const tabs = [
     { icon: Folder, text: "MINHAS RECEITAS" },
   ];
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page)
+  }
   return (
 
     <>
@@ -138,6 +142,14 @@ export const MyRecipes = () => {
               )
             })}
           </Tag.MenuItemsLinks>
+          {myRecipes.length > itemsPerPage && (
+            <PaginationComponent
+              recipes={myRecipes}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              handlePageChange={handlePageChange}
+            />
+          )}
         </TabPanel>
       )}
     </>
