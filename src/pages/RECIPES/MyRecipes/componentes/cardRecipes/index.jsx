@@ -1,5 +1,5 @@
 import { Favorite, Forum } from "@mui/icons-material"
-import { Avatar, Link, Rating, Typography, Tooltip, Box, Stack, useMediaQuery } from "@mui/material"
+import { Avatar, Link, Rating, Typography, Tooltip, Box, Stack, useMediaQuery, recomposeColor } from "@mui/material"
 import { orange } from "@mui/material/colors"
 import { useContext } from "react"
 import { AuthContext } from "../../../../../contexts/AuthContext"
@@ -25,21 +25,37 @@ export const CardMyRecipes = ({
                 <Stack width={'100%'}>
                     <Tooltip
                         sx={{ cursor: 'pointer' }}
-                        title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
+                        title={`Dê dois clicks para comentar está receita  ${recipe?.recipeTitle}`}
                         followCursor
                     >
-                        <img className="img" src={recipe?.recipeImage} alt="" />
+                        <img
+                            style={{ height: '10rem' }}
+                            className="img"
+                            src={recipe?.recipeImage ? recipe?.recipeImage : 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
+                            alt={`receita de ${recipe?.recipeTitle}`}
+                        />
                     </Tooltip>
                     <Stack padding={2} spacing={2}>
-                        <Typography color={'gray'} variant="body1" sx={noWrap}>
-                            <Link
-                                href={`/detailsRecipes/${recipe?.id}`}
-                                color="inherit"
-                                underline="hover"
-                            >
-                                {recipe?.recipeTitle}
-                            </Link>
-                        </Typography>
+                        <Tooltip
+                            sx={{ cursor: 'pointer' }}
+                            title={`Ir para os detalhes  ${recipe?.recipeTitle}`}
+                            followCursor
+                        >
+                            <Typography color={'gray'} variant="h6" sx={{
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                fontSize: '100%'
+                            }}>
+                                <Link
+                                    href={`/detailsRecipes/${recipe?.id}`}
+                                    color="inherit"
+                                    underline="hover"
+                                >
+                                    {recipe?.recipeTitle}
+                                </Link>
+                            </Typography>
+                        </Tooltip>
                         <Stack direction="row" justifyContent={'space-between'}>
                             <Stack direction="row" spacing={2}>
                                 <Box color={'#ffa505'}>
@@ -92,12 +108,20 @@ export const CardMyRecipes = ({
                                         {user?.displayName}
                                     </Typography>
                                     <Stack direction="row" spacing={2}>
-                                        <Stack direction="row" gap={1}>
-                                            <Favorite
-                                                fontSize={matches ? 'small' : 'medium'}
-                                            />
-                                            {recipe?.favoritesCounter}
-                                        </Stack>
+                                    <Stack direction="row" gap={1}>
+                                        <Favorite
+                                            sx={{
+                                                color:
+                                                    recipe?.likesCounter?.includes(user.uid)
+                                                    && 'red'
+                                            }}
+                                            fontSize={matches ? 'small' : 'medium'}
+                                        />
+                                        {
+                                            recipe?.likesCounter ?
+                                            recipe?.likesCounter?.length : 0
+                                        }
+                                    </Stack>
                                         <Stack spacing={2} gap={1} direction="row">
                                             <Forum
                                                 fontSize={matches ? 'small' : 'medium'}
