@@ -15,7 +15,8 @@ export const CardRecipe = ({
     AuthorName,
     commentsCounter,
     ranking,
-    id
+    id,
+    likesCounter
 }) => {
     const matches = useMediaQuery('(min-width:700px)')
     const { user } = useContext(AuthContext)
@@ -128,13 +129,20 @@ export const CardRecipe = ({
                                         </Stack>
                                     </>
                                 )}
-
                                 <Stack direction="row" spacing={2}>
                                     <Stack direction="row" gap={1}>
                                         <Favorite
+                                            sx={{
+                                                color:
+                                                    likesCounter?.includes(user.uid)
+                                                    && 'red'
+                                            }}
                                             fontSize={matches ? 'small' : 'medium'}
                                         />
-                                        233
+                                        {
+                                            likesCounter ?
+                                                likesCounter.length : 0
+                                        }
                                     </Stack>
                                     <Stack spacing={2} gap={1} direction="row">
                                         <Forum
