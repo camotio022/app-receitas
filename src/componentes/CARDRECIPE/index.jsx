@@ -1,4 +1,4 @@
-import { Box, Link, Rating, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
+import { Avatar, Box, Link, Rating, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
 import * as Tag from './index.js'
 import { Favorite, Forum } from '@mui/icons-material'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
@@ -33,7 +33,7 @@ export const CardRecipe = ({
                     <img
                         style={{ height: '10rem' }}
                         className="img"
-                        src={recipeImage? recipeImage: 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
+                        src={recipeImage ? recipeImage : 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
                         alt={`receita de ${recipeTitle}`}
                     />
                 </Tooltip>
@@ -95,19 +95,14 @@ export const CardRecipe = ({
                         justifyContent="space-between"
                     >
                         <Tag.Author>
-                            <Tag.AuthorImage>
-                                <img
-                                    style={{
-                                        borderRadius: '10px',
-                                    }}
-                                    src={
-                                        author === user.uid
-                                            ? user.photoURL
-                                            : recipeImage
-                                    }
-                                    alt=""
-                                />
-                            </Tag.AuthorImage>
+                            <Avatar
+                                src={
+                                    author === user.uid
+                                        ? user.photoURL
+                                        : recipeImage
+                                }
+                                alt=""
+                            />
                             <Box
                                 sx={{
                                     display: 'flex',
