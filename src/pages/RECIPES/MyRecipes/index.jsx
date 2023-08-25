@@ -15,6 +15,8 @@ import { api_myrecipes } from '../../../api/recipes/myrecipes'
 import { AppBarGlobal } from '../../../componentes/AppBar'
 import { Folder } from '@mui/icons-material'
 import { PaginationComponent } from '../ReviewRecipes/componentes/PAGINATION'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import { db } from '../../../../firebase.config'
 function TabPanel(props) {
   const { children, value, index, ...other } = props
   return (
@@ -79,10 +81,21 @@ export const MyRecipes = () => {
   const handleScroll = () => {
 
   }
-
   useEffect(() => {
-    const listener = window.addEventListener('scroll', handleScroll)
-
+    const q = query(
+      collection(db, 'recipes'),
+      where('author', '==', user.uid)
+    )
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const temp = []
+      querySnapshot.forEach((doc) => {
+        temp.push({ id: doc.id, ...doc.data() })
+      })
+      setMyRecipes(temp)
+    })
+    return () => unsubscribe()
+  }, [])
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
@@ -94,9 +107,7 @@ export const MyRecipes = () => {
         setIsLoading(false)
       }
     }
-
     fetchData()
-    return () => window.removeEventListener('scroll', listener)
   }, [])
   const handleChange = (event, newValue) => {
     setValue(newValue)
