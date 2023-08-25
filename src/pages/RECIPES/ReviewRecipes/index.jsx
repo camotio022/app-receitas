@@ -46,7 +46,6 @@ export const TopReview = (props) => {
   const [value, setValue] = useState(0)
   const [recipes, setRecipes] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const stackRef = useRef(null);
   const itemsPerPage = 10;
   const indexOfLastRecipe = currentPage * itemsPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
