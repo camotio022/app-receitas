@@ -142,6 +142,7 @@ export const TopReview = (props) => {
                   return (
                     <CardRecipe
                       id={recipe.id}
+                      likesCounter={recipe.likesCounter}
                       recipeTitle={recipe?.recipeTitle}
                       recipeImage={recipe?.recipeImage}
                       author={recipe?.author}
