@@ -9,8 +9,8 @@ detalhe da receita
 top reviews
 - [done] usar imagem "sem imagem" nos cards
 - [done] setar tamanho da imagem como "cover" para igualar o tamanho dos cards
-- [] numero de comentarios
-- [] numero de curtidas
+- [done] numero de comentarios
+- [done] numero de curtidas
 - [done] paginação - 12 receitas por página
 receitas favoritas
 - [done] esperar retorno do back para mostrar mensagem
