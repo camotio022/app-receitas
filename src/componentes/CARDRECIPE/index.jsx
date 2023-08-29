@@ -19,38 +19,45 @@ export const CardRecipe = ({
 }) => {
     const matches = useMediaQuery('(min-width:700px)')
     const { user } = useContext(AuthContext)
-    const comment =()=> {
+    const comment = () => {
         alert('Deseja comentar essa receita?')
     }
     return (
-        <Tag.Card key={id} onDoubleClick={()=>comment(user.uid)}>
+        <Tag.Card key={id} onDoubleClick={() => comment(user.uid)}>
             <Stack width={'100%'}>
                 <Tooltip
                     sx={{ cursor: 'pointer' }}
-                    title={`Ir para os detalhes  ${recipeTitleHoverHeader}`}
+                    title={`Dê dois clicks para comentar está receita  ${recipeTitle}`}
                     followCursor
                 >
                     <img
+                        style={{ height: '10rem' }}
                         className="img"
-                        src={recipeImage}
-                        alt=""
+                        src={recipeImage? recipeImage: 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
+                        alt={`receita de ${recipeTitle}`}
                     />
                 </Tooltip>
                 <Stack padding={2} spacing={2}>
-                    <Typography color={'gray'} variant="h6" sx={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                        fontSize: '100%'
-                    }}>
-                        <Link
-                            href={`/detailsRecipes/${id}`}
-                            color="inherit"
-                            underline="hover"
-                        >
-                            {recipeTitle}
-                        </Link>
-                    </Typography>
+                    <Tooltip
+                        sx={{ cursor: 'pointer' }}
+                        title={`Ir para os detalhes  ${recipeTitleHoverHeader}`}
+                        followCursor
+                    >
+                        <Typography color={'gray'} variant="h6" sx={{
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                            fontSize: '100%'
+                        }}>
+                            <Link
+                                href={`/detailsRecipes/${id}`}
+                                color="inherit"
+                                underline="hover"
+                            >
+                                {recipeTitle}
+                            </Link>
+                        </Typography>
+                    </Tooltip>
                     <Stack
                         direction="row"
                         justifyContent={'space-between'}

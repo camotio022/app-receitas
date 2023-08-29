@@ -1,7 +1,7 @@
 import { CardMedia, styled } from "@mui/material";
 
 export const Midias = styled(CardMedia)(({ theme }) => ({
-    height: '20rem',
+    height: 'auto',
     width: '100%',
-    backgroundSize: '100%',
+    backgroundSize: 'contain',
 }))

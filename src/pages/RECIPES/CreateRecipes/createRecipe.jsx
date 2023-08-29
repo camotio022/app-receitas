@@ -11,9 +11,12 @@ import { AuthContext } from '../../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { api_recipes } from '../../../api/recipes/recipes'
 import { api_notifications } from '../../../api/users/notifications'
+import { rulesCreateRecipes } from './validation'
+import { CircularProgress, Grid, Stack } from '@mui/material'
 export const CreateRecipes = ({ }) => {
   const { user } = useContext(AuthContext)
   const [scrollHeight, setScrollHeight] = useState(0)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     recipeTitle: '',
@@ -54,8 +57,9 @@ export const CreateRecipes = ({ }) => {
     reader.readAsDataURL(file)
   }
   const handleSubmit = async (event) => {
+    if (!rulesCreateRecipes(formData, setFormData)) return false
+    setLoading(true)
     const date = new Date().toLocaleString()
-
     const userId = user?.uid
     if (userId) {
       const payload = {
@@ -70,6 +74,8 @@ export const CreateRecipes = ({ }) => {
         navigate('/my-recipes')
       } catch (error) {
         console.error('Erro ao criar receita:', error);
+      } finally {
+        setLoading(false)
       }
     }
   }
@@ -91,29 +97,46 @@ export const CreateRecipes = ({ }) => {
         component="main"
         maxWidth="sm"
         sx={{
-          mb: 4,
+          mb: 15,
           mt: 15,
           display: 'center',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <Paper
-          variant="outlined"
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-        >
-          <Fragment>
-            <RecipeForm
-              formData={formData}
-              setFormData={setFormData}
-              handleInputChangesCreateRecipes={
-                handleInputChangesCreateRecipes
-              }
-              handleImageChange={handleImageChange}
-              handleSubmit={handleSubmit}
-            />
-          </Fragment>
-        </Paper>
+        {loading ?
+          <Paper
+            variant="outlined"
+            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          >
+            <Stack sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1
+            }}>
+              Receita de {formData.recipeTitle} está sendo criada, por favor aguarde...
+              <CircularProgress
+                size={40}
+                color="inherit" />
+            </Stack>
+          </Paper> :
+          <Paper
+            variant="outlined"
+            sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          >
+            <Fragment>
+              <RecipeForm
+                formData={formData}
+                setFormData={setFormData}
+                handleInputChangesCreateRecipes={
+                  handleInputChangesCreateRecipes
+                }
+                handleImageChange={handleImageChange}
+                handleSubmit={handleSubmit}
+              />
+            </Fragment>
+          </Paper>}
       </Container>
     </>
   )

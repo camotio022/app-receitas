@@ -25,7 +25,11 @@ export const CardFavoriteRecipe = ({
                     key={index}
                     sx={{
                         width: isSmallScreen ? '100%' : 345,
-                        backgroundImage: `url(${!favorite?.recipeImage ? "https://www.biotecdermo.com.br/wp-content/uploads/2016/10/sem-imagem-10.jpg" : favorite?.recipeImage})`,
+                        height:'auto',
+                        backgroundImage: 
+                        `url(${!favorite?.recipeImage ? 
+                            "https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg" : 
+                        favorite?.recipeImage})`,
                     }}
                 >
                     <Tag.FavoriteBox>

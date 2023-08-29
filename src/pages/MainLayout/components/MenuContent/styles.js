@@ -1,5 +1,4 @@
-import { Box, List, Stack, styled } from '@mui/material'
-
+import { Box, List, Stack, styled, useMediaQuery } from '@mui/material'
 export const Container = styled('div')(({ scrollHeight }) => ({
   borderBottom: '1px solid #e3e9ed',
   top: 0,
@@ -29,14 +28,14 @@ export const Header = styled('div')(({ scrollHeight }) => ({
     : {}),
   color: 'white',
 }))
-
 export const SideMenu = styled(Box)(() => ({
-  flexDirection: 'column',
-  width: '30%',
-  height: '90vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection:'row',
+  width: '100%',
+  height: '100vh',
   overflow: 'auto',
-  borderRight: '1px solid #e3e9ed',
-  bgcolor: '#f8fafb',
   transition: 'all 0.5s ease',
   transition: 'height 0.3s ease',
 }))
@@ -45,6 +44,7 @@ export const Content = styled(Stack)(() => ({
   overflow: 'auto',
   height: '100%',
   width: '100%',
+  transition: 'all 0.5s ease-in-out',
 }))
 
 export const ItemsLinks = styled(Box)(() => ({
@@ -55,7 +55,9 @@ export const ItemsLinks = styled(Box)(() => ({
   //   width: 'auto',
   background: 'yellow',
 }))
-export const MinhaLista = styled(List)(({ matchesMobileSmall }) => ({
-  width: matchesMobileSmall ? '100%' : '100%',
+export const MinhaLista = styled(List)(() => ({
+  overflow: 'auto',
+  height: '100%',
+  width: '30%',
   transition: 'all 0.5s ease-in-out',
 }))

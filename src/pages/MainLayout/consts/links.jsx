@@ -27,36 +27,36 @@ import {
   Favorite as FavoriteIcon,
 } from '@mui/icons-material'
 export const links = [
-  {
-    icon: <HomeIcon />,
-    name: 'Home',
-    onClick: 'home',
-    children: [
-      {
-        icon: <HouseIcon />,
-        name: 'Página principal',
-        onClick: 'home',
-      },
+  // {
+  //   icon: <HomeIcon />,
+  //   name: 'Home',
+  //   onClick: 'home',
+  //   children: [
+  //     {
+  //       icon: <HouseIcon />,
+  //       name: 'Página principal',
+  //       onClick: 'home',
+  //     },
 
-      { icon: <LastPageIcon />, name: 'Sub página', onClick: 'subPage' },
-      {
-        icon: <BookmarkIcon />,
-        name: 'Receitas favoritas',
-        onClick: 'favRecipes',
-      },
-      { icon: <EditNoteIcon />, name: 'Rascunho', onClick: 'draft' },
-    ],
-  },
+  //     { icon: <LastPageIcon />, name: 'Sub página', onClick: 'subPage' },
+  //     {
+  //       icon: <BookmarkIcon />,
+  //       name: 'Receitas favoritas',
+  //       onClick: 'favRecipes',
+  //     },
+  //     { icon: <EditNoteIcon />, name: 'Rascunho', onClick: 'draft' },
+  //   ],
+  // },
   {
     icon: <LayersIcon />,
     name: 'Pages',
     onClick: 'pages',
     children: [
       { name: 'Top Review', icon: <StarIcon />, link: '/topReview' },
-      { name: 'Single Video', icon: <PlayCircleIcon /> },
-      { name: 'Single Book', icon: <BookmarksIcon /> },
-      { name: 'About us', icon: <InfoIcon /> },
-      { name: 'Contacts', icon: <AlternateEmailIcon /> },
+      // { name: 'Single Video', icon: <PlayCircleIcon /> },
+      // { name: 'Single Book', icon: <BookmarksIcon /> },
+      // { name: 'About us', icon: <InfoIcon /> },
+      // { name: 'Contacts', icon: <AlternateEmailIcon /> },
     ],
   },
   {
@@ -83,29 +83,29 @@ export const links = [
       { name: 'Gerador de receitas', icon: <DinnerDiningIcon /> },
     ],
   },
-  {
-    icon: <BookIcon />,
-    name: 'Blog',
-    onClick: 'blog',
-    children: [
-      {
-        icon: <TextsmsIcon />,
-        name: 'Blog 1',
-        onClick: 'blog1',
-      },
+  // {
+  //   icon: <BookIcon />,
+  //   name: 'Blog',
+  //   onClick: 'blog',
+  //   children: [
+  //     {
+  //       icon: <TextsmsIcon />,
+  //       name: 'Blog 1',
+  //       onClick: 'blog1',
+  //     },
 
-      {
-        icon: <MarkUnreadChatAltIcon />,
-        name: 'Blog 2',
-        onClick: 'blog2',
-      },
-      {
-        icon: <QuestionAnswerIcon />,
-        name: 'Blog 3 (Single)',
-        onClick: 'blog2',
-      },
-    ],
-  },
+  //     {
+  //       icon: <MarkUnreadChatAltIcon />,
+  //       name: 'Blog 2',
+  //       onClick: 'blog2',
+  //     },
+  //     {
+  //       icon: <QuestionAnswerIcon />,
+  //       name: 'Blog 3 (Single)',
+  //       onClick: 'blog2',
+  //     },
+  //   ],
+  // },
   {
     icon: <PeopleIcon />,
     name: 'Comunidade',
@@ -117,25 +117,25 @@ export const links = [
         link: '/comunidade',
         onClick: 'comunidade',
       },
-      { name: 'Grupos', icon: <RememberMeIcon /> },
+      // { name: 'Grupos', icon: <RememberMeIcon /> },
     ],
   },
-  {
-    icon: <SettingsIcon />,
-    name: 'Settings',
-    onClick: 'adSettings',
-    children: [
-      { icon: <TerminalIcon />, name: 'Mode root', onClick: 'root' },
-      {
-        icon: <AdminPanelSettingsIcon />,
-        name: 'Mode admin',
-        onClick: 'admin',
-      },
-      {
-        icon: <TaxiAlertIcon />,
-        name: 'Red alert mode ',
-        onClick: 'Red',
-      },
-    ],
-  },
+  // {
+  //   icon: <SettingsIcon />,
+  //   name: 'Settings',
+  //   onClick: 'adSettings',
+  //   children: [
+  //     { icon: <TerminalIcon />, name: 'Mode root', onClick: 'root' },
+  //     {
+  //       icon: <AdminPanelSettingsIcon />,
+  //       name: 'Mode admin',
+  //       onClick: 'admin',
+  //     },
+  //     {
+  //       icon: <TaxiAlertIcon />,
+  //       name: 'Red alert mode ',
+  //       onClick: 'Red',
+  //     },
+  //   ],
+  // },
 ]
