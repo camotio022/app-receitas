@@ -12,6 +12,9 @@ import { AuthContext } from "../../../contexts/AuthContext"
 import PropTypes from 'prop-types'
 import { CardRecipe } from "../../../componentes/CARDRECIPE/index.jsx"
 import { AutoStories } from "@mui/icons-material"
+import { PaginationComponent } from "../ReviewRecipes/componentes/PAGINATION"
+import { collection, onSnapshot, query, where } from "firebase/firestore"
+import { db } from "../../../../firebase.config"
 function TabPanel(props) {
     const { children, value, index, ...other } = props
     return (
@@ -48,8 +51,26 @@ export const CardUsers = ({
     index,
     user
 }) => {
+    const fevoritingRecipe = async (recipeId, userId) => {
+        if (!recipeId || !userId) return
+        try {
+            const recipeData = await api_recipe_favorites.favoriteRecipes.get(recipeId)
+            if (!recipeData) {
+                console.log('Receita não encontrada')
+                return
+            }
+            const likesCounter = recipeData.likesCounter || []
+            if (!likesCounter.includes(userId)) {
+                await api_recipe_favorites.favoriteRecipes.post(recipeId, userId)
+                alert('Receita favoritada com sucesso!')
+            } else {
+                alert('Usuário já favoritou a receita.')
+            }
+        } catch (error) {
+            alert('Erro ao favoritar a receita:', error)
+        }
+    }
     return (
-
         <TabPanel fullWidth value={value} index={index} dir={theme.direction} >
             <Tag.MenuItemsLinks>
                 {recipes.map((recipe) => {
@@ -59,6 +80,7 @@ export const CardUsers = ({
                             recipeTitle={recipe?.recipeTitle}
                             recipeImage={recipe?.recipeImage}
                             author={recipe?.author}
+                            likesCounter={recipes?.likesCounter}
                             starsLikedCounter={recipe?.starsLikedCounter}
                             fevoritingRecipe={() => fevoritingRecipe(recipe?.id, user?.uid)}
                             displayNameAuhtor={user?.displayName}
@@ -79,7 +101,14 @@ export const TheirRecipes = () => {
     const [value, setValue] = useState(0)
     const [theirRecipes, setTheirRecipes] = useState([])
     const [myRecipes, setMyRecipes] = useState([])
-
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10;
+    const indexOfLastRecipe = currentPage * itemsPerPage
+    const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
+    const currentRecipes = myRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe)
+    const handlePageChange = (event, page) => {
+        setCurrentPage(page)
+    }
     useEffect(() => {
         getyourRecipes(id, setTheirRecipes)
         getyourRecipes(user.uid, setMyRecipes)
@@ -91,29 +120,24 @@ export const TheirRecipes = () => {
         setValue(index)
     }
     const tabs = [
-        { icon: CookIcon, text: "Receitas deles" },
-        { icon: AutoStories, text: "Minhas Receitas" },
+        { icon: CookIcon, text: `${theirRecipes.length} Receitas deles` },
+        { icon: AutoStories,text: `${myRecipes.length} receitas minhas` },
     ];
-    const fevoritingRecipe = async (recipeId, userId) => {
-        if (!recipeId || !userId) return
-        try {
-            const recipeData = await api_recipe_favorites.favoriteRecipes.get(recipeId)
-
-            if (!recipeData) {
-                console.log('Receita não encontrada')
-                return
-            }
-            const likesCounter = recipeData.likesCounter || []
-            if (!likesCounter.includes(userId)) {
-                await api_recipe_favorites.favoriteRecipes.post(recipeId, userId)
-                alert('Receita favoritada com sucesso!')
-            } else {
-                alert('Usuário já favoritou a receita.')
-            }
-        } catch (error) {
-            alert('Erro ao favoritar a receita:', error)
-        }
-    }
+    useEffect(() => {
+        const q = query(
+          collection(db, 'recipes'),
+          where('author', '==', user.uid)
+        )
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const temp = []
+          querySnapshot.forEach((doc) => {
+            temp.push({ id: doc.id, ...doc.data() })
+          })
+          setMyRecipes(temp)
+          setTheirRecipes(temp)
+        })
+        return () => unsubscribe()
+      }, [])
     return (
         <>
             <AppBarGlobal
@@ -122,7 +146,7 @@ export const TheirRecipes = () => {
                 tabs={tabs}
             />
             <Stack
-                sx={{ width: '100%' }}
+                sx={{ width: '100%', marginBlock: '10rem' }}
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                 index={value}
                 onChangeIndex={handleChangeIndex}
@@ -135,12 +159,21 @@ export const TheirRecipes = () => {
                     user={user}
                 />
                 <CardUsers
-                    recipes={myRecipes}
+                    recipes={currentRecipes}
                     value={value}
                     theme={theme}
                     index={1}
                     user={user}
+
                 />
+                {currentRecipes.length > itemsPerPage && (
+                    <PaginationComponent
+                        recipes={currentRecipes}
+                        itemsPerPage={itemsPerPage}
+                        currentPage={currentPage}
+                        handlePageChange={handlePageChange}
+                    />
+                )}
             </Stack >
         </>
     )
