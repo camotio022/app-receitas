@@ -1,4 +1,4 @@
-import { Box, Link, Rating, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
+import { Avatar, Box, Link, Rating, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
 import * as Tag from './index.js'
 import { Favorite, Forum } from '@mui/icons-material'
 import { AuthContext } from '../../contexts/AuthContext.jsx'
@@ -15,7 +15,8 @@ export const CardRecipe = ({
     AuthorName,
     commentsCounter,
     ranking,
-    id
+    id,
+    likesCounter
 }) => {
     const matches = useMediaQuery('(min-width:700px)')
     const { user } = useContext(AuthContext)
@@ -33,7 +34,7 @@ export const CardRecipe = ({
                     <img
                         style={{ height: '10rem' }}
                         className="img"
-                        src={recipeImage? recipeImage: 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
+                        src={recipeImage ? recipeImage : 'https://cdn.panelinha.com.br/post/1416189600000-Medidores-os-curingas-de-qualquer-cozinha.jpg'}
                         alt={`receita de ${recipeTitle}`}
                     />
                 </Tooltip>
@@ -95,19 +96,14 @@ export const CardRecipe = ({
                         justifyContent="space-between"
                     >
                         <Tag.Author>
-                            <Tag.AuthorImage>
-                                <img
-                                    style={{
-                                        borderRadius: '10px',
-                                    }}
-                                    src={
-                                        author === user.uid
-                                            ? user.photoURL
-                                            : recipeImage
-                                    }
-                                    alt=""
-                                />
-                            </Tag.AuthorImage>
+                            <Avatar
+                                src={
+                                    author === user.uid
+                                        ? user.photoURL
+                                        : recipeImage
+                                }
+                                alt=""
+                            />
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -133,13 +129,20 @@ export const CardRecipe = ({
                                         </Stack>
                                     </>
                                 )}
-
                                 <Stack direction="row" spacing={2}>
                                     <Stack direction="row" gap={1}>
                                         <Favorite
+                                            sx={{
+                                                color:
+                                                    likesCounter?.includes(user.uid)
+                                                    && 'red'
+                                            }}
                                             fontSize={matches ? 'small' : 'medium'}
                                         />
-                                        233
+                                        {
+                                            likesCounter ?
+                                                likesCounter.length : 0
+                                        }
                                     </Stack>
                                     <Stack spacing={2} gap={1} direction="row">
                                         <Forum

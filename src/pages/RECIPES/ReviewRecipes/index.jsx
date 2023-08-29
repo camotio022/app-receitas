@@ -19,6 +19,7 @@ import { CardInImage } from './componentes/IMAGECARDS/index.jsx'
 import { PaginationComponent } from './componentes/PAGINATION'
 import { AppBarGlobal } from '../../../componentes/AppBar'
 import { Folder, Image } from '@mui/icons-material'
+import { api_comments } from '../../../api/usersComments'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -45,8 +46,8 @@ export const TopReview = (props) => {
   const theme = useTheme()
   const [value, setValue] = useState(0)
   const [recipes, setRecipes] = useState([])
+  const [comment,setComment] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const stackRef = useRef(null);
   const itemsPerPage = 10;
   const indexOfLastRecipe = currentPage * itemsPerPage
   const indexOfFirstRecipe = indexOfLastRecipe - itemsPerPage
@@ -61,7 +62,9 @@ export const TopReview = (props) => {
     setIsLoading(true)
     try {
       const recipesData = await api_recipes.recipe.get()
+      const commentData = await api_comments.comments.get()
       setRecipes(recipesData)
+      setComment(commentData)
     } catch (error) {
     } finally {
       setIsLoading(false)
@@ -70,6 +73,7 @@ export const TopReview = (props) => {
 
   useEffect(() => {
     obterrecipes()
+    console.log('comments',comment)
   }, [])
   const fevoritingRecipe = async (recipeId, userId) => {
     if (!recipeId || !userId) return
@@ -108,8 +112,8 @@ export const TopReview = (props) => {
     )
   }
   const tabs = [
-    { icon: Folder, text: "recipe cards" },
-    { icon: Image, text: "recipe images" },
+    { icon: Folder, text: `${recipes.length} receitas` },
+    { icon: Image, text: "ver como imagens" },
   ];
   return (
     <>
@@ -142,6 +146,7 @@ export const TopReview = (props) => {
                   return (
                     <CardRecipe
                       id={recipe.id}
+                      likesCounter={recipe.likesCounter}
                       recipeTitle={recipe?.recipeTitle}
                       recipeImage={recipe?.recipeImage}
                       author={recipe?.author}
@@ -149,7 +154,18 @@ export const TopReview = (props) => {
                       fevoritingRecipe={() => fevoritingRecipe(recipe?.id, user?.uid)}
                       displayNameAuhtor={user?.displayName}
                       AuthorName={recipe?.name}
-                      commentsCounter={recipe?.commentsCounter}
+                      commentsCounter={
+                        comment.reduce((total, c) => {
+                          if (c.commented_recipeId === recipe?.id) {
+                            let commentCount = 1;
+                            if (c.replys && c.replys.length > 0) {
+                              commentCount += c.replys.length;
+                            }
+                            return total + commentCount;
+                          }
+                          return total;
+                        }, 0)
+                      }
                       ranking={recipe?.ranking}
                     />
                   )

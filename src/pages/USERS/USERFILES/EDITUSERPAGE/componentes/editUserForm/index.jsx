@@ -13,6 +13,7 @@ export const ForumEditInfoUser = ({
     return (<>
         <Card
             sx={{
+                mb:"3rem",
                 width: '100%',
                 fontFamily: 'Arial, sans-serif',
                 transition: 'background-color 0.3s ease',

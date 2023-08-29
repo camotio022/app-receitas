@@ -69,14 +69,3 @@ export const ReviewScore = styled(Typography)(({ theme }) => ({
     padding: theme.spacing(2),
 }))
 
-export const AuthorImage = styled(Box)(({ theme }) => ({
-    width: '3rem',
-    height: '3rem',
-    overflow: 'hidden',
-    borderRadius: '50%',
-    color: theme.palette.secondary.light,
-    img: {
-        width: '100%',
-        height: '100%',
-    },
-}))
