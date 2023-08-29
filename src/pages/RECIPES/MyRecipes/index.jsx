@@ -113,8 +113,9 @@ export const MyRecipes = () => {
     setValue(newValue)
   }
   const tabs = [
-    { icon: Folder, text: "MINHAS RECEITAS" },
+    { icon: Folder, text: `${myRecipes.length}, Minhas Receitas` },
   ];
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page)
   }
@@ -152,15 +153,15 @@ export const MyRecipes = () => {
                 />
               )
             })}
+            {myRecipes.length > itemsPerPage && (
+              <PaginationComponent
+                recipes={myRecipes}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+              />
+            )}
           </Tag.MenuItemsLinks>
-          {myRecipes.length > itemsPerPage && (
-            <PaginationComponent
-              recipes={myRecipes}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              handlePageChange={handlePageChange}
-            />
-          )}
         </TabPanel>
       )}
     </>
