@@ -153,24 +153,26 @@ export const PerfilUser = () => {
           <Tag.ItemMenu >
             EDITAR O PERFIL
           </Tag.ItemMenu>
-          <Stack>
-            <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: "15px",
-              flexWrap: 'wrap',
-              width: '100%',
-            }}>
-              <ForumEditInfoUser
-                isEditing={isEditing}
-                userValues={userValues}
-                handleChange={handleChange}
-                handleEditClick={handleEditClick}
-                user={user}
-                handleSaveClick={handleSaveClick}
-              />
-            </Box>
+          <Stack sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: "15px",
+            flexWrap: 'wrap',
+            width: '100%',
+            marginBottom: '5rem',
+            padding: "1rem"
+          }}>
+
+            <ForumEditInfoUser
+              isEditing={isEditing}
+              userValues={userValues}
+              handleChange={handleChange}
+              handleEditClick={handleEditClick}
+              user={user}
+              handleSaveClick={handleSaveClick}
+            />
+
           </Stack>
         </Stack>
         <MyDialog
