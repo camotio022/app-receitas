@@ -8,12 +8,23 @@ import { useParams } from 'react-router-dom';
 import { api_comments } from '../../../../../api/usersComments';
 import { Message } from '../message/index.jsx';
 import { AuthContext } from '../../../../../contexts/AuthContext.jsx'
+import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../../../../../../firebase.config.js';
 
 export const Comments = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const { id } = useParams()
     const { user } = useContext(AuthContext)
+    const timestamp = new Date();
+    const year = timestamp.getFullYear();
+    const month = timestamp.getMonth() + 1;
+    const day = timestamp.getDate();
+    const hours = timestamp.getHours();
+    const minutes = timestamp.getMinutes();
+    const seconds = timestamp.getSeconds();
+    const formattedTimestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
     const getComments = async () => {
         try {
             const res = await api_comments.comments.getForRecipe(id)
@@ -22,21 +33,37 @@ export const Comments = () => {
             console.error(err)
         }
     }
+    useEffect(() => {
+        const q = query(
+            collection(db, 'recipesComments'),
+            where('commented_recipeId', '==', id)
+        );
 
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const temp = [];
+            querySnapshot.forEach((doc) => {
+                temp.push({ id: doc.id, ...doc.data() });
+            });
+            setComments(temp);
+        });
+
+        return () => unsubscribe();
+    }, [id]);
     useEffect(() => {
         getComments()
-        console.log(comments.map(comment => comment.replys.map(reply => reply.replys.message)))
     }, [id])
-    const postComment = async (id, message) => {
-        const data = {
-            userId: user.uid,
-            name: user.displayName,
-            avatar: user.avatarUrl,
-            commented_recipeId: id,
-            message: newComment,
+    const postComment = async (id, userId, message, date) => {
+        if (!id || !userId || !message) {
+            console.error('Parâmetros inválidos para adicionar comentário.');
+            return;
+        }
+        try {
+            await api_comments.comments.post(id, userId, message, date)
+            setNewComment("")
+        } catch (err) {
+            console.error(err.message);
         }
     }
-
     return (
         <>
             <Typography>Comentários dessa receita</Typography>
@@ -45,6 +72,8 @@ export const Comments = () => {
                     <T.StepsContain elevation={2} style={{ padding: '10px', marginBottom: '10px', borderLeft: 'none' }}>
                         <T.StepsContainPrincipal key={index}>
                             <Message
+                                id={comment.id}
+                                isReply={false}
                                 avaH={'2.2rem'}
                                 avaW={'2.2rem'}
                                 marginLeft={""}
@@ -52,12 +81,15 @@ export const Comments = () => {
                                 avatar={comment.avatar}
                                 name={comment.name}
                                 varinatM={'body2'}
+                                date={formattedTimestamp}
+                                likesCounter={comment?.likesCounter}
                             />
                         </T.StepsContainPrincipal>
                         <T.ContainerComments>
                             {comment?.replys?.map(reply => (
                                 <T.StepsContain key={reply.id}>
                                     <Message
+                                        isReply={true}
                                         avaH={'1.7rem'}
                                         avaW={'1.7rem'}
                                         marginLeft={"-0.1rem"}
@@ -65,9 +97,12 @@ export const Comments = () => {
                                         avatar={reply.avatar}
                                         name={reply.name}
                                         varinatM={'caption'}
+                                        date={formattedTimestamp}
+                                        id={reply.id}
                                     />
                                     {reply.replys?.name?.length > 0 &&
                                         <Message
+                                            isReply={true}
                                             avaH={'1.7rem'}
                                             avaW={'1.7rem'}
                                             marginLeft={"1rem"}
@@ -75,6 +110,7 @@ export const Comments = () => {
                                             avatar={reply.replys.avatar}
                                             name={reply.replys.name}
                                             varinatM={'caption'}
+                                            date={formattedTimestamp}
                                         />
                                     }
                                 </T.StepsContain >
@@ -86,6 +122,7 @@ export const Comments = () => {
             <Grid container alignItems="center" spacing={2} sx={{ width: '90%' }}>
                 <Grid item xs={12} md={9}>
                     <TextField
+                        size="small"
                         label="Add a comment"
                         variant="outlined"
                         fullWidth
@@ -95,7 +132,15 @@ export const Comments = () => {
                 </Grid>
                 <Grid item xs={12}
                     md={3} mb={3} >
-                    <Button fullWidth variant="contained" color="primary" >
+                    <Button
+                        size="medium"
+                        onClick={() => postComment(
+                            id,
+                            user.uid,
+                            newComment,
+                            formattedTimestamp)}
+                        fullWidth variant="contained" color="primary"
+                    >
                         Add Comment
                     </Button>
                 </Grid>

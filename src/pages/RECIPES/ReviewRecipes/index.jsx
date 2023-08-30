@@ -9,7 +9,7 @@ import './index.css'
 import { api_recipes } from '../../../api/recipes/recipes'
 import { api_recipe_favorites } from '../../../api/recipes/favoriterecipes'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, getDocs, onSnapshot } from 'firebase/firestore'
 import { db } from '../../../../firebase.config'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { useTheme } from '@emotion/react'
@@ -46,7 +46,7 @@ export const TopReview = (props) => {
   const theme = useTheme()
   const [value, setValue] = useState(0)
   const [recipes, setRecipes] = useState([])
-  const [comment,setComment] = useState([])
+  const [comment, setComment] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10;
   const indexOfLastRecipe = currentPage * itemsPerPage
@@ -70,10 +70,20 @@ export const TopReview = (props) => {
       setIsLoading(false)
     }
   }
+  useEffect(() => {
+    const c = collection(db, 'recipes')
+    const unsubscribe = onSnapshot(c, (querySnapshot) => {
+      const temp = [];
+      querySnapshot.forEach((doc) => {
+        temp.push({ id: doc.id, ...doc.data() });
+      });
+      setRecipes(temp);
+    });
 
+    return () => unsubscribe();
+  }, []);
   useEffect(() => {
     obterrecipes()
-    console.log('comments',comment)
   }, [])
   const fevoritingRecipe = async (recipeId, userId) => {
     if (!recipeId || !userId) return
@@ -87,7 +97,6 @@ export const TopReview = (props) => {
       const likesCounter = recipeData.likesCounter || []
       if (!likesCounter.includes(userId)) {
         await api_recipe_favorites.favoriteRecipes.post(recipeId, userId)
-        alert('Receita favoritada com sucesso!')
       } else {
         alert('Usuário já favoritou a receita.')
       }
@@ -181,6 +190,20 @@ export const TopReview = (props) => {
                       id={recipe.id}
                       recipeImage={recipe?.recipeImage}
                       recipeTitle={recipe?.recipeTitle}
+                      likesCounter={recipe.likesCounter}
+                      starsLikedCounter={recipe?.starsLikedCounter}
+                      commentsCounter={
+                        comment.reduce((total, c) => {
+                          if (c.commented_recipeId === recipe?.id) {
+                            let commentCount = 1;
+                            if (c.replys && c.replys.length > 0) {
+                              commentCount += c.replys.length;
+                            }
+                            return total + commentCount;
+                          }
+                          return total;
+                        }, 0)
+                      }
                     />)
                 })}
               </Tag.MenuItemsLinks>
