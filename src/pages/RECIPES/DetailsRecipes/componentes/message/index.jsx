@@ -1,19 +1,64 @@
 import {
     Avatar,
     Box,
-    IconButton, Stack, Tooltip, Typography,
+    Grid,
+    IconButton, Stack, TextField, Tooltip, Typography,
 } from '@mui/material'
-import React from 'react'
-import { Reply, ThumbUpAlt } from '@mui/icons-material';
-export const Message = ({ avatar, message, name, avaH, avaW, marginLeft, color, varinatM, date }) => {
+import React, { useContext, useState } from 'react'
+import { Reply, Send, ThumbUpAlt } from '@mui/icons-material';
+import { api_comments } from '../../../../../api/usersComments';
+import { LoadingButton } from '@mui/lab';
+import { useParams } from 'react-router-dom';
+import { AuthContext } from '../../../../../contexts/AuthContext';
+export const Message = ({
+    isReply,
+    avatar,
+    message,
+    name,
+    avaH,
+    avaW,
+    marginLeft,
+    color,
+    varinatM,
+    date,
+    id,
+    likesCounter
+}) => {
+    const { user } = useContext(AuthContext);
+    const [newComment, setNewComment] = useState('')
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    function handleClick() {
+        setOpen(!open);
+    }
+    const postReply = async (id, userId, newComment, date) => {
+        if (!id, !userId, !newComment, !date) return
+        setLoading(true)
+        try {
+            await api_comments.comments.postReplys(id, userId, newComment, date)
+            handleClick()
+            setLoading(false)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+    const postLikesCounter = async (id, userId) => {
+        if (!id, !userId) return
+        try {
+            await api_comments.comments.postLikesCounter(id, userId)
+        } catch (err) {
+            console.error(err)
+        }
+    }
     return (<>
         <Stack sx={{
-            bgcolor: color, marginLeft: marginLeft
+            bgcolor: color, marginLeft: marginLeft,
+            transition: "all .3s",
         }}>
             <Box display="flex" alignItems="center" >
-                <IconButton size="small">
+                {isReply && <IconButton size="small">
                     <Reply />
-                </IconButton>
+                </IconButton>}
                 <IconButton size="small">
                     <Avatar src={avatar} sx={{ width: avaW, height: avaH }} />
                 </IconButton>
@@ -27,17 +72,58 @@ export const Message = ({ avatar, message, name, avaH, avaW, marginLeft, color, 
                 gap: '1rem',
                 height: "2rem",
             }} alignItems="center" >
-                <Typography variant={"caption"}>{date}</Typography>
                 <Tooltip title="Curtir">
                     <Stack direction="row" alignItems="center" spacing={1}>
                         <IconButton size="small">
                             <ThumbUpAlt />
                         </IconButton>
-                        <Typography variant="caption">0 curtidas</Typography>
+                        <Typography
+                            onClick={() => postLikesCounter(id, user?.uid)}
+                            sx={{ cursor: "pointer" }}
+                            variant="caption">
+                            {likesCounter?.length} {likesCounter?.length >
+                                1 ? "curtidas" : "curtida"
+                            }</Typography>
                     </Stack>
                 </Tooltip>
-                <Typography variant={"caption"}>Responder</Typography>
+                <Tooltip title="Comentar">
+                    <Typography
+                        sx={{ cursor: "pointer" }}
+                        onClick={handleClick} variant={"caption"}>
+                        Responder
+                    </Typography>
+                </Tooltip>
+                {open && <Tooltip title="fechar">
+                    <Typography
+                        sx={{ cursor: "pointer" }}
+                        onClick={handleClick} variant={"caption"}>
+                        fechar
+                    </Typography>
+                </Tooltip>}
             </Box >
+            {open && <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={7}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <LoadingButton
+                        fullWidth={true}
+                        size="auto"
+                        onClick={() => postReply(id, user.uid, newComment, date)}
+                        endIcon={<Send />}
+                        loading={loading}
+                        loadingPosition="end"
+                        variant="contained"
+                    >
+                        <span>Comment</span>
+                    </LoadingButton>
+                </Grid>
+            </Grid>}
         </Stack >
     </>)
 }
