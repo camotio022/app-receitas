@@ -41,10 +41,11 @@ TabPanel.PropTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 }
-export const TopReview = (props) => {
+export const  TopReview = (props) => {
   const { user } = useContext(AuthContext)
   const theme = useTheme()
   const [value, setValue] = useState(0)
+  const [terminete, setTerminate]=useState(false)
   const [recipes, setRecipes] = useState([])
   const [comment, setComment] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -59,6 +60,7 @@ export const TopReview = (props) => {
   const [progress, setProgress] = useState(0)
 
   const obterrecipes = async () => {
+    setTerminate(true)
     setIsLoading(true)
     try {
       const recipesData = await api_recipes.recipe.get()
@@ -68,6 +70,7 @@ export const TopReview = (props) => {
     } catch (error) {
     } finally {
       setIsLoading(false)
+      setTerminate(false)
     }
   }
   useEffect(() => {
@@ -112,11 +115,11 @@ export const TopReview = (props) => {
     return (
       <Tag.Cards>
         <CircularProgress
-          variant="indeterminate"
+          variant={terminete?"indeterminate":"terminate"}
           value={progress}
           size={80}
         />
-        SEM RECEITAS
+        {terminete?"Busacando receitas...":"SEM RECEITAS"}
       </Tag.Cards>
     )
   }
