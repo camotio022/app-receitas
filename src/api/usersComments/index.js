@@ -72,6 +72,10 @@ export const api_comments = {
             }
             const commentDocRef = doc(db, 'recipesComments', commented_recipeId);
             const commentDocSnapshot = await getDoc(commentDocRef);
+            if(commentDocSnapshot.data().likesCounter.includes(userId)) {
+                alert("A receita foi curtida!")
+                return;
+            }
             if (commentDocSnapshot.exists()) {
                 const updatedLikesCounter = commentDocSnapshot.data().likesCounter.concat(userId);
                 try {
@@ -110,7 +114,7 @@ export const api_comments = {
                     try {
                         await updateDoc(commentDocRef, { replys: updatedReplies });
                     } catch (error) {
-                        alert('Erro ao adicionar reply:', error);
+                        alert(error);
                     }
                 } else {
                     alert('Documento do comentário não encontrado.');
