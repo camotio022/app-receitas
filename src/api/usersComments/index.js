@@ -114,7 +114,7 @@ export const api_comments = {
                     try {
                         await updateDoc(commentDocRef, { replys: updatedReplies });
                     } catch (error) {
-                        alert(error);
+                        console.error(error)
                     }
                 } else {
                     alert('Documento do comentário não encontrado.');
