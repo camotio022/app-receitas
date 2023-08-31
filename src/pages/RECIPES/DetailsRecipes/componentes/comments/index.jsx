@@ -59,9 +59,10 @@ export const Comments = () => {
         }
         try {
             await api_comments.comments.post(id, userId, message, date)
-            setNewComment("")
         } catch (err) {
             console.error(err.message);
+        }finally{
+            setNewComment("")
         }
     }
     return (
