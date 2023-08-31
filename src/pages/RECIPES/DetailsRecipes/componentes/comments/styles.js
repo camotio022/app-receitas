@@ -14,7 +14,6 @@ export const StepsContainPrincipal = styled(Stack)(({ theme }) => ({
     width: '100%',
     padding: '8px 8px 8px 25px',
     borderRadius: '4px',
-    marginBottom: '-8px',
     borderLeft: '5px solid green',
     backgroundColor: grey[500],
     color: 'white',
