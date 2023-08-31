@@ -22,7 +22,9 @@ export const Message = ({
     varinatM,
     date,
     id,
-    likesCounter
+    likesCounter,
+    defaultComment,
+    index
 }) => {
     const { user } = useContext(AuthContext);
     const [newComment, setNewComment] = useState('')
@@ -31,15 +33,20 @@ export const Message = ({
     function handleClick() {
         setOpen(!open);
     }
-    const postReply = async (id, userId, newComment, date) => {
+    const postReply = async (id, userId, newComment, date, index) => {
         if (!id, !userId, !newComment, !date) return
         setLoading(true)
-        try {
-            await api_comments.comments.postReplys(id, userId, newComment, date)
-            handleClick()
+        if (defaultComment) {
+            try {
+                await api_comments.comments.postReplys(id, userId, newComment, date)
+                handleClick()
+                setLoading(false)
+            } catch (err) {
+                console.error(err)
+            }
+        } else {
+            alert(index)
             setLoading(false)
-        } catch (err) {
-            console.error(err)
         }
     }
     const postLikesCounter = async (id, userId) => {
@@ -114,7 +121,7 @@ export const Message = ({
                     <LoadingButton
                         fullWidth={true}
                         size="auto"
-                        onClick={() => postReply(id, user.uid, newComment, date)}
+                        onClick={() => postReply(id, user.uid, newComment, date, index)}
                         endIcon={<Send />}
                         loading={loading}
                         loadingPosition="end"
