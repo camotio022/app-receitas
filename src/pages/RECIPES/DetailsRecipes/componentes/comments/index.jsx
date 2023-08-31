@@ -83,10 +83,11 @@ export const Comments = () => {
                                 varinatM={'body2'}
                                 date={formattedTimestamp}
                                 likesCounter={comment?.likesCounter}
+                                defaultComment={true}
                             />
                         </T.StepsContainPrincipal>
                         <T.ContainerComments>
-                            {comment?.replys?.map(reply => (
+                            {comment?.replys?.map((reply, index) => (
                                 <T.StepsContain key={reply.id}>
                                     <Message
                                         isReply={true}
@@ -99,20 +100,9 @@ export const Comments = () => {
                                         varinatM={'caption'}
                                         date={formattedTimestamp}
                                         id={reply.id}
+                                        defaultComment={false}
+                                        index={index}
                                     />
-                                    {reply.replys?.name?.length > 0 &&
-                                        <Message
-                                            isReply={true}
-                                            avaH={'1.7rem'}
-                                            avaW={'1.7rem'}
-                                            marginLeft={"1rem"}
-                                            message={reply.replys.message}
-                                            avatar={reply.replys.avatar}
-                                            name={reply.replys.name}
-                                            varinatM={'caption'}
-                                            date={formattedTimestamp}
-                                        />
-                                    }
                                 </T.StepsContain >
                             ))}
                         </T.ContainerComments >
