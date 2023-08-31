@@ -33,8 +33,10 @@ export const Message = ({
     function handleClick() {
         setOpen(!open);
     }
-    const postReply = async (id, userId, newComment, date, index) => {
-        if (!id, !userId, !newComment, !date) return
+    const postReply = async (id, userId, newComment, date) => {
+        console.log(newComment)
+        if (!id || !userId || !newComment || !date) return;
+
         setLoading(true)
         if (defaultComment) {
             try {
@@ -43,14 +45,16 @@ export const Message = ({
                 setLoading(false)
             } catch (err) {
                 console.error(err)
+            } finally {
+                setNewComment("")
             }
         } else {
-            alert(index)
+            alert(index + 1)
             setLoading(false)
         }
     }
     const postLikesCounter = async (id, userId) => {
-        if (!id, !userId) return
+        if (!id || !userId) return
         try {
             await api_comments.comments.postLikesCounter(id, userId)
         } catch (err) {
@@ -121,7 +125,7 @@ export const Message = ({
                     <LoadingButton
                         fullWidth={true}
                         size="auto"
-                        onClick={() => postReply(id, user.uid, newComment, date, index)}
+                        onClick={() => postReply(id, user.uid, newComment, date)}
                         endIcon={<Send />}
                         loading={loading}
                         loadingPosition="end"
