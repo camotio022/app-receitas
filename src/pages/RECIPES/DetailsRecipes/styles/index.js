@@ -47,13 +47,11 @@ export const Info = styled(Stack)(({ theme }) => ({
     borderLeft: `1px solid ${orange[900]}`
 }))
 export const Title = styled(Typography)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: '8rem',
-    width: 'auto',
+    width: "90%",
     color: orange[900],
-    fontWeight: '900',
+    fontWeight: 'bold',
+    fontFamily: 'sua-fonte-chamativa',
+    textTransform: "uppercase",
     margin: '2rem 0 1rem 0',
 }))
 

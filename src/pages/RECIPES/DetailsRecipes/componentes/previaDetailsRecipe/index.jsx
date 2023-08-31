@@ -22,18 +22,18 @@ export const PreviaDetailsRecipe = ({
             >
                 {[
                     {
-                        title: recipe?.cookTime,
+                        title: `${recipe?.prepTime} minutos`,
                         desc: 'Preparo',
                         icon: <AvTimer />,
                     },
                     {
-                        title: recipe?.calories,
-                        desc: 'Rendimento',
+                        title: `${recipe?.cookTime} minutos`,
+                        desc: 'Cozimento',
                         icon: <PieChartOutline />,
                     },
                     {
-                        title: recipe?.servingSize,
-                        desc: 'Gra. por Porção',
+                        title: `${recipe?.servingSize} pessoas`,
+                        desc: 'Porção',
                         icon: <DataSaverOff />,
                     },
                 ].map((item) => {

@@ -1,6 +1,7 @@
-import { Stack, Typography } from "@mui/material"
+import { Grid, Stack, Typography } from "@mui/material"
 import *as Tag from "./index.js"
 import { orange } from "@mui/material/colors"
+import { ArrowRight } from "@mui/icons-material"
 
 
 
@@ -8,13 +9,11 @@ export const StepsDetailsRecipe = ({
     recipe
 }) => {
     var Title = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: '8rem',
-        width: 'auto',
+        width:"90%",
         color: orange[900],
-        fontWeight: '900',
+        fontWeight: 'bold',
+        fontFamily: 'sua-fonte-chamativa',
+        textTransform:"uppercase",
         margin: '2rem 0 1rem 0',
     }
     return (
@@ -24,16 +23,32 @@ export const StepsDetailsRecipe = ({
             </Typography>
             <Tag.StepsContain>
                 <>
-                    <Stack width={'90%'}>
+                    <Grid container spacing={2}>
                         {recipe?.modPreps?.length > 0 &&
                             recipe?.modPreps.map((item, index) => {
                                 return (
-                                    <ul key={index}>
-                                        <li>{item}</li>
-                                    </ul>
+                                    <Grid
+                                        sx={{ borderLeft: "4px solid orange" }}
+                                        item
+                                        key={index}
+                                        xs={12}
+                                    >
+                                        <Stack
+                                            sx={{
+                                                bgcolor: "orange",
+                                                width: '5rem',
+                                                textAlign: "center",
+                                                ml: "-1rem",
+                                                fontWeight: 'bold',
+                                                color: "white",
+                                                fontFamily: 'sua-fonte-chamativa',
+                                            }}>Etapa {index + 1}
+                                        </Stack>
+                                        <Stack>{item}</Stack>
+                                    </Grid>
                                 )
                             })}
-                    </Stack>
+                    </Grid>
                 </>
             </Tag.StepsContain>
         </>

@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Stack } from "@mui/material"
+import { Checkbox, FormControlLabel, Grid, Stack } from "@mui/material"
 import { useState } from "react"
 import * as SG from '../../styles/index.js'
 import { grey } from "@mui/material/colors"
@@ -28,50 +28,75 @@ export const IngredientDetailsRecipe = ({
                     justifyContent: 'center',
                     textAlign: 'left',
                     width: '90%',
-                    bgcolor: '',
+                    mb: "5rem"
                 }}
             >
                 <>
-                    {recipe?.ingredients?.length > 0 &&
-                        recipe?.ingredients
-                            .map((ingredient, index) => {
-                                return (
-                                    <FormControlLabel
-                                        key={index}
-                                        sx={
-                                            checkedItems[index]
-                                                ? {
-                                                    textDecoration:
-                                                        'line-through',
-                                                    paddingLeft: 0,
-                                                    color: grey[600],
-                                                    transition: '.3s',
+                    <Grid container spacing={2}>
+                        {recipe?.ingredients?.length > 0 &&
+                            recipe?.ingredients
+                                .map((ingredient, index) => {
+                                    return (
+                                        <Grid
+                                            sx={{ borderLeft: "4px solid orange" }}
+                                            item
+                                            key={index}
+                                            xs={12}
+                                        >
+                                            <Stack
+                                                sx={{
+                                                    bgcolor: checkedItems[index] ? "gray" : "orange",
+                                                    width: '8rem',
+                                                    transition: '.9s',
                                                     height: 'auto',
-                                                }
-                                                : {
-                                                    textDecoration:
-                                                        'none',
-                                                    paddingLeft: '2rem',
-                                                    transition: '.3s',
-                                                    height: 'auto',
-                                                }
-                                        }
-                                        control={
-                                            <Checkbox
-                                                checked={
+                                                    textAlign: "center",
+                                                    ml: "-1rem",
+                                                    fontWeight: 'bold',
+                                                    color: "white",
+                                                    fontFamily: 'sua-fonte-chamativa',
+                                                }}>
+                                                {checkedItems[index] ?
+                                                    `ingrediente ${index + 1} marcado` :
+                                                    `ingrediente ${index + 1}`}
+                                            </Stack>
+                                            <FormControlLabel
+                                                key={index}
+                                                sx={
                                                     checkedItems[index]
+                                                        ? {
+                                                            textDecoration:
+                                                                'line-through',
+                                                            paddingLeft: 0,
+                                                            color: grey[600],
+                                                            transition: '.3s',
+                                                            height: 'auto',
+                                                        }
+                                                        : {
+                                                            textDecoration:
+                                                                'none',
+                                                            paddingLeft: '2rem',
+                                                            transition: '.3s',
+                                                            height: 'auto',
+                                                        }
                                                 }
-                                                onChange={() =>
-                                                    handleChange(index)
+                                                control={
+                                                    <Checkbox
+                                                        checked={
+                                                            checkedItems[index]
+                                                        }
+                                                        onChange={() =>
+                                                            handleChange(index)
+                                                        }
+                                                    />
                                                 }
+                                                label={ingredient || ''}
                                             />
-                                        }
-                                        label={ingredient || ''}
-                                    />
+                                        </Grid>
+                                    )
+                                }
                                 )
-                            }
-                            )
-                    }
+                        }
+                    </Grid>
                 </>
             </Stack>
         </>
