@@ -33,7 +33,7 @@ export const NutricionaisDetailsRecipe = ({
                     },
                     {
                         name: 'Gord. Trans',
-                        val: `${(recipe?.servingSize / 100) * recipe?.gord} g`,
+                        val: `${(50 / 100) * recipe?.gord} g`,
                     },
                     {
                         name: 'Carboidratos',
