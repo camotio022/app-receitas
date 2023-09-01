@@ -1,15 +1,19 @@
 import { Checkbox, FormControlLabel, Grid, Stack } from "@mui/material"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import * as SG from '../../styles/index.js'
 import { grey } from "@mui/material/colors"
+import { Add } from "@mui/icons-material"
+import { EditMore } from "../EditText/index.jsx"
+import { AuthContext } from "../../../../../contexts/AuthContext.jsx"
+import { AddIngredient } from "../addIngredient/index.jsx"
 
 
 
 
 export const IngredientDetailsRecipe = ({
-    recipe
+    recipe, id, condicional
 }) => {
-
+    const { user } = useContext(AuthContext)
     const [checkedItems, setCheckedItems] = useState(Array(5).fill(false))
     const handleChange = (index) => {
         const newCheckedItems = [...checkedItems]
@@ -23,22 +27,25 @@ export const IngredientDetailsRecipe = ({
             </SG.Title>
             <Stack
                 sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
+                    borderLeft: "4px solid orange",
                     textAlign: 'left',
                     width: '90%',
                     mb: "5rem"
                 }}
             >
                 <>
-                    <Grid container spacing={2}>
+                    <Grid container sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                        textAlign: 'cente',
+                        height: "auto"
+                    }}>
                         {recipe?.ingredients?.length > 0 &&
                             recipe?.ingredients
                                 .map((ingredient, index) => {
                                     return (
                                         <Grid
-                                            sx={{ borderLeft: "4px solid orange" }}
                                             item
                                             key={index}
                                             xs={12}
@@ -50,7 +57,6 @@ export const IngredientDetailsRecipe = ({
                                                     transition: '.9s',
                                                     height: 'auto',
                                                     textAlign: "center",
-                                                    ml: "-1rem",
                                                     fontWeight: 'bold',
                                                     color: "white",
                                                     fontFamily: 'sua-fonte-chamativa',
@@ -66,7 +72,7 @@ export const IngredientDetailsRecipe = ({
                                                         ? {
                                                             textDecoration:
                                                                 'line-through',
-                                                            paddingLeft: 0,
+                                                            paddingLeft: "1rem",
                                                             color: grey[600],
                                                             transition: '.3s',
                                                             height: 'auto',
@@ -91,11 +97,25 @@ export const IngredientDetailsRecipe = ({
                                                 }
                                                 label={ingredient || ''}
                                             />
+                                            {
+                                                <EditMore
+                                                    id={id}
+                                                    index={index}
+                                                    value={ingredient}
+                                                    itemType={'ingredient'}
+                                                    condicional={condicional}
+                                                />}
                                         </Grid>
                                     )
                                 }
                                 )
                         }
+                        {condicional &&
+                            <AddIngredient
+                                condicional={condicional}
+                                recipe={recipe}
+                                id={id}
+                            />}
                     </Grid>
                 </>
             </Stack>

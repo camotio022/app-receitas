@@ -2,11 +2,12 @@ import { Grid, Stack, Typography } from "@mui/material"
 import *as Tag from "./index.js"
 import { orange } from "@mui/material/colors"
 import { ArrowRight } from "@mui/icons-material"
+import { AddIngredient } from "../addIngredient/index.jsx"
 
 
 
 export const StepsDetailsRecipe = ({
-    recipe
+    recipe, condicional, id
 }) => {
     var Title = {
         width:"90%",
@@ -22,13 +23,24 @@ export const StepsDetailsRecipe = ({
                 Como preparar {recipe?.recipeTitle}
             </Typography>
             <Tag.StepsContain>
-                <>
-                    <Grid container spacing={2}>
+                <Stack sx={{
+                    borderLeft: "4px solid orange",
+                    textAlign: 'left',
+                    width: '90%',
+                    mb: "5rem"
+                }}>
+                    <Grid container sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                        textAlign: 'left',
+                        height: "auto"
+                    }}>
                         {recipe?.modPreps?.length > 0 &&
                             recipe?.modPreps.map((item, index) => {
                                 return (
                                     <Grid
-                                        sx={{ borderLeft: "4px solid orange" }}
+                                        
                                         item
                                         key={index}
                                         xs={12}
@@ -38,18 +50,23 @@ export const StepsDetailsRecipe = ({
                                                 bgcolor: "orange",
                                                 width: '5rem',
                                                 textAlign: "center",
-                                                ml: "-1rem",
                                                 fontWeight: 'bold',
                                                 color: "white",
                                                 fontFamily: 'sua-fonte-chamativa',
                                             }}>Etapa {index + 1}
                                         </Stack>
-                                        <Stack>{item}</Stack>
+                                        <Stack sx={{padding:"10px"}}>{item}</Stack>
                                     </Grid>
                                 )
                             })}
+                            {condicional &&
+                            <AddIngredient
+                                condicional={condicional}
+                                recipe={recipe}
+                                id={id}
+                            />}
                     </Grid>
-                </>
+                </Stack>
             </Tag.StepsContain>
         </>
     )

@@ -1,5 +1,6 @@
 import {
     addDoc,
+    arrayUnion,
     collection,
     doc,
     getDoc,
@@ -47,5 +48,41 @@ export const api_recipes = {
                 alert('Erro ao atualizar a receita:', error)
             }
         },
-    },
-}
+        AddIngredient: async (docRef, newValue) => {
+            if (!docRef || !newValue) return;
+            try {
+                const listDocRef = doc(db, 'recipes', docRef);
+                const docSnapshot = await getDoc(listDocRef);
+        
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    const ingredients = data.ingredients || [];
+                    const updatedIngredients = [...ingredients, newValue];
+                    await updateDoc(listDocRef, { ingredients: updatedIngredients });
+                    console.log('Ingredient updated successfully');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        
+        editIngredient: async (docRef, oldValue, newValue) => {
+            if (!docRef || !newValue) return
+            try {
+                const listDocRef = doc(db, 'recipes', docRef);
+                const docSnapshot = await getDoc(listDocRef);
+
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    const ingredients = data.ingredients || [];
+                    const originalIndex = ingredients.indexOf(oldValue);
+                    ingredients[originalIndex] = newValue;
+                    await updateDoc(listDocRef, { ingredients });
+                    console.log('Ingredient updated successfully');
+                }
+                } catch (error) {
+                    alert(error)
+                }
+            },
+        },
+    }
