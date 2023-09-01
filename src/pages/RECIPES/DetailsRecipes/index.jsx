@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import * as Tag from './styles/index.js'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CardMidiaDetailRecipe } from './componentes/CardMidiaDetailsRecipes/index.jsx'
 import { PreviaDetailsRecipe } from './componentes/previaDetailsRecipe/index.jsx'
 import { NutricionaisDetailsRecipe } from './componentes/nutriDetailsRecipe/index.jsx'
@@ -15,50 +15,35 @@ import { LoadingDetailsRecipe } from './componentes/loadingDetailsRecipe/index.j
 import { api_recipes } from '../../../api/recipes/recipes.js'
 import { api_more } from '../../../api/index.js'
 import { Comments } from './componentes/comments/index.jsx'
-// ... O restante do seu código ...
-
-const Comment = ({ author, content }) => (
-    <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-            <Avatar alt={author} src="/static/images/avatar/1.jpg" />
-        </ListItemAvatar>
-        <ListItemText
-            primary={author}
-            secondary={content}
-        />
-    </ListItem>
-);
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '../../../../firebase.config.js'
+import { AuthContext } from '../../../contexts/AuthContext.jsx'
 export const DetailsRecipes = () => {
     const { id } = useParams()
     const [recipe, setrecipe] = useState(null)
-    const [ingredientes, setingredientes] = useState([])
-    const [modopreparos, setmodopreparos] = useState(['o', 'o'])
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState('');
-    useEffect(() => {
-        const obterDetalhesrecipe = async () => {
+    const { user } = useContext(AuthContext)
+    const amI = user?.uid ===recipe?.author 
+    const obterDetalhesrecipe = async () => {
+        try{
             const doc = await api_recipes.recipe.get(id)
-            const docIngredientes = await api_more.ingredientes.get(id)
-            const getModosPre = await api_more.modopreparo.get(id)
-            if (doc) {
-                setrecipe(doc)
-                docIngredientes?.map((i) => {
-                    return setingredientes(i?.description)
-                })
-                getModosPre?.map((i) => {
-                    return setmodopreparos(i?.description || i?.descripion)
-                })
-            }
-        }
+            setrecipe(doc)
+        }catch(e) {alert(e)}
+    }
+    useEffect(() => {
+        const c = collection(db, 'recipes')
+        const unsubscribe = onSnapshot(c, (querySnapshot) => {
+          const temp = [];
+          querySnapshot.forEach((doc) => {
+            temp.push({ id: doc.id, ...doc.data() });
+          });
+          obterDetalhesrecipe()
+        });
+    
+        return () => unsubscribe();
+      }, []);
+    useEffect(() => {
         obterDetalhesrecipe()
     }, [id])
-    const handleSubmit = () => {
-
-        if (newComment) {
-            setComments([...comments, { author: 'User', content: newComment, replies: [] }]);
-            setNewComment('');
-        }
-    };
     if (!recipe) {
         return (
             <>
@@ -76,10 +61,19 @@ export const DetailsRecipes = () => {
                     />
                     <PreviaDetailsRecipe
                         recipe={recipe}
+                        id={id} 
                     />
-                    <NutricionaisDetailsRecipe recipe={recipe} />
-                    <IngredientDetailsRecipe recipe={recipe} />
-                    <StepsDetailsRecipe recipe={recipe} />
+                
+                    <NutricionaisDetailsRecipe
+                        recipe={recipe}
+                        id={id} />
+                    <IngredientDetailsRecipe
+                        recipe={recipe}
+                        id={id} 
+                        condicional={amI}/>
+                    <StepsDetailsRecipe
+                        recipe={recipe}
+                        id={id} />
                     <Comments />
                 </Tag.CardMediaContain>
             </Tag.Container >
