@@ -73,7 +73,8 @@ export const DetailsRecipes = () => {
                         condicional={amI}/>
                     <StepsDetailsRecipe
                         recipe={recipe}
-                        id={id} />
+                        id={id}
+                        condicional={amI} />
                     <Comments />
                 </Tag.CardMediaContain>
             </Tag.Container >
