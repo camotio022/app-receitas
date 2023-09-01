@@ -5,6 +5,6 @@ export const StepsContain = styled(Stack)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'left',
-    width: '90%',
- marginBottom:"10rem"
+    width: '100%',
+    marginBottom: "10rem"
 }))
