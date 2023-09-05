@@ -3,7 +3,7 @@ import {
     Grid, List, TextField, Typography,
 } from '@mui/material'
 import *as T from './styles.js'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { api_comments } from '../../../../../api/usersComments';
 import { Message } from '../message/index.jsx';
@@ -61,7 +61,7 @@ export const Comments = () => {
             await api_comments.comments.post(id, userId, message, date)
         } catch (err) {
             console.error(err.message);
-        }finally{
+        } finally {
             setNewComment("")
         }
     }
@@ -84,27 +84,56 @@ export const Comments = () => {
                                 varinatM={'body2'}
                                 date={formattedTimestamp}
                                 likesCounter={comment?.likesCounter}
-                                defaultComment={true}
+                                firstComment={true}
+                                iCanLike={true}
+    iCanRepley={true}
+
                             />
                         </T.StepsContainPrincipal>
                         <T.ContainerComments>
                             {comment?.replys?.map((reply, index) => (
-                                <T.StepsContain key={reply.id}>
-                                    <Message
-                                        isReply={true}
-                                        avaH={'1.7rem'}
-                                        avaW={'1.7rem'}
-                                        marginLeft={"-0.1rem"}
-                                        message={reply.message}
-                                        avatar={reply.avatar}
-                                        name={reply.name}
-                                        varinatM={'caption'}
-                                        date={formattedTimestamp}
-                                        id={reply.id}
-                                        defaultComment={false}
-                                        index={index}
-                                    />
-                                </T.StepsContain >
+                                <Fragment>
+                                    <T.StepsContain key={reply.id}>
+                                        <Message
+                                            isReply={true}
+                                            avaH={'1.7rem'}
+                                            avaW={'1.7rem'}
+                                            marginLeft={"-0.1rem"}
+                                            message={reply.message}
+                                            avatar={reply.avatar}
+                                            name={reply.name}
+                                            varinatM={'caption'}
+                                            date={formattedTimestamp}
+                                            id={comment.id}
+                                            firstComment={false}
+                                            index={index}
+                                            iCanLike={false}
+                                            iCanRepley={true}
+                                        />
+                                    </T.StepsContain >
+                                    {reply?.replys?.length > 0 &&
+                                        reply?.replys?.map((item, index) => (
+                                            <T.StepsContain>
+                                                <Message
+                                                    isReply={false}
+                                                    avaH={'1.3rem'}
+                                                    avaW={'1.3rem'}
+                                                    message={item?.message}
+                                                    avatar={item?.avatar}
+                                                    name={item?.name}
+                                                    varinatM={'caption'}
+                                                    date={formattedTimestamp}
+                                                    id={comment.id}
+                                                    firstComment={false}
+                                                    index={index}
+                                                    border={true}
+                                                    color={"rgba(0,0,0,0.1)"}
+                                                    iCanLike={false}
+                                                    iCanRepley={false}
+                                                />
+                                            </T.StepsContain >
+                                        ))}
+                                </Fragment>
                             ))}
                         </T.ContainerComments >
                     </T.StepsContain >

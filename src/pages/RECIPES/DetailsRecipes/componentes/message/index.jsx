@@ -2,6 +2,7 @@ import {
     Avatar,
     Box,
     Grid,
+    Button,
     IconButton, Stack, TextField, Tooltip, Typography,
 } from '@mui/material'
 import React, { useContext, useState } from 'react'
@@ -11,6 +12,10 @@ import { LoadingButton } from '@mui/lab';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../../../../contexts/AuthContext';
 export const Message = ({
+    id,
+    likesCounter,
+    firstComment,
+    index,
     isReply,
     avatar,
     message,
@@ -21,10 +26,9 @@ export const Message = ({
     color,
     varinatM,
     date,
-    id,
-    likesCounter,
-    defaultComment,
-    index
+    border,
+    iCanLike,
+    iCanRepley
 }) => {
     const { user } = useContext(AuthContext);
     const [newComment, setNewComment] = useState('')
@@ -34,11 +38,9 @@ export const Message = ({
         setOpen(!open);
     }
     const postReply = async (id, userId, newComment, date) => {
-        console.log(newComment)
         if (!id || !userId || !newComment || !date) return;
-
         setLoading(true)
-        if (defaultComment) {
+        if (firstComment) {
             try {
                 await api_comments.comments.postReplys(id, userId, newComment, date)
                 handleClick()
@@ -48,15 +50,31 @@ export const Message = ({
             } finally {
                 setNewComment("")
             }
-        } else {
-            alert(index + 1)
+            return
+        }
+        try {
+            console.log(index)
+            await api_comments.comments.replys(id, userId, newComment, date, index)
+            handleClick()
             setLoading(false)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setNewComment("")
         }
     }
     const postLikesCounter = async (id, userId) => {
         if (!id || !userId) return
+        if (firstComment) {
+            try {
+                await api_comments.comments.postLikesCounter(id, userId)
+            } catch (err) {
+                console.error(err)
+            }
+            return
+        }
         try {
-            await api_comments.comments.postLikesCounter(id, userId)
+            await api_comments.comments.postLikesCounter(id, userId, index)
         } catch (err) {
             console.error(err)
         }
@@ -64,7 +82,9 @@ export const Message = ({
     return (<>
         <Stack sx={{
             bgcolor: color, marginLeft: marginLeft,
-            transition: "all .3s",
+            transition: "all .3s", width: "100%",
+            borderLeft: border && '1px solid', padding:"15px",
+            borderRadius:"10px"
         }}>
             <Box display="flex" alignItems="center" >
                 {isReply && <IconButton size="small">
@@ -82,7 +102,9 @@ export const Message = ({
                 justifyContent: "centeer",
                 gap: '1rem',
                 height: "2rem",
+             
             }} alignItems="center" >
+                {iCanLike&&
                 <Tooltip title="Curtir">
                     <Stack direction="row" alignItems="center" spacing={1}>
                         <IconButton size="small">
@@ -96,14 +118,15 @@ export const Message = ({
                                 1 ? "curtidas" : "curtida"
                             }</Typography>
                     </Stack>
-                </Tooltip>
-                <Tooltip title="Comentar">
-                    <Typography
-                        sx={{ cursor: "pointer" }}
-                        onClick={handleClick} variant={"caption"}>
+                </Tooltip>}
+               {iCanRepley&& <Tooltip title="Comentar">
+                    <Button
+                        sx={{ cursor: "pointer", textTransform:'lowercase' }}
+                        onClick={handleClick}
+                        size='small' variant={"fiels\d"}>
                         Responder
-                    </Typography>
-                </Tooltip>
+                    </Button>
+                </Tooltip>}
                 {open && <Tooltip title="fechar">
                     <Typography
                         sx={{ cursor: "pointer" }}

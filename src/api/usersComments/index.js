@@ -72,7 +72,7 @@ export const api_comments = {
             }
             const commentDocRef = doc(db, 'recipesComments', commented_recipeId);
             const commentDocSnapshot = await getDoc(commentDocRef);
-            if(commentDocSnapshot.data().likesCounter.includes(userId)) {
+            if (commentDocSnapshot.data().likesCounter.includes(userId)) {
                 alert("A receita foi curtida!")
                 return;
             }
@@ -80,7 +80,7 @@ export const api_comments = {
                 const updatedLikesCounter = commentDocSnapshot.data().likesCounter.concat(userId);
                 try {
                     await updateDoc(commentDocRef, { likesCounter: updatedLikesCounter });
-                   
+
                 } catch (error) {
                     alert('Erro ao adicionar curtida:', error);
                 }
@@ -123,6 +123,46 @@ export const api_comments = {
                 alert('Documento do usuário não encontrado.');
             }
         },
+        replys: async (commented_recipeId, userId, message, timestamp, replyIndex) => {
+            if (!commented_recipeId || !userId || !message || !timestamp || replyIndex === undefined) {
+                console.error('Parâmetros inválidos para adicionar reply.');
+                return;
+            }
+            const commentDocRef = doc(db, 'recipesComments', commented_recipeId);
+            const userDocRef = doc(db, 'users', userId);
 
-    },
+            const userDocSnapshot = await getDoc(userDocRef);
+
+            if (userDocSnapshot.exists()) {
+                const userDocData = userDocSnapshot.data();
+                const commentDocSnapshot = await getDoc(commentDocRef);
+                if (commentDocSnapshot.exists()) {
+                    const commentData = commentDocSnapshot.data();
+                    if (replyIndex >= 0 && replyIndex < commentData?.replys?.length) {
+                        const newReply = {
+                            userId: userId,
+                            avatar: userDocData.photoURL,
+                            name: userDocData.name,
+                            message: message,
+                            timestamp: timestamp,
+                            likesCounter: [],
+                            replys: []
+                        };
+                        commentData.replys[replyIndex]?.replys?.push(newReply);
+                        try {
+                            await updateDoc(commentDocRef, { replys: commentData.replys });
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    } else {
+                        console.error('Índice de reply inválido.');
+                    }
+                } else {
+                    alert('Documento do comentário não encontrado.');
+                }
+            } else {
+                alert('Documento do usuário não encontrado.');
+            }
+        }
+    }
 };
