@@ -20,6 +20,8 @@ import { PaginationComponent } from './componentes/PAGINATION'
 import { AppBarGlobal } from '../../../componentes/AppBar'
 import { Folder, Image } from '@mui/icons-material'
 import { api_comments } from '../../../api/usersComments'
+import { CounterComment } from './componentes/contagemRepleys'
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -167,17 +169,8 @@ export const  TopReview = (props) => {
                       fevoritingRecipe={() => fevoritingRecipe(recipe?.id, user?.uid)}
                       displayNameAuhtor={user?.displayName}
                       AuthorName={recipe?.name}
-                      commentsCounter={
-                        comment.reduce((total, c) => {
-                          if (c.commented_recipeId === recipe?.id) {
-                            let commentCount = 1;
-                            if (c.replys && c.replys.length > 0) {
-                              commentCount += c.replys.length;
-                            }
-                            return total + commentCount;
-                          }
-                          return total;
-                        }, 0)
+                      commentsCounter = {
+                        <CounterComment comment={comment} recipe={recipe}/>
                       }
                       ranking={recipe?.ranking}
                     />
@@ -196,17 +189,8 @@ export const  TopReview = (props) => {
                       recipeTitle={recipe?.recipeTitle}
                       likesCounter={recipe.likesCounter}
                       starsLikedCounter={recipe?.starsLikedCounter}
-                      commentsCounter={
-                        comment.reduce((total, c) => {
-                          if (c.commented_recipeId === recipe?.id) {
-                            let commentCount = 1;
-                            if (c.replys && c.replys.length > 0) {
-                              commentCount += c.replys.length;
-                            }
-                            return total + commentCount;
-                          }
-                          return total;
-                        }, 0)
+                      commentsCounter = {
+                        <CounterComment comment={comment} recipe={recipe}/>
                       }
                     />)
                 })}
