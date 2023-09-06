@@ -5,6 +5,7 @@ import { AuthContext } from '../../../contexts/AuthContext.jsx'
 import { CardFavoriteRecipe } from './componentes/cardFavoriteRecipe/index.jsx'
 import { ProgressFavoriteRecipes } from './componentes/progress/index.jsx'
 import { api_recipe_favorites } from '../../../api/recipes/favoriterecipes.js'
+import { Grid } from '@mui/material'
 export const FavoriteRecipes = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([])
   const { user } = useContext(AuthContext)
@@ -53,19 +54,27 @@ export const FavoriteRecipes = () => {
   return (
     <>
       <Tag.Contain>
-        {favoriteRecipes?.map((favorite, index) => {
-          return (
-            <CardFavoriteRecipe
-              index={index}
-              favorite={favorite}
-              expanded={expanded}
-              deleteFavorite={deleteFavorite}
-              handleExpandClick={handleExpandClick}
-            />
-          )
-        })}
+        <Grid sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '10px',
+          width: '100%',
+          height: 'auto',
+          marginBlock: "10rem"
+        }} item xs={12} sm={6} md={4} lg={3}>
+          {favoriteRecipes?.map((favorite, index) => {
+            return (
+              <CardFavoriteRecipe
+                index={index}
+                favorite={favorite}
+                deleteFavorite={deleteFavorite}
+              />
+            )
+          })}
+        </Grid>
       </Tag.Contain>
-
     </>
   )
 }

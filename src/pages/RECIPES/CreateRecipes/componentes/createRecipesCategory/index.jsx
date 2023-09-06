@@ -9,7 +9,7 @@ export const CategoryCreateRecipes = ({
         <>
             <Grid item xs={12} lg={6}>
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
+                    <InputLabel sx={{ zIndex: 0 }} id="demo-simple-select-label">
                         Categoria
                     </InputLabel>
                     <Select
@@ -24,6 +24,7 @@ export const CategoryCreateRecipes = ({
                         <MenuItem value="breakfast">Café da manhã</MenuItem>
                         <MenuItem value="lunch">Almoço</MenuItem>
                         <MenuItem value="dinner">Jantar</MenuItem>
+                        <MenuItem value="De preferência">De preferência</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>

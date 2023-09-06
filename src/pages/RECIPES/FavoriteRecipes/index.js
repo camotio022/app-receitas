@@ -1,19 +1,17 @@
-import { Box, Card, Container, IconButton, styled } from "@mui/material";
+import { Box, Card, Container, IconButton, Stack, styled } from "@mui/material";
 
-export const Contain = styled(Container)(({ theme }) => ({
+export const Contain = styled(Stack)(({ theme }) => ({
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     flexWrap: 'wrap',
+    gap: '10px',
     width: '100%',
-    height: "100%",
-    marginTop: '10rem',
-    paddingBottom: '4rem',
-    gap: '3rem'
+    height: 'auto',
+    marginBlock:"10rem"
 }))
 
 export const FavoriteCard = styled(Card)(({ theme }) => ({
-    maxHeight: 'auto',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
