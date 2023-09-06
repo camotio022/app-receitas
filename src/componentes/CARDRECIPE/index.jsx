@@ -6,7 +6,6 @@ import { useContext } from 'react'
 export const CardRecipe = ({
     recipeTitleHoverHeader,
     recipeImage,
-    detailsRecipes,
     recipeTitle,
     author,
     starsLikedCounter,

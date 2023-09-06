@@ -76,7 +76,7 @@ export const CardUsers = ({
                 {recipes.map((recipe) => {
                     return (
                         <CardRecipe
-                            id={recipe.id}
+                            id={recipe?.id}
                             recipeTitle={recipe?.recipeTitle}
                             recipeImage={recipe?.recipeImage}
                             author={recipe?.author}

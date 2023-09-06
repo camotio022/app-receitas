@@ -29,6 +29,7 @@ export const OpenNotifRecipe = () => {
         <>
             <C.MyContainer>
                 <CardRecipe
+                    id={id}
                     recipeTitleHoverHeader={data?.recipeTitle}
                     detailsRecipes={id}
                     recipeImage={data?.recipeImage}
