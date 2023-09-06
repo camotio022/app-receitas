@@ -3,7 +3,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, CircularProgress } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useTheme } from '@emotion/react'
@@ -85,6 +85,7 @@ export const EditRecipes = () => {
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
   const [value, setValue] = useState(0)
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   useEffect(() => {
@@ -122,7 +123,7 @@ export const EditRecipes = () => {
     setIsLoading(true)
     try {
       await api_recipes.recipe.update(id, formData)
-      console.log('Campos atualizados com sucesso')
+      navigate('/my-recipes')
     } catch (error) {
       console.error('Erro ao atualizar os campos:', error)
     }
