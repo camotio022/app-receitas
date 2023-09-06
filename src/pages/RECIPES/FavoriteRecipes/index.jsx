@@ -67,6 +67,7 @@ export const FavoriteRecipes = () => {
           {favoriteRecipes?.map((favorite, index) => {
             return (
               <CardFavoriteRecipe
+              user={user}
                 index={index}
                 favorite={favorite}
                 deleteFavorite={deleteFavorite}

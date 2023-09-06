@@ -38,6 +38,7 @@ export const CardFavoriteRecipe = ({
     index,
     favorite,
     deleteFavorite,
+    user,
 }) => {
     const [expanded, setExpanded] = useState(false);
     const handleExpandClick = () => {
@@ -45,6 +46,7 @@ export const CardFavoriteRecipe = ({
     };
     const ingredients = favorite?.ingredients || []
     const modPreps = favorite?.modPreps || []
+    const likesCounter = favorite?.likesCounter || []
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -88,8 +90,9 @@ export const CardFavoriteRecipe = ({
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
+                {likesCounter.length}
                 <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
+                    <FavoriteIcon sx={{ color: likesCounter.includes(user.uid) && "red" }} />
                 </IconButton>
                 <IconButton aria-label="share">
                     <ShareIcon />
