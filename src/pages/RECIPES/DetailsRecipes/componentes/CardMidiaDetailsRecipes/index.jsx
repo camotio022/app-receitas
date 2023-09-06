@@ -9,10 +9,9 @@ import { api_recipe_favorites } from '../../../../../api/recipes/favoriterecipes
 export const CardMidiaDetailRecipe = ({
     recipe, id
 }) => {
-    const [isFevorite, setIsFevorite] = useState(null)
+    const [isFevorite, setIsFevorite] = useState('')
     const { user } = useContext(AuthContext)
     const fevoritingRecipe = async (recipeId, userId) => {
-        console.log(recipeId)
         if (!recipeId || !userId) return
         try {
             const recipeData = await api_recipe_favorites.favoriteRecipes.get(recipeId)
@@ -25,6 +24,7 @@ export const CardMidiaDetailRecipe = ({
             if (!likesCounter.includes(userId)) {
                 await api_recipe_favorites.favoriteRecipes.post(recipeId, userId)
                 alert('Receita favoritada com sucesso!')
+                setIsFevorite(true)
             } else {
                 alert('Usuário já favoritou a receita.')
             }
@@ -32,27 +32,23 @@ export const CardMidiaDetailRecipe = ({
             alert('Erro ao favoritar a receita:', error)
         }
     }
-    useEffect(() => {
-        const data = async () => {
-            try {
-                const recipeData = await api_recipe_favorites.favoriteRecipes.get(id)
-                const likesCounter = recipeData.likesCounter || []
-                if (!likesCounter.includes(user.uid)) {
-                    setIsFevorite(true)
-                } else {
-                    setIsFevorite(false)
-                }
-            } catch (error) {
-                alert('Erro ao favoritar a receita:', error)
-            }
+    const fetchData = async (recipe) => {
+        try {
+            const likesCounter = recipe.likesCounter ||[];
+            console.log(likesCounter);
+            setIsFevorite(likesCounter.includes(user.uid))
+        } catch (error) {
+            console.error('Erro ao favoritar a receita:', error);
         }
-        data()
-    }, [])
+    };
+    useEffect(() => {
+        fetchData(recipe);
+    }, [recipe]);
     return (
         <>
             <Tag.Midias
                 component="img"
-                alt="green iguana"
+                alt={recipe?.recipeDescription}
                 height="auto"
                 image={recipe?.recipeImage}
             />
@@ -79,8 +75,8 @@ export const CardMidiaDetailRecipe = ({
                         bgcolor: orange[900],
                     }}
                     variant={'contained'}
-                    startIcon={isFevorite?<Favorite />:<FavoriteBorder/>}
-                    endIcon={<Restaurant />} 
+                    startIcon={isFevorite ? <Favorite /> : <FavoriteBorder />}
+                    endIcon={<Restaurant />}
                 >
                     {isFevorite ? "Favoritada" : "Favoritar"}
                 </Button>
