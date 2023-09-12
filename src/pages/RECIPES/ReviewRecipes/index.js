@@ -136,6 +136,7 @@ export const MenuItemsLinks = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
     bgcolor: '#f8fafb',
+    gap:'10px'
 }))
 
 export const CardImage = styled(Box)(({ theme }) => ({
