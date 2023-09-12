@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 export const AuthContext = createContext()
 const provider = new GoogleAuthProvider()
 import { getFirestore, doc, setDoc, collection, getDocs, query, where, updateDoc } from 'firebase/firestore'
+import { api_users } from '../api/users/users'
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
     const [userData, setUserData] = useState(null)
     const navigate = useNavigate()
-    const checkUserAuthentication = () => {
+    const checkUserAuthentication = async () => {
         const loggedInStatus = localStorage.getItem('isLoggedIn')
         setIsLoggedIn(loggedInStatus === 'true')
 
@@ -28,7 +29,6 @@ export const AuthProvider = ({ children }) => {
             if (userDataFromLocalStorage) {
                 setUserData(userDataFromLocalStorage)
                 setUser(userDataFromLocalStorage)
-                console.log(userDataFromLocalStorage)
             }
         }
     }
@@ -63,7 +63,6 @@ export const AuthProvider = ({ children }) => {
                 if (existingUser) {
                     const userData = {
                         name: user.displayName,
-                        photoURL: user.photoURL,
                     };
                     await updateDoc(doc(usersRef, existingUser.id), userData);
                     setUser(existingUser.data());

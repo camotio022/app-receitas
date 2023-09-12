@@ -43,7 +43,7 @@ export const Comunidade = () => {
     const StyeleTable = {
         fontWeight: 'bold',
         color: orange[900],
-        fontSize: '10px',
+        fontSize: '100%',
         wordWrap: "break-word",
         whiteSpace: "normal",
         maxWidth: "100px"
@@ -52,55 +52,49 @@ export const Comunidade = () => {
 
     return (
         <>
-            <Stack sx={{
-                display: 'center',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                height: '100vh',
-            }}>
-                <Container
-                    component="main"
-                    maxWidth="sm"
+
+            <Container
+                component="main"
+                maxWidth="sm"
+                sx={{
+                    marginBlock: 10
+                }}
+            >
+                <Paper
+                    variant="outlined"
+                    sx={{ my: { xs: 3, md: 12 }, p: { xs: 3, md: 3 }, width: "100%" }}
                 >
-                    <Paper
-                        variant="outlined"
-                        sx={{ my: { xs: 3, md: 12 }, p: { xs: 3, md: 3 }, width: "100%" }}
-                    >
 
-                        <Typography variant="h6">Comunidade de Usuários</Typography>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell style={StyeleTable}>Info users</TableCell>
-                                    <TableCell style={StyeleTable}>Emails</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            {usuarios?.map((user, index) => {
-                                return (
-                                    <TableBody key={index}>
-                                        <TableRow>
-                                            <TableCell sx={{ display: 'flex', alignItems: "center", gap: '1rem' }}>
-                                                <Link href={`/edituser/${user.id}`}>
-                                                    <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
-                                                </Link>
-                                                <Stack sx={StyeleTable}>{user.name}</Stack>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div style={StyeleTable}>
-                                                    {user?.email}
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )
-                            })}
-                        </Table>
-                    </Paper>
-                </Container>
-
-            </Stack >
+                    <Typography variant="h6">Comunidade de Usuários</Typography>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={StyeleTable}>Info users</TableCell>
+                                <TableCell style={StyeleTable}>Emails</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        {usuarios?.map((user, index) => {
+                            return (
+                                <TableBody key={index}>
+                                    <TableRow>
+                                        <TableCell sx={{ display: 'flex', alignItems: "center", gap: '1rem' }}>
+                                            <Link href={`/edituser/${user.id}`}>
+                                                <Avatar sx={{ width: 46, height: 46 }} alt={user.name} src={user.photoURL} />
+                                            </Link>
+                                            <Stack sx={StyeleTable}>{user.name}</Stack>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div style={StyeleTable}>
+                                                {user?.email}
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            )
+                        })}
+                    </Table>
+                </Paper>
+            </Container>
         </>
     )
 }
