@@ -5,6 +5,7 @@ export const MyTextField = ({
     fullWidth,
     icon,
     type,
+    onKeyDown,
     ...props
 }) => {
     return (
@@ -17,7 +18,7 @@ export const MyTextField = ({
                     fullWidth
                     type={type}
                     variant={variant || 'filled'}
-            
+                    onKeyDown={onKeyDown}
                     {...props}
                 />
             </Grid>

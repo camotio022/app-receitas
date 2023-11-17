@@ -23,6 +23,7 @@ import { sections } from './componentes/sections.js'
 import { validateFields } from './componentes/validation.js'
 import { MyTextField } from '../../../componentes/textField/textField.jsx'
 import { Logo } from '../../../componentes/LOGO/index'
+import { Facebook, Google, Password } from '@mui/icons-material'
 function Copyright(props) {
     return (
         <Typography
@@ -70,6 +71,12 @@ export const SignIn = () => {
         email: '',
         password: ''
     })
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+          handleLoginWithEmailAndPassword();
+        }
+      };
+    
     const [open, setOpen] = useState(false);
     const [showAlert, setShowAlert] = useState('');
     const [progress, setProgress] = useState(false);
@@ -142,7 +149,7 @@ export const SignIn = () => {
                         }}
                     >
                         <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
-                            <Logo/>
+                            <Logo />
                         </Stack>
                         <Typography component="h1" variant="h5">
                             Sign in
@@ -171,41 +178,47 @@ export const SignIn = () => {
                                         onChange={
                                             handleChange
                                         }
+                                        onKeyDown={handleKeyDown}
                                     />
                                 );
                             })}
-
-                            <FormControlLabel
-                                control={
-                                    <Checkbox value="remember" color="primary" />
-                                }
-                                label="Remember me"
-                            />
-                            <Button
-                                color="error"
-                                sx={{ width: '100%', mb: '0.4rem' }}
-                                variant="outlined"
-                                startIcon={<FacebookIcon />}
-                            >
-                                login with facebook
-                            </Button>
-                            <Button
-                                onClick={handleLoginWithGoogle}
-                                startIcon={<GoogleIcon />}
-                                color="error"
-                                sx={{ width: '100%' }}
-                                variant="outlined"
-                            >
-                                Login with google
-                            </Button>
-                            <Button
-                                onClick={handleLoginWithEmailAndPassword}
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
-                            >
-                                Sign In
-                            </Button>
+                            {
+                                [
+                                    {
+                                        title: 'login with facebook',
+                                        icon: <Facebook />,
+                                        color: 'error',
+                                        variant: 'outlined',
+                                        onclick: false,
+                                    },
+                                    {
+                                        title: 'login with google',
+                                        icon: <Google />,
+                                        color: 'error',
+                                        variant: 'outlined',
+                                        onclick: handleLoginWithGoogle,
+                                    },
+                                    {
+                                        title: 'Sign in',
+                                        icon: <Password />,
+                                        color: 'primary',
+                                        variant: 'contained',
+                                        onclick: handleLoginWithEmailAndPassword,
+                                    }
+                                ].map((item, index) => {
+                                    return (
+                                        <Button
+                                            color={item.color}
+                                            sx={{ width: '100%', mb: '0.4rem' }}
+                                            variant={item.variant}
+                                            startIcon={item.icon && item.icon}
+                                            onClick={item.onclick && item.onclick}
+                                        >
+                                            {item.title}
+                                        </Button>
+                                    )
+                                })
+                            }
                             <Grid container>
                                 <Grid item xs={12}>
                                     <Link href="#" variant="body2">
