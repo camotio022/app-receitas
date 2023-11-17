@@ -48,7 +48,11 @@ export const SignUp = () => {
         nameFocos: false,
     })
 
-
+    const handleKeyDown = (e) => {
+        if (e.KeyCode === 13) {
+            submtForum()
+        }
+    }
     const handleChange = (e) => {
         var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
         const value = e.target.value;
@@ -160,6 +164,7 @@ export const SignUp = () => {
                                     onChange={
                                         handleChange
                                     }
+                                    onKeyDown={handleKeyDown}
                                 />
                             );
                         })}
