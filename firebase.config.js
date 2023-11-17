@@ -25,7 +25,6 @@ import { getMessaging } from 'firebase/messaging/sw';
 //   appId: "1:869306952623:web:14eb49598d534d3c0add5a",
 //   measurementId: "G-HSHNXEK645"
 // };
-
 const firebaseConfig = {
   messagingSenderId: '821625533576',
   apiKey: "AIzaSyDm3Zl3eFWzhYwcZR4WQfn22fMX4fMYaYU",

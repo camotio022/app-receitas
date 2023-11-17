@@ -191,10 +191,10 @@ export const SignIn = () => {
                             </Button>
                             <Button
                                 onClick={handleLoginWithGoogle}
+                                startIcon={<GoogleIcon />}
                                 color="error"
                                 sx={{ width: '100%' }}
                                 variant="outlined"
-                                startIcon={<GoogleIcon />}
                             >
                                 Login with google
                             </Button>

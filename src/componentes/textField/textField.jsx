@@ -1,8 +1,9 @@
-import { Grid, TextField } from "@mui/material"
+import { Grid, InputAdornment, TextField } from "@mui/material"
 
 export const MyTextField = ({
     variant,
     fullWidth,
+    icon,
     type,
     ...props
 }) => {
@@ -16,6 +17,7 @@ export const MyTextField = ({
                     fullWidth
                     type={type}
                     variant={variant || 'filled'}
+            
                     {...props}
                 />
             </Grid>
