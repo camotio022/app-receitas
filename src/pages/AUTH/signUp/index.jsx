@@ -26,51 +26,42 @@ function Copyright(props) {
     );
 }
 export const SignUp = () => {
-    const [emailError, setEmailError] = useState('');
-    const [lastNameError, setLastNameError] = useState('');
-    const [showPasswprd, setShowPasswprd] = useState(false)
-    const [nameError, setNameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPasswprd, setShowPasswprd] = useState(false);
     const [open, setOpen] = useState(false);
     const [showAlert, setShowAlert] = useState('');
     const [progress, setProgress] = useState(false);
 
     const [data, setData] = useState({
-        password: '',
-        email: '',
-        lastName: '',
         name: '',
+        lastName: '',
+        email: '',
+        password: '',
     })
-    const [datasFocos, setNameFocos] = useState({
-        passwordFocos: false,
-        emailFocos: false,
-        lastNameFocos: false,
-        nameFocos: false,
-    })
-
     const handleKeyDown = (e) => {
         if (e.KeyCode === 13) {
             submtForum()
         }
     }
     const handleChange = (e) => {
-        var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
-        const value = e.target.value;
-        const name = e.target.name;
-        setData((old) => {
-            return { ...old, [name]: value };
+        const { name, value } = e.target
+        setData((oldData) => {
+            const newData = { ...oldData, [name]: value };
+            validation({
+                name: newData.name,
+                surname: newData.lastName,
+                email: newData.email,
+                password: newData.password,
+                setName,
+                setSurname,
+                setEmail,
+                setPassword
+            });
+            return newData;
         });
-        validation({
-            regex,
-            name,
-            value,
-            data,
-            datasFocos,
-            setEmailError,
-            setNameError,
-            setLastNameError,
-            setNameFocos,
-        })
     }
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
@@ -176,7 +167,13 @@ export const SignUp = () => {
                                             name={section.name}
                                             type={section.type}
                                             value={data[section.name]}
-                                            helperText={showAlert}
+                                            helperText={
+                                                section.name === 'name' ? name :
+                                                section.name === 'lastName' ? surname :
+                                                section.name === 'email' ? email :
+                                                section.name === 'password' ? password :
+                                                null
+                                            }
                                             onChange={
                                                 handleChange
                                             }
