@@ -71,12 +71,14 @@ export const SignIn = () => {
         email: '',
         password: ''
     })
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-          handleLoginWithEmailAndPassword();
+            handleLoginWithEmailAndPassword();
         }
-      };
-    
+    };
+
     const [open, setOpen] = useState(false);
     const [showAlert, setShowAlert] = useState('');
     const [progress, setProgress] = useState(false);
@@ -85,17 +87,27 @@ export const SignIn = () => {
     const [showPasswprd, setShowPasswprd] = useState(false)
     const handleChange = (e) => {
         const { name, value } = e.target
-        setData((old) => ({ ...old, [name]: value }))
-        validateFields({
-            email: data.email,
-            password: data.password,
-            setShowAlert,
-        })
+        setData((oldData) => {
+            const newData = { ...oldData, [name]: value };
+            validateFields({
+                email: newData.email,
+                password: newData.password,
+                setPassword,
+                setEmail
+            });
+            return newData;
+        });
     }
     const handleLoginWithGoogle = () =>
-        loginWithGoogle(data?.email, data?.password)
-    const handleLoginWithEmailAndPassword = () =>
-        loginWithEmailAndPassword(data?.email, data?.password)
+        loginWithGoogle(data?.email, data?.password);
+    const handleLoginWithEmailAndPassword = () => {
+        if (!email && !password) {
+            loginWithEmailAndPassword(data?.email, data?.password)
+        } else {
+            setOpen(true)
+            setShowAlert('um dos campos não está corretamente preenchido!')
+        }
+    }
 
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
@@ -174,7 +186,7 @@ export const SignIn = () => {
                                         name={section.name}
                                         type={section.type}
                                         value={data[section.name]}
-                                        helperText={showAlert}
+                                        helperText={section.name === 'email' ? email : password}
                                         onChange={
                                             handleChange
                                         }

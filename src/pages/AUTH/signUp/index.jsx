@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import * as Tag from './index'
 import { Logo } from '../../../componentes/LOGO/index';
-import { Stack, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, } from '@mui/material';
+import { Stack, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Paper, Box, } from '@mui/material';
 import { useState } from 'react';
 import { validation } from './componentes/validation';
 import { sections } from './componentes/sections';
@@ -26,51 +26,42 @@ function Copyright(props) {
     );
 }
 export const SignUp = () => {
-    const [emailError, setEmailError] = useState('');
-    const [lastNameError, setLastNameError] = useState('');
-    const [showPasswprd, setShowPasswprd] = useState(false)
-    const [nameError, setNameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPasswprd, setShowPasswprd] = useState(false);
     const [open, setOpen] = useState(false);
     const [showAlert, setShowAlert] = useState('');
     const [progress, setProgress] = useState(false);
 
     const [data, setData] = useState({
-        password: '',
-        email: '',
-        lastName: '',
         name: '',
+        lastName: '',
+        email: '',
+        password: '',
     })
-    const [datasFocos, setNameFocos] = useState({
-        passwordFocos: false,
-        emailFocos: false,
-        lastNameFocos: false,
-        nameFocos: false,
-    })
-
     const handleKeyDown = (e) => {
         if (e.KeyCode === 13) {
             submtForum()
         }
     }
     const handleChange = (e) => {
-        var regex = /^(?=(?:.*?[A-Z]){1})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){2})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
-        const value = e.target.value;
-        const name = e.target.name;
-        setData((old) => {
-            return { ...old, [name]: value };
+        const { name, value } = e.target
+        setData((oldData) => {
+            const newData = { ...oldData, [name]: value };
+            validation({
+                name: newData.name,
+                surname: newData.lastName,
+                email: newData.email,
+                password: newData.password,
+                setName,
+                setSurname,
+                setEmail,
+                setPassword
+            });
+            return newData;
         });
-        validation({
-            regex,
-            name,
-            value,
-            data,
-            datasFocos,
-            setEmailError,
-            setNameError,
-            setLastNameError,
-            setNameFocos,
-        })
     }
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
@@ -80,29 +71,21 @@ export const SignUp = () => {
     };
 
     const submtForum = async (e) => {
-        const isAnyFieldFilled = Object.values(datasFocos).some((value) => value !== false);
-
         e.preventDefault();
         setProgress(true);
-        if (isAnyFieldFilled) {
-            setShowAlert('Um dos campos não está preenchido, por favor preencha.');
-            setProgress(true);
-            return
-        }
-        if (data.password.length < 6) {
-            setProgress(false);
-            setShowAlert('A senha deve ter pelo menos 6 caracteres.');
+        if (!name && !surname && !email && !password) {
+            try {
+                setProgress(true);
+                const response = await api_users.user.post(data); // Substitua 'data' pelos dados do formulário
+                setProgress(false);
+            } catch (err) {
+                setOpen(true);
+                alert(err.message || 'Erro desconhecido ao criar o usuário e vincular o perfil.');
+                setProgress(false);
+            }
+        } else {
             setOpen(true);
-            return;
-        }
-        try {
-            setProgress(true);
-            const response = await api_users.user.post(data); // Substitua 'data' pelos dados do formulário
-            setProgress(false);
-        } catch (err) {
-            setShowAlert(err.message || 'Erro desconhecido ao criar o usuário e vincular o perfil.');
-            setOpen(true);
-            setProgress(false);
+            setShowAlert('um dos campos não está corretamente preenchido!');
         }
     };
 
@@ -113,7 +96,8 @@ export const SignUp = () => {
                 {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
                     <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
                 </Stack>}
-                <Grid container component="form" onSubmit={submtForum} spacing={1} fullWidth sx={{ width: '100%', height: '100%' }}>
+                <Grid container component="form" onSubmit={submtForum}
+                    sx={{ height: '100vh', zIndex: '1', position: 'absolute' }}>
                     <Grid
                         item
                         xs={false}
@@ -136,60 +120,83 @@ export const SignUp = () => {
                         xs={12}
                         sm={8}
                         md={5}
-                        padding={4}
-                        mb={'auto'}
-                        spacing={2}
-                        height={"100%"}
-                        elevation={2}
-                        marginRight={-3}
-
+                        component={Paper}
+                        elevation={6}
                         square
                     >
-                        <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
-                            <Logo />
-                        </Stack>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-
-                        {sections?.map((section, index) => {
-                            return (
-                                <MyTextField
-                                    key={index}
-                                    label={section.label}
-                                    name={section.name}
-                                    type={section.type}
-                                    value={data[section.name]}
-                                    helperText={showAlert}
-                                    onChange={
-                                        handleChange
-                                    }
-                                    onKeyDown={handleKeyDown}
-                                />
-                            );
-                        })}
-                        <Grid item xs={12} lg={6} mb={3}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
-                            />
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                        <Box
+                            sx={{
+                                my: 8,
+                                mx: 4,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
                         >
-                            Cadastrar
-                        </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
+                            <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
+                                <Logo />
+                            </Stack>
+                            <Typography component="h1" variant="h5">
+                                Sign up
+                            </Typography>
+                            <Grid
+                                component="div"
+                                noValidate
+                                sx={{
+                                    mt: 1,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                }}
+                            >
+                                {sections?.map((section, index) => {
+                                    return (
+                                        <MyTextField
+                                            key={index}
+                                            label={section.label}
+                                            name={section.name}
+                                            type={section.type}
+                                            value={data[section.name]}
+                                            helperText={
+                                                section.name === 'name' ? name :
+                                                    section.name === 'lastName' ? surname :
+                                                        section.name === 'email' ? email :
+                                                            section.name === 'password' ? password :
+                                                                null
+                                            }
+                                            onChange={
+                                                handleChange
+                                            }
+                                            onKeyDown={handleKeyDown}
+                                        />
+                                    );
+                                })}
+                                <Grid item xs={12} lg={6} mb={3}>
+                                    <FormControlLabel
+                                        control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                        label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
+                                    />
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Cadastrar
+                                </Button>
+                                <Grid container justifyContent="flex-end">
+                                    <Grid item>
+                                        <Link href="/" variant="body2">
+                                            Already have an account? Sign in
+                                        </Link>
+                                    </Grid>
+                                </Grid>
+                                <Copyright sx={{ mt: 5 }} />
                             </Grid>
-                        </Grid>
-                        <Copyright sx={{ mt: 5 }} />
+                        </Box>
                     </Grid>
                 </Grid>
             </Tag.Container>
