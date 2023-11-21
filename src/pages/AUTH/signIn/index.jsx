@@ -75,10 +75,10 @@ export const SignIn = () => {
     const [password, setPassword] = useState('')
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-          handleLoginWithEmailAndPassword();
+            handleLoginWithEmailAndPassword();
         }
-      };
-    
+    };
+
     const [open, setOpen] = useState(false);
     const [showAlert, setShowAlert] = useState('');
     const [progress, setProgress] = useState(false);
@@ -99,9 +99,15 @@ export const SignIn = () => {
         });
     }
     const handleLoginWithGoogle = () =>
-        loginWithGoogle(data?.email, data?.password)
-    const handleLoginWithEmailAndPassword = () =>
-        loginWithEmailAndPassword(data?.email, data?.password)
+        loginWithGoogle(data?.email, data?.password);
+    const handleLoginWithEmailAndPassword = () => {
+        if (!email && !password) {
+            loginWithEmailAndPassword(data?.email, data?.password)
+        } else {
+            setOpen(true)
+            setShowAlert('um dos campos não está corretamente preenchido!')
+        }
+    }
 
     const ShowPassword = () => {
         setShowPasswprd(!showPasswprd)
