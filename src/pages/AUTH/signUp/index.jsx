@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import * as Tag from './index'
 import { Logo } from '../../../componentes/LOGO/index';
-import { Stack, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, } from '@mui/material';
+import { Stack, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Paper, Box, } from '@mui/material';
 import { useState } from 'react';
 import { validation } from './componentes/validation';
 import { sections } from './componentes/sections';
@@ -113,7 +113,8 @@ export const SignUp = () => {
                 {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
                     <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
                 </Stack>}
-                <Grid container component="form" onSubmit={submtForum} spacing={1} fullWidth sx={{ width: '100%', height: '100%' }}>
+                <Grid container component="form" onSubmit={submtForum}
+                    sx={{ height: '100vh', zIndex: '1', position: 'absolute' }}>
                     <Grid
                         item
                         xs={false}
@@ -136,60 +137,77 @@ export const SignUp = () => {
                         xs={12}
                         sm={8}
                         md={5}
-                        padding={4}
-                        mb={'auto'}
-                        spacing={2}
-                        height={"100%"}
-                        elevation={2}
-                        marginRight={-3}
-
+                        component={Paper}
+                        elevation={6}
                         square
                     >
-                        <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
-                            <Logo />
-                        </Stack>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-
-                        {sections?.map((section, index) => {
-                            return (
-                                <MyTextField
-                                    key={index}
-                                    label={section.label}
-                                    name={section.name}
-                                    type={section.type}
-                                    value={data[section.name]}
-                                    helperText={showAlert}
-                                    onChange={
-                                        handleChange
-                                    }
-                                    onKeyDown={handleKeyDown}
-                                />
-                            );
-                        })}
-                        <Grid item xs={12} lg={6} mb={3}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
-                            />
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                        <Box
+                            sx={{
+                                my: 8,
+                                mx: 4,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
                         >
-                            Cadastrar
-                        </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
+                            <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
+                                <Logo />
+                            </Stack>
+                            <Typography component="h1" variant="h5">
+                                Sign up
+                            </Typography>
+                            <Grid
+                                component="div"
+                                noValidate
+                                sx={{
+                                    mt: 1,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                }}
+                            >
+                                {sections?.map((section, index) => {
+                                    return (
+                                        <MyTextField
+                                            key={index}
+                                            label={section.label}
+                                            name={section.name}
+                                            type={section.type}
+                                            value={data[section.name]}
+                                            helperText={showAlert}
+                                            onChange={
+                                                handleChange
+                                            }
+                                            onKeyDown={handleKeyDown}
+                                        />
+                                    );
+                                })}
+                                <Grid item xs={12} lg={6} mb={3}>
+                                    <FormControlLabel
+                                        control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                        label="Quero receber inspiração, postes das receitas e atualizações por e-mail."
+                                    />
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Cadastrar
+                                </Button>
+                                <Grid container justifyContent="flex-end">
+                                    <Grid item>
+                                        <Link href="/" variant="body2">
+                                            Already have an account? Sign in
+                                        </Link>
+                                    </Grid>
+                                </Grid>
+                                <Copyright sx={{ mt: 5 }} />
                             </Grid>
-                        </Grid>
-                        <Copyright sx={{ mt: 5 }} />
+                        </Box>
                     </Grid>
                 </Grid>
             </Tag.Container>
