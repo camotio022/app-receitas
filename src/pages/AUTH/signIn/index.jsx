@@ -71,6 +71,8 @@ export const SignIn = () => {
         email: '',
         password: ''
     })
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
           handleLoginWithEmailAndPassword();
@@ -85,12 +87,16 @@ export const SignIn = () => {
     const [showPasswprd, setShowPasswprd] = useState(false)
     const handleChange = (e) => {
         const { name, value } = e.target
-        setData((old) => ({ ...old, [name]: value }))
-        validateFields({
-            email: data.email,
-            password: data.password,
-            setShowAlert,
-        })
+        setData((oldData) => {
+            const newData = { ...oldData, [name]: value };
+            validateFields({
+                email: newData.email,
+                password: newData.password,
+                setPassword,
+                setEmail
+            });
+            return newData;
+        });
     }
     const handleLoginWithGoogle = () =>
         loginWithGoogle(data?.email, data?.password)
@@ -174,7 +180,7 @@ export const SignIn = () => {
                                         name={section.name}
                                         type={section.type}
                                         value={data[section.name]}
-                                        helperText={showAlert}
+                                        helperText={section.name === 'email' ? email : password}
                                         onChange={
                                             handleChange
                                         }
