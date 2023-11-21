@@ -71,29 +71,21 @@ export const SignUp = () => {
     };
 
     const submtForum = async (e) => {
-        const isAnyFieldFilled = Object.values(datasFocos).some((value) => value !== false);
-
         e.preventDefault();
         setProgress(true);
-        if (isAnyFieldFilled) {
-            setShowAlert('Um dos campos não está preenchido, por favor preencha.');
-            setProgress(true);
-            return
-        }
-        if (data.password.length < 6) {
-            setProgress(false);
-            setShowAlert('A senha deve ter pelo menos 6 caracteres.');
+        if (!name && !surname && !email && !password) {
+            try {
+                setProgress(true);
+                const response = await api_users.user.post(data); // Substitua 'data' pelos dados do formulário
+                setProgress(false);
+            } catch (err) {
+                setOpen(true);
+                alert(err.message || 'Erro desconhecido ao criar o usuário e vincular o perfil.');
+                setProgress(false);
+            }
+        } else {
             setOpen(true);
-            return;
-        }
-        try {
-            setProgress(true);
-            const response = await api_users.user.post(data); // Substitua 'data' pelos dados do formulário
-            setProgress(false);
-        } catch (err) {
-            setShowAlert(err.message || 'Erro desconhecido ao criar o usuário e vincular o perfil.');
-            setOpen(true);
-            setProgress(false);
+            setShowAlert('um dos campos não está corretamente preenchido!');
         }
     };
 
@@ -169,10 +161,10 @@ export const SignUp = () => {
                                             value={data[section.name]}
                                             helperText={
                                                 section.name === 'name' ? name :
-                                                section.name === 'lastName' ? surname :
-                                                section.name === 'email' ? email :
-                                                section.name === 'password' ? password :
-                                                null
+                                                    section.name === 'lastName' ? surname :
+                                                        section.name === 'email' ? email :
+                                                            section.name === 'password' ? password :
+                                                                null
                                             }
                                             onChange={
                                                 handleChange
