@@ -83,7 +83,6 @@ export const TemplateAuthSections = ({
                             {inputs}
                             {buttons}
                             {footer}
-                            <Copyright sx={{ mt: 5 }} />
                         </Grid>
                     </Box>
                 </Grid>
