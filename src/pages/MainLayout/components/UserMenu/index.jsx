@@ -108,22 +108,10 @@ export const UserMenu = ({
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Stack>
-          {links(user)?.map((item) => {
-            return (
-              <>
-                <MenuItem key={item} onClick={Close}>
-                  <Avatar src={user?.photoURL} /> {item}
-                </MenuItem>
-              </>
-            )
-          })}
-          <Divider />
           <MenuItem onClick={Close}>
-            <ListItemIcon>
-              <PersonAdd fontSize="small" />
-            </ListItemIcon>
-            Add another account
+            <Avatar src={user?.photoURL} /> {user.displayName}
           </MenuItem>
+          <Divider />
           <Link href={`/edituser/${user.uid}`}>
             <MenuItem>
               <ListItemIcon>
@@ -132,12 +120,6 @@ export const UserMenu = ({
               Edit user
             </MenuItem>
           </Link>
-          <MenuItem onClick={Close}>
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            Settings
-          </MenuItem>
           <MenuItem onClick={logout}>
             <ListItemIcon>
               <Logout fontSize="small" />

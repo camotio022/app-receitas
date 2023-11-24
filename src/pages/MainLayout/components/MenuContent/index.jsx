@@ -40,7 +40,7 @@ export const MenuContent = ({
                 <CloseIcon />
               </Tag.SearchIconWrapper>
               <Tag.StyledInputBase
-                placeholder="Search…"
+                placeholder="Encontrar uma receita                                                                                                                                                                        "
                 inputProps={{ 'aria-label': 'search' }}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
