@@ -40,7 +40,7 @@ export const MenuContent = ({
                 <CloseIcon />
               </Tag.SearchIconWrapper>
               <Tag.StyledInputBase
-                placeholder="Search…"
+                placeholder="Encontrar uma receita                                                                                                                                                                        "
                 inputProps={{ 'aria-label': 'search' }}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -70,10 +70,11 @@ export const MenuContent = ({
               return (
                 <Links_a
                   setShowLinks={setShowLinks}
+                  name={li.name}
+                  link={li.link}
                   key={li.name}
                   {...li}
-                  handleClick={(event) => handleSelectLink(event, li.name)}
-                  selectedLink={selectedLink}
+
                 />
               )
             })}

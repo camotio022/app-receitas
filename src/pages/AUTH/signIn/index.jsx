@@ -22,8 +22,8 @@ import { AuthContext } from '../../../contexts/AuthContext'
 import { sections } from './componentes/sections.js'
 import { validateFields } from './componentes/validation.js'
 import { MyTextField } from '../../../componentes/textField/textField.jsx'
-import { Logo } from '../../../componentes/LOGO/index'
 import { Facebook, Google, Password } from '@mui/icons-material'
+import { TemplateAuthSections } from '../../../componentes/TempleteAuth/index.jsx'
 function Copyright(props) {
     return (
         <Typography
@@ -116,150 +116,81 @@ export const SignIn = () => {
         setOpen(false);
     };
     return (
-        <>
-            {progress && <Stack sx={{ width: '100%', bgcolor: 'green', position: 'fixed', top: 0, left: 0 }}>
-                <LinearProgress sx={{ height: '0.5rem', }} variant='indeterminate' />
-            </Stack>}
-            <Grid
-                container
-                component="main"
-                sx={{ height: '100vh', zIndex: '1', position: 'absolute' }}
-            >
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        backgroundImage:
-                            'url(https://source.unsplash.com/random?wallpapers)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light'
-                                ? t.palette.grey[50]
-                                : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
-                <Grid
-                    item
-                    xs={12}
-                    sm={8}
-                    md={5}
-                    component={Paper}
-                    elevation={6}
-                    square
-                >
-                    <Box
-                        sx={{
-                            my: 8,
-                            mx: 4,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Stack sx={{ m: 1, bgcolor: 'transparent' }}>
-                            <Logo />
-                        </Stack>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-                        <Grid
-                            component="div"
-                            noValidate
-                            sx={{
-                                mt: 1,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexDirection: 'column',
-                                height: '100%',
-                            }}
-                        >
-                            {sections?.map((section, index) => {
-                                return (
-                                    <MyTextField
-                                        key={index}
-                                        label={section.label}
-                                        name={section.name}
-                                        type={section.type}
-                                        value={data[section.name]}
-                                        helperText={section.name === 'email' ? email : password}
-                                        onChange={
-                                            handleChange
-                                        }
-                                        onKeyDown={handleKeyDown}
-                                    />
-                                );
-                            })}
-                            {
-                                [
-                                    {
-                                        title: 'login with facebook',
-                                        icon: <Facebook />,
-                                        color: 'error',
-                                        variant: 'outlined',
-                                        onclick: false,
-                                    },
-                                    {
-                                        title: 'login with google',
-                                        icon: <Google />,
-                                        color: 'error',
-                                        variant: 'outlined',
-                                        onclick: handleLoginWithGoogle,
-                                    },
-                                    {
-                                        title: 'Sign in',
-                                        icon: <Password />,
-                                        color: 'primary',
-                                        variant: 'contained',
-                                        onclick: handleLoginWithEmailAndPassword,
-                                    }
-                                ].map((item, index) => {
-                                    return (
-                                        <Button
-                                            color={item.color}
-                                            sx={{ width: '100%', mb: '0.4rem' }}
-                                            variant={item.variant}
-                                            startIcon={item.icon && item.icon}
-                                            onClick={item.onclick && item.onclick}
-                                        >
-                                            {item.title}
-                                        </Button>
-                                    )
-                                })
+        <TemplateAuthSections
+            progress={progress}
+            open={open}
+            showAlert={showAlert}
+            handleClose={handleClose}
+            title={'Login'}
+            inputs={
+                sections?.map((section, index) => {
+                    return (
+                        <MyTextField
+                            key={index}
+                            label={section.label}
+                            name={section.name}
+                            type={section.type}
+                            value={data[section.name]}
+                            helperText={section.name === 'email' ? email : password}
+                            onChange={
+                                handleChange
                             }
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="/signup" variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                            <Copyright sx={{ mt: 5 }} />
-                        </Grid>
-                    </Box>
+                            onKeyDown={handleKeyDown}
+                        />
+                    );
+                })
+            }
+            buttons={
+                [
+                    {
+                        title: 'login with facebook',
+                        icon: <Facebook />,
+                        color: 'error',
+                        variant: 'outlined',
+                        onclick: false,
+                    },
+                    {
+                        title: 'login with google',
+                        icon: <Google />,
+                        color: 'error',
+                        variant: 'outlined',
+                        onclick: handleLoginWithGoogle,
+                    },
+                    {
+                        title: 'Sign in',
+                        icon: <Password />,
+                        color: 'primary',
+                        variant: 'contained',
+                        onclick: handleLoginWithEmailAndPassword,
+                    }
+                ].map((item, index) => {
+                    return (
+                        <Button
+                            color={item.color}
+                            sx={{ width: '100%', mb: '0.4rem' }}
+                            variant={item.variant}
+                            startIcon={item.icon && item.icon}
+                            onClick={item.onclick && item.onclick}
+                        >
+                            {item.title}
+                        </Button>
+                    )
+                })
+            }
+            footer={
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Link href="#" variant="body2">
+                            Forgot password?
+                        </Link>
+                    </Grid>
+                    <Grid item>
+                        <Link href="/signup" variant="body2">
+                            {"Don't have an account? Sign Up"}
+                        </Link>
+                    </Grid>
                 </Grid>
-            </Grid>
-
-            <Dialog open={open} onClose={handleClose} aria-describedby="alert-dialog-slide-description">
-                <DialogTitle sx={{ color: 'red' }}>{"Mensagem de erro:"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        {showAlert}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>OK</Button>
-                </DialogActions>
-            </Dialog>
-        </>
+            }
+        />
     )
 }
